@@ -17,7 +17,13 @@ public class FontList extends Activity {
 
 	private ListView lv;
 
-	String fontURL, fontName, selectedFromList;
+	String fontName, selectedFromList;
+	
+	//Font url strings
+	String urlRobotoBold, urlRobotoBoldItalic, urlRobotoItalic, 
+	urlRobotoLight, urlRobotoLightItalic, urlRobotoRegular, urlRobotoThin, 
+	urlRobotoThinItalic, urlRobotoCondensedBold, urlRobotoCondensedBoldItalic, 
+	urlRobotoCondensedItalic, urlRobotoCondensedRegular;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -25,8 +31,19 @@ public class FontList extends Activity {
 
 		lv = (ListView) findViewById(R.id.listView1);
 
-		fontURL = "https://github.com/Chromium1/Fonts/tree/master/" + fontName + "FontPack";
-
+		urlRobotoBold = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/Roboto-Bold.ttf";
+		urlRobotoBoldItalic = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/Roboto-ItalicBold.ttf";
+		urlRobotoRegular = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/Roboto-Regular.ttf";
+		urlRobotoItalic = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/Roboto-Italic.ttf";		
+		urlRobotoLight = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/Roboto-Light.ttf";
+		urlRobotoLightItalic = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/Roboto-LightItalic.ttf";
+		urlRobotoThin = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/Roboto-Thin.ttf";
+		urlRobotoThinItalic = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/Roboto-ThinItalic.ttf";
+		urlRobotoCondensedBold = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/RobotoCondensed-Bold.ttf";
+		urlRobotoCondensedBoldItalic = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/RobotoCondensed-BoldItalic.ttf";
+		urlRobotoCondensedRegular = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/RobotoCondensed-Regular.ttf";
+		urlRobotoCondensedItalic = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/RobotoCondensed-Italic.ttf";
+		
 		ArrayList<String> fontList = new ArrayList<String>();
 
 		try {
@@ -46,19 +63,19 @@ public class FontList extends Activity {
 		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, fontList);
 
 		lv.setAdapter(arrayAdapter); 
-		
-	    lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-	        public void onItemClick(AdapterView<?> parent, View clickView, int position, long id) {
-	        	selectedFromList = (lv.getItemAtPosition(position).toString());
-	        	
-	        	Toast.makeText(getApplicationContext(), selectedFromList,
-						   Toast.LENGTH_LONG).show();
-	        	
-	        	fontName = removeSpaces(selectedFromList); //remove the spaces from the item so that it can later be passed into the URL string
-	        }
-	    });			
+
+		lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View clickView, int position, long id) {
+				selectedFromList = (lv.getItemAtPosition(position).toString());
+
+				fontName = removeSpaces(selectedFromList); //remove the spaces from the item so that it can later be passed into the URL string
+
+				Toast.makeText(getApplicationContext(), fontName,
+						Toast.LENGTH_LONG).show();	        	
+			}
+		});			
 	}	  
-	  
+
 	public static String removeSpaces (String line)
 	{//method to remove spaces
 		for (int x = 0 ; x < line.length () ; x++)
