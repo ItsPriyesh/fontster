@@ -17,25 +17,6 @@ public class MainActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		button1 = (Button)findViewById(R.id.button1);
-		button1.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v){
-				
-				try {
-					Process getSU = Runtime.getRuntime().exec("su");
-					Process mountSystem = Runtime.getRuntime().exec(new String[] { "su", "-c", "mount -o rw,remount /system"});
-					Process process2 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/SpeedSoftware/Extracted/TerfensFontPack/fonts/Roboto-Bold.ttf /system"});
-
-				}
-				catch (IOException e) {
-					Toast.makeText(getApplicationContext(), "not found",
-							   Toast.LENGTH_LONG).show();			
-				}
-				
-			}
-
-		});
-
 		button2 = (Button)findViewById(R.id.button2);
 		button2.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v){
