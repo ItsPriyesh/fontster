@@ -17,6 +17,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.IntentFilter;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -26,16 +27,16 @@ import android.widget.ListView;
 import android.widget.Toast;
 import android.view.*;
 
-public class FontList extends Activity {
+public class FontList extends Activity  {
 
 	private ListView lv;
 
-	static ProgressDialog downloadProgress;
+	static ProgressDialog downloadProgress, copyProgress;
 
-	String fontName, selectedFromList;
+	static String fontName, selectedFromList;
 
 	static int dlLeft;
-	
+
 	//Font url strings
 	String urlRobotoBold, urlRobotoBoldItalic, urlRobotoItalic, 
 	urlRobotoLight, urlRobotoLightItalic, urlRobotoRegular, urlRobotoThin, 
@@ -149,61 +150,28 @@ public class FontList extends Activity {
 				request12.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
 
 				DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
-				
-				File file = new File("/sdcard/DownloadedFonts/"+fontName + "/Roboto-BoldItalic.ttf");
 
-				if (file.exists()) {
-					AlertDialog.Builder builder = new AlertDialog.Builder(FontList.this);
-					builder.setMessage("You have already previously downloaded this font. Press OK to install.")
-					.setTitle ("Fonts already downloaded")
-					.setCancelable(false)
-					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int id) {
-							try {
-								Process mountSystem = Runtime.getRuntime().exec(new String[] { "su", "-c", "mount -o rw,remount /system"});
-								Process process1 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+fontName + "/Roboto-Bold.ttf /system"});
-								Process process2 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+fontName + "/Roboto-BoldItalic.ttf /system"});
-								Process process3 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+fontName + "/Roboto-Regular.ttf /system"});
-								Process process4 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+fontName + "/Roboto-Italic.ttf /system"});
-								Process process5 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+fontName + "/Roboto-Light.ttf /system"});
-								Process process6 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+fontName + "/Roboto-LightItalic.ttf /system"});
-								Process process7 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+fontName + "/Roboto-Thin.ttf /system"});
-								Process process8 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+fontName + "/Roboto-ThinItalic.ttf /system"});
-								Process process9 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+fontName + "/RobotoCondensed-Bold.ttf /system"});
-								Process process10 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+fontName + "/RobotoCondensed-BoldItalic.ttf /system"});
-								Process process11 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+fontName + "/RobotoCondensed-Regular.ttf /system"});
-								Process process12 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+fontName + "/RobotoCondensed-Italic.ttf /system"});
+				//display a progress dialog just before the request for downloads are sent
+				downloadProgress = new ProgressDialog(FontList.this);
+				downloadProgress.setTitle("Downloading");
+				downloadProgress.setMessage("Downloading " + selectedFromList + ".");
+				downloadProgress.show();
 
-							}
-							catch (IOException e) {
-								Toast.makeText(getApplicationContext(), "not found",
-										Toast.LENGTH_LONG).show();			
-							}
-						}
-					});
-					AlertDialog alert = builder.create();
-					alert.show();	
-				}
-				else {
-					//display a progress dialog just before the request for downloads are sent
-					downloadProgress = ProgressDialog.show(FontList.this, "Downloading", "Downloading " + selectedFromList + ".", true);
-					downloadProgress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-					
-					manager.enqueue(request1);
-					manager.enqueue(request2);	
-					manager.enqueue(request3);	
-					manager.enqueue(request4);	
-					manager.enqueue(request5);	
-					manager.enqueue(request6);	
-					manager.enqueue(request7);	
-					manager.enqueue(request8);	
-					manager.enqueue(request9);	
-					manager.enqueue(request10);	
-					manager.enqueue(request11);	
-					manager.enqueue(request12);
-					
-					dlLeft = 12;
-				}
+				manager.enqueue(request1);
+				manager.enqueue(request2);	
+				manager.enqueue(request3);	
+				manager.enqueue(request4);	
+				manager.enqueue(request5);	
+				manager.enqueue(request6);	
+				manager.enqueue(request7);	
+				manager.enqueue(request8);	
+				manager.enqueue(request9);	
+				manager.enqueue(request10);	
+				manager.enqueue(request11);	
+				manager.enqueue(request12);
+
+				dlLeft = 12;
+
 				// listen for download completion, and close the progress dialog once it is detected
 				BroadcastReceiver receiver = new BroadcastReceiver() {
 					@Override
@@ -214,15 +182,20 @@ public class FontList extends Activity {
 						}
 						if (dlLeft == 0){ //once it reaches 0 (meaning all fonts were downloaded), display an alert
 							downloadProgress.dismiss();
-							
+
 							AlertDialog.Builder builder2 = new AlertDialog.Builder(FontList.this);
 							builder2.setMessage(fontName + " successfully downloaded. Press OK to install.")
 							.setTitle ("Fonts downloaded")
 							.setCancelable(false)
 							.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog, int id) {
-									
+
 									try {
+										copyProgress = new ProgressDialog(FontList.this);
+										copyProgress.setTitle("Copying");
+										copyProgress.setMessage("Copying " + selectedFromList + ".");
+										copyProgress.show();
+										
 										Process mountSystem = Runtime.getRuntime().exec(new String[] { "su", "-c", "mount -o rw,remount /system"});
 										Process process1 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+fontName + "/Roboto-Bold.ttf /system"});
 										Process process2 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+fontName + "/Roboto-BoldItalic.ttf /system"});
@@ -236,6 +209,7 @@ public class FontList extends Activity {
 										Process process10 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+fontName + "/RobotoCondensed-BoldItalic.ttf /system"});
 										Process process11 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+fontName + "/RobotoCondensed-Regular.ttf /system"});
 										Process process12 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+fontName + "/RobotoCondensed-Italic.ttf /system"});
+										copyProgress.dismiss();
 									}
 									catch (IOException e) {
 										Toast.makeText(getApplicationContext(), "not found",
