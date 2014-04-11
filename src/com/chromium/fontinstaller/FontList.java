@@ -21,6 +21,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -189,32 +190,53 @@ public class FontList extends Activity  {
 							.setCancelable(false)
 							.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog, int id) {
-
-									try {
-										copyProgress = new ProgressDialog(FontList.this);
-										copyProgress.setTitle("Copying");
-										copyProgress.setMessage("Copying " + selectedFromList + ".");
-										copyProgress.show();
+									AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>()  {
 										
-										Process mountSystem = Runtime.getRuntime().exec(new String[] { "su", "-c", "mount -o rw,remount /system"});
-										Process process1 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+fontName + "/Roboto-Bold.ttf /system"});
-										Process process2 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+fontName + "/Roboto-BoldItalic.ttf /system"});
-										Process process3 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+fontName + "/Roboto-Regular.ttf /system"});
-										Process process4 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+fontName + "/Roboto-Italic.ttf /system"});
-										Process process5 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+fontName + "/Roboto-Light.ttf /system"});
-										Process process6 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+fontName + "/Roboto-LightItalic.ttf /system"});
-										Process process7 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+fontName + "/Roboto-Thin.ttf /system"});
-										Process process8 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+fontName + "/Roboto-ThinItalic.ttf /system"});
-										Process process9 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+fontName + "/RobotoCondensed-Bold.ttf /system"});
-										Process process10 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+fontName + "/RobotoCondensed-BoldItalic.ttf /system"});
-										Process process11 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+fontName + "/RobotoCondensed-Regular.ttf /system"});
-										Process process12 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+fontName + "/RobotoCondensed-Italic.ttf /system"});
-										copyProgress.dismiss();
-									}
-									catch (IOException e) {
-										Toast.makeText(getApplicationContext(), "not found",
-												Toast.LENGTH_LONG).show();			
-									}
+										ProgressDialog progressDialog;
+
+										@Override
+										protected void onPreExecute() {
+										    super.onPreExecute();
+										    progressDialog = new ProgressDialog (FontList.this);
+										    progressDialog.setMessage("Loading...");
+										    progressDialog.show();
+										}
+
+										@Override
+										protected Void doInBackground(Void... params) {
+											
+											try {
+											Process mountSystem = Runtime.getRuntime().exec(new String[] { "su", "-c", "mount -o rw,remount /system"});
+											Process process1 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-Bold.ttf /system"});
+											Process process2 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-BoldItalic.ttf /system"});
+											Process process3 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-Regular.ttf /system"});
+											Process process4 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-Italic.ttf /system"});
+											Process process5 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-Light.ttf /system"});
+											Process process6 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-LightItalic.ttf /system"});
+											Process process7 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-Thin.ttf /system"});
+											Process process8 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-ThinItalic.ttf /system"});
+											Process process9 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/RobotoCondensed-Bold.ttf /system"});
+											Process process10 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/RobotoCondensed-BoldItalic.ttf /system"});
+											Process process11 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/RobotoCondensed-Regular.ttf /system"});
+											Process process12 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/RobotoCondensed-Italic.ttf /system"});
+											} 
+											catch (IOException e) {
+												e.printStackTrace();
+											}
+											return null;
+										}
+
+										@Override
+										protected void onPostExecute(Void result) {
+										    super.onPostExecute(result);
+										    if (progressDialog != null) {
+										        if (progressDialog.isShowing()) {
+										            progressDialog.dismiss();
+										        }
+										    }
+										}
+										};
+										task.execute((Void[])null);
 								}
 							});
 							AlertDialog alert2 = builder2.create();
