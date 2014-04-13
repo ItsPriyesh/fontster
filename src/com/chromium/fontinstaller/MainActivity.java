@@ -17,6 +17,13 @@ public class MainActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
+		try{
+		Process getSU = Runtime.getRuntime().exec("su");
+		}
+		catch(IOException e){
+			Toast.makeText(getApplicationContext(), "y u no root",
+					 -							   Toast.LENGTH_LONG).show();		
+		}
 		openFontList = (Button)findViewById(R.id.openFontList);
 		openFontList.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v){

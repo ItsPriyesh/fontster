@@ -20,10 +20,12 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.Handler;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.view.*;
@@ -31,6 +33,8 @@ import android.view.*;
 public class FontList extends Activity  {
 
 	private ListView lv;
+
+	static Button reboot;
 
 	static ProgressDialog downloadProgress, copyProgress;
 
@@ -52,7 +56,7 @@ public class FontList extends Activity  {
 
 		ArrayList<String> fontList = new ArrayList<String>();
 
-		try {
+		try { //Read text file containing font names and store into arraylist
 			BufferedReader br = new BufferedReader(new InputStreamReader(getAssets().open("fonts.txt")));
 
 			String line = br.readLine();
@@ -66,6 +70,7 @@ public class FontList extends Activity  {
 			e.printStackTrace();
 		}
 
+		//set font list arraylist to listview arrayadapter
 		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, fontList);
 
 		lv.setAdapter(arrayAdapter); 
@@ -76,6 +81,7 @@ public class FontList extends Activity  {
 
 				fontName = removeSpaces(selectedFromList); //remove the spaces from the item so that it can later be passed into the URL string
 
+				//urls for fonts
 				urlRobotoBold = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/Roboto-Bold.ttf";
 				urlRobotoBoldItalic = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/Roboto-BoldItalic.ttf";
 				urlRobotoRegular = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/Roboto-Regular.ttf";
@@ -158,6 +164,7 @@ public class FontList extends Activity  {
 				downloadProgress.setMessage("Downloading " + selectedFromList + ".");
 				downloadProgress.show();
 
+				//send all the download requests
 				manager.enqueue(request1);
 				manager.enqueue(request2);	
 				manager.enqueue(request3);	
@@ -171,6 +178,7 @@ public class FontList extends Activity  {
 				manager.enqueue(request11);	
 				manager.enqueue(request12);
 
+				//number of initial requests
 				dlLeft = 12;
 
 				// listen for download completion, and close the progress dialog once it is detected
@@ -184,41 +192,41 @@ public class FontList extends Activity  {
 						if (dlLeft == 0){ //once it reaches 0 (meaning all fonts were downloaded), display an alert
 							downloadProgress.dismiss();
 
-							AlertDialog.Builder builder2 = new AlertDialog.Builder(FontList.this);
-							builder2.setMessage(fontName + " successfully downloaded. Press OK to install.")
+							AlertDialog.Builder builder = new AlertDialog.Builder(FontList.this);
+							builder.setMessage(fontName + " successfully downloaded. Press OK to install.")
 							.setTitle ("Fonts downloaded")
 							.setCancelable(false)
 							.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog, int id) {
-									AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>()  {
-										
+									AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>()  { 
+										//display progress dialog while fonts are copied in background
 										ProgressDialog progressDialog;
 
 										@Override
 										protected void onPreExecute() {
-										    super.onPreExecute();
-										    progressDialog = new ProgressDialog (FontList.this);
-										    progressDialog.setMessage("Loading...");
-										    progressDialog.show();
+											super.onPreExecute();
+											progressDialog = new ProgressDialog (FontList.this);
+											progressDialog.setMessage("Copying to system...");
+											progressDialog.show();
 										}
 
 										@Override
 										protected Void doInBackground(Void... params) {
-											
+
 											try {
-											Process mountSystem = Runtime.getRuntime().exec(new String[] { "su", "-c", "mount -o rw,remount /system"});
-											Process process1 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-Bold.ttf /system"});
-											Process process2 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-BoldItalic.ttf /system"});
-											Process process3 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-Regular.ttf /system"});
-											Process process4 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-Italic.ttf /system"});
-											Process process5 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-Light.ttf /system"});
-											Process process6 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-LightItalic.ttf /system"});
-											Process process7 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-Thin.ttf /system"});
-											Process process8 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-ThinItalic.ttf /system"});
-											Process process9 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/RobotoCondensed-Bold.ttf /system"});
-											Process process10 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/RobotoCondensed-BoldItalic.ttf /system"});
-											Process process11 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/RobotoCondensed-Regular.ttf /system"});
-											Process process12 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/RobotoCondensed-Italic.ttf /system"});
+												Process mountSystem = Runtime.getRuntime().exec(new String[] { "su", "-c", "mount -o rw,remount /system"});
+												Process process1 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-Bold.ttf /system"});
+												Process process2 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-BoldItalic.ttf /system"});
+												Process process3 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-Regular.ttf /system"});
+												Process process4 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-Italic.ttf /system"});
+												Process process5 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-Light.ttf /system"});
+												Process process6 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-LightItalic.ttf /system"});
+												Process process7 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-Thin.ttf /system"});
+												Process process8 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-ThinItalic.ttf /system"});
+												Process process9 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/RobotoCondensed-Bold.ttf /system"});
+												Process process10 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/RobotoCondensed-BoldItalic.ttf /system"});
+												Process process11 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/RobotoCondensed-Regular.ttf /system"});
+												Process process12 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/RobotoCondensed-Italic.ttf /system"});
 											} 
 											catch (IOException e) {
 												e.printStackTrace();
@@ -228,19 +236,57 @@ public class FontList extends Activity  {
 
 										@Override
 										protected void onPostExecute(Void result) {
-										    super.onPostExecute(result);
-										    if (progressDialog != null) {
-										        if (progressDialog.isShowing()) {
-										            progressDialog.dismiss();
-										        }
-										    }
+											super.onPostExecute(result);
+											if (progressDialog != null) {
+												if (progressDialog.isShowing()) {
+													progressDialog.dismiss();
+												}
+											}
 										}
-										};
-										task.execute((Void[])null);
+									};
+									task.execute((Void[])null);
+
+									//one copying has finished display alertdialog with reboot prompt
+									AlertDialog.Builder builder2 = new AlertDialog.Builder(FontList.this);
+									builder2.setMessage("You must reboot for the changes to take effect.")
+									.setTitle ("Reboot")
+									.setCancelable(false)
+									.setPositiveButton("Reboot", new DialogInterface.OnClickListener() { //reboot the phone
+										public void onClick(DialogInterface dialog, int id) {
+											try{ 
+												Process reboot = Runtime.getRuntime().exec(new String[] { "su", "-c", "reboot"});
+											}
+											catch(IOException e){
+												Toast.makeText(getApplicationContext(), "Reboot failed.",
+														-							   Toast.LENGTH_LONG).show();
+											}
+
+										}
+									})
+									.setNegativeButton("Later", new DialogInterface.OnClickListener() { //do nothing (let user reboot later at will)
+										public void onClick(DialogInterface dialog, int id) {
+											dialog.cancel();
+										}
+									});
+									AlertDialog alert2 = builder2.create();
+									alert2.show();
+
+									reboot = alert2.getButton(AlertDialog.BUTTON1); //this is the positive/reboot button from alertdialog above
+									reboot.setEnabled(false); //disable by default
+
+									new CountDownTimer(5000, 1000) { //countdown from 5 sec, and set reboot button enabled once its done
+										public void onTick(long millisUntilFinished) {
+											reboot.setText("Reboot (" + (millisUntilFinished / 1000) + ")");
+										}
+										public void onFinish() {
+											reboot.setEnabled(true);
+											reboot.setText("Reboot");
+										}
+									}.start();
 								}
 							});
-							AlertDialog alert2 = builder2.create();
-							alert2.show();	
+							AlertDialog alert = builder.create();
+							alert.show();	
 						}
 					}
 				};
