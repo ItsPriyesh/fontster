@@ -1,0 +1,17 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="Development" >
+        <Preference
+            android:summary="This app is created by Priyesh Patel"
+            android:title="Programmer" />
+        <Preference
+            android:key="source"
+            android:summary="View the code of this app on Github"
+            android:title="Source" />
+        <Preference
+            android:key="contact"
+            android:summary="Send the developer an email"
+            android:title="Contact" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

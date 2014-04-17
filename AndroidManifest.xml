@@ -32,6 +32,16 @@
             android:label="@string/app_name" >
         </activity>
         
+        <activity
+        android:name="com.chromium.fontinstaller.About"
+        android:label="@string/app_name"
+        android:screenOrientation="portrait"
+        android:parentActivityName="com.chromium.fontinstaller.MainActivity" >
+        <!-- Parent activity meta-data to support 4.0 and lower -->
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.chromium.fontinstaller.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

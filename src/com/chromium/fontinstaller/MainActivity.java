@@ -5,7 +5,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
 import android.support.v7.app.ActionBarActivity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -15,6 +14,9 @@ import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -127,5 +129,25 @@ public class MainActivity extends ActionBarActivity {
 			out.write(buffer, 0, read);
 		}
 	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.main, menu);
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem menuItem) {
+		if (menuItem.getItemId() == R.id.menu_about) { //about button in actionbar
+			openAbout();
+			return true;
+		}
+		return false;
+	}   
 
+	private void openAbout() { //open about section
+		Intent about = new Intent(MainActivity.this, About.class);
+		startActivity(about);
+	}
 }
