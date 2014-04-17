@@ -23,6 +23,7 @@ Biko
 Briem Script
 Brixton
 Calibri
+Calugraphy
 Cantarell
 Cartoonist Hand
 Cartoonist Hand All Caps
@@ -40,6 +41,7 @@ Covington
 Dolce Vita
 Economica
 Engebrechtre
+Eras
 Essence Sans
 Eurostile
 Exo
@@ -56,6 +58,7 @@ Helvetica Neue Light
 Helvetica Neue Light Condensed
 Helvetica S
 Homizio Nova
+HTC M8
 Imagine
 Josefin Sans
 Josefin Slab
@@ -113,6 +116,7 @@ Sony Xperia
 Sovba
 Square
 Terfens
+Terfens Light
 Tertre
 Times New Roman
 Titillium Web

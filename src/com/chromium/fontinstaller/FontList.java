@@ -1,7 +1,6 @@
 package com.chromium.fontinstaller;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -10,7 +9,6 @@ import android.content.Intent;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
-import android.app.DownloadManager.Request;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -18,11 +16,8 @@ import android.content.DialogInterface;
 import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Environment;
-import android.os.Handler;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -33,15 +28,9 @@ import android.view.*;
 public class FontList extends Activity  {
 
 	private ListView lv;
-
 	static Button reboot;
-
 	static ProgressDialog downloadProgress, copyProgress;
-
-	static String fontName, selectedFromList;
-
-	static String fontDest;
-	
+	static String fontDest, fontName, selectedFromList;	
 	static int dlLeft;
 
 	//Font url strings
@@ -54,7 +43,7 @@ public class FontList extends Activity  {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.font_list);
 
-		fontDest = "/system/fonts"; //change path to /system/fonts when releasing
+		fontDest = "/system"; //change path to /system/fonts when releasing
 				
 		lv = (ListView) findViewById(R.id.listView1);
 
@@ -261,8 +250,7 @@ public class FontList extends Activity  {
 												Process reboot = Runtime.getRuntime().exec(new String[] { "su", "-c", "reboot"});
 											}
 											catch(IOException e){
-												Toast.makeText(getApplicationContext(), "Reboot failed.",
-														-							   Toast.LENGTH_LONG).show();
+												Toast.makeText(getApplicationContext(), "Reboot failed.", Toast.LENGTH_LONG).show();
 											}
 
 										}
@@ -274,19 +262,11 @@ public class FontList extends Activity  {
 									});
 									AlertDialog alert2 = builder2.create();
 									alert2.show();
-
-									reboot = alert2.getButton(AlertDialog.BUTTON1); //this is the positive/reboot button from alertdialog above
-									reboot.setEnabled(false); //disable by default
-
-									new CountDownTimer(5000, 1000) { //countdown from 5 sec, and set reboot button enabled once its done
-										public void onTick(long millisUntilFinished) {
-											reboot.setText("Reboot (" + (millisUntilFinished / 1000) + ")");
-										}
-										public void onFinish() {
-											reboot.setEnabled(true);
-											reboot.setText("Reboot");
-										}
-									}.start();
+								}
+							})
+							.setNegativeButton("Cancel", new DialogInterface.OnClickListener() { //close dialog
+								public void onClick(DialogInterface dialog, int id) {
+									dialog.cancel();
 								}
 							});
 							AlertDialog alert = builder.create();
@@ -294,9 +274,7 @@ public class FontList extends Activity  {
 						}
 					}
 				};
-
-				registerReceiver(receiver, new IntentFilter(
-						DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+				registerReceiver(receiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
 			}
 		});						
 	}	  
