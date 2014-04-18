@@ -34,14 +34,14 @@ public class FontList extends Activity  {
 	private ListView lv;
 	static Button reboot;
 	static ProgressDialog downloadProgress, copyProgress;
-	static String fontDest, fontName, selectedFromList;	
-	static int dlLeft;
+	static String fontDest, fontName, previewName, selectedFromList, longPressed;	
+	static int dlLeft, sampleFontDL;
 
 	//Font url strings
 	String urlRobotoBold, urlRobotoBoldItalic, urlRobotoItalic, 
 	urlRobotoLight, urlRobotoLightItalic, urlRobotoRegular, urlRobotoThin, 
 	urlRobotoThinItalic, urlRobotoCondensedBold, urlRobotoCondensedBoldItalic, 
-	urlRobotoCondensedItalic, urlRobotoCondensedRegular;
+	urlRobotoCondensedItalic, urlRobotoCondensedRegular, urlPreviewFont;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -285,29 +285,61 @@ public class FontList extends Activity  {
 		lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() { //long press on listview item
 			public boolean onItemLongClick(AdapterView<?> parent, View clickView, int position, long id) {
 
+				longPressed = (lv.getItemAtPosition(position).toString());
+
+				previewName = removeSpaces(longPressed);
+
+				urlPreviewFont = "https://github.com/Chromium1/Fonts/raw/master/" + previewName + "FontPack/Roboto-Regular.ttf";
+				
 				//Setup request to download regular font style for user preview
-				DownloadManager.Request downloadSample = new DownloadManager.Request(Uri.parse(urlRobotoRegular));
+				DownloadManager.Request downloadSample = new DownloadManager.Request(Uri.parse(urlPreviewFont));
 				downloadSample.allowScanningByMediaScanner();
 				downloadSample.setDestinationInExternalPublicDir("/SampleFonts", "sample.ttf");
 				downloadSample.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);	
+
+				File oldSample = new File("/sdcard/SampleFonts/sample.ttf");
+				boolean deletedOldSample = oldSample.delete();
 				
 				//Send request
 				DownloadManager sampleFontManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
 				sampleFontManager.enqueue(downloadSample);
-				
-				//Create new typeface from downloaded regular preview font
+				sampleFontDL = 1;
+
+				// listen for download completion, and close the progress dialog once it is detected
+				BroadcastReceiver receiver1 = new BroadcastReceiver() {
+					@Override
+					public void onReceive(Context context, Intent intent) {
+						String action1 = intent.getAction();
+						if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action1)) {
+							sampleFontDL--; //every time a font is downloaded decrement this integer with an initial value of 12							
+						}
+						if (sampleFontDL == 0){
+							//Create new typeface from downloaded regular preview font
+							Typeface sampleFont = Typeface.createFromFile("/sdcard/SampleFonts/sample.ttf");
+
+							String testSentence = "The quick brown fox jumps over the lazy dog.";
+
+							AlertDialog previewFont = new AlertDialog.Builder(FontList.this).setMessage(testSentence).show();
+							TextView sentence = (TextView) previewFont.findViewById(android.R.id.message);
+							sentence.setTypeface(sampleFont); 
+						}
+					}
+				};
+				registerReceiver(receiver1, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+
+	/*			//Create new typeface from downloaded regular preview font
 				Typeface sampleFont = Typeface.createFromFile("/sdcard/SampleFonts/sample.ttf");
-				
+
 				String testSentence = "The five boxing wizards jump quickly.";
-				
+
 				AlertDialog previewFont = new AlertDialog.Builder(FontList.this).setMessage(testSentence).show();
 				TextView sentence = (TextView) previewFont.findViewById(android.R.id.message);
-				sentence.setTypeface(sampleFont); 
-				
+				sentence.setTypeface(sampleFont); */
+
 				return true;
 			}
 		});
-		
+
 	}	  
 
 	public static String removeSpaces (String line)
