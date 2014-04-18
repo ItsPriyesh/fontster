@@ -1,19 +1,13 @@
 package com.chromium.fontinstaller;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import android.support.v7.app.ActionBarActivity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.AssetManager;
 import android.os.Bundle;
-import android.os.Environment;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -76,7 +70,6 @@ public class MainActivity extends ActionBarActivity {
 				Toast.makeText(getApplicationContext(), "You dont have root.", Toast.LENGTH_LONG).show();
 			}
 
-			CopyAssets();
 
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setMessage("Welcome! A flashable zip of the stock fonts has been copied onto your phone. In the event that you encounter a bootloop, enter recovery and flash the zip found on your SD card named 'StockFonts.zip'.");
@@ -92,41 +85,6 @@ public class MainActivity extends ActionBarActivity {
 			alert.show();
 
 			prefs.edit().putBoolean("firstrun", false).commit();
-		}
-	}
-
-	private void CopyAssets() {
-		AssetManager assetManager = getAssets();
-		String[] files = null;
-		try {
-			files = assetManager.list("Files");
-		} catch (IOException e) {
-			Log.e("tag", e.getMessage());
-		}
-
-		for(String filename : files) {
-			System.out.println("File name => "+filename);
-			InputStream in = null;
-			OutputStream out = null;
-			try {
-				in = assetManager.open("Files/"+filename);
-				out = new FileOutputStream(Environment.getExternalStorageDirectory().toString() +"/" + filename);
-				copyFile(in, out);
-				in.close();
-				in = null;
-				out.flush();
-				out.close();
-				out = null;
-			} catch(Exception e) {
-				Log.e("tag", e.getMessage());
-			}
-		}
-	}
-	private void copyFile(InputStream in, OutputStream out) throws IOException {
-		byte[] buffer = new byte[1024];
-		int read;
-		while((read = in.read(buffer)) != -1){
-			out.write(buffer, 0, read);
 		}
 	}
 	

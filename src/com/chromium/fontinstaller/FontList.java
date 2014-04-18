@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import android.content.Intent;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
@@ -19,8 +18,6 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.os.Environment;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -297,6 +294,7 @@ public class FontList extends Activity  {
 				downloadSample.setDestinationInExternalPublicDir("/SampleFonts", "sample.ttf");
 				downloadSample.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);	
 
+				//Delete old samples
 				File oldSample = new File("/sdcard/SampleFonts/sample.ttf");
 				boolean deletedOldSample = oldSample.delete();
 				
@@ -311,7 +309,7 @@ public class FontList extends Activity  {
 					public void onReceive(Context context, Intent intent) {
 						String action1 = intent.getAction();
 						if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action1)) {
-							sampleFontDL--; //every time a font is downloaded decrement this integer with an initial value of 12							
+							sampleFontDL--; //reduce value to 0, indicating download completion					
 						}
 						if (sampleFontDL == 0){
 							//Create new typeface from downloaded regular preview font
@@ -319,6 +317,7 @@ public class FontList extends Activity  {
 
 							String testSentence = "The quick brown fox jumps over the lazy dog.";
 
+							//Create alertdialog with preview font sentence
 							AlertDialog previewFont = new AlertDialog.Builder(FontList.this).setMessage(testSentence).show();
 							TextView sentence = (TextView) previewFont.findViewById(android.R.id.message);
 							sentence.setTypeface(sampleFont); 
@@ -326,20 +325,10 @@ public class FontList extends Activity  {
 					}
 				};
 				registerReceiver(receiver1, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
-
-	/*			//Create new typeface from downloaded regular preview font
-				Typeface sampleFont = Typeface.createFromFile("/sdcard/SampleFonts/sample.ttf");
-
-				String testSentence = "The five boxing wizards jump quickly.";
-
-				AlertDialog previewFont = new AlertDialog.Builder(FontList.this).setMessage(testSentence).show();
-				TextView sentence = (TextView) previewFont.findViewById(android.R.id.message);
-				sentence.setTypeface(sampleFont); */
-
+				
 				return true;
 			}
 		});
-
 	}	  
 
 	public static String removeSpaces (String line)
