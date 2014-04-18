@@ -14,6 +14,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -28,9 +29,10 @@ import android.view.*;
 
 public class FontList extends Activity  {
 
+	SharedPreferences prefs = null;
 	private ListView lv;
 	static Button reboot;
-	static ProgressDialog downloadProgress, copyProgress;
+	static ProgressDialog downloadProgress, copyProgress, downloadPreviewProgress;
 	static String fontDest, fontName, previewName, selectedFromList, longPressed;	
 	static int dlLeft, sampleFontDL;
 
@@ -43,6 +45,7 @@ public class FontList extends Activity  {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.font_list);
+		prefs = getSharedPreferences("com.chromium.fontinstaller", MODE_PRIVATE);
 
 		fontDest = "/system"; //change path to /system/fonts when releasing
 
@@ -287,7 +290,7 @@ public class FontList extends Activity  {
 				previewName = removeSpaces(longPressed);
 
 				urlPreviewFont = "https://github.com/Chromium1/Fonts/raw/master/" + previewName + "FontPack/Roboto-Regular.ttf";
-				
+
 				//Setup request to download regular font style for user preview
 				DownloadManager.Request downloadSample = new DownloadManager.Request(Uri.parse(urlPreviewFont));
 				downloadSample.allowScanningByMediaScanner();
@@ -297,9 +300,15 @@ public class FontList extends Activity  {
 				//Delete old samples
 				File oldSample = new File("/sdcard/SampleFonts/sample.ttf");
 				boolean deletedOldSample = oldSample.delete();
-				
+
 				//Send request
 				DownloadManager sampleFontManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+
+				//display a progress dialog just before the request is sent
+				downloadPreviewProgress = new ProgressDialog(FontList.this);
+				downloadPreviewProgress.setMessage("Fetching preview font...");
+				downloadPreviewProgress.show();
+
 				sampleFontManager.enqueue(downloadSample);
 				sampleFontDL = 1;
 
@@ -312,6 +321,7 @@ public class FontList extends Activity  {
 							sampleFontDL--; //reduce value to 0, indicating download completion					
 						}
 						if (sampleFontDL == 0){
+							downloadPreviewProgress.dismiss();
 							//Create new typeface from downloaded regular preview font
 							Typeface sampleFont = Typeface.createFromFile("/sdcard/SampleFonts/sample.ttf");
 
@@ -325,11 +335,32 @@ public class FontList extends Activity  {
 					}
 				};
 				registerReceiver(receiver1, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
-				
+
 				return true;
 			}
 		});
-	}	  
+	}	 
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		if (prefs.getBoolean("firstrun", true)) { //stuff to do on first app opening
+
+			AlertDialog firstRunTut = new AlertDialog.Builder(FontList.this)
+			.setTitle ("How to use")
+			.setMessage("To install a font simply tap on the one that you desire.\n\nIf you would like to preview a font prior to installing, long press on it.")
+			.setPositiveButton("OK",
+					new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					dialog.cancel();
+				}
+			})
+			.show();
+
+			prefs.edit().putBoolean("firstrun", false).commit();
+		}
+	}
 
 	public static String removeSpaces (String line)
 	{//method to remove spaces

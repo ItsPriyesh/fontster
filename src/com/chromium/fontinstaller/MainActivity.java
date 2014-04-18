@@ -72,7 +72,8 @@ public class MainActivity extends ActionBarActivity {
 
 
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setMessage("Welcome! A flashable zip of the stock fonts has been copied onto your phone. In the event that you encounter a bootloop, enter recovery and flash the zip found on your SD card named 'StockFonts.zip'.");
+			builder.setTitle("Welcome!");
+			builder.setMessage("A flashable zip of the stock fonts has been copied onto your phone. In the event that you encounter a bootloop, enter recovery and flash the zip found on your SD card named 'StockFonts.zip'.");
 			builder.setCancelable(true);
 			builder.setPositiveButton("OK",
 					new DialogInterface.OnClickListener() {
