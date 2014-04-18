@@ -1,6 +1,7 @@
 package com.chromium.fontinstaller;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -14,15 +15,18 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.IntentFilter;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Environment;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.widget.TextView;
 import android.view.*;
 
 public class FontList extends Activity  {
@@ -44,7 +48,7 @@ public class FontList extends Activity  {
 		setContentView(R.layout.font_list);
 
 		fontDest = "/system"; //change path to /system/fonts when releasing
-				
+
 		lv = (ListView) findViewById(R.id.listView1);
 
 		ArrayList<String> fontList = new ArrayList<String>();
@@ -276,7 +280,34 @@ public class FontList extends Activity  {
 				};
 				registerReceiver(receiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
 			}
-		});						
+		});				
+
+		lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() { //long press on listview item
+			public boolean onItemLongClick(AdapterView<?> parent, View clickView, int position, long id) {
+
+				//Setup request to download regular font style for user preview
+				DownloadManager.Request downloadSample = new DownloadManager.Request(Uri.parse(urlRobotoRegular));
+				downloadSample.allowScanningByMediaScanner();
+				downloadSample.setDestinationInExternalPublicDir("/SampleFonts", "sample.ttf");
+				downloadSample.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);	
+				
+				//Send request
+				DownloadManager sampleFontManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+				sampleFontManager.enqueue(downloadSample);
+				
+				//Create new typeface from downloaded regular preview font
+				Typeface sampleFont = Typeface.createFromFile("/sdcard/SampleFonts/sample.ttf");
+				
+				String testSentence = "The five boxing wizards jump quickly.";
+				
+				AlertDialog previewFont = new AlertDialog.Builder(FontList.this).setMessage(testSentence).show();
+				TextView sentence = (TextView) previewFont.findViewById(android.R.id.message);
+				sentence.setTypeface(sampleFont); 
+				
+				return true;
+			}
+		});
+		
 	}	  
 
 	public static String removeSpaces (String line)
