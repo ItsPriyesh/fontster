@@ -18,7 +18,7 @@ import android.widget.Toast;
 public class MainActivity extends ActionBarActivity {
 
 	SharedPreferences prefs = null;
-	Button openFontList;
+	Button openFontList, backup;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +38,17 @@ public class MainActivity extends ActionBarActivity {
 			}
 		});
 
+		backup = (Button)findViewById(R.id.backup);
+		backup.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v){
+				if(v == backup) {
+					backup.setBackgroundResource(R.drawable.layer_card_background_pressed);
+				}
+				Intent backupRestoreActivity = new Intent(MainActivity.this, BackupRestore.class);
+				startActivity(backupRestoreActivity);
+			}
+		});
+		
 	}
 
 	@Override
