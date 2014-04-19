@@ -323,15 +323,13 @@ public class FontList extends Activity  {
 						}
 						if (sampleFontDL == 0){
 							downloadPreviewProgress.dismiss();
+							
 							//Create new typeface from downloaded regular preview font
 							Typeface sampleFont = Typeface.createFromFile("/sdcard/SampleFonts/sample.ttf");
 
 							String testSentence = "The quick brown fox jumps over the lazy dog.";
-
-							//Create alertdialog with preview font sentence
-							AlertDialog previewFont = new AlertDialog.Builder(FontList.this).setMessage(testSentence).show();
-							TextView sentence = (TextView) previewFont.findViewById(android.R.id.message);
-							sentence.setTypeface(sampleFont); 
+							
+							showCustomPreviewAlert(longPressed, testSentence, sampleFont);
 						}
 					}
 				};
@@ -348,7 +346,7 @@ public class FontList extends Activity  {
 
 		if (prefs.getBoolean("firstrun", true)) { //stuff to do on first app opening
 
-			showHelpAlert();
+			showCustomAlert("Instructions","To install a font simply tap on the one that you want.\n\nIf you would like to preview a font prior to installing, long press it." );
 			
 			prefs.edit().putBoolean("firstrun", false).commit();
 		}
@@ -364,18 +362,36 @@ public class FontList extends Activity  {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem menuItem) {
 		if (menuItem.getItemId() == R.id.menu_help) {
-			showHelpAlert();
+			showCustomAlert("Instructions","To install a font simply tap on the one that you want.\n\nIf you would like to preview a font prior to installing, long press it." );
 			return true;
 		}
 		return false;
 	}
 	
-	public void showHelpAlert () {
+	public void showCustomAlert (String title, String message) { //method to show custom styled dialog. params are the title and message of the alert
 		Dialog help = new Dialog(this);
 
 		help.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		help.setContentView(R.layout.alert);	
+		TextView alertTitle = (TextView) help.findViewById(R.id.title);
+		alertTitle.setText(title);
+		TextView alertMessage = (TextView) help.findViewById(R.id.message);
+		alertMessage.setText(message);
 		help.show();
+	}
+
+	public void showCustomPreviewAlert (String title, String message, Typeface font) { //method for preview dialog. has extra param for typeface
+		Dialog preview = new Dialog(this);
+
+		preview.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		preview.setContentView(R.layout.preview_alert);	
+		TextView alertTitle = (TextView) preview.findViewById(R.id.title);
+		alertTitle.setText(title);
+		TextView alertMessage = (TextView) preview.findViewById(R.id.message);
+		alertMessage.setTypeface(font);
+		alertMessage.setText(message);
+		
+		preview.show();
 	}
 	
 	public static String removeSpaces (String line)

@@ -29,7 +29,7 @@ Cartoonist Hand
 Cartoonist Hand All Caps
 Caviar Dreams
 Century Gothic
-Champagne and Limousines
+Champagne And Limousines
 China Cat
 Chivo
 Choco Cooky
@@ -53,7 +53,6 @@ Harry Potter
 Helvetica
 Helvetica Neue
 Helvetica Neue Condensed
-Helvetica Neue Light
 Helvetica Neue Light
 Helvetica Neue Light Condensed
 Helvetica S
