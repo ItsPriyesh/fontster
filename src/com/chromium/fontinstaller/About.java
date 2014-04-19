@@ -1,5 +1,6 @@
 package com.chromium.fontinstaller;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.widget.Toast;
 
 public class About extends PreferenceActivity {
 
@@ -29,6 +31,26 @@ public class About extends PreferenceActivity {
 
 		ActionBar ab = getActionBar();
 		ab.setDisplayHomeAsUpEnabled(true);
+	
+		Preference clearCache = (Preference) findPreference("clearCache");
+		clearCache.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			public boolean onPreferenceClick(Preference preference) {
+				File file = new File("/sdcard/DownloadedFonts");
+
+				if (file.exists()) {
+					String wipe = "rm -r /sdcard/DownloadedFonts";
+					Runtime runtime = Runtime.getRuntime();
+					try {
+						runtime.exec(wipe);
+					} catch (IOException e) { 
+
+					}
+				}
+				else
+					Toast.makeText(getApplicationContext(), "Nothing to clean.", Toast.LENGTH_LONG).show();
+				return true; 
+			}
+		});
 		
 		Preference source = (Preference) findPreference("source");
 		source.setOnPreferenceClickListener(new OnPreferenceClickListener() {

@@ -1,9 +1,17 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
-
-    <PreferenceCategory android:title="Development" >
+    
+    <PreferenceCategory android:title="General" >
         <Preference
-            android:summary="This app is created by Priyesh Patel"
-            android:title="Programmer" />
+            android:key="clearCache"
+            android:summary="Delete old previously downloaded fonts"
+            android:title="Clear cache" />
+    </PreferenceCategory>
+    
+    <PreferenceCategory android:title="About" >
+        <Preference
+            android:summary="This app is created by Priyesh Patel (Chromium)"
+            android:title="Developer" />
+        <com.chromium.fontinstaller.VersionPreference android:title="Version" />
         <Preference
             android:key="source"
             android:summary="View the code of this app on Github"

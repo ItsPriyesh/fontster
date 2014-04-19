@@ -17,15 +17,4 @@
         android:padding="15dp"
         android:text="Install a font" />
 
-    <Button
-        android:id="@+id/deleteCache"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="15dp"
-        android:background="@drawable/layer_card_background"
-        android:gravity="center"
-        android:padding="15dp"
-        android:text="Delete old cached fonts" />
-
 </LinearLayout>

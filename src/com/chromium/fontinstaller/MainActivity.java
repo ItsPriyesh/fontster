@@ -18,7 +18,7 @@ import android.widget.Toast;
 public class MainActivity extends ActionBarActivity {
 
 	SharedPreferences prefs = null;
-	Button openFontList, cleanFontDir;
+	Button openFontList;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,29 +35,6 @@ public class MainActivity extends ActionBarActivity {
 				Intent fontListActivity = new Intent(MainActivity.this, FontList.class);
 				startActivity(fontListActivity);
 
-			}
-		});
-
-		cleanFontDir = (Button)findViewById(R.id.deleteCache);
-		cleanFontDir.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v){
-				if(v == cleanFontDir) {
-					cleanFontDir.setBackgroundResource(R.drawable.layer_card_background_pressed);
-				}
-				File file = new File("/sdcard/DownloadedFonts");
-
-				if (file.exists()) {
-					String wipe = "rm -r /sdcard/DownloadedFonts";
-					Runtime runtime = Runtime.getRuntime();
-					try {
-						runtime.exec(wipe);
-					} catch (IOException e) { 
-
-					}
-				}
-				else
-					Toast.makeText(getApplicationContext(), "Nothing to clean.",
-							-							   Toast.LENGTH_LONG).show();
 			}
 		});
 
