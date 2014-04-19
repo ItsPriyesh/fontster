@@ -1,5 +1,4 @@
 package com.chromium.fontinstaller;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -8,6 +7,7 @@ import java.util.ArrayList;
 import android.content.Intent;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -35,6 +35,7 @@ public class FontList extends Activity  {
 	static ProgressDialog downloadProgress, copyProgress, downloadPreviewProgress;
 	static String fontDest, fontName, previewName, selectedFromList, longPressed;	
 	static int dlLeft, sampleFontDL;
+	static TextView alertTitle, alertMessage;
 
 	//Font url strings
 	String urlRobotoBold, urlRobotoBoldItalic, urlRobotoItalic, 
@@ -347,21 +348,36 @@ public class FontList extends Activity  {
 
 		if (prefs.getBoolean("firstrun", true)) { //stuff to do on first app opening
 
-			AlertDialog firstRunTut = new AlertDialog.Builder(FontList.this)
-			.setTitle ("How to use")
-			.setMessage("To install a font simply tap on the one that you desire.\n\nIf you would like to preview a font prior to installing, long press on it.")
-			.setPositiveButton("OK",
-					new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int id) {
-					dialog.cancel();
-				}
-			})
-			.show();
-
+			showHelpAlert();
+			
 			prefs.edit().putBoolean("firstrun", false).commit();
 		}
 	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.fontlist, menu);
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem menuItem) {
+		if (menuItem.getItemId() == R.id.menu_help) {
+			showHelpAlert();
+			return true;
+		}
+		return false;
+	}
+	
+	public void showHelpAlert () {
+		Dialog help = new Dialog(this);
 
+		help.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		help.setContentView(R.layout.alert);	
+		help.show();
+	}
+	
 	public static String removeSpaces (String line)
 	{//method to remove spaces
 		for (int x = 0 ; x < line.length () ; x++)
