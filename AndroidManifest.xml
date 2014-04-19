@@ -50,6 +50,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.chromium.fontinstaller.MainActivity" />
         </activity>
+        
     </application>
 
 </manifest>
