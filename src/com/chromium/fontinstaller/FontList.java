@@ -158,7 +158,6 @@ public class FontList extends Activity  {
 
 				//display a progress dialog just before the request for downloads are sent
 				downloadProgress = new ProgressDialog(FontList.this);
-				downloadProgress.setTitle("Downloading");
 				downloadProgress.setMessage("Downloading " + selectedFromList + ".");
 				downloadProgress.show();
 
@@ -190,69 +189,54 @@ public class FontList extends Activity  {
 						if (dlLeft == 0){ //once it reaches 0 (meaning all fonts were downloaded), display an alert
 							downloadProgress.dismiss();
 
-							AlertDialog.Builder builder = new AlertDialog.Builder(FontList.this);
-							builder.setMessage(fontName + " successfully downloaded. Press OK to install.")
-							.setTitle ("Fonts downloaded")
-							.setCancelable(false)
-							.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog, int id) {
-									AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>()  { 
-										//display progress dialog while fonts are copied in background
-										ProgressDialog progressDialog;
+							AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>()  { 
+								//display progress dialog while fonts are copied in background
+								ProgressDialog progressDialog;
 
-										@Override
-										protected void onPreExecute() {
-											super.onPreExecute();
-											progressDialog = new ProgressDialog (FontList.this);
-											progressDialog.setMessage("Copying to system...");
-											progressDialog.show();
-										}
-
-										@Override
-										protected Void doInBackground(Void... params) {
-
-											try {
-												Process mountSystem = Runtime.getRuntime().exec(new String[] { "su", "-c", "mount -o rw,remount /system"});
-												Process process1 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-Bold.ttf " + fontDest});
-												Process process2 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-BoldItalic.ttf " + fontDest});
-												Process process3 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-Regular.ttf " + fontDest});
-												Process process4 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-Italic.ttf " + fontDest}); 
-												Process process5 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-Light.ttf " + fontDest});
-												Process process6 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-LightItalic.ttf " + fontDest});
-												Process process7 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-Thin.ttf " + fontDest});
-												Process process8 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-ThinItalic.ttf " + fontDest});
-												Process process9 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/RobotoCondensed-Bold.ttf " + fontDest});
-												Process process10 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/RobotoCondensed-BoldItalic.ttf " + fontDest});
-												Process process11 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/RobotoCondensed-Regular.ttf " + fontDest});
-												Process process12 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/RobotoCondensed-Italic.ttf " + fontDest});
-											} 
-											catch (IOException e) {
-												e.printStackTrace();
-											}
-											return null;
-										}
-
-										@Override
-										protected void onPostExecute(Void result) {
-											super.onPostExecute(result);
-											if (progressDialog != null) {
-												if (progressDialog.isShowing()) {
-													progressDialog.dismiss();
-												}
-											}
-											showCustomAlertReboot ("Installation successful", "You must reboot for the changes to take effect", "Reboot");
-										}
-									};
-									task.execute((Void[])null);
+								@Override
+								protected void onPreExecute() {
+									super.onPreExecute();
+									progressDialog = new ProgressDialog (FontList.this);
+									progressDialog.setMessage("Copying to system...");
+									progressDialog.show();
 								}
-							})
-							.setNegativeButton("Cancel", new DialogInterface.OnClickListener() { //close install dialog
-								public void onClick(DialogInterface dialog, int id) {
-									dialog.cancel();
+
+								@Override
+								protected Void doInBackground(Void... params) {
+
+									try {
+										Process mountSystem = Runtime.getRuntime().exec(new String[] { "su", "-c", "mount -o rw,remount /system"});
+										Process process1 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-Bold.ttf " + fontDest});
+										Process process2 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-BoldItalic.ttf " + fontDest});
+										Process process3 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-Regular.ttf " + fontDest});
+										Process process4 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-Italic.ttf " + fontDest}); 
+										Process process5 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-Light.ttf " + fontDest});
+										Process process6 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-LightItalic.ttf " + fontDest});
+										Process process7 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-Thin.ttf " + fontDest});
+										Process process8 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-ThinItalic.ttf " + fontDest});
+										Process process9 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/RobotoCondensed-Bold.ttf " + fontDest});
+										Process process10 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/RobotoCondensed-BoldItalic.ttf " + fontDest});
+										Process process11 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/RobotoCondensed-Regular.ttf " + fontDest});
+										Process process12 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/RobotoCondensed-Italic.ttf " + fontDest});
+									} 
+									catch (IOException e) {
+										e.printStackTrace();
+									}
+									return null;
 								}
-							});
-							AlertDialog alert = builder.create();
-							alert.show();	
+
+								@Override
+								protected void onPostExecute(Void result) {
+									super.onPostExecute(result);
+									if (progressDialog != null) {
+										if (progressDialog.isShowing()) {
+											progressDialog.dismiss();
+										}
+									}
+									showCustomAlertReboot ("Installation successful", "You must reboot for the changes to take effect", "Reboot");
+								}
+							};
+							task.execute((Void[])null);
 						}
 					}
 				};
@@ -300,12 +284,12 @@ public class FontList extends Activity  {
 						}
 						if (sampleFontDL == 0){
 							downloadPreviewProgress.dismiss();
-							
+
 							//Create new typeface from downloaded regular preview font
 							Typeface sampleFont = Typeface.createFromFile("/sdcard/SampleFonts/sample.ttf");
 
 							String testSentence = "The quick brown fox jumps over the lazy dog.";
-							
+
 							showCustomPreviewAlert(longPressed, testSentence, sampleFont);
 						}
 					}
@@ -324,18 +308,18 @@ public class FontList extends Activity  {
 		if (prefs.getBoolean("firstrun", true)) { //stuff to do on first app opening
 
 			showCustomAlert("Instructions","To install a font simply tap on the one that you want.\n\nIf you would like to preview a font prior to installing, long press it." );
-			
+
 			prefs.edit().putBoolean("firstrun", false).commit();
 		}
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.fontlist, menu);
 		return true;
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem menuItem) {
 		if (menuItem.getItemId() == R.id.menu_help) {
@@ -344,7 +328,7 @@ public class FontList extends Activity  {
 		}
 		return false;
 	}
-	
+
 	public void showCustomAlert (String title, String message) { //method to show custom styled dialog. params are the title and message of the alert
 		Dialog help = new Dialog(this);
 
@@ -367,10 +351,10 @@ public class FontList extends Activity  {
 		TextView alertMessage = (TextView) preview.findViewById(R.id.message);
 		alertMessage.setTypeface(font);
 		alertMessage.setText(message);
-		
+
 		preview.show();
 	}
-	
+
 	public void showCustomAlertReboot (String title, String message, String button) { //method to show custom styled dialog. params are the title, message and button of the alert
 		Dialog reboot = new Dialog(this);
 
@@ -396,7 +380,7 @@ public class FontList extends Activity  {
 
 		reboot.show();
 	}
-	
+
 	public static String removeSpaces (String line)
 	{//method to remove spaces
 		for (int x = 0 ; x < line.length () ; x++)
