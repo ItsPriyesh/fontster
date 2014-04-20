@@ -49,7 +49,7 @@ public class FontList extends Activity  {
 		setContentView(R.layout.font_list);
 		prefs = getSharedPreferences("com.chromium.fontinstaller", MODE_PRIVATE);
 
-		fontDest = "/system"; //change path to /system/fonts when releasing
+		fontDest = "/system/fonts"; //change path to /system/fonts when releasing
 
 		lv = (ListView) findViewById(R.id.listView1);
 

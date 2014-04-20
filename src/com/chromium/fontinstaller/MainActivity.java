@@ -31,7 +31,7 @@ public class MainActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_card);
-		prefs = getSharedPreferences("com.mycompany.myAppName", MODE_PRIVATE);
+		prefs = getSharedPreferences("com.chromium.fontinstaller", MODE_PRIVATE);
 
 		openFontList = (Button)findViewById(R.id.installFont);
 		openFontList.setOnClickListener(new View.OnClickListener() {
