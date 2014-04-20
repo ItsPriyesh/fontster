@@ -31,8 +31,9 @@ public class FontList extends Activity  {
 
 	SharedPreferences prefs = null;
 	private ListView lv;
-	static Button reboot;
-	static ProgressDialog downloadProgress, copyProgress, downloadPreviewProgress;
+	Dialog confirm;
+	static Button reboot, positiveButton, negativeButton;
+	static ProgressDialog downloadProgress, downloadPreviewProgress;
 	static String fontDest, fontName, previewName, selectedFromList, longPressed;	
 	static int dlLeft, sampleFontDL;
 	static TextView alertTitle, alertMessage;
@@ -73,6 +74,7 @@ public class FontList extends Activity  {
 
 		lv.setAdapter(arrayAdapter); 
 
+		// Font Installing
 		lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View clickView, int position, long id) {
 				selectedFromList = (lv.getItemAtPosition(position).toString());
@@ -93,157 +95,186 @@ public class FontList extends Activity  {
 				urlRobotoCondensedRegular = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/RobotoCondensed-Regular.ttf";
 				urlRobotoCondensedItalic = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/RobotoCondensed-Italic.ttf";
 
-				// 12 requests for all font styles
-				DownloadManager.Request request1 = new DownloadManager.Request(Uri.parse(urlRobotoBold));
-				request1.allowScanningByMediaScanner();
-				request1.setDestinationInExternalPublicDir("/DownloadedFonts/"+fontName, "Roboto-Bold.ttf");
-				request1.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
+				///put here
+				confirm = new Dialog(FontList.this);
 
-				DownloadManager.Request request2 = new DownloadManager.Request(Uri.parse(urlRobotoBoldItalic));
-				request2.allowScanningByMediaScanner();
-				request2.setDestinationInExternalPublicDir("/DownloadedFonts/"+fontName, "Roboto-BoldItalic.ttf");
-				request2.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);				
+				confirm.requestWindowFeature(Window.FEATURE_NO_TITLE);
+				confirm.setContentView(R.layout.alert_two_buttons);	
+				TextView alertTitle = (TextView) confirm.findViewById(R.id.title);
+				alertTitle.setText("Confirm installation");
+				TextView alertMessage = (TextView) confirm.findViewById(R.id.message);
+				alertMessage.setText("Are you sure you want to install " + selectedFromList + "?");
+				positiveButton = (Button) confirm.findViewById(R.id.positive);
+				negativeButton = (Button) confirm.findViewById(R.id.negative);
 
-				DownloadManager.Request request3 = new DownloadManager.Request(Uri.parse(urlRobotoRegular));
-				request3.allowScanningByMediaScanner();
-				request3.setDestinationInExternalPublicDir("/DownloadedFonts/"+fontName, "Roboto-Regular.ttf");
-				request3.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);	
+				positiveButton.setOnClickListener(new View.OnClickListener() {
+					public void onClick(View v){
 
-				DownloadManager.Request request4 = new DownloadManager.Request(Uri.parse(urlRobotoItalic));
-				request4.allowScanningByMediaScanner();
-				request4.setDestinationInExternalPublicDir("/DownloadedFonts/"+fontName, "Roboto-Italic.ttf");
-				request4.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);	
+						confirm.cancel();
+						// 12 requests for all font styles
+						DownloadManager.Request request1 = new DownloadManager.Request(Uri.parse(urlRobotoBold));
+						request1.allowScanningByMediaScanner();
+						request1.setDestinationInExternalPublicDir("/DownloadedFonts/"+fontName, "Roboto-Bold.ttf");
+						request1.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
 
-				DownloadManager.Request request5 = new DownloadManager.Request(Uri.parse(urlRobotoLight));
-				request5.allowScanningByMediaScanner();
-				request5.setDestinationInExternalPublicDir("/DownloadedFonts/"+fontName, "Roboto-Light.ttf");
-				request5.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);	
+						DownloadManager.Request request2 = new DownloadManager.Request(Uri.parse(urlRobotoBoldItalic));
+						request2.allowScanningByMediaScanner();
+						request2.setDestinationInExternalPublicDir("/DownloadedFonts/"+fontName, "Roboto-BoldItalic.ttf");
+						request2.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);				
 
-				DownloadManager.Request request6 = new DownloadManager.Request(Uri.parse(urlRobotoLightItalic));
-				request6.allowScanningByMediaScanner();
-				request6.setDestinationInExternalPublicDir("/DownloadedFonts/"+fontName, "Roboto-LightItalic.ttf");
-				request6.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);	
+						DownloadManager.Request request3 = new DownloadManager.Request(Uri.parse(urlRobotoRegular));
+						request3.allowScanningByMediaScanner();
+						request3.setDestinationInExternalPublicDir("/DownloadedFonts/"+fontName, "Roboto-Regular.ttf");
+						request3.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);	
 
-				DownloadManager.Request request7 = new DownloadManager.Request(Uri.parse(urlRobotoThin));
-				request7.allowScanningByMediaScanner();
-				request7.setDestinationInExternalPublicDir("/DownloadedFonts/"+fontName, "Roboto-Thin.ttf");
-				request7.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);	
+						DownloadManager.Request request4 = new DownloadManager.Request(Uri.parse(urlRobotoItalic));
+						request4.allowScanningByMediaScanner();
+						request4.setDestinationInExternalPublicDir("/DownloadedFonts/"+fontName, "Roboto-Italic.ttf");
+						request4.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);	
 
-				DownloadManager.Request request8 = new DownloadManager.Request(Uri.parse(urlRobotoThinItalic));
-				request8.allowScanningByMediaScanner();
-				request8.setDestinationInExternalPublicDir("/DownloadedFonts/"+fontName, "Roboto-ThinItalic.ttf");
-				request8.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);	
+						DownloadManager.Request request5 = new DownloadManager.Request(Uri.parse(urlRobotoLight));
+						request5.allowScanningByMediaScanner();
+						request5.setDestinationInExternalPublicDir("/DownloadedFonts/"+fontName, "Roboto-Light.ttf");
+						request5.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);	
 
-				DownloadManager.Request request9 = new DownloadManager.Request(Uri.parse(urlRobotoCondensedBold));
-				request9.allowScanningByMediaScanner();
-				request9.setDestinationInExternalPublicDir("/DownloadedFonts/"+fontName, "RobotoCondensed-Bold.ttf");
-				request9.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
+						DownloadManager.Request request6 = new DownloadManager.Request(Uri.parse(urlRobotoLightItalic));
+						request6.allowScanningByMediaScanner();
+						request6.setDestinationInExternalPublicDir("/DownloadedFonts/"+fontName, "Roboto-LightItalic.ttf");
+						request6.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);	
 
-				DownloadManager.Request request10 = new DownloadManager.Request(Uri.parse(urlRobotoCondensedBoldItalic));
-				request10.allowScanningByMediaScanner();
-				request10.setDestinationInExternalPublicDir("/DownloadedFonts/"+fontName, "RobotoCondensed-BoldItalic.ttf");
-				request10.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
+						DownloadManager.Request request7 = new DownloadManager.Request(Uri.parse(urlRobotoThin));
+						request7.allowScanningByMediaScanner();
+						request7.setDestinationInExternalPublicDir("/DownloadedFonts/"+fontName, "Roboto-Thin.ttf");
+						request7.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);	
 
-				DownloadManager.Request request11 = new DownloadManager.Request(Uri.parse(urlRobotoCondensedRegular));
-				request11.allowScanningByMediaScanner();
-				request11.setDestinationInExternalPublicDir("/DownloadedFonts/"+fontName, "RobotoCondensed-Regular.ttf");
-				request11.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
+						DownloadManager.Request request8 = new DownloadManager.Request(Uri.parse(urlRobotoThinItalic));
+						request8.allowScanningByMediaScanner();
+						request8.setDestinationInExternalPublicDir("/DownloadedFonts/"+fontName, "Roboto-ThinItalic.ttf");
+						request8.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);	
 
-				DownloadManager.Request request12 = new DownloadManager.Request(Uri.parse(urlRobotoCondensedItalic));
-				request12.allowScanningByMediaScanner();
-				request12.setDestinationInExternalPublicDir("/DownloadedFonts/"+fontName, "RobotoCondensed-Italic.ttf");
-				request12.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
+						DownloadManager.Request request9 = new DownloadManager.Request(Uri.parse(urlRobotoCondensedBold));
+						request9.allowScanningByMediaScanner();
+						request9.setDestinationInExternalPublicDir("/DownloadedFonts/"+fontName, "RobotoCondensed-Bold.ttf");
+						request9.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
 
-				DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+						DownloadManager.Request request10 = new DownloadManager.Request(Uri.parse(urlRobotoCondensedBoldItalic));
+						request10.allowScanningByMediaScanner();
+						request10.setDestinationInExternalPublicDir("/DownloadedFonts/"+fontName, "RobotoCondensed-BoldItalic.ttf");
+						request10.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
 
-				//display a progress dialog just before the request for downloads are sent
-				downloadProgress = new ProgressDialog(FontList.this);
-				downloadProgress.setMessage("Downloading " + selectedFromList + ".");
-				downloadProgress.show();
+						DownloadManager.Request request11 = new DownloadManager.Request(Uri.parse(urlRobotoCondensedRegular));
+						request11.allowScanningByMediaScanner();
+						request11.setDestinationInExternalPublicDir("/DownloadedFonts/"+fontName, "RobotoCondensed-Regular.ttf");
+						request11.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
 
-				//send all the download requests
-				manager.enqueue(request1);
-				manager.enqueue(request2);	
-				manager.enqueue(request3);	
-				manager.enqueue(request4);	
-				manager.enqueue(request5);	
-				manager.enqueue(request6);	
-				manager.enqueue(request7);	
-				manager.enqueue(request8);	
-				manager.enqueue(request9);	
-				manager.enqueue(request10);	
-				manager.enqueue(request11);	
-				manager.enqueue(request12);
+						DownloadManager.Request request12 = new DownloadManager.Request(Uri.parse(urlRobotoCondensedItalic));
+						request12.allowScanningByMediaScanner();
+						request12.setDestinationInExternalPublicDir("/DownloadedFonts/"+fontName, "RobotoCondensed-Italic.ttf");
+						request12.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
 
-				//number of initial requests
-				dlLeft = 12;
+						DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
 
-				// listen for download completion, and close the progress dialog once it is detected
-				BroadcastReceiver receiver = new BroadcastReceiver() {
-					@Override
-					public void onReceive(Context context, Intent intent) {
-						String action = intent.getAction();
-						if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action)) {
-							dlLeft--; //every time a font is downloaded decrement this integer with an initial value of 12							
-						}
-						if (dlLeft == 0){ //once it reaches 0 (meaning all fonts were downloaded), display an alert
-							downloadProgress.dismiss();
+						//display a progress dialog just before the request for downloads are sent
+						downloadProgress = new ProgressDialog(FontList.this);
+						downloadProgress.setMessage("Downloading " + selectedFromList + ".");
+						downloadProgress.show();
 
-							AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>()  { 
-								//display progress dialog while fonts are copied in background
-								ProgressDialog progressDialog;
+						//send all the download requests
+						manager.enqueue(request1);
+						manager.enqueue(request2);	
+						manager.enqueue(request3);	
+						manager.enqueue(request4);	
+						manager.enqueue(request5);	
+						manager.enqueue(request6);	
+						manager.enqueue(request7);	
+						manager.enqueue(request8);	
+						manager.enqueue(request9);	
+						manager.enqueue(request10);	
+						manager.enqueue(request11);	
+						manager.enqueue(request12);
 
-								@Override
-								protected void onPreExecute() {
-									super.onPreExecute();
-									progressDialog = new ProgressDialog (FontList.this);
-									progressDialog.setMessage("Copying to system...");
-									progressDialog.show();
+						//number of initial requests
+						dlLeft = 12;
+
+						// listen for download completion, and close the progress dialog once it is detected
+						BroadcastReceiver receiver = new BroadcastReceiver() {
+							@Override
+							public void onReceive(Context context, Intent intent) {
+								String action = intent.getAction();
+								if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action)) {
+									dlLeft--; //every time a font is downloaded decrement this integer with an initial value of 12							
 								}
+								if (dlLeft == 0){ //once it reaches 0 (meaning all fonts were downloaded), display an alert
+									downloadProgress.dismiss();
 
-								@Override
-								protected Void doInBackground(Void... params) {
+									AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>()  { 
+										//display progress dialog while fonts are copied in background
+										ProgressDialog copyProgress;
 
-									try {
-										Process mountSystem = Runtime.getRuntime().exec(new String[] { "su", "-c", "mount -o rw,remount /system"});
-										Process process1 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-Bold.ttf " + fontDest});
-										Process process2 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-BoldItalic.ttf " + fontDest});
-										Process process3 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-Regular.ttf " + fontDest});
-										Process process4 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-Italic.ttf " + fontDest}); 
-										Process process5 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-Light.ttf " + fontDest});
-										Process process6 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-LightItalic.ttf " + fontDest});
-										Process process7 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-Thin.ttf " + fontDest});
-										Process process8 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-ThinItalic.ttf " + fontDest});
-										Process process9 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/RobotoCondensed-Bold.ttf " + fontDest});
-										Process process10 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/RobotoCondensed-BoldItalic.ttf " + fontDest});
-										Process process11 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/RobotoCondensed-Regular.ttf " + fontDest});
-										Process process12 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/RobotoCondensed-Italic.ttf " + fontDest});
-									} 
-									catch (IOException e) {
-										e.printStackTrace();
-									}
-									return null;
-								}
-
-								@Override
-								protected void onPostExecute(Void result) {
-									super.onPostExecute(result);
-									if (progressDialog != null) {
-										if (progressDialog.isShowing()) {
-											progressDialog.dismiss();
+										@Override
+										protected void onPreExecute() {
+											super.onPreExecute();
+											copyProgress = new ProgressDialog (FontList.this);
+											copyProgress.setMessage("Copying to system...");
+											copyProgress.setCancelable(false);
+											copyProgress.setCanceledOnTouchOutside(false);
+											copyProgress.show();
 										}
-									}
-									showCustomAlertReboot ("Installation successful", "You must reboot for the changes to take effect", "Reboot");
-								}
-							};
-							task.execute((Void[])null);
-						}
-					}
-				};
-				registerReceiver(receiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
-			}
-		});				
 
+										@Override
+										protected Void doInBackground(Void... params) {
+
+											try {
+												Process mountSystem = Runtime.getRuntime().exec(new String[] { "su", "-c", "mount -o rw,remount /system"});
+												Process process1 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-Bold.ttf " + fontDest});
+												Process process2 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-BoldItalic.ttf " + fontDest});
+												Process process3 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-Regular.ttf " + fontDest});
+												Process process4 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-Italic.ttf " + fontDest}); 
+												Process process5 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-Light.ttf " + fontDest});
+												Process process6 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-LightItalic.ttf " + fontDest});
+												Process process7 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-Thin.ttf " + fontDest});
+												Process process8 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/Roboto-ThinItalic.ttf " + fontDest});
+												Process process9 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/RobotoCondensed-Bold.ttf " + fontDest});
+												Process process10 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/RobotoCondensed-BoldItalic.ttf " + fontDest});
+												Process process11 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/RobotoCondensed-Regular.ttf " + fontDest});
+												Process process12 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/DownloadedFonts/"+FontList.fontName + "/RobotoCondensed-Italic.ttf " + fontDest});
+											} 
+											catch (IOException e) {
+												e.printStackTrace();
+											}
+											return null;
+										}
+
+										@Override
+										protected void onPostExecute(Void result) {
+											super.onPostExecute(result);
+											if (copyProgress != null) {
+												if (copyProgress.isShowing()) {
+													copyProgress.dismiss();
+												}
+											}
+											showCustomAlertReboot ("Installation successful", "You must reboot for the changes to take effect", "Reboot");
+										}
+									};
+									task.execute((Void[])null);
+								}
+							}
+						};
+						registerReceiver(receiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+					}
+				});		
+				
+				negativeButton.setOnClickListener(new View.OnClickListener() {
+					public void onClick(View v){
+						confirm.cancel();
+					}			
+				});
+				confirm.show();
+			}
+
+		});
+
+		// Font Previewing
 		lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() { //long press on listview item
 			public boolean onItemLongClick(AdapterView<?> parent, View clickView, int position, long id) {
 
