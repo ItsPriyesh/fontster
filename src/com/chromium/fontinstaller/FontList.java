@@ -240,36 +240,13 @@ public class FontList extends Activity  {
 													progressDialog.dismiss();
 												}
 											}
+											showCustomAlertReboot ("Installation successful", "You must reboot for the changes to take effect", "Reboot");
 										}
 									};
 									task.execute((Void[])null);
-
-									//one copying has finished display alertdialog with reboot prompt
-									AlertDialog.Builder builder2 = new AlertDialog.Builder(FontList.this);
-									builder2.setMessage("You must reboot for the changes to take effect.")
-									.setTitle ("Reboot")
-									.setCancelable(false)
-									.setPositiveButton("Reboot", new DialogInterface.OnClickListener() { //reboot the phone
-										public void onClick(DialogInterface dialog, int id) {
-											try{ 
-												Process reboot = Runtime.getRuntime().exec(new String[] { "su", "-c", "reboot"});
-											}
-											catch(IOException e){
-												Toast.makeText(getApplicationContext(), "Reboot failed.", Toast.LENGTH_LONG).show();
-											}
-
-										}
-									})
-									.setNegativeButton("Later", new DialogInterface.OnClickListener() { //do nothing (let user reboot later at will)
-										public void onClick(DialogInterface dialog, int id) {
-											dialog.cancel();
-										}
-									});
-									AlertDialog alert2 = builder2.create();
-									alert2.show();
 								}
 							})
-							.setNegativeButton("Cancel", new DialogInterface.OnClickListener() { //close dialog
+							.setNegativeButton("Cancel", new DialogInterface.OnClickListener() { //close install dialog
 								public void onClick(DialogInterface dialog, int id) {
 									dialog.cancel();
 								}
@@ -392,6 +369,32 @@ public class FontList extends Activity  {
 		alertMessage.setText(message);
 		
 		preview.show();
+	}
+	
+	public void showCustomAlertReboot (String title, String message, String button) { //method to show custom styled dialog. params are the title, message and button of the alert
+		Dialog reboot = new Dialog(this);
+
+		reboot.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		reboot.setContentView(R.layout.alert_buttons);	
+		TextView alertTitle = (TextView) reboot.findViewById(R.id.title);
+		alertTitle.setText(title);
+		TextView alertMessage = (TextView) reboot.findViewById(R.id.message);
+		alertMessage.setText(message);
+		Button positiveButton = (Button) reboot.findViewById(R.id.positive);
+		positiveButton.setText(button);
+
+		positiveButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v){
+				try{ 
+					Process reboot = Runtime.getRuntime().exec(new String[] { "su", "-c", "reboot"});
+				}
+				catch(IOException e){
+					Toast.makeText(getApplicationContext(), "Reboot failed.", Toast.LENGTH_LONG).show();
+				}
+			}			
+		});
+
+		reboot.show();
 	}
 	
 	public static String removeSpaces (String line)
