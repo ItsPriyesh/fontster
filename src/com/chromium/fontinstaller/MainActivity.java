@@ -1,15 +1,23 @@
 package com.chromium.fontinstaller;
 
+import java.io.File;
 import java.io.IOException;
 import android.support.v7.app.ActionBarActivity;
+import android.app.Dialog;
+import android.app.DownloadManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity {
@@ -17,6 +25,8 @@ public class MainActivity extends ActionBarActivity {
 	SharedPreferences prefs = null;
 	Button openFontList, backup;
 
+	String stockFontURL = "https://github.com/Chromium1/Fonts/raw/master/RestoreStockFonts.zip";
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -61,8 +71,42 @@ public class MainActivity extends ActionBarActivity {
 				Toast.makeText(getApplicationContext(), "You dont have root.", Toast.LENGTH_LONG).show();
 			}
 
+			DownloadManager.Request downloadStockFontZip = new DownloadManager.Request(Uri.parse(stockFontURL));
+			downloadStockFontZip.allowScanningByMediaScanner();
+			downloadStockFontZip.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "RestoreStockFonts.zip");
+			downloadStockFontZip.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
+			
+			DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+			manager.enqueue(downloadStockFontZip);
+			
+			showCustomWelcomeAlert ("Welcome!", "It is strongly suggested that you backup your current fonts using " +
+					"the backup option found in this app prior to installing any custom ones.\n\nFor further safety, " +
+					"a recovery flashable zip of the stock fonts has been placed in your downloads folder. In the " +
+					"unlikely, but possible event that you encounter issues, please flash this zip.\n");
+			
 			prefs.edit().putBoolean("firstrun", false).commit();
 		}
+	}
+	
+	public void showCustomWelcomeAlert (String title, String message) { 
+		final Dialog reboot = new Dialog(this);
+
+		reboot.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		reboot.setContentView(R.layout.alert_buttons);	
+		TextView alertTitle = (TextView) reboot.findViewById(R.id.title);
+		alertTitle.setText(title);
+		TextView alertMessage = (TextView) reboot.findViewById(R.id.message);
+		alertMessage.setText(message);
+		Button positiveButton = (Button) reboot.findViewById(R.id.positive);
+		positiveButton.setText("OK");
+
+		positiveButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v){
+				reboot.dismiss();
+			}			
+		});
+
+		reboot.show();
 	}
 
 	@Override

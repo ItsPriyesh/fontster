@@ -13,9 +13,11 @@
         android:layout_gravity="center"
         android:layout_margin="15dp"
         android:background="@drawable/layer_card_background"
+        android:fontFamily="sans-serif-light"
         android:gravity="center"
         android:padding="15dp"
-        android:text="Install a font" />
+        android:text="Install a font"
+        android:textColor="#ff666666" />
 
     <Button
         android:id="@+id/backup"
@@ -24,8 +26,10 @@
         android:layout_gravity="center"
         android:layout_margin="15dp"
         android:background="@drawable/layer_card_background"
+        android:fontFamily="sans-serif-light"
         android:gravity="center"
         android:padding="15dp"
-        android:text="Backup and restore fonts" />
+        android:text="Backup and restore fonts"
+        android:textColor="#ff666666" />
 
 </LinearLayout>
