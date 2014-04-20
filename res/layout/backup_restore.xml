@@ -2,18 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="center"
     android:orientation="vertical" >
 
     <Button
         android:id="@+id/backup"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Backup current font" />
+        android:layout_gravity="center"
+        android:text="Backup" />
 
     <Button
         android:id="@+id/restore"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Restore backed up font" />
+        android:layout_gravity="center"
+        android:text="Restore" />
 
 </LinearLayout>

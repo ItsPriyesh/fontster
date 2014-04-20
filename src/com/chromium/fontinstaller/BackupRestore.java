@@ -1,16 +1,18 @@
 package com.chromium.fontinstaller;
 
 import java.io.IOException;
-
+import android.graphics.PorterDuff;
 import android.app.Activity;
-import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class BackupRestore extends Activity {
 
@@ -70,6 +72,7 @@ public class BackupRestore extends Activity {
 								progressDialog.dismiss();
 							}
 						}
+						showCustomAlert("Backup complete", "Your current fonts have been safely saved onto your phones storage.");
 					}
 				};
 				copyToSD.execute((Void[])null);
@@ -125,10 +128,50 @@ public class BackupRestore extends Activity {
 								progressDialog.dismiss();
 							}
 						}
+						showCustomAlertButton("Restore complete", "Your previously backed up fonts were reinstalled. Reboot for the changes to take effect.", "Reboot");
 					}
 				};
 				copyToSystem.execute((Void[])null);
 			}			
 		});
+	}
+
+	public void showCustomAlert (String title, String message) { //method to show custom styled dialog. params are the title and message of the alert
+		Dialog help = new Dialog(this);
+
+		help.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		help.setContentView(R.layout.alert);	
+		TextView alertTitle = (TextView) help.findViewById(R.id.title);
+		alertTitle.setText(title);
+		TextView alertMessage = (TextView) help.findViewById(R.id.message);
+		alertMessage.setText(message);
+		help.show();
+	}
+
+	public void showCustomAlertButton (String title, String message, String button) { //method to show custom styled dialog. params are the title, message and button of the alert
+		Dialog help = new Dialog(this);
+
+		help.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		help.setContentView(R.layout.alert_buttons);	
+		TextView alertTitle = (TextView) help.findViewById(R.id.title);
+		alertTitle.setText(title);
+		TextView alertMessage = (TextView) help.findViewById(R.id.message);
+		alertMessage.setText(message);
+		Button positiveButton = (Button) help.findViewById(R.id.positive);
+		positiveButton.setText(button);
+		positiveButton.getBackground().setColorFilter(Color.parseColor("#EDEDED"), PorterDuff.Mode.MULTIPLY);
+
+		positiveButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v){
+				try{ 
+					Process reboot = Runtime.getRuntime().exec(new String[] { "su", "-c", "reboot"});
+				}
+				catch(IOException e){
+					Toast.makeText(getApplicationContext(), "Reboot failed.", Toast.LENGTH_LONG).show();
+				}
+			}			
+		});		
+
+		help.show();
 	}
 }

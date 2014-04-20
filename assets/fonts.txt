@@ -16,7 +16,6 @@ Asap
 Aubrey
 Avenir
 Avenir Next Ultra Light
-Avenir Next Ultra Light with Themed Keyboard
 Baron Neue
 Bauhaus
 Biko
@@ -100,7 +99,6 @@ Roboto Condensed Bold Italic
 Roboto Condensed Italic
 Roboto Condensed Light
 Roboto Light
-Roboto Light with Themed Keyboard
 Roboto Slab
 Roboto Thin
 Rosario

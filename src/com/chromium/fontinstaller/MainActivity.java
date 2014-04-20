@@ -1,10 +1,7 @@
 package com.chromium.fontinstaller;
 
-import java.io.File;
 import java.io.IOException;
 import android.support.v7.app.ActionBarActivity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -63,21 +60,6 @@ public class MainActivity extends ActionBarActivity {
 			catch(IOException e){
 				Toast.makeText(getApplicationContext(), "You dont have root.", Toast.LENGTH_LONG).show();
 			}
-
-
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setTitle("Welcome!");
-			builder.setMessage("A flashable zip of the stock fonts has been copied onto your phone. In the event that you encounter a bootloop, enter recovery and flash the zip found on your SD card named 'StockFonts.zip'.");
-			builder.setCancelable(true);
-			builder.setPositiveButton("OK",
-					new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int id) {
-					dialog.cancel();
-				}
-			});
-
-			AlertDialog alert = builder.create();
-			alert.show();
 
 			prefs.edit().putBoolean("firstrun", false).commit();
 		}
