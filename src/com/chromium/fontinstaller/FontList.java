@@ -176,9 +176,6 @@ public class FontList extends Activity  {
 						request12.setDestinationInExternalPublicDir("/DownloadedFonts/"+fontName, "RobotoCondensed-Italic.ttf");
 						request12.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
 
-						//Delete old fonts
-						deleteDirectory(new File("/sdcard/DownloadedFonts/" + fontName));
-
 						DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
 
 						//display a progress dialog just before the request for downloads are sent
