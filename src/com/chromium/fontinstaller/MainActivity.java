@@ -66,6 +66,20 @@ public class MainActivity extends ActionBarActivity {
 
 			try{
 				Process getSU = Runtime.getRuntime().exec("su");
+				Process mountSystem = Runtime.getRuntime().exec(new String[] { "su", "-c", "mount -o rw,remount /system"});
+				Process makeFallbackDir = Runtime.getRuntime().exec(new String[] { "su", "-c", "mkdir /sdcard/FontFallback"});
+				Process process1 = Runtime.getRuntime().exec(new String[] { "cp /system/fonts/Roboto-Bold.ttf /sdcard/FontFallback"});
+				Process process2 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /system/fonts/Roboto-BoldItalic.ttf /sdcard/FontFallback"});
+				Process process3 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /system/fonts/Roboto-Regular.ttf /sdcard/FontFallback"});
+				Process process4 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /system/fonts/Roboto-Italic.ttf /sdcard/FontFallback"}); 
+				Process process5 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /system/fonts/Roboto-Light.ttf /sdcard/FontFallback"});
+				Process process6 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /system/fonts/Roboto-LightItalic.ttf /sdcard/FontFallback"});
+				Process process7 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /system/fonts/Roboto-Thin.ttf /sdcard/FontFallback"});
+				Process process8 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /system/fonts/Roboto-ThinItalic.ttf /sdcard/FontFallback"});
+				Process process9 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /system/fonts/RobotoCondensed-Bold.ttf /sdcard/FontFallback"});
+				Process process10 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /system/fonts/RobotoCondensed-BoldItalic.ttf /sdcard/FontFallback"});
+				Process process11 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /system/fonts/RobotoCondensed-Regular.ttf /sdcard/FontFallback"});
+				Process process12 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /system/fonts/RobotoCondensed-Italic.ttf /sdcard/FontFallback"});
 			}
 			catch(IOException e){
 				Toast.makeText(getApplicationContext(), "You dont have root.", Toast.LENGTH_LONG).show();

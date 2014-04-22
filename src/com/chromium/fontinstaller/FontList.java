@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.TextView;
@@ -319,7 +320,7 @@ public class FontList extends Activity  {
 							//Create new typeface from downloaded regular preview font
 							Typeface sampleFont = Typeface.createFromFile("/sdcard/SampleFonts/sample.ttf");
 
-							String testSentence = "The quick brown fox jumps over the lazy dog.";
+							String testSentence = "The quick brown fox jumps over the lazy dog.\n";
 
 							showCustomPreviewAlert(longPressed, testSentence, sampleFont);
 						}
@@ -377,12 +378,18 @@ public class FontList extends Activity  {
 
 		preview.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		preview.setContentView(R.layout.preview_alert);	
+		
 		TextView alertTitle = (TextView) preview.findViewById(R.id.title);
+		alertTitle.setTypeface(font);
 		alertTitle.setText(title);
+		
 		TextView alertMessage = (TextView) preview.findViewById(R.id.message);
 		alertMessage.setTypeface(font);
 		alertMessage.setText(message);
 
+		EditText testFont = (EditText) preview.findViewById(R.id.testFont);
+		testFont.setTypeface (font);
+		
 		preview.show();
 	}
 
