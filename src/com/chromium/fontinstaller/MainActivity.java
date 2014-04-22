@@ -26,6 +26,8 @@ public class MainActivity extends ActionBarActivity {
 	Button openFontList, backup;
 
 	String stockFontURL = "https://github.com/Chromium1/Fonts/raw/master/RestoreStockFonts.zip";
+	String fallbackCondensed = "https://github.com/Chromium1/Fonts/raw/master/StockRoboto/RobotoCondensed-Regular.ttf";
+	String fallbackLight = "https://github.com/Chromium1/Fonts/raw/master/StockRoboto/Roboto-Light.ttf";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -66,20 +68,7 @@ public class MainActivity extends ActionBarActivity {
 
 			try{
 				Process getSU = Runtime.getRuntime().exec("su");
-				Process mountSystem = Runtime.getRuntime().exec(new String[] { "su", "-c", "mount -o rw,remount /system"});
 				Process makeFallbackDir = Runtime.getRuntime().exec(new String[] { "su", "-c", "mkdir /sdcard/FontFallback"});
-				Process process1 = Runtime.getRuntime().exec(new String[] { "cp /system/fonts/Roboto-Bold.ttf /sdcard/FontFallback"});
-				Process process2 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /system/fonts/Roboto-BoldItalic.ttf /sdcard/FontFallback"});
-				Process process3 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /system/fonts/Roboto-Regular.ttf /sdcard/FontFallback"});
-				Process process4 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /system/fonts/Roboto-Italic.ttf /sdcard/FontFallback"}); 
-				Process process5 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /system/fonts/Roboto-Light.ttf /sdcard/FontFallback"});
-				Process process6 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /system/fonts/Roboto-LightItalic.ttf /sdcard/FontFallback"});
-				Process process7 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /system/fonts/Roboto-Thin.ttf /sdcard/FontFallback"});
-				Process process8 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /system/fonts/Roboto-ThinItalic.ttf /sdcard/FontFallback"});
-				Process process9 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /system/fonts/RobotoCondensed-Bold.ttf /sdcard/FontFallback"});
-				Process process10 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /system/fonts/RobotoCondensed-BoldItalic.ttf /sdcard/FontFallback"});
-				Process process11 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /system/fonts/RobotoCondensed-Regular.ttf /sdcard/FontFallback"});
-				Process process12 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /system/fonts/RobotoCondensed-Italic.ttf /sdcard/FontFallback"});
 			}
 			catch(IOException e){
 				Toast.makeText(getApplicationContext(), "You dont have root.", Toast.LENGTH_LONG).show();
@@ -90,8 +79,20 @@ public class MainActivity extends ActionBarActivity {
 			downloadStockFontZip.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "RestoreStockFonts.zip");
 			downloadStockFontZip.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
 			
+			DownloadManager.Request downloadCondensedFallback = new DownloadManager.Request(Uri.parse(fallbackCondensed));
+			downloadCondensedFallback.allowScanningByMediaScanner();
+			downloadCondensedFallback.setDestinationInExternalPublicDir("/FontFallback/", "RobotoCondensed-Regular.ttf");
+			downloadCondensedFallback.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
+
+			DownloadManager.Request downloadLightFallback = new DownloadManager.Request(Uri.parse(fallbackLight));
+			downloadLightFallback.allowScanningByMediaScanner();
+			downloadLightFallback.setDestinationInExternalPublicDir("/FontFallback/", "Roboto-Light.ttf");
+			downloadLightFallback.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
+			
 			DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
 			manager.enqueue(downloadStockFontZip);
+			manager.enqueue(downloadCondensedFallback);
+			manager.enqueue(downloadLightFallback);
 			
 			showCustomWelcomeAlert ("Welcome!", "It is strongly suggested that you backup your current fonts using " +
 					"the backup option found in this app prior to installing any custom ones.\n\nFor further safety, " +

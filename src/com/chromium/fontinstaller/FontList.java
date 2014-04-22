@@ -48,7 +48,7 @@ public class FontList extends Activity  {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.font_list);
-		prefs = getSharedPreferences("com.chromium.fontinstaller", MODE_PRIVATE);
+		prefs = getSharedPreferences("com.chromium.fontinstaller.fontlist", MODE_PRIVATE);
 
 		fontDest = "/system/fonts"; //change path to /system/fonts when releasing
 
@@ -112,6 +112,9 @@ public class FontList extends Activity  {
 					public void onClick(View v){
 
 						confirm.cancel();
+						//Delete old fonts
+						deleteDirectory(new File("/sdcard/DownloadedFonts/" + fontName));
+						
 						// 12 requests for all font styles
 						DownloadManager.Request request1 = new DownloadManager.Request(Uri.parse(urlRobotoBold));
 						request1.allowScanningByMediaScanner();
@@ -172,6 +175,9 @@ public class FontList extends Activity  {
 						request12.allowScanningByMediaScanner();
 						request12.setDestinationInExternalPublicDir("/DownloadedFonts/"+fontName, "RobotoCondensed-Italic.ttf");
 						request12.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
+
+						//Delete old fonts
+						deleteDirectory(new File("/sdcard/DownloadedFonts/" + fontName));
 
 						DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
 
@@ -264,7 +270,7 @@ public class FontList extends Activity  {
 						registerReceiver(receiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
 					}
 				});		
-				
+
 				negativeButton.setOnClickListener(new View.OnClickListener() {
 					public void onClick(View v){
 						confirm.cancel();
@@ -378,31 +384,40 @@ public class FontList extends Activity  {
 
 		preview.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		preview.setContentView(R.layout.preview_alert);	
-		
+
 		TextView alertTitle = (TextView) preview.findViewById(R.id.title);
 		alertTitle.setTypeface(font);
 		alertTitle.setText(title);
-		
+
 		TextView alertMessage = (TextView) preview.findViewById(R.id.message);
 		alertMessage.setTypeface(font);
 		alertMessage.setText(message);
 
 		EditText testFont = (EditText) preview.findViewById(R.id.testFont);
 		testFont.setTypeface (font);
-		
+
 		preview.show();
 	}
 
 	public void showCustomAlertReboot (String title, String message, String button) { //method to show custom styled dialog. params are the title, message and button of the alert
 		Dialog reboot = new Dialog(this);
 
+		Typeface fallbackCondensed = Typeface.createFromFile("/sdcard/FontFallback/RobotoCondensed-Regular.ttf");
+		Typeface fallbackLight = Typeface.createFromFile("/sdcard/FontFallback/Roboto-Light.ttf");
+		
 		reboot.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		reboot.setContentView(R.layout.alert_buttons);	
+		
 		TextView alertTitle = (TextView) reboot.findViewById(R.id.title);
+		alertTitle.setTypeface(fallbackCondensed);
 		alertTitle.setText(title);
+		
 		TextView alertMessage = (TextView) reboot.findViewById(R.id.message);
+		alertMessage.setTypeface(fallbackLight);
 		alertMessage.setText(message);
+		
 		Button positiveButton = (Button) reboot.findViewById(R.id.positive);
+		positiveButton.setTypeface(fallbackLight);
 		positiveButton.setText(button);
 
 		positiveButton.setOnClickListener(new View.OnClickListener() {
@@ -418,7 +433,25 @@ public class FontList extends Activity  {
 
 		reboot.show();
 	}
-
+	
+	public static boolean deleteDirectory(File path) {
+		if( path.exists() ) {
+			File[] files = path.listFiles();
+			if (files == null) {
+				return true;
+			}
+			for(int i=0; i<files.length; i++) {
+				if(files[i].isDirectory()) {
+					deleteDirectory(files[i]);
+				}
+				else {
+					files[i].delete();
+				}
+			}
+		}
+		return( path.delete() );
+	}
+	
 	public static String removeSpaces (String line)
 	{//method to remove spaces
 		for (int x = 0 ; x < line.length () ; x++)
