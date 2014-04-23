@@ -46,6 +46,7 @@ Eurostile
 Exo
 Expletus Sans
 Florence Sans All Caps
+Franklin Gothic
 Futura
 Geo Sans Light
 Harry Potter
@@ -105,6 +106,7 @@ Roboto Thin
 Rosario
 Rosemary
 Sansation
+Scala Sans
 Segoe
 Signika
 Slate Pro
