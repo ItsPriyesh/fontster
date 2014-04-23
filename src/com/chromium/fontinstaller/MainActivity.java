@@ -1,6 +1,5 @@
 package com.chromium.fontinstaller;
 
-import java.io.File;
 import java.io.IOException;
 import android.support.v7.app.ActionBarActivity;
 import android.app.Dialog;

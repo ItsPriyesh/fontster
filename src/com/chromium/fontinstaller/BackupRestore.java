@@ -1,11 +1,9 @@
 package com.chromium.fontinstaller;
 
 import java.io.IOException;
-import android.graphics.PorterDuff;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;

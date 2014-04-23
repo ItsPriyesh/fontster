@@ -6,13 +6,11 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import android.content.Intent;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -113,13 +111,10 @@ public class FontList extends Activity  {
 					public void onClick(View v){
 
 						confirm.cancel();
-						//Delete old fonts
-						//	deleteDirectory(new File("/sdcard/DownloadedFonts/" + fontName));
-
 
 						File dfDir = new File(Environment.getExternalStorageDirectory() + "/DownloadedFonts");
 
-						if(dfDir.isDirectory()) {//direct install start		
+						if(dfDir.isDirectory()) {// user already downloaded the font, direct install start		
 							//installation start
 							AsyncTask<Void, Void, Void> directInstall = new AsyncTask<Void, Void, Void>()  { 
 								//display progress dialog while fonts are copied in background
