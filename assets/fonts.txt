@@ -84,6 +84,7 @@ Open Sans Light
 Oswald
 Palatino Linotype
 Plentiful
+Prelude
 Print Clearly
 Proxima Nova
 Proxima Nova Light
