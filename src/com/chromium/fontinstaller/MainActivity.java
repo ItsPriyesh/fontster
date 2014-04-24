@@ -22,7 +22,7 @@ import android.widget.Toast;
 public class MainActivity extends ActionBarActivity {
 
 	SharedPreferences prefs = null;
-	Button openFontList, backup;
+	Button openFontList, backup, testView;
 
 	String stockFontURL = "https://github.com/Chromium1/Fonts/raw/master/RestoreStockFonts.zip";
 	String fallbackCondensed = "https://github.com/Chromium1/Fonts/raw/master/StockRoboto/RobotoCondensed-Regular.ttf";
@@ -57,6 +57,16 @@ public class MainActivity extends ActionBarActivity {
 			}
 		});
 		
+		testView = (Button)findViewById(R.id.test);
+		testView.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v){
+				if(v == testView) {
+					testView.setBackgroundResource(R.drawable.layer_card_background_pressed);
+				}
+				Intent testViewActivity = new Intent(MainActivity.this, TestView.class);
+				startActivity(testViewActivity);
+			}
+		});
 	}
 
 	@Override

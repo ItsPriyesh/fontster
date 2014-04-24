@@ -31,5 +31,17 @@
         android:padding="15dp"
         android:text="Backup and restore fonts"
         android:textColor="#ff666666" />
-
+    
+    <Button
+        android:id="@+id/test"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="15dp"
+        android:background="@drawable/layer_card_background"
+        android:fontFamily="sans-serif-light"
+        android:gravity="center"
+        android:padding="15dp"
+        android:text="View currently installed font"
+        android:textColor="#ff666666" />
 </LinearLayout>

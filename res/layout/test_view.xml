@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:text="Regular"
+        android:textColor="#ff666666"
+        android:textSize="25.0dip"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/italic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:text="Italic"
+        android:textColor="#ff666666"
+        android:textSize="25.0dip"
+        android:textStyle="italic" />
+
+    <TextView
+        android:id="@+id/bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:text="Bold"
+        android:textColor="#ff666666"
+        android:textSize="25.0dip"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/bolditalic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:text="Bold Italic"
+        android:textColor="#ff666666"
+        android:textSize="25.0dip"
+        android:textStyle="bold|italic" />
+
+    <TextView
+        android:id="@+id/light"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-light"
+        android:text="Light"
+        android:textColor="#ff666666"
+        android:textSize="25.0dip"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/lightitalic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-light"
+        android:text="Light Italic"
+        android:textColor="#ff666666"
+        android:textSize="25.0dip"
+        android:textStyle="italic" />
+
+    <TextView
+        android:id="@+id/thin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-thin"
+        android:text="Thin"
+        android:textColor="#ff666666"
+        android:textSize="25.0dip"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/thinitalic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-thin"
+        android:text="Thin Italic"
+        android:textColor="#ff666666"
+        android:textSize="25.0dip"
+        android:textStyle="italic" />
+
+    <TextView
+        android:id="@+id/condensed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed"
+        android:text="Condensed"
+        android:textColor="#ff666666"
+        android:textSize="25.0dip"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/condenseditalic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed"
+        android:text="Condensed Italic"
+        android:textColor="#ff666666"
+        android:textSize="25.0dip"
+        android:textStyle="italic" />
+
+    <TextView
+        android:id="@+id/condensedbold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed"
+        android:text="Condensed Bold"
+        android:textColor="#ff666666"
+        android:textSize="25.0dip"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/condensedbolditalic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed"
+        android:text="Condensed Bold Italic"
+        android:textColor="#ff666666"
+        android:textSize="25.0dip"
+        android:textStyle="bold|italic" />
+
+</LinearLayout>
