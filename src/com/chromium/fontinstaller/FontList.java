@@ -70,6 +70,7 @@ public class FontList extends Activity  {
 		}
 
 		//set font list arraylist to listview arrayadapter
+	//	ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, fontList);
 		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, fontList);
 
 		lv.setAdapter(arrayAdapter); 
@@ -112,7 +113,7 @@ public class FontList extends Activity  {
 
 						confirm.cancel();
 
-						File dfDir = new File(Environment.getExternalStorageDirectory() + "/DownloadedFonts");
+						File dfDir = new File(Environment.getExternalStorageDirectory() + "/DownloadedFonts"+fontName);
 
 						if(dfDir.isDirectory()) {// user already downloaded the font, direct install start		
 							//installation start
