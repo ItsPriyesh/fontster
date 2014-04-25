@@ -97,4 +97,28 @@ public class CustomAlerts{
 
 		reboot.show();
 	}
+
+	/*
+	 * Dialog with Title, Message, and single Button that dismisses dialog
+	 */
+	public static void showCustomAlertSingleButton (String title, String message, Context context) { 
+		final Dialog singleButtonDialog = new Dialog(context);
+
+		singleButtonDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		singleButtonDialog.setContentView(R.layout.alert_buttons);	
+		TextView alertTitle = (TextView) singleButtonDialog.findViewById(R.id.title);
+		alertTitle.setText(title);
+		TextView alertMessage = (TextView) singleButtonDialog.findViewById(R.id.message);
+		alertMessage.setText(message);
+		Button positiveButton = (Button) singleButtonDialog.findViewById(R.id.positive);
+		positiveButton.setText("OK");
+
+		positiveButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v){
+				singleButtonDialog.dismiss();
+			}			
+		});
+
+		singleButtonDialog.show();
+	}
 }

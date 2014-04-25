@@ -103,34 +103,13 @@ public class MainActivity extends ActionBarActivity {
 			manager.enqueue(downloadCondensedFallback);
 			manager.enqueue(downloadLightFallback);
 			
-			showCustomWelcomeAlert ("Welcome!", "It is strongly suggested that you backup your current fonts using " +
+			CustomAlerts.showCustomAlertSingleButton ("Welcome!", "It is strongly suggested that you backup your current fonts using " +
 					"the backup option found in this app prior to installing any custom ones.\n\nFor further safety, " +
 					"a recovery flashable zip of the stock fonts has been placed in your downloads folder. In the " +
-					"unlikely, but possible event that you encounter issues, please flash this zip.\n");
+					"unlikely, but possible event that you encounter issues, please flash this zip.\n", MainActivity.this);
 			
 			prefs.edit().putBoolean("firstrun", false).commit();
 		}
-	}
-	
-	public void showCustomWelcomeAlert (String title, String message) { 
-		final Dialog reboot = new Dialog(this);
-
-		reboot.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		reboot.setContentView(R.layout.alert_buttons);	
-		TextView alertTitle = (TextView) reboot.findViewById(R.id.title);
-		alertTitle.setText(title);
-		TextView alertMessage = (TextView) reboot.findViewById(R.id.message);
-		alertMessage.setText(message);
-		Button positiveButton = (Button) reboot.findViewById(R.id.positive);
-		positiveButton.setText("OK");
-
-		positiveButton.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v){
-				reboot.dismiss();
-			}			
-		});
-
-		reboot.show();
 	}
 
 	@Override
