@@ -65,14 +65,16 @@ public class About extends PreferenceActivity {
 									cleanCacheProgress.dismiss();
 								}
 							}
-							showCustomAlert ("Done", "Cached fonts have been deleted.");
+						//	showCustomAlert ("Done", "Cached fonts have been deleted.");
+							CustomAlerts.showCustomAlert ("Done", "Cached fonts have been deleted.", About.this);
+
 						}
 					};
 					cleanCache.execute((Void[])null);
 					
 				}
 				else
-					showCustomAlert ("Nothing to clean", "There are currently no cached fonts.");
+					CustomAlerts.showCustomAlert ("Nothing to clean", "There are currently no cached fonts.", About.this);
 				return true; 
 			}
 		});
@@ -116,15 +118,4 @@ public class About extends PreferenceActivity {
 		});
 	}
 	
-	public void showCustomAlert (String title, String message) { //method to show custom styled dialog. params are the title and message of the alert
-		Dialog help = new Dialog(this);
-
-		help.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		help.setContentView(R.layout.alert);	
-		TextView alertTitle = (TextView) help.findViewById(R.id.title);
-		alertTitle.setText(title);
-		TextView alertMessage = (TextView) help.findViewById(R.id.message);
-		alertMessage.setText(message);
-		help.show();
-	}
 }

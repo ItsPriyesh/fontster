@@ -163,7 +163,8 @@ public class FontList extends Activity  {
 											directInstallCopyProgress.dismiss();
 										}
 									}
-									showCustomAlertReboot ("Installation successful", "You must reboot for the changes to take effect", "Reboot");
+									//showCustomAlertReboot ("Installation successful", "You must reboot for the changes to take effect", "Reboot");
+									CustomAlerts.showCustomAlertReboot("Installation successful", "You must reboot for the changes to take effect", "Reboot", FontList.this);
 								}
 							};
 							directInstall.execute((Void[])null);
@@ -315,7 +316,9 @@ public class FontList extends Activity  {
 														copyProgress.dismiss();
 													}
 												}
-												showCustomAlertReboot ("Installation successful", "You must reboot for the changes to take effect", "Reboot");
+											//	showCustomAlertReboot ("Installation successful", "You must reboot for the changes to take effect", "Reboot");
+												CustomAlerts.showCustomAlertReboot("Installation successful", "You must reboot for the changes to take effect", "Reboot", FontList.this);
+
 											}
 										};
 										task.execute((Void[])null);
@@ -385,7 +388,8 @@ public class FontList extends Activity  {
 
 							String testSentence = "The quick brown fox jumps over the lazy dog.\n";
 
-							showCustomPreviewAlert(longPressed, testSentence, sampleFont);
+							//showCustomPreviewAlert(longPressed, testSentence, sampleFont);
+							CustomAlerts.showCustomPreviewAlert(longPressed, testSentence, sampleFont, FontList.this);
 						}
 					}
 				};
@@ -402,8 +406,10 @@ public class FontList extends Activity  {
 
 		if (prefs.getBoolean("firstrun", true)) { //stuff to do on first app opening
 
-			showCustomAlert("Instructions","To install a font simply tap on the one that you want.\n\nIf you would like to preview a font prior to installing, long press it." );
+			//showCustomAlert("Instructions","To install a font simply tap on the one that you want.\n\nIf you would like to preview a font prior to installing, long press it." );
 
+			CustomAlerts.showCustomAlert("Instructions", "To install a font simply tap on the one that you want.\n\nIf you would like to preview a font prior to installing, long press it.", FontList.this);
+			
 			prefs.edit().putBoolean("firstrun", false).commit();
 		}
 	}
@@ -418,77 +424,11 @@ public class FontList extends Activity  {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem menuItem) {
 		if (menuItem.getItemId() == R.id.menu_help) {
-			showCustomAlert("Instructions","To install a font simply tap on the one that you want.\n\nIf you would like to preview a font prior to installing, long press it." );
+			//showCustomAlert("Instructions","To install a font simply tap on the one that you want.\n\nIf you would like to preview a font prior to installing, long press it." );
+			CustomAlerts.showCustomAlert("Instructions", "To install a font simply tap on the one that you want.\n\nIf you would like to preview a font prior to installing, long press it.", FontList.this);
 			return true;
 		}
 		return false;
-	}
-
-	public void showCustomAlert (String title, String message) { //method to show custom styled dialog. params are the title and message of the alert
-		Dialog help = new Dialog(this);
-
-		help.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		help.setContentView(R.layout.alert);	
-		TextView alertTitle = (TextView) help.findViewById(R.id.title);
-		alertTitle.setText(title);
-		TextView alertMessage = (TextView) help.findViewById(R.id.message);
-		alertMessage.setText(message);
-		help.show();
-	}
-
-	public void showCustomPreviewAlert (String title, String message, Typeface font) { //method for preview dialog. has extra param for typeface
-		Dialog preview = new Dialog(this);
-
-		preview.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		preview.setContentView(R.layout.preview_alert);	
-
-		TextView alertTitle = (TextView) preview.findViewById(R.id.title);
-		alertTitle.setTypeface(font);
-		alertTitle.setText(title);
-
-		TextView alertMessage = (TextView) preview.findViewById(R.id.message);
-		alertMessage.setTypeface(font);
-		alertMessage.setText(message);
-
-		EditText testFont = (EditText) preview.findViewById(R.id.testFont);
-		testFont.setTypeface (font);
-
-		preview.show();
-	}
-
-	public void showCustomAlertReboot (String title, String message, String button) { //method to show custom styled dialog. params are the title, message and button of the alert
-		Dialog reboot = new Dialog(this);
-
-		Typeface fallbackCondensed = Typeface.createFromFile("/sdcard/FontFallback/RobotoCondensed-Regular.ttf");
-		Typeface fallbackLight = Typeface.createFromFile("/sdcard/FontFallback/Roboto-Light.ttf");
-
-		reboot.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		reboot.setContentView(R.layout.alert_buttons);	
-
-		TextView alertTitle = (TextView) reboot.findViewById(R.id.title);
-		alertTitle.setTypeface(fallbackCondensed);
-		alertTitle.setText(title);
-
-		TextView alertMessage = (TextView) reboot.findViewById(R.id.message);
-		alertMessage.setTypeface(fallbackLight);
-		alertMessage.setText(message);
-
-		Button positiveButton = (Button) reboot.findViewById(R.id.positive);
-		positiveButton.setTypeface(fallbackLight);
-		positiveButton.setText(button);
-
-		positiveButton.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v){
-				try{ 
-					Process reboot = Runtime.getRuntime().exec(new String[] { "su", "-c", "reboot"});
-				}
-				catch(IOException e){
-					Toast.makeText(getApplicationContext(), "Reboot failed.", Toast.LENGTH_LONG).show();
-				}
-			}			
-		});
-
-		reboot.show();
 	}
 
 	public static boolean deleteDirectory(File path) {
