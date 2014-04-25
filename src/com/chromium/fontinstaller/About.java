@@ -3,12 +3,17 @@ package com.chromium.fontinstaller;
 import java.io.File;
 import java.io.IOException;
 import android.app.ActionBar;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.view.Window;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class About extends PreferenceActivity {
@@ -27,16 +32,47 @@ public class About extends PreferenceActivity {
 				File file = new File("/sdcard/DownloadedFonts");
 
 				if (file.exists()) {
-					String wipe = "rm -r /sdcard/DownloadedFonts";
-					Runtime runtime = Runtime.getRuntime();
-					try {
-						runtime.exec(wipe);
-					} catch (IOException e) { 
+					AsyncTask<Void, Void, Void> cleanCache = new AsyncTask<Void, Void, Void>()  { 
+						//display progress dialog while fonts are copied in background
+						ProgressDialog cleanCacheProgress;
 
-					}
+						@Override
+						protected void onPreExecute() {
+							super.onPreExecute();
+							cleanCacheProgress = new ProgressDialog (About.this);
+							cleanCacheProgress.setMessage("Clearing downloaded fonts...");
+							cleanCacheProgress.show();
+						}
+
+						@Override
+						protected Void doInBackground(Void... params) {
+
+							String wipe = "rm -r /sdcard/DownloadedFonts";
+							Runtime runtime = Runtime.getRuntime();
+							try {
+								runtime.exec(wipe);
+							} catch (IOException e) { 
+
+							}
+							return null;
+						}
+
+						@Override
+						protected void onPostExecute(Void result) {
+							super.onPostExecute(result);
+							if (cleanCacheProgress != null) {
+								if (cleanCacheProgress.isShowing()) {
+									cleanCacheProgress.dismiss();
+								}
+							}
+							showCustomAlert ("Done", "Cached fonts have been deleted.");
+						}
+					};
+					cleanCache.execute((Void[])null);
+					
 				}
 				else
-					Toast.makeText(getApplicationContext(), "Nothing to clean.", Toast.LENGTH_LONG).show();
+					showCustomAlert ("Nothing to clean", "There are currently no cached fonts.");
 				return true; 
 			}
 		});
@@ -78,5 +114,17 @@ public class About extends PreferenceActivity {
 				return true; 
 			}
 		});
+	}
+	
+	public void showCustomAlert (String title, String message) { //method to show custom styled dialog. params are the title and message of the alert
+		Dialog help = new Dialog(this);
+
+		help.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		help.setContentView(R.layout.alert);	
+		TextView alertTitle = (TextView) help.findViewById(R.id.title);
+		alertTitle.setText(title);
+		TextView alertMessage = (TextView) help.findViewById(R.id.message);
+		alertMessage.setText(message);
+		help.show();
 	}
 }
