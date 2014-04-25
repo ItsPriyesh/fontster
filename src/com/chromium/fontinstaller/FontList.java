@@ -22,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.TextView;
@@ -38,12 +39,15 @@ public class FontList extends Activity  {
 	static int dlLeft, sampleFontDL;
 	static TextView alertTitle, alertMessage;
 
+	ImageView alreadyDownloaded;
+
 	//Font url strings
 	String urlRobotoBold, urlRobotoBoldItalic, urlRobotoItalic, 
 	urlRobotoLight, urlRobotoLightItalic, urlRobotoRegular, urlRobotoThin, 
 	urlRobotoThinItalic, urlRobotoCondensedBold, urlRobotoCondensedBoldItalic, 
 	urlRobotoCondensedItalic, urlRobotoCondensedRegular, urlPreviewFont;
-
+	
+	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.font_list);
@@ -70,11 +74,12 @@ public class FontList extends Activity  {
 		}
 
 		//set font list arraylist to listview arrayadapter
-	//	ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, fontList);
-		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, fontList);
-
-		lv.setAdapter(arrayAdapter); 
-
+		//	ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, fontList);
+	//	ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.list_item, R.id.fontTextView, fontList);
+		ArrayAdapter<String> adapter = new CustomAdapter(this, R.layout.list_item, R.id.fontTextView, fontList);
+		
+		lv.setAdapter(adapter); 
+		    
 		// Font Installing
 		lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View clickView, int position, long id) {
@@ -521,4 +526,5 @@ public class FontList extends Activity  {
 		}
 		return line;
 	}
+
 }
