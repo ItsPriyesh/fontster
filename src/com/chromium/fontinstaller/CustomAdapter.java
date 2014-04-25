@@ -1,11 +1,7 @@
 package com.chromium.fontinstaller;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-
 import android.app.Activity;
 import android.content.Context;
 import android.os.Environment;
@@ -13,9 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class CustomAdapter extends ArrayAdapter<String> {
@@ -40,23 +34,16 @@ public class CustomAdapter extends ArrayAdapter<String> {
 		LayoutInflater inflater = ((Activity) context).getLayoutInflater(); 
 		row = inflater.inflate(layoutResourceId, parent, false);
 
-
-		String item = data.get(position);
-		ImageView ib = (ImageView)row.findViewById(R.id.alreadyDownloaded);
+		ImageView alreadyDownloaded = (ImageView)row.findViewById(R.id.alreadyDownloaded);
 		TextView textView = (TextView)row.findViewById(R.id.fontTextView);
 		textView.setText(data.get(position));
-
-
 
 		File dfDir = new File(Environment.getExternalStorageDirectory() + "/DownloadedFonts/"+ (removeSpaces(data.get(position))));
 		
 		if(dfDir.isDirectory()) {
-			//if (item.equals("Aleo") ){
-			ib.setVisibility(View.VISIBLE);
+			alreadyDownloaded.setVisibility(View.VISIBLE);
 		}    
-
 		return row;
-
 	}
 
 	public static String removeSpaces (String line)
@@ -71,5 +58,4 @@ public class CustomAdapter extends ArrayAdapter<String> {
 		}
 		return line;
 	}
-
 }

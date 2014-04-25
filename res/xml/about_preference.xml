@@ -20,6 +20,10 @@
             android:key="contact"
             android:summary="Send the developer an email"
             android:title="Contact" />
+        <Preference
+            android:key="donate"
+            android:summary="Suppport the developer"
+            android:title="Donate" />
     </PreferenceCategory>
 
 </PreferenceScreen>

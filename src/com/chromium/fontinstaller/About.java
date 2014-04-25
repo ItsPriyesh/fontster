@@ -65,5 +65,18 @@ public class About extends PreferenceActivity {
 			}
 		});
 
+		Preference donate = (Preference) findPreference("donate");
+		donate.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			public boolean onPreferenceClick(Preference preference) {
+				Intent donate = new Intent();
+				donate.setAction(Intent.ACTION_VIEW);
+				donate.addCategory(Intent.CATEGORY_BROWSABLE);
+				donate.setData(Uri.parse("https://www.paypal.com/cgi-bin/webscr?cmd=_donations" +
+						"&business=XR9WBFXGZ9G5E&lc=CA&item_name=Font%20Installer&currency_code" +
+						"=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted"));
+				startActivity(donate);
+				return true; 
+			}
+		});
 	}
 }
