@@ -65,8 +65,7 @@ public class About extends PreferenceActivity {
 									cleanCacheProgress.dismiss();
 								}
 							}
-						//	showCustomAlert ("Done", "Cached fonts have been deleted.");
-							CustomAlerts.showCustomAlert ("Done", "Cached fonts have been deleted.", About.this);
+							CustomAlerts.showBasicAlert ("Done", "Cached fonts have been deleted.", About.this);
 
 						}
 					};
@@ -74,7 +73,7 @@ public class About extends PreferenceActivity {
 					
 				}
 				else
-					CustomAlerts.showCustomAlert ("Nothing to clean", "There are currently no cached fonts.", About.this);
+					CustomAlerts.showBasicAlert ("Nothing to clean", "There are currently no cached fonts.", About.this);
 				return true; 
 			}
 		});

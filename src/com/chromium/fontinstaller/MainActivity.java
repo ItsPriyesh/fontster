@@ -103,7 +103,7 @@ public class MainActivity extends ActionBarActivity {
 			manager.enqueue(downloadCondensedFallback);
 			manager.enqueue(downloadLightFallback);
 			
-			CustomAlerts.showCustomAlertSingleButton ("Welcome!", "It is strongly suggested that you backup your current fonts using " +
+			CustomAlerts.showSingleButtonAlert ("Welcome!", "It is strongly suggested that you backup your current fonts using " +
 					"the backup option found in this app prior to installing any custom ones.\n\nFor further safety, " +
 					"a recovery flashable zip of the stock fonts has been placed in your downloads folder. In the " +
 					"unlikely, but possible event that you encounter issues, please flash this zip.\n", MainActivity.this);

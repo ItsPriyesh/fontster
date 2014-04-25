@@ -163,8 +163,7 @@ public class FontList extends Activity  {
 											directInstallCopyProgress.dismiss();
 										}
 									}
-									//showCustomAlertReboot ("Installation successful", "You must reboot for the changes to take effect", "Reboot");
-									CustomAlerts.showCustomAlertReboot("Installation successful", "You must reboot for the changes to take effect", "Reboot", FontList.this);
+									CustomAlerts.showRebootAlert("Installation successful", "You must reboot for the changes to take effect", "Reboot", FontList.this);
 								}
 							};
 							directInstall.execute((Void[])null);
@@ -316,8 +315,7 @@ public class FontList extends Activity  {
 														copyProgress.dismiss();
 													}
 												}
-											//	showCustomAlertReboot ("Installation successful", "You must reboot for the changes to take effect", "Reboot");
-												CustomAlerts.showCustomAlertReboot("Installation successful", "You must reboot for the changes to take effect", "Reboot", FontList.this);
+												CustomAlerts.showRebootAlert("Installation successful", "You must reboot for the changes to take effect", "Reboot", FontList.this);
 
 											}
 										};
@@ -388,8 +386,7 @@ public class FontList extends Activity  {
 
 							String testSentence = "The quick brown fox jumps over the lazy dog.\n";
 
-							//showCustomPreviewAlert(longPressed, testSentence, sampleFont);
-							CustomAlerts.showCustomPreviewAlert(longPressed, testSentence, sampleFont, FontList.this);
+							CustomAlerts.showPreviewAlert(longPressed, testSentence, sampleFont, FontList.this);
 						}
 					}
 				};
@@ -406,9 +403,7 @@ public class FontList extends Activity  {
 
 		if (prefs.getBoolean("firstrun", true)) { //stuff to do on first app opening
 
-			//showCustomAlert("Instructions","To install a font simply tap on the one that you want.\n\nIf you would like to preview a font prior to installing, long press it." );
-
-			CustomAlerts.showCustomAlert("Instructions", "To install a font simply tap on the one that you want.\n\nIf you would like to preview a font prior to installing, long press it.", FontList.this);
+			CustomAlerts.showBasicAlert("Instructions", "To install a font simply tap on the one that you want.\n\nIf you would like to preview a font prior to installing, long press it.", FontList.this);
 			
 			prefs.edit().putBoolean("firstrun", false).commit();
 		}
@@ -424,8 +419,7 @@ public class FontList extends Activity  {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem menuItem) {
 		if (menuItem.getItemId() == R.id.menu_help) {
-			//showCustomAlert("Instructions","To install a font simply tap on the one that you want.\n\nIf you would like to preview a font prior to installing, long press it." );
-			CustomAlerts.showCustomAlert("Instructions", "To install a font simply tap on the one that you want.\n\nIf you would like to preview a font prior to installing, long press it.", FontList.this);
+			CustomAlerts.showBasicAlert("Instructions", "To install a font simply tap on the one that you want.\n\nIf you would like to preview a font prior to installing, long press it.", FontList.this);
 			return true;
 		}
 		return false;

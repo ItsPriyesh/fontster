@@ -17,7 +17,7 @@ public class CustomAlerts{
 	/*
 	 * Basic Dialog with Title and Message (NO BUTTONS)
 	 */
-	public static void showCustomAlert (String title, String message, Context context) { 
+	public static void showBasicAlert (String title, String message, Context context) { 
 		//method to show custom styled dialog. params are the title, the message, and the context of the alert
 
 		Dialog help = new Dialog(context);
@@ -34,7 +34,7 @@ public class CustomAlerts{
 	/*
 	 *  Dialog with Title, Message, and EditText all with custom Typeface (FOR PREVIEWING)
 	 */
-	public static void showCustomPreviewAlert (String title, String message, Typeface font, Context context) { 
+	public static void showPreviewAlert (String title, String message, Typeface font, Context context) { 
 		//method for preview dialog. has extra param for typeface
 
 		Dialog preview = new Dialog(context);
@@ -59,7 +59,7 @@ public class CustomAlerts{
 	/*
 	 * Reboot Dialog with Title, Message, and a Button for reboot function
 	 */
-	public static void showCustomAlertReboot (String title, String message, String button, Context context) { 
+	public static void showRebootAlert (String title, String message, String button, Context context) { 
 		//method to show custom styled dialog. params are the title, message and button of the alert
 
 		Dialog reboot = new Dialog(context);
@@ -101,7 +101,7 @@ public class CustomAlerts{
 	/*
 	 * Dialog with Title, Message, and single Button that dismisses dialog
 	 */
-	public static void showCustomAlertSingleButton (String title, String message, Context context) { 
+	public static void showSingleButtonAlert (String title, String message, Context context) { 
 		final Dialog singleButtonDialog = new Dialog(context);
 
 		singleButtonDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
