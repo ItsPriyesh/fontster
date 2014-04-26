@@ -32,4 +32,10 @@
         android:hint="Try it out"
         android:layout_below="@id/message"/>
 
+    <Button
+        android:id="@+id/viewAllVariants"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View all styles" />
+
 </RelativeLayout>

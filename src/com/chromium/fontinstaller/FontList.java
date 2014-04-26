@@ -96,11 +96,11 @@ public class FontList extends Activity  {
 				urlRobotoCondensedRegular = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/RobotoCondensed-Regular.ttf";
 				urlRobotoCondensedItalic = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/RobotoCondensed-Italic.ttf";
 
-				///put here
+				//put here
 				confirm = new Dialog(FontList.this);
 
 				confirm.requestWindowFeature(Window.FEATURE_NO_TITLE);
-				confirm.setContentView(R.layout.alert_two_buttons);	
+				confirm.setContentView(R.layout.two_button_alert);	
 				TextView alertTitle = (TextView) confirm.findViewById(R.id.title);
 				alertTitle.setText("Confirm installation");
 				TextView alertMessage = (TextView) confirm.findViewById(R.id.message);
@@ -386,7 +386,7 @@ public class FontList extends Activity  {
 
 							String testSentence = "The quick brown fox jumps over the lazy dog.\n";
 
-							CustomAlerts.showPreviewAlert(longPressed, testSentence, sampleFont, FontList.this);
+							CustomAlerts.showPreviewAlert(longPressed, testSentence, sampleFont, previewName, FontList.this);
 						}
 					}
 				};

@@ -1,10 +1,17 @@
 package com.chromium.fontinstaller;
 
+import java.io.File;
 import java.io.IOException;
 
 import android.app.Dialog;
+import android.app.DownloadManager;
+import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -23,7 +30,7 @@ public class CustomAlerts{
 		Dialog help = new Dialog(context);
 
 		help.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		help.setContentView(R.layout.alert);	
+		help.setContentView(R.layout.basic_alert);	
 		TextView alertTitle = (TextView) help.findViewById(R.id.title);
 		alertTitle.setText(title);
 		TextView alertMessage = (TextView) help.findViewById(R.id.message);
@@ -34,7 +41,7 @@ public class CustomAlerts{
 	/*
 	 *  Dialog with Title, Message, and EditText all with custom Typeface (FOR PREVIEWING)
 	 */
-	public static void showPreviewAlert (String title, String message, Typeface font, Context context) { 
+	public static void showPreviewAlert (String title, String message, Typeface font, final String fontName, final Context context) { 
 		//method for preview dialog. has extra param for typeface
 
 		Dialog preview = new Dialog(context);
@@ -53,6 +60,13 @@ public class CustomAlerts{
 		EditText testFont = (EditText) preview.findViewById(R.id.testFont);
 		testFont.setTypeface (font);
 
+		Button viewAllVariants = (Button) preview.findViewById(R.id.viewAllVariants);
+		viewAllVariants.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v){
+				Preview.fullPreviewAlert(fontName, context);
+			}			
+		});
+		
 		preview.show();
 	}
 
@@ -68,7 +82,7 @@ public class CustomAlerts{
 		Typeface fallbackLight = Typeface.createFromFile("/sdcard/FontFallback/Roboto-Light.ttf");
 
 		reboot.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		reboot.setContentView(R.layout.alert_buttons);	
+		reboot.setContentView(R.layout.single_button_alert);	
 
 		TextView alertTitle = (TextView) reboot.findViewById(R.id.title);
 		alertTitle.setTypeface(fallbackCondensed);
@@ -105,7 +119,7 @@ public class CustomAlerts{
 		final Dialog singleButtonDialog = new Dialog(context);
 
 		singleButtonDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		singleButtonDialog.setContentView(R.layout.alert_buttons);	
+		singleButtonDialog.setContentView(R.layout.single_button_alert);	
 		TextView alertTitle = (TextView) singleButtonDialog.findViewById(R.id.title);
 		alertTitle.setText(title);
 		TextView alertMessage = (TextView) singleButtonDialog.findViewById(R.id.message);

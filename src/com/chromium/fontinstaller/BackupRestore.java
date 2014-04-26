@@ -138,7 +138,7 @@ public class BackupRestore extends Activity {
 		Dialog help = new Dialog(this);
 
 		help.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		help.setContentView(R.layout.alert);	
+		help.setContentView(R.layout.basic_alert);	
 		TextView alertTitle = (TextView) help.findViewById(R.id.title);
 		alertTitle.setText(title);
 		TextView alertMessage = (TextView) help.findViewById(R.id.message);
@@ -150,7 +150,7 @@ public class BackupRestore extends Activity {
 		Dialog reboot = new Dialog(this);
 
 		reboot.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		reboot.setContentView(R.layout.alert_buttons);	
+		reboot.setContentView(R.layout.single_button_alert);	
 		TextView alertTitle = (TextView) reboot.findViewById(R.id.title);
 		alertTitle.setText(title);
 		TextView alertMessage = (TextView) reboot.findViewById(R.id.message);
