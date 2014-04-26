@@ -23,19 +23,21 @@
         android:layout_below="@id/title"
         android:layout_marginTop="4.0dip"
         android:textColor="#ff666666"
-        android:textSize="15.0dip"/>
+        android:textSize="15.0dip" />
 
     <EditText
         android:id="@+id/testFont"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="Try it out"
-        android:layout_below="@id/message"/>
+        android:layout_below="@id/message"
+        android:hint="Try it out" />
 
     <Button
         android:id="@+id/viewAllVariants"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/testFont"
+        android:background="@drawable/apptheme_btn_default_holo_light"
         android:text="View all styles" />
 
 </RelativeLayout>

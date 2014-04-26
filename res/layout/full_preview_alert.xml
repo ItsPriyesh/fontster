@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:text="Regular"
         android:textColor="#ff666666"
-        android:textSize="18.0dip" />
+        android:textSize="20.0dip" />
 
     <TextView
         android:id="@+id/italic"
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:text="Italic"
         android:textColor="#ff666666"
-        android:textSize="18.0dip" />
+        android:textSize="20.0dip" />
 
     <TextView
         android:id="@+id/bold"
@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:text="Bold"
         android:textColor="#ff666666"
-        android:textSize="18.0dip" />
+        android:textSize="20.0dip" />
 
     <TextView
         android:id="@+id/bolditalic"
@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         android:text="Bold Italic"
         android:textColor="#ff666666"
-        android:textSize="18.0dip" />
+        android:textSize="20.0dip" />
 
     <TextView
         android:id="@+id/light"
@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:text="Light"
         android:textColor="#ff666666"
-        android:textSize="18.0dip" />
+        android:textSize="20.0dip" />
 
     <TextView
         android:id="@+id/lightitalic"
@@ -56,7 +56,7 @@
         android:layout_height="wrap_content"
         android:text="Light Italic"
         android:textColor="#ff666666"
-        android:textSize="18.0dip" />
+        android:textSize="20.0dip" />
 
     <TextView
         android:id="@+id/thin"
@@ -64,7 +64,7 @@
         android:layout_height="wrap_content"
         android:text="Thin"
         android:textColor="#ff666666"
-        android:textSize="18.0dip" />
+        android:textSize="20.0dip" />
 
     <TextView
         android:id="@+id/thinitalic"
@@ -72,7 +72,7 @@
         android:layout_height="wrap_content"
         android:text="Thin Italic"
         android:textColor="#ff666666"
-        android:textSize="18.0dip" />
+        android:textSize="20.0dip" />
 
     <TextView
         android:id="@+id/condensed"
@@ -80,7 +80,7 @@
         android:layout_height="wrap_content"
         android:text="Condensed"
         android:textColor="#ff666666"
-        android:textSize="18.0dip" />
+        android:textSize="20.0dip" />
 
     <TextView
         android:id="@+id/condenseditalic"
@@ -88,7 +88,7 @@
         android:layout_height="wrap_content"
         android:text="Condensed Italic"
         android:textColor="#ff666666"
-        android:textSize="18.0dip" />
+        android:textSize="20.0dip" />
 
     <TextView
         android:id="@+id/condensedbold"
@@ -96,7 +96,7 @@
         android:layout_height="wrap_content"
         android:text="Condensed Bold"
         android:textColor="#ff666666"
-        android:textSize="18.0dip" />
+        android:textSize="20.0dip" />
 
     <TextView
         android:id="@+id/condensedbolditalic"
@@ -104,6 +104,6 @@
         android:layout_height="wrap_content"
         android:text="Condensed Bold Italic"
         android:textColor="#ff666666"
-        android:textSize="18.0dip" />
+        android:textSize="20.0dip" />
 
 </LinearLayout>

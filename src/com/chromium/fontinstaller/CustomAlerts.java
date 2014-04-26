@@ -44,7 +44,7 @@ public class CustomAlerts{
 	public static void showPreviewAlert (String title, String message, Typeface font, final String fontName, final Context context) { 
 		//method for preview dialog. has extra param for typeface
 
-		Dialog preview = new Dialog(context);
+		final Dialog preview = new Dialog(context);
 
 		preview.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		preview.setContentView(R.layout.preview_alert);	
@@ -63,6 +63,7 @@ public class CustomAlerts{
 		Button viewAllVariants = (Button) preview.findViewById(R.id.viewAllVariants);
 		viewAllVariants.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v){
+				preview.dismiss();
 				Preview.fullPreviewAlert(fontName, context);
 			}			
 		});

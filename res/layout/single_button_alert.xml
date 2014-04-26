@@ -33,6 +33,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/message"
         android:background="@drawable/apptheme_btn_default_holo_light"
-       android:text="Reboot" />
+        android:text="Reboot" />
 
 </RelativeLayout>
