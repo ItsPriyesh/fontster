@@ -1,7 +1,6 @@
 package com.chromium.fontinstaller;
 
 import java.io.File;
-
 import android.app.Dialog;
 import android.app.DownloadManager;
 import android.app.ProgressDialog;
@@ -171,33 +170,6 @@ public class Preview {
 			request12.allowScanningByMediaScanner();
 			request12.setDestinationInExternalPublicDir("/SampleFonts/"+fontName, "RobotoCondensed-Italic.ttf");
 			request12.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
-
-			//Delete old samples
-			/*	File oldSample1 = new File("/sdcard/SampleFonts/Roboto-Bold.ttf");
-		File oldSample2 = new File("/sdcard/SampleFonts/Roboto-BoldItalic.ttf");
-		File oldSample3 = new File("/sdcard/SampleFonts/Roboto-Regular.ttf");
-		File oldSample4 = new File("/sdcard/SampleFonts/Roboto-Italic.ttf");
-		File oldSample5 = new File("/sdcard/SampleFonts/Roboto-Light.ttf");
-		File oldSample6 = new File("/sdcard/SampleFonts/Roboto-LightItalic.ttf");
-		File oldSample7 = new File("/sdcard/SampleFonts/Roboto-Thin.ttf");
-		File oldSample8 = new File("/sdcard/SampleFonts/Roboto-ThinItalic.ttf");
-		File oldSample9 = new File("/sdcard/SampleFonts/RobotoCondensed-Bold.ttf");
-		File oldSample10 = new File("/sdcard/SampleFonts/RobotoCondensed-BoldItalic.ttf");
-		File oldSample11 = new File("/sdcard/SampleFonts/RobotoCondensed-Regular.ttf");
-		File oldSample12 = new File("/sdcard/SampleFonts/RobotoCondensed-Italic.ttf");
-
-		boolean deletedOldSample1 = oldSample1.delete();
-		boolean deletedOldSample2 = oldSample2.delete();
-		boolean deletedOldSample3 = oldSample3.delete();
-		boolean deletedOldSample4 = oldSample4.delete();
-		boolean deletedOldSample5 = oldSample5.delete();
-		boolean deletedOldSample6 = oldSample6.delete();
-		boolean deletedOldSample7 = oldSample7.delete();
-		boolean deletedOldSample8 = oldSample8.delete();
-		boolean deletedOldSample9 = oldSample9.delete();
-		boolean deletedOldSample10 = oldSample10.delete();
-		boolean deletedOldSample11 = oldSample11.delete();
-		boolean deletedOldSample12 = oldSample12.delete();*/
 
 			//Send request
 			DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);

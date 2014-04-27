@@ -1,23 +1,14 @@
 package com.chromium.fontinstaller;
 
-import java.io.File;
 import java.io.IOException;
-
 import android.app.Dialog;
-import android.app.DownloadManager;
-import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class CustomAlerts{
 

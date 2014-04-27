@@ -22,9 +22,7 @@ import android.os.Environment;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 import android.widget.TextView;
 import android.view.*;
 
@@ -96,7 +94,6 @@ public class FontList extends Activity  {
 				urlRobotoCondensedRegular = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/RobotoCondensed-Regular.ttf";
 				urlRobotoCondensedItalic = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/RobotoCondensed-Italic.ttf";
 
-				//put here
 				confirm = new Dialog(FontList.this);
 
 				confirm.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -365,10 +362,6 @@ public class FontList extends Activity  {
 					downloadSample.allowScanningByMediaScanner();
 					downloadSample.setDestinationInExternalPublicDir("/SampleFonts/"+previewName, "sample.ttf");
 					downloadSample.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);	
-
-					//Delete old samples
-					//		File oldSample = new File("/sdcard/SampleFonts/sample.ttf");
-					//		boolean deletedOldSample = oldSample.delete();
 
 					//Send request
 					DownloadManager sampleFontManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
