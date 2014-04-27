@@ -4,6 +4,10 @@ import java.io.IOException;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ImageSpan;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -26,6 +30,33 @@ public class CustomAlerts{
 		alertTitle.setText(title);
 		TextView alertMessage = (TextView) help.findViewById(R.id.message);
 		alertMessage.setText(message);
+		help.show();
+	}
+
+	public static void showBasicAlertWithImage (String title, String message, Context context) { 
+		//method to show custom styled dialog. params are the title, the message, and the context of the alert
+
+		Dialog help = new Dialog(context);
+
+		help.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		help.setContentView(R.layout.basic_image_alert);	
+		TextView alertTitle = (TextView) help.findViewById(R.id.title);
+		alertTitle.setText(title);
+		TextView alertMessage = (TextView) help.findViewById(R.id.message);
+		alertMessage.setText(message);
+ 
+		TextView imageMessage  = (TextView) help.findViewById (R.id.imageMessage); 
+		
+        Drawable d = context.getResources().getDrawable(R.drawable.ic_action_accept); 
+        d.setBounds(0, 0, 40, 40); 
+        
+        ImageSpan is = new ImageSpan(d, ImageSpan.ALIGN_BOTTOM); 
+        
+		SpannableString texts = new SpannableString(imageMessage.getText().toString().concat(""));
+		texts.setSpan(is, 4, 5, 0);
+         
+		imageMessage.setText(texts);
+
 		help.show();
 	}
 
@@ -58,7 +89,7 @@ public class CustomAlerts{
 				Preview.fullPreviewAlert(fontName, context);
 			}			
 		});
-		
+
 		preview.show();
 	}
 

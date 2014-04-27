@@ -419,7 +419,8 @@ public class FontList extends Activity  {
 
 		if (prefs.getBoolean("firstrun", true)) { //stuff to do on first app opening
 
-			CustomAlerts.showBasicAlert("Instructions", "To install a font simply tap on the one that you want.\n\nIf you would like to preview a font prior to installing, long press it.", FontList.this);
+		//	CustomAlerts.showBasicAlert("Instructions", "To install a font simply tap on the one that you want.\n\nIf you would like to preview a font prior to installing, long press it.", FontList.this);
+			CustomAlerts.showBasicAlertWithImage ("Instructions", "To install a font simply tap on the one that you want.\n\nIf you would like to preview a font prior to installing, long press it.", FontList.this);
 
 			prefs.edit().putBoolean("firstrun", false).commit();
 		}
@@ -435,7 +436,9 @@ public class FontList extends Activity  {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem menuItem) {
 		if (menuItem.getItemId() == R.id.menu_help) {
-			CustomAlerts.showBasicAlert("Instructions", "To install a font simply tap on the one that you want.\n\nIf you would like to preview a font prior to installing, long press it.", FontList.this);
+			//CustomAlerts.showBasicAlert("Instructions", "To install a font simply tap on the one that you want.\n\nIf you would like to preview a font prior to installing, long press it.", FontList.this);
+			CustomAlerts.showBasicAlertWithImage ("Instructions", "To install a font simply tap on the one that you want.\n\nIf you would like to preview a font prior to installing, long press it.", FontList.this);
+
 			return true;
 		}
 		return false;

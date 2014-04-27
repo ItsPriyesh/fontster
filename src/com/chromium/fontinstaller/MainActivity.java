@@ -2,7 +2,6 @@ package com.chromium.fontinstaller;
 
 import java.io.IOException;
 import android.support.v7.app.ActionBarActivity;
-import android.app.Dialog;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
@@ -14,9 +13,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity {
@@ -33,7 +30,7 @@ public class MainActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_card);
 		prefs = getSharedPreferences("com.chromium.fontinstaller", MODE_PRIVATE);
-
+				
 		openFontList = (Button)findViewById(R.id.installFont);
 		openFontList.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v){
