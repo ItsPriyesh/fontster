@@ -15,11 +15,19 @@ import android.widget.Toast;
 public class BackupRestore extends Activity {
 
 	Button backup, restore;
-
+	TextView currentFont;
+	String currentFontFromPrefs;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.backup_restore);
+		
+		FontList.prefs = getSharedPreferences("com.chromium.fontinstaller.fontlist", MODE_PRIVATE);
+		currentFontFromPrefs = FontList.prefs.getString("installedFont", "Stock");
+		
+		currentFont = (TextView)findViewById(R.id.currentFont);
+		currentFont.setText("Currently installed font: " + currentFontFromPrefs);
 		
 		backup = (Button)findViewById(R.id.backup);
 		backup.setOnClickListener(new View.OnClickListener() { //copy fonts from system to sd

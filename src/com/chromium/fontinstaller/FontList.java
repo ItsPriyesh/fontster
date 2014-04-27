@@ -28,7 +28,7 @@ import android.view.*;
 
 public class FontList extends Activity  {
 
-	SharedPreferences prefs = null;
+	public static SharedPreferences prefs = null;
 	private ListView lv;
 	Dialog confirm;
 	static Button reboot, positiveButton, negativeButton;
@@ -37,6 +37,8 @@ public class FontList extends Activity  {
 	static int dlLeft, sampleFontDL;
 	static TextView alertTitle, alertMessage;
 
+	static String currentlyInstalledFont = "Stock";
+	
 	//Font url strings
 	String urlRobotoBold, urlRobotoBoldItalic, urlRobotoItalic, 
 	urlRobotoLight, urlRobotoLightItalic, urlRobotoRegular, urlRobotoThin, 
@@ -47,9 +49,13 @@ public class FontList extends Activity  {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.font_list);
 		prefs = getSharedPreferences("com.chromium.fontinstaller.fontlist", MODE_PRIVATE);
-
+		
+		final SharedPreferences.Editor editor = prefs.edit();
+		editor.putString("installedFont", currentlyInstalledFont);
+		editor.commit();
+		
 		fontDest = "/system/fonts"; //change path to /system/fonts when releasing
-
+				
 		lv = (ListView) findViewById(R.id.listView1);
 
 		ArrayList<String> fontList = new ArrayList<String>();
@@ -76,6 +82,7 @@ public class FontList extends Activity  {
 		// Font Installing
 		lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View clickView, int position, long id) {
+				
 				selectedFromList = (lv.getItemAtPosition(position).toString());
 
 				fontName = removeSpaces(selectedFromList); //remove the spaces from the item so that it can later be passed into the URL string
@@ -307,6 +314,11 @@ public class FontList extends Activity  {
 											@Override
 											protected void onPostExecute(Void result) {
 												super.onPostExecute(result);
+												currentlyInstalledFont = selectedFromList;
+												prefs = getSharedPreferences("com.chromium.fontinstaller.fontlist", MODE_PRIVATE);		
+												editor.putString("installedFont", currentlyInstalledFont);
+												editor.commit();
+												
 												if (copyProgress != null) {
 													if (copyProgress.isShowing()) {
 														copyProgress.dismiss();
