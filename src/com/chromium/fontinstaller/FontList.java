@@ -24,6 +24,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.view.*;
 
 public class FontList extends Activity  {
@@ -357,6 +358,7 @@ public class FontList extends Activity  {
 				previewName = removeSpaces(longPressed);
 
 				File sampleFont = new File(Environment.getExternalStorageDirectory() + "/SampleFonts/" + previewName + "/sample.ttf");
+				
 				if(sampleFont.exists())  {
 					//Create new typeface from downloaded regular preview font
 					Typeface sampleFontReUsed = Typeface.createFromFile("/sdcard/SampleFonts/" + previewName + "/sample.ttf");
@@ -369,10 +371,10 @@ public class FontList extends Activity  {
 
 					urlPreviewFont = "https://github.com/Chromium1/Fonts/raw/master/" + previewName + "FontPack/Roboto-Regular.ttf";
 
-					//Setup request to download regular font style for user preview
+					String path = "/SampleFonts/" + previewName + "/";
 					DownloadManager.Request downloadSample = new DownloadManager.Request(Uri.parse(urlPreviewFont));
 					downloadSample.allowScanningByMediaScanner();
-					downloadSample.setDestinationInExternalPublicDir("/SampleFonts/"+previewName, "sample.ttf");
+					downloadSample.setDestinationInExternalPublicDir(path, "sample.ttf");
 					downloadSample.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);	
 
 					//Send request

@@ -110,65 +110,67 @@ public class Preview {
 			String urlRobotoCondensedRegular = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/RobotoCondensed-Regular.ttf";
 			String urlRobotoCondensedItalic = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/RobotoCondensed-Italic.ttf";	
 
+			String path = "/SampleFonts/" + fontName + "/";
+			
 			// 12 requests for all font styles
 			DownloadManager.Request request1 = new DownloadManager.Request(Uri.parse(urlRobotoBold));
 			request1.allowScanningByMediaScanner();
-			request1.setDestinationInExternalPublicDir("/SampleFonts/"+fontName, "Roboto-Bold.ttf");
+			request1.setDestinationInExternalPublicDir(path, "Roboto-Bold.ttf");
 			request1.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
 
 			DownloadManager.Request request2 = new DownloadManager.Request(Uri.parse(urlRobotoBoldItalic));
 			request2.allowScanningByMediaScanner();
-			request2.setDestinationInExternalPublicDir("/SampleFonts/"+fontName, "Roboto-BoldItalic.ttf");
+			request2.setDestinationInExternalPublicDir(path, "Roboto-BoldItalic.ttf");
 			request2.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);				
 
 			DownloadManager.Request request3 = new DownloadManager.Request(Uri.parse(urlRobotoRegular));
 			request3.allowScanningByMediaScanner();
-			request3.setDestinationInExternalPublicDir("/SampleFonts/"+fontName, "Roboto-Regular.ttf");
+			request3.setDestinationInExternalPublicDir(path, "Roboto-Regular.ttf");
 			request3.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);	
 
 			DownloadManager.Request request4 = new DownloadManager.Request(Uri.parse(urlRobotoItalic));
 			request4.allowScanningByMediaScanner();
-			request4.setDestinationInExternalPublicDir("/SampleFonts/"+fontName, "Roboto-Italic.ttf");
+			request4.setDestinationInExternalPublicDir(path, "Roboto-Italic.ttf");
 			request4.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);	
 
 			DownloadManager.Request request5 = new DownloadManager.Request(Uri.parse(urlRobotoLight));
 			request5.allowScanningByMediaScanner();
-			request5.setDestinationInExternalPublicDir("/SampleFonts/"+fontName, "Roboto-Light.ttf");
+			request5.setDestinationInExternalPublicDir(path, "Roboto-Light.ttf");
 			request5.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);	
 
 			DownloadManager.Request request6 = new DownloadManager.Request(Uri.parse(urlRobotoLightItalic));
 			request6.allowScanningByMediaScanner();
-			request6.setDestinationInExternalPublicDir("/SampleFonts/"+fontName, "Roboto-LightItalic.ttf");
+			request6.setDestinationInExternalPublicDir(path, "Roboto-LightItalic.ttf");
 			request6.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);	
 
 			DownloadManager.Request request7 = new DownloadManager.Request(Uri.parse(urlRobotoThin));
 			request7.allowScanningByMediaScanner();
-			request7.setDestinationInExternalPublicDir("/SampleFonts/"+fontName, "Roboto-Thin.ttf");
+			request7.setDestinationInExternalPublicDir(path, "Roboto-Thin.ttf");
 			request7.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);	
 
 			DownloadManager.Request request8 = new DownloadManager.Request(Uri.parse(urlRobotoThinItalic));
 			request8.allowScanningByMediaScanner();
-			request8.setDestinationInExternalPublicDir("/SampleFonts/"+fontName, "Roboto-ThinItalic.ttf");
+			request8.setDestinationInExternalPublicDir(path, "Roboto-ThinItalic.ttf");
 			request8.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);	
 
 			DownloadManager.Request request9 = new DownloadManager.Request(Uri.parse(urlRobotoCondensedBold));
 			request9.allowScanningByMediaScanner();
-			request9.setDestinationInExternalPublicDir("/SampleFonts/"+fontName, "RobotoCondensed-Bold.ttf");
+			request9.setDestinationInExternalPublicDir(path, "RobotoCondensed-Bold.ttf");
 			request9.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
 
 			DownloadManager.Request request10 = new DownloadManager.Request(Uri.parse(urlRobotoCondensedBoldItalic));
 			request10.allowScanningByMediaScanner();
-			request10.setDestinationInExternalPublicDir("/SampleFonts/"+fontName, "RobotoCondensed-BoldItalic.ttf");
+			request10.setDestinationInExternalPublicDir(path, "RobotoCondensed-BoldItalic.ttf");
 			request10.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
 
 			DownloadManager.Request request11 = new DownloadManager.Request(Uri.parse(urlRobotoCondensedRegular));
 			request11.allowScanningByMediaScanner();
-			request11.setDestinationInExternalPublicDir("/SampleFonts/"+fontName, "RobotoCondensed-Regular.ttf");
+			request11.setDestinationInExternalPublicDir(path, "RobotoCondensed-Regular.ttf");
 			request11.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
 
 			DownloadManager.Request request12 = new DownloadManager.Request(Uri.parse(urlRobotoCondensedItalic));
 			request12.allowScanningByMediaScanner();
-			request12.setDestinationInExternalPublicDir("/SampleFonts/"+fontName, "RobotoCondensed-Italic.ttf");
+			request12.setDestinationInExternalPublicDir(path, "RobotoCondensed-Italic.ttf");
 			request12.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
 
 			//Send request
