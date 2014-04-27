@@ -29,9 +29,11 @@ public class About extends PreferenceActivity {
 		Preference clearCache = (Preference) findPreference("clearCache");
 		clearCache.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			public boolean onPreferenceClick(Preference preference) {
-				File file = new File("/sdcard/DownloadedFonts");
-
-				if (file.exists()) {
+				
+				File downloadDir = new File("/sdcard/DownloadedFonts");
+				File previewDir = new File("/sdcard/SampleFonts");
+				
+				if (downloadDir.exists() || previewDir.exists()) {
 					AsyncTask<Void, Void, Void> cleanCache = new AsyncTask<Void, Void, Void>()  { 
 						//display progress dialog while fonts are copied in background
 						ProgressDialog cleanCacheProgress;
@@ -47,11 +49,14 @@ public class About extends PreferenceActivity {
 						@Override
 						protected Void doInBackground(Void... params) {
 
-							String wipe = "rm -r /sdcard/DownloadedFonts";
+							String downloads = "rm -r /sdcard/DownloadedFonts";
+							String previews = "rm -r /sdcard/SampleFonts";
 							Runtime runtime = Runtime.getRuntime();
 							try {
-								runtime.exec(wipe);
-							} catch (IOException e) { 
+								runtime.exec(downloads);
+								runtime.exec(previews);
+							}
+							catch (IOException e) { 
 
 							}
 							return null;
