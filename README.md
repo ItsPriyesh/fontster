@@ -31,3 +31,9 @@ Devices Tested On
 * Samsung Galaxy Ace II X
 * Xperia Ion (Unsuccesful)
 
+Screenshots
+============
+![Alt text](http://i.imgur.com/aYNmaiO.png)
+![Alt text](http://i.imgur.com/zU2QU06.png)
+![Alt text](http://i.imgur.com/FH6MRUJ.png)
+![Alt text](http://i.imgur.com/Qr6S1LO.png)
