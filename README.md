@@ -7,8 +7,8 @@ backup/restore, veiw current installed font, and options.
 
 Requirements
 =============
--Rooted Phone
--Android Ice Cream Sandwich or higher (Version 4.0+)
+*Rooted Phone
+*Android Ice Cream Sandwich or higher (Version 4.0+)
 
 Instructions
 =============
@@ -23,11 +23,11 @@ Instructions
 
 Devices Tested On
 ==================
--Xperia Ion
--Samsung Galaxy S3
--Nexus 5
--Nexus 4
--Moto X
--HTC Desire
--Samsung Galaxy Ace II X
+*Samsung Galaxy S3
+*Nexus 5
+*Nexus 4
+*Moto X
+*HTC Desire
+*Samsung Galaxy Ace II X
+*Xperia Ion (Unsuccesful)
 
