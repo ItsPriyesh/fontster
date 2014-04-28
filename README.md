@@ -1,3 +1,5 @@
+![Alt text](http://i.imgur.com/OFfApE1.png)
+
 Description
 =============
 This app is called Fontster. It is an app created for those who wish to change the fonts on their phone.
