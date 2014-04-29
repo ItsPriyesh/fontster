@@ -36,3 +36,7 @@ Devices Tested On
 Screenshots
 ============
 ![Alt text](http://i.imgur.com/767uHBW.png)
+
+FlowChart
+============
++![Alt text](http://i.imgur.com/lsDBVoT.png)
