@@ -11,6 +11,7 @@ Antipasto Light
 Antipasto Regular
 Arch Rival
 Archivo Narrow
+Arimo
 Arvo
 Asap
 Aubrey
@@ -38,6 +39,7 @@ Continuum
 Corporate Rounded
 Covington
 Dolce Vita
+Dosis
 Economica
 Engebrechtre
 Eras
@@ -116,6 +118,7 @@ Sony Sketch
 Sony Xperia
 Sovba
 Square
+Source Sans Pro
 Terfens
 Terfens Light
 Tertre
