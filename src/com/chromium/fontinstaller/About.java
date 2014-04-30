@@ -17,7 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class About extends PreferenceActivity {
-
+	int easterEggClicks = 10;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -117,6 +117,20 @@ public class About extends PreferenceActivity {
 						"&business=XR9WBFXGZ9G5E&lc=CA&item_name=Font%20Installer&currency_code" +
 						"=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted"));
 				startActivity(donate);
+				return true; 
+			}
+		});
+		
+		Preference ethan = (Preference) findPreference("ethan");
+		ethan.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			public boolean onPreferenceClick(Preference preference) {
+				easterEggClicks--;
+				if (easterEggClicks < 0){
+					//CustomAlerts.showImageAlert(R.drawable.lol, About.this);
+					Intent aboutEE = new Intent(About.this, AboutEE.class);
+					startActivity(aboutEE);
+					easterEggClicks = 10;
+				}
 				return true; 
 			}
 		});

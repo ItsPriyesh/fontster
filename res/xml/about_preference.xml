@@ -32,7 +32,8 @@
             android:title="Arjun Sharma" />
         <Preference
             android:summary="Co developer"
-            android:title="Ethan Chen" />
+            android:title="Ethan Chen"
+            android:key="ethan" />
     </PreferenceCategory>
 
 </PreferenceScreen>

@@ -18,6 +18,14 @@ import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity {
 
+	/*  TODO 
+	 * -Remove Font Tracking
+	 * -Add easter egg
+	 * -Fix button colors sticking
+	 * -Add alphabetical scrolling to font list
+	 * -Use fallback fonts on restore complete dialog
+	 * -Add option to delete backup 
+	 */
 	SharedPreferences prefs = null;
 	Button openFontList, backup, testView;
 

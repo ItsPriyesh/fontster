@@ -14,22 +14,26 @@ import android.content.BroadcastReceiver; //imports content.BroadcastReveiver
 import android.content.Context; //imports android.content.Context
 import android.content.IntentFilter; //imports android.content.IntentFilter
 import android.content.SharedPreferences; //imports android.content.SharedPreferences
+import android.database.Cursor;
 import android.graphics.Typeface; //imports android.graphics.Typeface
 import android.net.Uri; //imports android.net.Uri
 import android.os.AsyncTask; //imports android.os.AsyncTask
 import android.os.Bundle; //imports android.os.Bundle
 import android.os.Environment; //imports android.os.Environment
 import android.widget.AdapterView; //imports android.widget.AdapterView
+import android.widget.AlphabetIndexer;
 import android.widget.ArrayAdapter; //imports android.widget.ArrayAdapter
 import android.widget.Button; //imports android.widget.Button
 import android.widget.ListView; //imports android.widget.ListView
+import android.widget.SectionIndexer;
 import android.widget.TextView; //imports android.widget.TextView
 import android.widget.Toast; //imports android.widget.Toast
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.*; //imports android.view.*
 
 public class FontList extends Activity  {
 
-	public static SharedPreferences prefs = null;
+	SharedPreferences prefs = null;
 	private ListView lv;
 	Dialog confirm;
 	static Button reboot, positiveButton, negativeButton;
@@ -37,8 +41,6 @@ public class FontList extends Activity  {
 	static String fontDest, fontName, previewName, selectedFromList, longPressed;	
 	static int dlLeft, sampleFontDL;
 	static TextView alertTitle, alertMessage;
-
-	static String currentlyInstalledFont = "Stock";
 	
 	//Font url strings
 	String urlRobotoBold, urlRobotoBoldItalic, urlRobotoItalic, 
@@ -50,10 +52,6 @@ public class FontList extends Activity  {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.font_list);
 		prefs = getSharedPreferences("com.chromium.fontinstaller.fontlist", MODE_PRIVATE);
-		
-		final SharedPreferences.Editor editor = prefs.edit();
-		editor.putString("installedFont", currentlyInstalledFont);
-		editor.commit();
 		
 		fontDest = "/system/fonts"; //change path to /system/fonts when releasing
 				
@@ -314,12 +312,7 @@ public class FontList extends Activity  {
 
 											@Override
 											protected void onPostExecute(Void result) {
-												super.onPostExecute(result);
-												currentlyInstalledFont = selectedFromList;
-												prefs = getSharedPreferences("com.chromium.fontinstaller.fontlist", MODE_PRIVATE);		
-												editor.putString("installedFont", currentlyInstalledFont);
-												editor.commit();
-												
+												super.onPostExecute(result);			
 												if (copyProgress != null) {
 													if (copyProgress.isShowing()) {
 														copyProgress.dismiss();
@@ -476,5 +469,5 @@ public class FontList extends Activity  {
 		}
 		return line;
 	}
-
+	
 }

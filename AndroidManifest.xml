@@ -74,6 +74,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.chromium.fontinstaller.MainActivity" />
         </activity>
+        
+        <activity  
+         android:name="com.chromium.fontinstaller.AboutEE"  
+         android:screenOrientation="portrait" />
+        
     </application>
 
 </manifest>

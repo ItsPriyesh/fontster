@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
 
 public class CustomAlerts{
@@ -33,6 +35,21 @@ public class CustomAlerts{
 		help.show();
 	}
 
+	/*public static void showImageAlert (int imageID, Context context) { 
+		//method to show custom styled dialog. params are the title, the message, and the context of the alert
+
+		Dialog image = new Dialog(context);
+
+		image.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		image.setContentView(R.layout.image_alert);
+		
+		ImageView imageView = (ImageView)image.findViewById(R.id.imageView);
+		imageView.setImageResource(imageID);
+		//imageView.setScaleType(ScaleType.FIT_XY);
+
+		image.show();
+	}*/
+	
 	public static void showBasicAlertWithImage (String title, String message, Context context) { 
 		//method to show custom styled dialog. params are the title, the message, and the context of the alert
 
