@@ -1,31 +1,31 @@
 package com.chromium.fontinstaller;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import android.content.Intent;
-import android.app.Activity;
-import android.app.Dialog;
-import android.app.DownloadManager;
-import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
-import android.graphics.Typeface;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.Environment;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.view.*;
+import java.io.BufferedReader; //imports BufferedReader
+import java.io.File; //imports java.io.File
+import java.io.IOException; //imports java.io.IOException
+import java.io.InputStreamReader; //imports java.io.InputStreamreader
+import java.util.ArrayList; //imports java.util.ArrayList
+import android.content.Intent; //imports android.content.Intent
+import android.app.Activity; //imports android.app.Acticity
+import android.app.Dialog; //imports android.app.Dialog
+import android.app.DownloadManager; //imports android.app.DownloadManager
+import android.app.ProgressDialog; //imports android.app.ProgressDialog
+import android.content.BroadcastReceiver; //imports content.BroadcastReveiver
+import android.content.Context; //imports android.content.Context
+import android.content.IntentFilter; //imports android.content.IntentFilter
+import android.content.SharedPreferences; //imports android.content.SharedPreferences
+import android.graphics.Typeface; //imports android.graphics.Typeface
+import android.net.Uri; //imports android.net.Uri
+import android.os.AsyncTask; //imports android.os.AsyncTask
+import android.os.Bundle; //imports android.os.Bundle
+import android.os.Environment; //imports android.os.Environment
+import android.widget.AdapterView; //imports android.widget.AdapterView
+import android.widget.ArrayAdapter; //imports android.widget.ArrayAdapter
+import android.widget.Button; //imports android.widget.Button
+import android.widget.ListView; //imports android.widget.ListView
+import android.widget.TextView; //imports android.widget.TextView
+import android.widget.Toast; //imports android.widget.Toast
+import android.view.*; //imports android.view.*
 
 public class FontList extends Activity  {
 
