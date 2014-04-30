@@ -42,9 +42,6 @@ public class MainActivity extends ActionBarActivity {
 		openFontList = (Button)findViewById(R.id.installFont);
 		openFontList.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v){
-				if(v == openFontList) {
-					openFontList.setBackgroundResource(R.drawable.layer_card_background_pressed);
-				}
 				Intent fontListActivity = new Intent(MainActivity.this, FontList.class);
 				startActivity(fontListActivity);
 
@@ -54,9 +51,6 @@ public class MainActivity extends ActionBarActivity {
 		backup = (Button)findViewById(R.id.backup);
 		backup.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v){
-				if(v == backup) {
-					backup.setBackgroundResource(R.drawable.layer_card_background_pressed);
-				}
 				Intent backupRestoreActivity = new Intent(MainActivity.this, BackupRestore.class);
 				startActivity(backupRestoreActivity);
 			}
@@ -65,9 +59,6 @@ public class MainActivity extends ActionBarActivity {
 		testView = (Button)findViewById(R.id.test);
 		testView.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v){
-				if(v == testView) {
-					testView.setBackgroundResource(R.drawable.layer_card_background_pressed);
-				}
 				Intent testViewActivity = new Intent(MainActivity.this, TestView.class);
 				startActivity(testViewActivity);
 			}
