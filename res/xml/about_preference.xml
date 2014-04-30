@@ -8,9 +8,6 @@
     </PreferenceCategory>
     
     <PreferenceCategory android:title="About" >
-        <Preference
-            android:summary="This app is created by Priyesh Patel (Chromium)"
-            android:title="Developer" />
         <com.chromium.fontinstaller.VersionPreference android:title="Version" />
         <Preference
             android:key="source"
@@ -22,8 +19,20 @@
             android:title="Contact" />
         <Preference
             android:key="donate"
-            android:summary="Suppport the developer"
+            android:summary="Suppport the developers"
             android:title="Donate" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Contributors" >
+         <Preference
+            android:summary="Lead developer"
+            android:title="Priyesh Patel" />
+        <Preference
+            android:summary="Marketing administrator"
+            android:title="Arjun Sharma" />
+        <Preference
+            android:summary="Co deevloper"
+            android:title="Ethan Chen" />
     </PreferenceCategory>
 
 </PreferenceScreen>
