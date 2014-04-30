@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 public class BackupRestore extends Activity {
 
-	Button backup, restore;
+	Button backup, restore, deleteBackup;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -138,6 +138,58 @@ public class BackupRestore extends Activity {
 				}
 				else {
 					CustomAlerts.showBasicAlert("No backup", "There is currently no backup available. You must create a backup prior to being able to restore.", BackupRestore.this);
+				}
+			}			
+		});
+		
+		deleteBackup = (Button)findViewById(R.id.deleteBackup);
+		deleteBackup.setOnClickListener(new View.OnClickListener() { //copy fonts from system to sd
+			public void onClick(View v){
+				
+				File backupDir = new File("/sdcard/FontBackup");
+				if (backupDir.exists()) { 
+					AsyncTask<Void, Void, Void> delBackup = new AsyncTask<Void, Void, Void>()  { 
+						//display progress dialog while fonts are copied in background
+						ProgressDialog prog;
+
+						@Override
+						protected void onPreExecute() {
+							super.onPreExecute();
+							prog = new ProgressDialog (BackupRestore.this);
+							prog.setMessage("Deleting backup...");
+							prog.show();
+						}
+
+						@Override
+						protected Void doInBackground(Void... params) {
+
+							String backup = "rm -r /sdcard/FontBackup";
+							Runtime runtime = Runtime.getRuntime();
+							try {
+								runtime.exec(backup);
+							}
+							catch (IOException e) { 
+
+							}
+							return null;
+						}
+
+						@Override
+						protected void onPostExecute(Void result) {
+							super.onPostExecute(result);
+							if (prog != null) {
+								if (prog.isShowing()) {
+									prog.dismiss();
+								}
+							}
+							CustomAlerts.showBasicAlert ("Done", "Your backup has been deleted.", BackupRestore.this);
+
+						}
+					};
+					delBackup.execute((Void[])null);
+				}
+				else {
+					CustomAlerts.showBasicAlert("No backup", "You have not made a backup.", BackupRestore.this);
 				}
 			}			
 		});

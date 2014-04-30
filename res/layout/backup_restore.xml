@@ -23,4 +23,11 @@
         android:background="@drawable/apptheme_btn_default_holo_light"
         android:text="Restore" />
 
+    <Button
+        android:id="@+id/deleteBackup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/apptheme_btn_default_holo_light"
+        android:text="Delete backup" />
+
 </LinearLayout>
