@@ -37,6 +37,6 @@ Screenshots
 ============
 ![Alt text](http://i.imgur.com/767uHBW.png)
 
-FlowChart
+Flow Chart
 ============
 +![Alt text](http://i.imgur.com/lF1ygqu.png)
