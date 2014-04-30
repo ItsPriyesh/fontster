@@ -31,7 +31,7 @@
             android:summary="Marketing administrator"
             android:title="Arjun Sharma" />
         <Preference
-            android:summary="Co deevloper"
+            android:summary="Co developer"
             android:title="Ethan Chen" />
     </PreferenceCategory>
 
