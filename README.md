@@ -29,9 +29,15 @@ Devices Tested On
 * Nexus 5
 * Nexus 4
 * Moto X
+* Samsung Note 3
 * HTC Desire
 * Samsung Galaxy Ace II X
 * Xperia Ion (Unsuccesful)
+
+Currently Testing On
+=====================
+* Samsung Galaxy S1
+* HTC One
 
 Screenshots
 ============
