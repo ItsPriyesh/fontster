@@ -79,7 +79,7 @@ public class BackupRestore extends Activity {
 								progressDialog.dismiss();
 							}
 						}
-						showCustomAlert("Backup complete", "Your current fonts have been safely saved onto your phones storage.");
+						CustomAlerts.showBasicAlert("Backup complete", "Your current fonts have been safely saved onto your phones storage.", BackupRestore.this);
 					}
 				};
 				copyToSD.execute((Void[])null);
@@ -139,7 +139,7 @@ public class BackupRestore extends Activity {
 									progressDialog.dismiss();
 								}
 							}
-							showCustomAlertReboot("Restore complete", "Your previously backed up fonts were reinstalled. Reboot for the changes to take effect.", "Reboot");
+							CustomAlerts.showRebootAlert("Restore complete","Your previously backed up fonts were reinstalled. Reboot for the changes to take effect.", "Reboot", BackupRestore.this);
 						}
 					};
 					copyToSystem.execute((Void[])null);
@@ -149,43 +149,5 @@ public class BackupRestore extends Activity {
 				}
 			}			
 		});
-	}
-
-	public void showCustomAlert (String title, String message) { //method to show custom styled dialog. params are the title and message of the alert
-		Dialog help = new Dialog(this);
-
-		help.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		help.setContentView(R.layout.basic_alert);	
-		TextView alertTitle = (TextView) help.findViewById(R.id.title);
-		alertTitle.setText(title);
-		TextView alertMessage = (TextView) help.findViewById(R.id.message);
-		alertMessage.setText(message);
-		help.show();
-	}
-
-	public void showCustomAlertReboot (String title, String message, String button) { //method to show custom styled dialog. params are the title, message and button of the alert
-		Dialog reboot = new Dialog(this);
-
-		reboot.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		reboot.setContentView(R.layout.single_button_alert);	
-		TextView alertTitle = (TextView) reboot.findViewById(R.id.title);
-		alertTitle.setText(title);
-		TextView alertMessage = (TextView) reboot.findViewById(R.id.message);
-		alertMessage.setText(message);
-		Button positiveButton = (Button) reboot.findViewById(R.id.positive);
-		positiveButton.setText(button);
-
-		positiveButton.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v){
-				try{ 
-					Process reboot = Runtime.getRuntime().exec(new String[] { "su", "-c", "reboot"});
-				}
-				catch(IOException e){
-					Toast.makeText(getApplicationContext(), "Reboot failed.", Toast.LENGTH_LONG).show();
-				}
-			}			
-		});
-
-		reboot.show();
 	}
 }
