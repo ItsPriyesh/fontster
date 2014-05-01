@@ -20,6 +20,8 @@ public class MainActivity extends ActionBarActivity {
 
 	/*  TODO 
 	 * -Move strings to external file
+	 * -Add themes in settings
+	 * -Preview without holding preview
 	 */
 	SharedPreferences prefs = null;
 	Button openFontList, backup, testView;
