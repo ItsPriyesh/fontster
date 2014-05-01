@@ -10,12 +10,12 @@ public class AboutEE extends Activity{
 
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
-
+	    //Shows easter egg 
 	    requestWindowFeature(Window.FEATURE_NO_TITLE);
 	    getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 	    setContentView(R.layout.about_ee);
 	    
 	    ImageView imageView = (ImageView)findViewById(R.id.imageView);
-		imageView.setImageResource(R.drawable.lol);
+	    imageView.setImageResource(R.drawable.lol);
 	}
 }
