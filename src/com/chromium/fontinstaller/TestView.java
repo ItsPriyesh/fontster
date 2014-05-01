@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 public class TestView extends Activity {
 
+	//Inflates the test view layout
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
