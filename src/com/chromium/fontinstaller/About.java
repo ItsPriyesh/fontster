@@ -126,7 +126,6 @@ public class About extends PreferenceActivity {
 			public boolean onPreferenceClick(Preference preference) {
 				easterEggClicks--;
 				if (easterEggClicks < 0){
-					//CustomAlerts.showImageAlert(R.drawable.lol, About.this);
 					Intent aboutEE = new Intent(About.this, AboutEE.class);
 					startActivity(aboutEE);
 					easterEggClicks = 10;
