@@ -17,6 +17,10 @@
             android:key="contact"
             android:summary="Send the developer an email"
             android:title="Contact" />
+       <Preference
+            android:key="website"
+            android:summary="Check out our website"
+            android:title="Website" />
         <Preference
             android:key="donate"
             android:summary="Suppport the developers"
