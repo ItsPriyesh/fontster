@@ -46,3 +46,15 @@ Screenshots
 Flow Chart
 ============
 +![Alt text](http://i.imgur.com/lF1ygqu.png)
+
+Software Proposal
+=================
+We will be creating an Android app that allows users to pick from a large selection of custom fonts, and then install the one of their choice as the system typeface. In other words we will be developing a font installer app for Android. Other functionalities of the app include font previewing, backup and restore fonts, and view currently installed font. The app requires that your device is rooted (necessary in order to write new fonts into the system partition), and that it is running Android Ice Cream Sandwich or higher (Android 4.0+). In addition it is recommended that your device has at least 512MB of RAM, and a single core 1GHz processor or better. Sufficient storage space is also essential for the downloaded fonts to reside. The app will need access to the following permissions:
+
+```
+> Modify or delete the contents of your SD card (to store downloaded fonts)
+> Full permissions to all device features and storage (root access needed to push fonts into system)
+> Download files without notification and full network access (needed to contact server and download fonts)
+```
+
+Based on our research we have come to an estimate that approximately 1 percent of all Android devices are rooted. The current number of Android device activations is just over 1 billion, therefore about 10 million rooted Android devices exist. We must also take into consideration that our app requires Android version 4.0 or higher. This equates to 80 percent of all devices running Android. Finally 80 percent of 10 million, results in 8 million devices. This number represents the number of possible users for our app. There is a large amount of Android users who are greatly enthusiastic about changing the look of their devices. Many consumers who buy into Android do so primarily because of the wide range of customization that the mobile operating system offers. This app will extend the users control over their device and allow them to personalize it further to their liking. 
