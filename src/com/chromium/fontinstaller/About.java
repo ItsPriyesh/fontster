@@ -94,7 +94,19 @@ public class About extends PreferenceActivity {
 				return true; 
 			}
 		});
-
+		
+         	Preference site = (Preference) findPreference("website");
+		site.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			public boolean onPreferenceClick(Preference preference) {
+				Intent site = new Intent();
+				site.setAction(Intent.ACTION_VIEW);
+				site.addCategory(Intent.CATEGORY_BROWSABLE);
+				site.setData(Uri.parse("https://fontster.cf"));
+				startActivity(site);
+				return true; 
+			}
+		});
+		
 		Preference contact = (Preference) findPreference("contact");
 		contact.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			public boolean onPreferenceClick(Preference preference) {
