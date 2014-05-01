@@ -21,7 +21,6 @@ public class Preview {
 
 	public static void fullPreviewAlert (final String fontName, Context context){
 
-		//File pfDir = new File(Environment.getExternalStorageDirectory() + "/SampleFonts/"+fontName);
 		File regularSample = new File(Environment.getExternalStorageDirectory() + "/SampleFonts/" + fontName + "/Roboto-Regular.ttf");
 		File italicSample = new File(Environment.getExternalStorageDirectory() + "/SampleFonts/" + fontName + "/Roboto-Italic.ttf");
 		File boldSample = new File(Environment.getExternalStorageDirectory() + "/SampleFonts/" + fontName + "/Roboto-Bold.ttf");
