@@ -4,7 +4,7 @@ Description
 =============
 This app is called Fontster. It is an app created for those who wish to change the fonts on their phone.
 It has a wide array of fonts available for the user to choose from, allowing the user to choose what they prefer.
-To actually use the app, your phone MUST BE ROOTED. In the app itself there are four options, install/preview a font, 
+To actually use the app, your phone **_must be rooted_**. In the app itself there are four options, install/preview a font, 
 backup/restore, veiw current installed font, and options.
 
 Requirements
@@ -26,18 +26,14 @@ Instructions
 Devices Tested On
 ==================
 * Samsung Galaxy S3
-* Nexus 5
-* Nexus 4
-* Moto X
-* Samsung Note 3
-* HTC Desire
 * Samsung Galaxy Ace II X
-* Xperia Ion (Unsuccesful)
-
-Currently Testing On
-=====================
-* Samsung Galaxy S1
-* HTC One
+* Samsung Galaxy S Vibrant
+* Samsung Galaxy Note 3
+* Google Nexus 5
+* Google Nexus 4
+* Moto X
+* HTC Desire
+* Sony Xperia Ion (Unsuccesful)
 
 Screenshots
 ============
