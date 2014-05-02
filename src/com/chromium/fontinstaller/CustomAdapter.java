@@ -35,8 +35,8 @@ public class CustomAdapter extends ArrayAdapter<String> {
 		LayoutInflater inflater = ((Activity) context).getLayoutInflater(); 
 		row = inflater.inflate(layoutResourceId, parent, false);
 
-		ImageView alreadyDownloaded = (ImageView)row.findViewById(R.id.alreadyDownloaded);
-		TextView textView = (TextView)row.findViewById(R.id.fontTextView);
+		ImageView alreadyDownloaded = (ImageView) row.findViewById(R.id.alreadyDownloaded);
+		TextView textView = (TextView) row.findViewById(R.id.fontTextView);
 		textView.setText(data.get(position));
 
 		File dfDir = new File(Environment.getExternalStorageDirectory() + "/DownloadedFonts/"+ (removeSpaces(data.get(position))));

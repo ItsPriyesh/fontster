@@ -2,5 +2,29 @@
 <resources>
 
     <string name="app_name">Fontster</string>
+    
+    <string name="install_button">Install a font</string>
+    <string name="backup_restore_button">Backup and restore fonts</string>
+    <string name="view_current_button">View currently installed font</string>
+    
+    <string name="backup_button">Backup</string>
+    <string name="restore_button">Restore</string>
+    <string name="delete_backup_button">Delete backup</string>
 
+    <string name="regular">Regular</string>
+    <string name="italic">Italic</string>
+    <string name="bold">Bold</string>
+    <string name="bold_italic">Bold Italic</string>
+    <string name="light">Light</string>
+    <string name="light_italic">Light Italic</string>
+    <string name="thin">Thin</string>
+    <string name="thin_italic">Thin Italic</string>
+    <string name="condensed">Condensed</string>
+    <string name="condensed_italic">Condensed Italic</string>
+    <string name="condensed_bold">Condensed Bold</string>
+    <string name="condensed_bold_italic">Condensed Bold Italic</string>
+    
+    <string name="clear_cache_message">Delete old previously downloaded fonts</string>
+    <string name="clear_cache_title">Clear cache</string>
+    
 </resources>

@@ -12,7 +12,7 @@
         android:layout_gravity="center"
         android:layout_margin="10dp"
         android:background="@drawable/apptheme_btn_default_holo_light"
-        android:text="Backup" />
+        android:text="@string/backup_button" />
 
     <Button
         android:id="@+id/restore"
@@ -21,13 +21,13 @@
         android:layout_gravity="center"
         android:layout_margin="10dp"
         android:background="@drawable/apptheme_btn_default_holo_light"
-        android:text="Restore" />
+        android:text="@string/restore_button" />
 
     <Button
         android:id="@+id/deleteBackup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/apptheme_btn_default_holo_light"
-        android:text="Delete backup" />
+        android:text="@string/delete_backup_button"/>
 
 </LinearLayout>

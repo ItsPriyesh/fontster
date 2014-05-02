@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif"
-        android:text="Regular"
+        android:text="@string/regular"
         android:textColor="#ff666666"
         android:textSize="25.0dip"
         android:textStyle="normal" />
@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif"
-        android:text="Italic"
+        android:text="@string/italic"
         android:textColor="#ff666666"
         android:textSize="25.0dip"
         android:textStyle="italic" />
@@ -30,7 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif"
-        android:text="Bold"
+        android:text="@string/bold"
         android:textColor="#ff666666"
         android:textSize="25.0dip"
         android:textStyle="bold" />
@@ -40,7 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif"
-        android:text="Bold Italic"
+        android:text="@string/bold_italic"
         android:textColor="#ff666666"
         android:textSize="25.0dip"
         android:textStyle="bold|italic" />
@@ -50,7 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-light"
-        android:text="Light"
+        android:text="@string/light"
         android:textColor="#ff666666"
         android:textSize="25.0dip"
         android:textStyle="normal" />
@@ -60,7 +60,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-light"
-        android:text="Light Italic"
+        android:text="@string/light_italic"
         android:textColor="#ff666666"
         android:textSize="25.0dip"
         android:textStyle="italic" />
@@ -70,7 +70,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-thin"
-        android:text="Thin"
+        android:text="@string/thin"
         android:textColor="#ff666666"
         android:textSize="25.0dip"
         android:textStyle="normal" />
@@ -80,7 +80,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-thin"
-        android:text="Thin Italic"
+        android:text="@string/thin_italic"
         android:textColor="#ff666666"
         android:textSize="25.0dip"
         android:textStyle="italic" />
@@ -90,7 +90,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-condensed"
-        android:text="Condensed"
+        android:text="@string/condensed"
         android:textColor="#ff666666"
         android:textSize="25.0dip"
         android:textStyle="normal" />
@@ -100,7 +100,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-condensed"
-        android:text="Condensed Italic"
+        android:text="@string/condensed_italic"
         android:textColor="#ff666666"
         android:textSize="25.0dip"
         android:textStyle="italic" />
@@ -110,7 +110,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-condensed"
-        android:text="Condensed Bold"
+        android:text="@string/condensed_bold"
         android:textColor="#ff666666"
         android:textSize="25.0dip"
         android:textStyle="bold" />
@@ -120,7 +120,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-condensed"
-        android:text="Condensed Bold Italic"
+        android:text="@string/condensed_bold_italic"
         android:textColor="#ff666666"
         android:textSize="25.0dip"
         android:textStyle="bold|italic" />

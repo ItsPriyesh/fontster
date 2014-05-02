@@ -3,8 +3,8 @@
     <PreferenceCategory android:title="General" >
         <Preference
             android:key="clearCache"
-            android:summary="Delete old previously downloaded fonts"
-            android:title="Clear cache" />
+            android:summary="@string/clear_cache_message"
+            android:title="@string/clear_cache_title" />
     </PreferenceCategory>
     
     <PreferenceCategory android:title="About" >
@@ -35,7 +35,7 @@
             android:summary="Marketing administrator"
             android:title="Arjun Sharma" />
         <Preference
-            android:summary="Co developer"
+            android:summary="Co-developer"
             android:title="Ethan Chen"
             android:key="ethan" />
     </PreferenceCategory>

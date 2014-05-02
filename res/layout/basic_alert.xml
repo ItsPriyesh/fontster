@@ -26,6 +26,5 @@
         android:fontFamily="sans-serif-light"
         android:textColor="#ff666666"
         android:textSize="15.0dip"/>
-    
 
 </RelativeLayout>

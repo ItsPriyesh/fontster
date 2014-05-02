@@ -16,7 +16,7 @@
         android:fontFamily="sans-serif-light"
         android:gravity="center"
         android:padding="15dp"
-        android:text="Install a font"
+        android:text="@string/install_button"
         android:textColor="#ff666666" />
 
     <Button
@@ -29,7 +29,7 @@
         android:fontFamily="sans-serif-light"
         android:gravity="center"
         android:padding="15dp"
-        android:text="Backup and restore fonts"
+        android:text="@string/backup_restore_button"
         android:textColor="#ff666666" />
     
     <Button
@@ -42,6 +42,6 @@
         android:fontFamily="sans-serif-light"
         android:gravity="center"
         android:padding="15dp"
-        android:text="View currently installed font"
+        android:text="@string/view_current_button"
         android:textColor="#ff666666" />
 </LinearLayout>
