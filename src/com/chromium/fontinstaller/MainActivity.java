@@ -33,13 +33,13 @@ public class MainActivity extends ActionBarActivity {
 	String stockFontURL = "https://github.com/Chromium1/Fonts/raw/master/RestoreStockFonts.zip";
 	String fallbackCondensed = "https://github.com/Chromium1/Fonts/raw/master/StockRoboto/RobotoCondensed-Regular.ttf";
 	String fallbackLight = "https://github.com/Chromium1/Fonts/raw/master/StockRoboto/Roboto-Light.ttf";
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_card);
 		prefs = getSharedPreferences("com.chromium.fontinstaller", MODE_PRIVATE);
-				
+
 		// Look up the AdView as a resource and load a request.
 		AdView adView = (AdView) findViewById(R.id.adView);
 		AdRequest adRequest = new AdRequest.Builder()
@@ -47,7 +47,7 @@ public class MainActivity extends ActionBarActivity {
 		.addTestDevice("2797F5D9304B6B3A15771A0519A4F687")  // HTC Desire
 		.build();
 		adView.loadAd(adRequest);	
-		 
+
 		openFontList = (Button)findViewById(R.id.installFont);
 		openFontList.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v){
@@ -64,7 +64,7 @@ public class MainActivity extends ActionBarActivity {
 				startActivity(backupRestoreActivity);
 			}
 		});
-		
+
 		testView = (Button)findViewById(R.id.test);
 		testView.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v){
@@ -92,7 +92,7 @@ public class MainActivity extends ActionBarActivity {
 			downloadStockFontZip.allowScanningByMediaScanner();
 			downloadStockFontZip.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "RestoreStockFonts.zip");
 			downloadStockFontZip.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
-			
+
 			DownloadManager.Request downloadCondensedFallback = new DownloadManager.Request(Uri.parse(fallbackCondensed));
 			downloadCondensedFallback.allowScanningByMediaScanner();
 			downloadCondensedFallback.setDestinationInExternalPublicDir("/FontFallback/", "RobotoCondensed-Regular.ttf");
@@ -102,17 +102,17 @@ public class MainActivity extends ActionBarActivity {
 			downloadLightFallback.allowScanningByMediaScanner();
 			downloadLightFallback.setDestinationInExternalPublicDir("/FontFallback/", "Roboto-Light.ttf");
 			downloadLightFallback.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
-			
+
 			DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
 			manager.enqueue(downloadStockFontZip);
 			manager.enqueue(downloadCondensedFallback);
 			manager.enqueue(downloadLightFallback);
-			
+
 			CustomAlerts.showSingleButtonAlert ("Welcome!", "It is strongly suggested that you backup your current fonts using " +
 					"the backup option found in this app prior to installing any custom ones.\n\nFor further safety, " +
 					"a recovery flashable zip of the stock fonts has been placed in your downloads folder. In the " +
 					"unlikely, but possible event that you encounter issues, please flash this zip.\n", MainActivity.this);
-			
+
 			prefs.edit().putBoolean("firstrun", false).commit();
 		}
 	}
@@ -125,16 +125,34 @@ public class MainActivity extends ActionBarActivity {
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem menuItem) {
-		if (menuItem.getItemId() == R.id.menu_about) { //about button in actionbar
+	public boolean onOptionsItemSelected(MenuItem menuItem) { //about button in actionbar
+		/*if (menuItem.getItemId() == R.id.menu_about) { 
 			openAbout();
 			return true;
 		}
-		return false;
+		return false;*/
+		switch (menuItem.getItemId()) {
+		case R.id.menu_about:
+			openAbout();
+			return true;
+		case R.id.share:
+			openShare();
+			return true;
+		default:
+			return super.onOptionsItemSelected(menuItem);
+		}
 	}   
 
 	private void openAbout() { //open about section
 		Intent about = new Intent(MainActivity.this, About.class);
 		startActivity(about);
+	}
+
+	private void openShare() {
+		Intent share = new Intent(); 
+		share.setAction(Intent.ACTION_SEND);
+		share.setType("text/plain");
+		share.putExtra(Intent.EXTRA_TEXT, "Check out Fontster, at fontster.cf!" );  
+		startActivity(Intent.createChooser(share, "Share Fontster"));
 	}
 }

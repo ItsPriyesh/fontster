@@ -4,6 +4,10 @@
     tools:context="com.chromium.fontinstaller.MainActivity" >
 
     <item
+        android:id="@+id/share"
+        android:icon="@android:drawable/ic_menu_share"
+        app:showAsAction="always"/>
+    <item
         android:id="@+id/menu_about"
         android:icon="@drawable/ic_action_settings"
         app:showAsAction="always"/>
