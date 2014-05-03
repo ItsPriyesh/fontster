@@ -1,6 +1,10 @@
 package com.chromium.fontinstaller;
 
 import java.io.IOException;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 import android.support.v7.app.ActionBarActivity;
 import android.app.DownloadManager;
 import android.content.Context;
@@ -36,6 +40,14 @@ public class MainActivity extends ActionBarActivity {
 		setContentView(R.layout.main_card);
 		prefs = getSharedPreferences("com.chromium.fontinstaller", MODE_PRIVATE);
 				
+		// Look up the AdView as a resource and load a request.
+		AdView adView = (AdView) findViewById(R.id.adView);
+		AdRequest adRequest = new AdRequest.Builder()
+		.addTestDevice(AdRequest.DEVICE_ID_EMULATOR)        // All emulators
+		.addTestDevice("2797F5D9304B6B3A15771A0519A4F687")  // HTC Desire
+		.build();
+		adView.loadAd(adRequest);	
+		 
 		openFontList = (Button)findViewById(R.id.installFont);
 		openFontList.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v){
