@@ -17,7 +17,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class About extends PreferenceActivity {
+	
 	int easterEggClicks = 10;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -95,7 +97,7 @@ public class About extends PreferenceActivity {
 			}
 		});
 		
-         	Preference site = (Preference) findPreference("website");
+        Preference site = (Preference) findPreference("website");
 		site.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			public boolean onPreferenceClick(Preference preference) {
 				Intent site = new Intent();
