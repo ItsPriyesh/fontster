@@ -126,11 +126,6 @@ public class MainActivity extends ActionBarActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem menuItem) { //about button in actionbar
-		/*if (menuItem.getItemId() == R.id.menu_about) { 
-			openAbout();
-			return true;
-		}
-		return false;*/
 		switch (menuItem.getItemId()) {
 		case R.id.menu_about:
 			openAbout();

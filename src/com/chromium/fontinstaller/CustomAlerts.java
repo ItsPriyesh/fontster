@@ -35,7 +35,6 @@ public class CustomAlerts{
 		help.show();
 	}
 
-	
 	public static void showBasicAlertWithImage (String title, String message, Context context) { 
 		//method to show custom styled dialog. params are the title, the message, and the context of the alert
 

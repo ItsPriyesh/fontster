@@ -1,14 +1,20 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
-    
+
     <PreferenceCategory android:title="General" >
         <Preference
             android:key="clearCache"
             android:summary="@string/clear_cache_message"
             android:title="@string/clear_cache_title" />
+        <Preference
+            android:key="reboot"
+            android:title="Reboot" />
+        <Preference
+            android:key="restartSysUI"
+            android:title="Restart SystemUI" />
     </PreferenceCategory>
-    
     <PreferenceCategory android:title="About" >
         <com.chromium.fontinstaller.VersionPreference android:title="Version" />
+
         <Preference
             android:key="source"
             android:summary="View the code of this app on Github"
@@ -17,7 +23,7 @@
             android:key="contact"
             android:summary="Send the developer an email"
             android:title="Contact" />
-       <Preference
+        <Preference
             android:key="website"
             android:summary="Check out our website"
             android:title="Website" />
@@ -26,18 +32,17 @@
             android:summary="Suppport the developers"
             android:title="Donate" />
     </PreferenceCategory>
-
     <PreferenceCategory android:title="Contributors" >
-         <Preference
+        <Preference
             android:summary="Lead developer"
             android:title="Priyesh Patel" />
         <Preference
             android:summary="Marketing administrator"
             android:title="Arjun Sharma" />
         <Preference
+            android:key="ethan"
             android:summary="Co-developer"
-            android:title="Ethan Chen"
-            android:key="ethan" />
+            android:title="Ethan Chen" />
     </PreferenceCategory>
 
 </PreferenceScreen>

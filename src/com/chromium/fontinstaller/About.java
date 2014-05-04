@@ -12,14 +12,16 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class About extends PreferenceActivity {
-	
+
 	int easterEggClicks = 10;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -27,14 +29,14 @@ public class About extends PreferenceActivity {
 
 		ActionBar ab = getActionBar();
 		ab.setDisplayHomeAsUpEnabled(true);
-	
+
 		Preference clearCache = (Preference) findPreference("clearCache");
 		clearCache.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			public boolean onPreferenceClick(Preference preference) {
-				
+
 				File downloadDir = new File("/sdcard/DownloadedFonts");
 				File previewDir = new File("/sdcard/SampleFonts");
-				
+
 				if (downloadDir.exists() || previewDir.exists()) {
 					AsyncTask<Void, Void, Void> cleanCache = new AsyncTask<Void, Void, Void>()  { 
 						//display progress dialog while fonts are copied in background
@@ -77,14 +79,63 @@ public class About extends PreferenceActivity {
 						}
 					};
 					cleanCache.execute((Void[])null);
-					
+
 				}
 				else
 					CustomAlerts.showBasicAlert ("Nothing to clean", "There are currently no cached fonts.", About.this);
 				return true; 
 			}
 		});
-		
+
+		Preference reboot = (Preference) findPreference("reboot");
+		reboot.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			public boolean onPreferenceClick(Preference preference) {
+
+				final Dialog confirm = new Dialog(About.this);
+
+				confirm.requestWindowFeature(Window.FEATURE_NO_TITLE);
+				confirm.setContentView(R.layout.two_button_alert);	
+				TextView alertTitle = (TextView) confirm.findViewById(R.id.title);
+				alertTitle.setText("Confirm reboot");
+				TextView alertMessage = (TextView) confirm.findViewById(R.id.message);
+				alertMessage.setText("Are you sure you want to reboot?");
+				Button positiveButton = (Button) confirm.findViewById(R.id.positive);
+				Button negativeButton = (Button) confirm.findViewById(R.id.negative);
+
+				positiveButton.setOnClickListener(new View.OnClickListener() { // confirm yes
+					public void onClick(View v){
+						confirm.cancel();
+						try {
+							Process softReboot = Runtime.getRuntime().exec(new String[] { "su", "-c", "reboot"});	
+						} 
+						catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+				});	
+				negativeButton.setOnClickListener(new View.OnClickListener() { // confirm no
+					public void onClick(View v){
+						confirm.cancel();
+					}			
+				});
+				confirm.show();
+				return true; 
+			}
+		});
+
+		Preference restartSysUI = (Preference) findPreference("restartSysUI");
+		restartSysUI.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			public boolean onPreferenceClick(Preference preference) {
+				try {
+					Process restartSysUI = Runtime.getRuntime().exec(new String[] { "su", "-c", "pkill com.android.systemui"});	
+				} 
+				catch (IOException e) {
+					e.printStackTrace();
+				}
+				return true; 
+			}
+		});
+
 		Preference source = (Preference) findPreference("source");
 		source.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			public boolean onPreferenceClick(Preference preference) {
@@ -96,8 +147,8 @@ public class About extends PreferenceActivity {
 				return true; 
 			}
 		});
-		
-        Preference site = (Preference) findPreference("website");
+
+		Preference site = (Preference) findPreference("website");
 		site.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			public boolean onPreferenceClick(Preference preference) {
 				Intent site = new Intent();
@@ -108,7 +159,7 @@ public class About extends PreferenceActivity {
 				return true; 
 			}
 		});
-		
+
 		Preference contact = (Preference) findPreference("contact");
 		contact.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			public boolean onPreferenceClick(Preference preference) {
@@ -134,7 +185,7 @@ public class About extends PreferenceActivity {
 				return true; 
 			}
 		});
-		
+
 		Preference ethan = (Preference) findPreference("ethan");
 		ethan.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			public boolean onPreferenceClick(Preference preference) {
@@ -148,5 +199,5 @@ public class About extends PreferenceActivity {
 			}
 		});
 	}
-	
+
 }

@@ -28,6 +28,6 @@
         android:gravity="center_vertical"
         android:paddingLeft="6dip"
         android:src="@drawable/ic_action_accept"
-        android:visibility="invisible" />
+        android:visibility="invisible" /> 
 
 </LinearLayout>

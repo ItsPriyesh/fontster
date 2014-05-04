@@ -429,14 +429,15 @@ public class FontList extends Activity  {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem menuItem) {
-		if (menuItem.getItemId() == R.id.menu_help) {
+		switch (menuItem.getItemId()) {
+		case R.id.menu_help:
 			CustomAlerts.showBasicAlertWithImage ("Instructions", "To install a font simply tap on the one that you want.\n\nIf you would like to preview a font prior to installing, press and hold it.", FontList.this);
-
 			return true;
+		default:
+			return super.onOptionsItemSelected(menuItem);
 		}
-		return false;
 	}
-
+	
 	public static boolean deleteDirectory(File path) {
 		if( path.exists() ) {
 			File[] files = path.listFiles();
