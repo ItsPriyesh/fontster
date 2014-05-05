@@ -87,6 +87,15 @@ public class About extends PreferenceActivity {
 			}
 		});
 
+		Preference requestFont = (Preference) findPreference("requestFont");
+		requestFont.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			public boolean onPreferenceClick(Preference preference) {
+				// Create a new dialog with a text edit (font name input)
+				// and a button to send the request to me via email
+				return true; 
+			}
+		});
+		
 		Preference reboot = (Preference) findPreference("reboot");
 		reboot.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			public boolean onPreferenceClick(Preference preference) {
