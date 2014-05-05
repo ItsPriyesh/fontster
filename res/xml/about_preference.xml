@@ -38,7 +38,7 @@
             android:title="@string/priyesh" />
         <Preference
             android:summary="@string/marketing"
-            android:title="Arjun Sharma" />
+            android:title="@string/arjun" />
         <Preference
             android:key="ethan"
             android:summary="Co-developer"
