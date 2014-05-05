@@ -7,7 +7,7 @@
             android:title="@string/clear_cache_title" />
         <Preference
             android:key="reboot"
-            android:title="Reboot" />
+            android:title="@string/reboot_preference" />
         <Preference
             android:key="restartSysUI"
             android:title="Restart SystemUI" />
