@@ -26,5 +26,7 @@
     
     <string name="clear_cache_message">Delete old previously downloaded fonts</string>
     <string name="clear_cache_title">Clear cache</string>
+
+    <string name="reboot_preference">Reboot</string>
     
 </resources>
