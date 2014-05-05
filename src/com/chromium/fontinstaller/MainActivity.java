@@ -26,6 +26,8 @@ public class MainActivity extends ActionBarActivity {
 	 * -Move strings to external file
 	 * -Add themes in settings
 	 * -Preview without holding preview
+	 * -Install Font From SD
+	 * -Request Font option
 	 */
 	SharedPreferences prefs = null;
 	Button openFontList, backup, testView;
