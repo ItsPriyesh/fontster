@@ -6,6 +6,9 @@
             android:summary="@string/clear_cache_message"
             android:title="@string/clear_cache_title" />
         <Preference
+            android:key="fontRequest"
+            android:title="Request a font" />
+        <Preference
             android:key="reboot"
             android:title="@string/reboot_preference" />
         <Preference
@@ -29,7 +32,7 @@
             android:title="@string/website_title" />
         <Preference
             android:key="donate"
-            android:summary="@string/website_message"
+            android:summary="@string/donate_message"
             android:title="@string/donate_title" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/contributors" >

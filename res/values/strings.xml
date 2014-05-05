@@ -33,10 +33,10 @@
     <string name="source_title">Source</string>
     <string name="contact_message">Send the developer an email</string>
     <string name="contact_title">Contact</string>
-    <string name="website_summary">Check out our website</string>
+    <string name="website_message">Check out our website</string>
     <string name="website_title">Website</string>
     <string name="donate_message">Support the developer</string>
-    <string name="donate_title">Donate</steing>
+    <string name="donate_title">Donate</string>
     <string name="contributors">Contributors</string>
     <string name="lead_developer">Lead developer</string>
     <string name="priyesh">Priyesh Patel</string>
