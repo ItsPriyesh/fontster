@@ -6,41 +6,38 @@
             android:summary="@string/clear_cache_message"
             android:title="@string/clear_cache_title" />
         <Preference
-            android:key="fontRequest"
-            android:title="Request a font" />
-        <Preference
             android:key="reboot"
             android:title="@string/reboot_preference" />
         <Preference
             android:key="restartSysUI"
-            android:title="Restart SystemUI" />
+            android:title="@string/restart_systemui" />
     </PreferenceCategory>
     <PreferenceCategory android:title="About" >
         <com.chromium.fontinstaller.VersionPreference android:title="Version" />
 
         <Preference
             android:key="source"
-            android:summary="View the code of this app on Github"
-            android:title="Source" />
+            android:summary="@string/source_message"
+            android:title="@string/source_title" />
         <Preference
             android:key="contact"
-            android:summary="Send the developer an email"
-            android:title="Contact" />
+            android:summary="@string/contact_message"
+            android:title="@string/contact_title" />
         <Preference
             android:key="website"
-            android:summary="Check out our website"
-            android:title="Website" />
+            android:summary="@string/website_message"
+            android:title="@string/website_title" />
         <Preference
             android:key="donate"
-            android:summary="Suppport the developers"
-            android:title="Donate" />
+            android:summary="@string/website_message"
+            android:title="@string/donate_title" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="Contributors" >
+    <PreferenceCategory android:title="@string/contributors" >
         <Preference
-            android:summary="Lead developer"
-            android:title="Priyesh Patel" />
+            android:summary="@string/lead_developer"
+            android:title="@string/priyesh" />
         <Preference
-            android:summary="Marketing administrator"
+            android:summary="@string/marketing"
             android:title="Arjun Sharma" />
         <Preference
             android:key="ethan"
