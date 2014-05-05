@@ -6,6 +6,9 @@
             android:summary="@string/clear_cache_message"
             android:title="@string/clear_cache_title" />
         <Preference
+            android:key="fontRequest"
+            android:title="Request a font" />
+        <Preference
             android:key="reboot"
             android:title="@string/reboot_preference" />
         <Preference
