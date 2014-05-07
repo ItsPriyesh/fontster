@@ -83,6 +83,10 @@
          android:name="com.chromium.fontinstaller.AboutEE"  
          android:screenOrientation="portrait" />
         
+        <activity  
+         android:name="com.chromium.fontinstaller.StorageInstall"  
+         android:screenOrientation="portrait" />
+        
         <activity android:name="com.google.android.gms.ads.AdActivity"
              android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
     </application>

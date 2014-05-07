@@ -4,6 +4,10 @@
     tools:context="com.chromium.fontinstaller.FontList" >
 
     <item
+        android:id="@+id/menu_custom_install"
+        android:icon="@drawable/ic_action_device_access_sd_storage"
+        android:showAsAction="always"/>
+    <item
         android:id="@+id/menu_help"
         android:icon="@drawable/ic_action_help"
         android:showAsAction="always"/>

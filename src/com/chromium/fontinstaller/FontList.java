@@ -14,21 +14,16 @@ import android.content.BroadcastReceiver; //imports content.BroadcastReveiver
 import android.content.Context; //imports android.content.Context
 import android.content.IntentFilter; //imports android.content.IntentFilter
 import android.content.SharedPreferences; //imports android.content.SharedPreferences
-import android.database.Cursor;
 import android.graphics.Typeface; //imports android.graphics.Typeface
 import android.net.Uri; //imports android.net.Uri
 import android.os.AsyncTask; //imports android.os.AsyncTask
 import android.os.Bundle; //imports android.os.Bundle
 import android.os.Environment; //imports android.os.Environment
 import android.widget.AdapterView; //imports android.widget.AdapterView
-import android.widget.AlphabetIndexer;
 import android.widget.ArrayAdapter; //imports android.widget.ArrayAdapter
 import android.widget.Button; //imports android.widget.Button
 import android.widget.ListView; //imports android.widget.ListView
-import android.widget.SectionIndexer;
 import android.widget.TextView; //imports android.widget.TextView
-import android.widget.Toast; //imports android.widget.Toast
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.*; //imports android.view.*
 
 public class FontList extends Activity  {
@@ -433,9 +428,17 @@ public class FontList extends Activity  {
 		case R.id.menu_help:
 			CustomAlerts.showBasicAlertWithImage ("Instructions", "To install a font simply tap on the one that you want.\n\nIf you would like to preview a font prior to installing, press and hold it.", FontList.this);
 			return true;
+		case R.id.menu_custom_install:
+			openStorageInstall();
+			return true;
 		default:
 			return super.onOptionsItemSelected(menuItem);
 		}
+	}
+	
+	private void openStorageInstall() {
+		Intent storageInstall = new Intent(FontList.this, StorageInstall.class);
+		startActivity(storageInstall);
 	}
 	
 	public static boolean deleteDirectory(File path) {

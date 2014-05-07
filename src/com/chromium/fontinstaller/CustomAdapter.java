@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;

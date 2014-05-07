@@ -1,10 +1,8 @@
 package com.chromium.fontinstaller;
 
 import java.io.IOException;
-
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-
 import android.support.v7.app.ActionBarActivity;
 import android.app.DownloadManager;
 import android.content.Context;

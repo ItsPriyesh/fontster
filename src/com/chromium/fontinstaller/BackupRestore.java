@@ -3,15 +3,11 @@ package com.chromium.fontinstaller;
 import java.io.File;
 import java.io.IOException;
 import android.app.Activity;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class BackupRestore extends Activity {
 
