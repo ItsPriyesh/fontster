@@ -10,7 +10,9 @@
 *.class
 
 # generated files
-bin/
+bin/*
+!bin/FontInstaller.apk
+
 gen/
 
 # Ignore gradle files
