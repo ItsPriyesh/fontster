@@ -6,7 +6,5 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry kind="lib" path="C:/Users/Priyesh/Documents/GitHub/appcompat_v7/bin/android-support-v7-appcompat.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Priyesh/Documents/javax.mail.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Priyesh/Documents/activation.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
