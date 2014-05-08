@@ -5,8 +5,10 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -59,6 +61,62 @@ public class CustomAlerts{
 		help.show();
 	}
 
+	/*
+	 *  Dialog with EditText and Button to send request
+	 */
+	public static void showRequestAlert (final Context context) { 
+
+		final Dialog req = new Dialog(context);
+
+		req.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		req.setContentView(R.layout.request_alert);	
+
+		EditText fontReqET = (EditText) req.findViewById(R.id.reqFont);
+		final String fontName = fontReqET.getText().toString();
+	
+		Button sendReq = (Button) req.findViewById(R.id.sendReq);
+		sendReq.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v){
+				req.dismiss();
+				
+				AsyncTask<Void, Void, String> sendEmail = new AsyncTask <Void, Void, String>() {
+					@Override
+					protected String doInBackground(Void... params)
+					{
+						try {
+						GMailSender sender = new GMailSender("fontsterapp@gmail.com","Fontster123");
+						sender.sendMail("Font Request", fontName, "fontsterapp@gmail.com", "priyesh.96@hotmail.com");
+						}
+						catch(Exception e)
+						{
+							Log.e("error",e.getMessage(),e);
+							return "Email Not Sent";
+						}
+						return "Email Sent";
+					}
+
+					@Override
+					protected void onPostExecute(String result)
+					{
+					}
+					@Override
+					protected void onPreExecute()
+					{
+					}
+
+					@Override
+					protected void onProgressUpdate(Void... values)
+					{
+					}
+				};
+				sendEmail.execute((Void[])null);
+				
+			}			
+		});
+
+		req.show();
+	}
+	
 	/*
 	 *  Dialog with Title, Message, and EditText all with custom Typeface (FOR PREVIEWING)
 	 */

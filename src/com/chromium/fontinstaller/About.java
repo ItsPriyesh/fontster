@@ -12,10 +12,12 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class About extends PreferenceActivity {
 
@@ -91,10 +93,13 @@ public class About extends PreferenceActivity {
 			public boolean onPreferenceClick(Preference preference) {
 				// Create a new dialog with a text edit (font name input)
 				// and a button to send the request to me via email
+
+				CustomAlerts.showRequestAlert(About.this);
+				
 				return true; 
 			}
 		});
-		
+
 		Preference reboot = (Preference) findPreference("reboot");
 		reboot.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			public boolean onPreferenceClick(Preference preference) {
