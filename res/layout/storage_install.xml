@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <Button
+        android:id="@+id/selectRegular"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:background="@drawable/apptheme_btn_default_holo_light"
+        android:text="Select regular" />
+
+    <Button
+        android:id="@+id/selectItalic"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:background="@drawable/apptheme_btn_default_holo_light"
+        android:text="Select italic" />
+
+    <Button
+        android:id="@+id/selectBold"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:background="@drawable/apptheme_btn_default_holo_light"
+        android:text="Select bold" />
+
+    <Button
+        android:id="@+id/selectBoldItalic"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:background="@drawable/apptheme_btn_default_holo_light"
+        android:text="Select bold italic" />
+
+</LinearLayout>
