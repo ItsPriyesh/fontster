@@ -2,6 +2,7 @@ package com.chromium.fontinstaller;
 
 import java.io.IOException;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -71,21 +72,22 @@ public class CustomAlerts{
 		req.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		req.setContentView(R.layout.request_alert);	
 
-		EditText fontReqET = (EditText) req.findViewById(R.id.reqFont);
-		final String fontName = fontReqET.getText().toString();
+		final EditText fontReqET = (EditText) req.findViewById(R.id.reqFont);
 	
 		Button sendReq = (Button) req.findViewById(R.id.sendReq);
 		sendReq.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v){
-				req.dismiss();
+				req.dismiss();			
 				
 				AsyncTask<Void, Void, String> sendEmail = new AsyncTask <Void, Void, String>() {
+					ProgressDialog sendProgress;
+					
 					@Override
 					protected String doInBackground(Void... params)
 					{
 						try {
 						GMailSender sender = new GMailSender("fontsterapp@gmail.com","Fontster123");
-						sender.sendMail("Font Request", fontName, "fontsterapp@gmail.com", "priyesh.96@hotmail.com");
+						sender.sendMail("Font Request", fontReqET.getText().toString(), "fontsterapp@gmail.com", "priyesh.96@hotmail.com");
 						}
 						catch(Exception e)
 						{
@@ -98,10 +100,16 @@ public class CustomAlerts{
 					@Override
 					protected void onPostExecute(String result)
 					{
+						sendProgress.dismiss();
 					}
 					@Override
 					protected void onPreExecute()
 					{
+						sendProgress = new ProgressDialog(context);
+						sendProgress.setMessage("Sending...");
+						sendProgress.show();
+						CustomAlerts.showBasicAlert("Sent successfully", "Your request for '" + fontReqET.getText().toString() + "' " +
+								"has been sent to the development team. We will try to add it as soon as possible.", context);
 					}
 
 					@Override
@@ -110,10 +118,8 @@ public class CustomAlerts{
 					}
 				};
 				sendEmail.execute((Void[])null);
-				
 			}			
 		});
-
 		req.show();
 	}
 	
