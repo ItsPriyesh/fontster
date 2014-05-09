@@ -24,19 +24,20 @@
     <string name="condensed_bold">Condensed Bold</string>
     <string name="condensed_bold_italic">Condensed Bold Italic</string>
     
-    <string name="clear_cache_message">Delete old previously downloaded fonts</string>
+    <string name="clear_cache_message">Delete old previously downloaded fonts.</string>
     <string name="clear_cache_title">Clear cache</string>
+    <string name="request_message">Send us a font that you want to be added.</string>
     <string name="request_title">Request a font</string>
 
     <string name="reboot_preference">Reboot</string>
     <string name="restart_systemui">Restart SystemUI</string>
-    <string name="source_message">View the code of this app on Github</string>
+    <string name="source_message">View the code of this app on Github.</string>
     <string name="source_title">Source</string>
-    <string name="contact_message">Send the developer an email</string>
+    <string name="contact_message">Send the developer an email.</string>
     <string name="contact_title">Contact</string>
-    <string name="website_message">Check out our website</string>
+    <string name="website_message">Check out our website.</string>
     <string name="website_title">Website</string>
-    <string name="donate_message">Support the developer</string>
+    <string name="donate_message">Support the developer.</string>
     <string name="donate_title">Donate</string>
     <string name="contributors">Contributors</string>
     <string name="lead_developer">Lead developer</string>
