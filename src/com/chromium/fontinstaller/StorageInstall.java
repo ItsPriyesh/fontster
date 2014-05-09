@@ -1,33 +1,107 @@
 package com.chromium.fontinstaller;
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class StorageInstall extends Activity {
 
-	Button selectRegular, selectItalic, selectBold, selectBoldItalic;
-
+	Button selectRegular, selectItalic, selectBold, selectBoldItalic, install;
+	String fontFile = null;
+	String regPath, regFile, italicPath, boldPath, boldItalicPath;
+	TextView regPathTV;
+	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.storage_install);
 
+		regPathTV = (TextView)findViewById(R.id.regPath);
+		
 		selectRegular = (Button)findViewById(R.id.selectRegular);
 		selectRegular.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v){
 				showFileListDialog(Environment.getExternalStorageDirectory().toString(), StorageInstall.this);
+				
 			}
 		});
+		
+		install = (Button)findViewById(R.id.install);
+		install.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v){
+				regPath = regPathTV.getText().toString();
+				
+				int index = regPath.lastIndexOf("/");
+				regFile = regPath.substring(index + 1);
+
+				//installation start
+				AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>()  { 
+					//display progress dialog while fonts are copied in background
+					ProgressDialog copyProgress;
+
+					@Override
+					protected void onPreExecute() {
+						super.onPreExecute();						
+						copyProgress = new ProgressDialog (StorageInstall.this);
+						copyProgress.setMessage("Installing specified fonts...");
+						copyProgress.setCancelable(false);
+						copyProgress.setCanceledOnTouchOutside(false);
+						copyProgress.show();
+					}
+
+					@Override
+					protected Void doInBackground(Void... params) {					
+						
+						try {
+							Process mountSystem = Runtime.getRuntime().exec(new String[] { "su", "-c", "mount -o rw,remount /system"});
+							Process makeTempDir = Runtime.getRuntime().exec(new String[] { "su", "-c", "mkdir /sdcard/TempFonts"}); //make temporary folder for fonts
+							
+							//copy to temp dir
+							Process copyReg1 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp " + regPath + " /sdcard/TempFonts"});
+							
+							//rename
+							Process renameReg = Runtime.getRuntime().exec(new String[] { "su", "-c", "mv -f /sdcard/TempFonts/" + regFile + " /sdcard/TempFonts/Roboto-Regular.ttf"});
+					
+							//copy from temp dir to system
+							Process installReg = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/TempFonts/Roboto-Regular.ttf /system/fonts"});
+						} 
+						catch (IOException e) {
+							e.printStackTrace();
+						}
+						return null;
+					}
+
+					@Override
+					protected void onPostExecute(Void result) {
+						super.onPostExecute(result);			
+						if (copyProgress != null) {
+							if (copyProgress.isShowing()) {
+								copyProgress.dismiss();
+							}
+						}
+						CustomAlerts.showRebootAlert("Installation successful", "You must reboot for the changes to take effect", "Reboot", StorageInstall.this);
+
+					}
+				};
+				task.execute((Void[])null);
+				//installation end
+				
+			}
+		});		
 
 	}
 
@@ -98,8 +172,8 @@ public class StorageInstall extends Activity {
 				}
 				else {
 					dialog.cancel();
-					String fontFile = chosenFile.getAbsolutePath();
-					pathReturner(fontFile);
+					fontFile = chosenFile.getAbsolutePath();
+					regPathTV.setText(fontFile);
 				}
 			}
 		});
@@ -118,8 +192,4 @@ public class StorageInstall extends Activity {
 		return stringBuilder.toString();
 	}
 
-	public String pathReturner (String path){
-		return path;
-		
-	}
 }
