@@ -7,7 +7,7 @@
             android:title="@string/clear_cache_title" />
         <Preference
             android:key="fontRequest"
-            android:title="Request a font" />
+            android:title="@string/request_title" />
         <Preference
             android:key="reboot"
             android:title="@string/reboot_preference" />
@@ -44,8 +44,8 @@
             android:title="@string/arjun" />
         <Preference
             android:key="ethan"
-            android:summary="Co-developer"
-            android:title="Ethan Chen" />
+            android:summary="@string/co"
+            android:title="@string/ethan" />
     </PreferenceCategory>
 
 </PreferenceScreen>
