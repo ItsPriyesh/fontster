@@ -26,6 +26,7 @@
     
     <string name="clear_cache_message">Delete old previously downloaded fonts</string>
     <string name="clear_cache_title">Clear cache</string>
+    <string name="request_title">Request a font</string>
 
     <string name="reboot_preference">Reboot</string>
     <string name="restart_systemui">Restart SystemUI</string>
@@ -42,4 +43,6 @@
     <string name="priyesh">Priyesh Patel</string>
     <string name="marketing">Marketing administrator</string>
     <string name="arjun">Arjun Sharma</string>
+    <string name="co">Co-developer</string>
+    <string name="ethan">Ethan Chen</string>
 </resources>
