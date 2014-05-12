@@ -74,7 +74,7 @@ public class StorageInstall extends Activity {
 							Process copyReg1 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp " + regPath + " /sdcard/TempFonts"});
 							
 							//rename
-							Process renameReg = Runtime.getRuntime().exec(new String[] { "su", "-c", "mv -f /sdcard/TempFonts/" + regFile + " /sdcard/TempFonts/Roboto-Regular.ttf"});
+							Process renameReg = Runtime.getRuntime().exec(new String[] { "su", "-c", "mv /sdcard/TempFonts/" + regFile + " /sdcard/TempFonts/Roboto-Regular.ttf"});
 					
 							//copy from temp dir to system
 							Process installReg = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/TempFonts/Roboto-Regular.ttf /system/fonts"});
