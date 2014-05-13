@@ -21,9 +21,9 @@ import android.widget.Toast;
 
 public class StorageInstall extends Activity {
 
-	Button selectRegular, selectItalic, selectBold, selectBoldItalic, install;
+	Button selectRegular;
 	String fontFile = null;
-	String regPath, regFile, italicPath, boldPath, boldItalicPath;
+	String regPath, regFile;
 	TextView regPathTV;
 	
 	public void onCreate(Bundle savedInstanceState) {
