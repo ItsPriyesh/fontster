@@ -4,6 +4,9 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -31,6 +34,16 @@ public class StorageInstall extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.storage_install);
 
+		// Look up the AdView as a resource and load a request.
+		AdView adView = (AdView) findViewById(R.id.adView);
+		AdRequest adRequest = new AdRequest.Builder()
+		.addTestDevice(AdRequest.DEVICE_ID_EMULATOR)        // All emulators
+		.addTestDevice("2797F5D9304B6B3A15771A0519A4F687")  // HTC Desire
+    	.build();
+		adView.loadAd(adRequest);
+		
+		CustomAlerts.showBasicAlert("Warning", "This feature is still currently in development." +
+				" Only use it if you know what you are doing, and ensure that you only select .ttf font files.", StorageInstall.this);
 		regPathTV = (TextView)findViewById(R.id.regPath);
 
 		selectRegular = (Button)findViewById(R.id.selectRegular);
@@ -67,34 +80,20 @@ public class StorageInstall extends Activity {
 					protected Void doInBackground(Void... params) {					
 
 						try {
-						/*	//mount and create tempdir
-							Process mountSystem = Runtime.getRuntime().exec(new String[] { "su", "-c", "mount -o rw,remount /system"});
-							Process makeTempDir = Runtime.getRuntime().exec(new String[] { "su", "-c", "mkdir /sdcard/TempFonts"}); //make temporary folder for fonts
+							Process process = Runtime.getRuntime().exec("su");
+							OutputStream stdin = process.getOutputStream();
 
-							//copy to temp dir
-							Process copyReg1 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp " + regPath + " /sdcard/TempFonts"});
+							stdin.write(("mount -o rw,remount /system\n").getBytes());
+							stdin.write(("mkdir /sdcard/TempFonts\n").getBytes());
+							stdin.write(("cp " + regPath + " /sdcard/TempFonts\n").getBytes());
+							stdin.write(("mv /sdcard/TempFonts/" + regFile + " /sdcard/TempFonts/Roboto-Regular.ttf\n").getBytes());
+							stdin.write(("cp /sdcard/TempFonts/Roboto-Regular.ttf /system/fonts\n").getBytes());
 
-							//rename to roboto-regular.ttf
-							Process renameReg = Runtime.getRuntime().exec(new String[] { "su", "-c", "mv /sdcard/TempFonts/" + regFile + " /sdcard/TempFonts/Roboto-Regular.ttf"});
-							
-							Process installReg = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/TempFonts/Roboto-Regular.ttf /system/fonts"});
-						*/
-				            Process process = Runtime.getRuntime().exec("su");
-				            OutputStream stdin = process.getOutputStream();
-
-				            stdin.write(("mount -o rw,remount /system\n").getBytes());
-				            stdin.write(("mkdir /sdcard/TempFonts\n").getBytes());
-				            stdin.write(("cp " + regPath + " /sdcard/TempFonts\n").getBytes());
-				            stdin.write(("mv /sdcard/TempFonts/" + regFile + " /sdcard/TempFonts/Roboto-Regular.ttf\n").getBytes());
-				            stdin.write(("cp /sdcard/TempFonts/Roboto-Regular.ttf /system/fonts\n").getBytes());
-
-				            stdin.flush();
-
-				            stdin.close();
+							stdin.flush();
+							stdin.close();
 
 							process.waitFor();
 							process.destroy();
-						
 						} 
 						catch (IOException | InterruptedException e) {
 							e.printStackTrace();

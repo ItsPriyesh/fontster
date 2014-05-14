@@ -30,7 +30,9 @@
     <string name="request_title">Request a font</string>
 
     <string name="reboot_preference">Reboot</string>
+    <string name="reboot_preference_message">Restart the device.</string>
     <string name="restart_systemui">Restart SystemUI</string>
+    <string name="restart_systemui_message">Refresh the system interface.</string>
     <string name="source_message">View the code of this app on Github.</string>
     <string name="source_title">Source</string>
     <string name="contact_message">Send the developer an email.</string>

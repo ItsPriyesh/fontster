@@ -11,9 +11,11 @@
             android:title="@string/request_title" />
         <Preference
             android:key="reboot"
+            android:summary="@string/reboot_preference_message"
             android:title="@string/reboot_preference" />
         <Preference
             android:key="restartSysUI"
+            android:summary="@string/restart_systemui_message"    
             android:title="@string/restart_systemui" />
     </PreferenceCategory>
     <PreferenceCategory android:title="About" >

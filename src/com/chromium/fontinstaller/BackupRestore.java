@@ -2,6 +2,10 @@ package com.chromium.fontinstaller;
  
 import java.io.File;
 import java.io.IOException;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
@@ -18,6 +22,14 @@ public class BackupRestore extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.backup_restore);
 
+		// Look up the AdView as a resource and load a request.
+		AdView adView = (AdView) findViewById(R.id.adView);
+		AdRequest adRequest = new AdRequest.Builder()
+		.addTestDevice(AdRequest.DEVICE_ID_EMULATOR)        // All emulators
+		.addTestDevice("2797F5D9304B6B3A15771A0519A4F687")  // HTC Desire
+    	.build();
+		adView.loadAd(adRequest);
+		 
 		backup = (Button)findViewById(R.id.backup);
 		backup.setOnClickListener(new View.OnClickListener() { //copy fonts from system to sd
 			public void onClick(View v){

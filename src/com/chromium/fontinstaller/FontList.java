@@ -5,6 +5,10 @@ import java.io.File; //imports java.io.File
 import java.io.IOException; //imports java.io.IOException
 import java.io.InputStreamReader; //imports java.io.InputStreamreader
 import java.util.ArrayList; //imports java.util.ArrayList
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 import android.content.Intent; //imports android.content.Intent
 import android.app.Activity; //imports android.app.Acticity
 import android.app.Dialog; //imports android.app.Dialog
@@ -47,6 +51,14 @@ public class FontList extends Activity  {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.font_list);
 		prefs = getSharedPreferences("com.chromium.fontinstaller.fontlist", MODE_PRIVATE);
+		
+		// Look up the AdView as a resource and load a request.
+		AdView adView = (AdView) findViewById(R.id.adView);
+		AdRequest adRequest = new AdRequest.Builder()
+		.addTestDevice(AdRequest.DEVICE_ID_EMULATOR)        // All emulators
+		.addTestDevice("2797F5D9304B6B3A15771A0519A4F687")  // HTC Desire
+    	.build();
+		adView.loadAd(adRequest);
 		
 		fontDest = "/system/fonts"; //change path to /system/fonts when releasing
 				
