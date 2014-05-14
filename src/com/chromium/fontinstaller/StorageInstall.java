@@ -21,7 +21,7 @@ import android.widget.Toast;
 
 public class StorageInstall extends Activity {
 
-	Button selectRegular;
+	Button selectRegular, install;
 	String fontFile = null;
 	String regPath, regFile;
 	TextView regPathTV;
@@ -57,7 +57,7 @@ public class StorageInstall extends Activity {
 					protected void onPreExecute() {
 						super.onPreExecute();						
 						copyProgress = new ProgressDialog (StorageInstall.this);
-						copyProgress.setMessage("Installing specified fonts...");
+						copyProgress.setMessage("Installing specified font...");
 						copyProgress.setCancelable(false);
 						copyProgress.setCanceledOnTouchOutside(false);
 						copyProgress.show();
@@ -74,10 +74,9 @@ public class StorageInstall extends Activity {
 							Process copyReg1 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp " + regPath + " /sdcard/TempFonts"});
 							
 							//rename
-							Process renameReg = Runtime.getRuntime().exec(new String[] { "su", "-c", "mv /sdcard/TempFonts/" + regFile + " /sdcard/TempFonts/Roboto-Regular.ttf"});
+							//Process renameReg = Runtime.getRuntime().exec(new String[] { "su", "-c", "mv /sdcard/TempFonts/" + regFile + " /sdcard/TempFonts/Roboto-Regular.ttf"});
 					
-							//copy from temp dir to system
-							Process installReg = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/TempFonts/Roboto-Regular.ttf /system/fonts"});
+							
 						} 
 						catch (IOException e) {
 							e.printStackTrace();
@@ -87,7 +86,16 @@ public class StorageInstall extends Activity {
 
 					@Override
 					protected void onPostExecute(Void result) {
-						super.onPostExecute(result);			
+						super.onPostExecute(result);
+						//copy from temp dir to system
+						try {
+							Process mountSystem = Runtime.getRuntime().exec(new String[] { "su", "-c", "mount -o rw,remount /system"});
+
+						Process installReg = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/TempFonts/Roboto-Regular.ttf /system/fonts"});
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 						if (copyProgress != null) {
 							if (copyProgress.isShowing()) {
 								copyProgress.dismiss();
