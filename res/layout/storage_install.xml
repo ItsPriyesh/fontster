@@ -18,7 +18,7 @@
         android:layout_gravity="center"
         android:layout_margin="10dp"
         android:background="@drawable/apptheme_btn_default_holo_light"
-        android:text="Select regular" />
+        android:text="Select a font file" />
 
     <Button
         android:id="@+id/install"

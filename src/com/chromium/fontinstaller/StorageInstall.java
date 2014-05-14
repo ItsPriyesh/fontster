@@ -2,6 +2,7 @@ package com.chromium.fontinstaller;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.OutputStream;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -25,26 +26,25 @@ public class StorageInstall extends Activity {
 	String fontFile = null;
 	String regPath, regFile;
 	TextView regPathTV;
-	
+
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.storage_install);
 
 		regPathTV = (TextView)findViewById(R.id.regPath);
-		
+
 		selectRegular = (Button)findViewById(R.id.selectRegular);
 		selectRegular.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v){
 				showFileListDialog(Environment.getExternalStorageDirectory().toString(), StorageInstall.this);
-				
 			}
 		});
-		
+
 		install = (Button)findViewById(R.id.install);
 		install.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v){
 				regPath = regPathTV.getText().toString();
-				
+
 				int index = regPath.lastIndexOf("/");
 				regFile = regPath.substring(index + 1);
 
@@ -60,25 +60,43 @@ public class StorageInstall extends Activity {
 						copyProgress.setMessage("Installing specified font...");
 						copyProgress.setCancelable(false);
 						copyProgress.setCanceledOnTouchOutside(false);
-						copyProgress.show();
+						copyProgress.show();					
 					}
 
 					@Override
 					protected Void doInBackground(Void... params) {					
-						
+
 						try {
+						/*	//mount and create tempdir
 							Process mountSystem = Runtime.getRuntime().exec(new String[] { "su", "-c", "mount -o rw,remount /system"});
 							Process makeTempDir = Runtime.getRuntime().exec(new String[] { "su", "-c", "mkdir /sdcard/TempFonts"}); //make temporary folder for fonts
-							
+
 							//copy to temp dir
 							Process copyReg1 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp " + regPath + " /sdcard/TempFonts"});
+
+							//rename to roboto-regular.ttf
+							Process renameReg = Runtime.getRuntime().exec(new String[] { "su", "-c", "mv /sdcard/TempFonts/" + regFile + " /sdcard/TempFonts/Roboto-Regular.ttf"});
 							
-							//rename
-							//Process renameReg = Runtime.getRuntime().exec(new String[] { "su", "-c", "mv /sdcard/TempFonts/" + regFile + " /sdcard/TempFonts/Roboto-Regular.ttf"});
-					
-							
+							Process installReg = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/TempFonts/Roboto-Regular.ttf /system/fonts"});
+						*/
+				            Process process = Runtime.getRuntime().exec("su");
+				            OutputStream stdin = process.getOutputStream();
+
+				            stdin.write(("mount -o rw,remount /system\n").getBytes());
+				            stdin.write(("mkdir /sdcard/TempFonts\n").getBytes());
+				            stdin.write(("cp " + regPath + " /sdcard/TempFonts\n").getBytes());
+				            stdin.write(("mv /sdcard/TempFonts/" + regFile + " /sdcard/TempFonts/Roboto-Regular.ttf\n").getBytes());
+				            stdin.write(("cp /sdcard/TempFonts/Roboto-Regular.ttf /system/fonts\n").getBytes());
+
+				            stdin.flush();
+
+				            stdin.close();
+
+							process.waitFor();
+							process.destroy();
+						
 						} 
-						catch (IOException e) {
+						catch (IOException | InterruptedException e) {
 							e.printStackTrace();
 						}
 						return null;
@@ -87,15 +105,6 @@ public class StorageInstall extends Activity {
 					@Override
 					protected void onPostExecute(Void result) {
 						super.onPostExecute(result);
-						//copy from temp dir to system
-						try {
-							Process mountSystem = Runtime.getRuntime().exec(new String[] { "su", "-c", "mount -o rw,remount /system"});
-
-						Process installReg = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/TempFonts/Roboto-Regular.ttf /system/fonts"});
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
 						if (copyProgress != null) {
 							if (copyProgress.isShowing()) {
 								copyProgress.dismiss();
@@ -107,7 +116,7 @@ public class StorageInstall extends Activity {
 				};
 				task.execute((Void[])null);
 				//installation end
-				
+
 			}
 		});		
 
@@ -185,7 +194,7 @@ public class StorageInstall extends Activity {
 				}
 			}
 		});
-		
+
 		dialog = builder.create();
 		dialog.show();
 	}
