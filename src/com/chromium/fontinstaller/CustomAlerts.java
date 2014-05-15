@@ -101,6 +101,8 @@ public class CustomAlerts{
 					protected void onPostExecute(String result)
 					{
 						sendProgress.dismiss();
+						CustomAlerts.showBasicAlert("Sent successfully", "Your request for '" + fontReqET.getText().toString() + "' " +
+								"has been sent to the development team. We will try to add it as soon as possible.", context);
 					}
 					@Override
 					protected void onPreExecute()
@@ -108,8 +110,6 @@ public class CustomAlerts{
 						sendProgress = new ProgressDialog(context);
 						sendProgress.setMessage("Sending...");
 						sendProgress.show();
-						CustomAlerts.showBasicAlert("Sent successfully", "Your request for '" + fontReqET.getText().toString() + "' " +
-								"has been sent to the development team. We will try to add it as soon as possible.", context);
 					}
 
 					@Override
