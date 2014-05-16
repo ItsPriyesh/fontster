@@ -57,6 +57,7 @@ public class FontList extends Activity  {
 		AdRequest adRequest = new AdRequest.Builder()
 		.addTestDevice(AdRequest.DEVICE_ID_EMULATOR)        // All emulators
 		.addTestDevice("2797F5D9304B6B3A15771A0519A4F687")  // HTC Desire
+		.addTestDevice("D674E5DF79F70B01D8866A5F99A2ACBA") // Samsung i9000
     	.build();
 		adView.loadAd(adRequest);
 		

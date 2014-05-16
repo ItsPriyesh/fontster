@@ -39,11 +39,13 @@ public class StorageInstall extends Activity {
 		AdRequest adRequest = new AdRequest.Builder()
 		.addTestDevice(AdRequest.DEVICE_ID_EMULATOR)        // All emulators
 		.addTestDevice("2797F5D9304B6B3A15771A0519A4F687")  // HTC Desire
+		.addTestDevice("D674E5DF79F70B01D8866A5F99A2ACBA") // Samsung i9000
     	.build();
 		adView.loadAd(adRequest);
 		
 		CustomAlerts.showBasicAlert("Warning", "This feature is still currently in development." +
-				" Only use it if you know what you are doing, and ensure that you only select .ttf font files.", StorageInstall.this);
+				" Only use it if you know what you are doing, and ensure that you only select .ttf font files. Some" +
+				"font files will not work and may result in a bootloop. Use with caution.", StorageInstall.this);
 		regPathTV = (TextView)findViewById(R.id.regPath);
 
 		selectRegular = (Button)findViewById(R.id.selectRegular);

@@ -18,7 +18,7 @@
             android:layout_gravity="center"
             android:layout_margin="10dp"
             android:background="@drawable/apptheme_btn_default_holo_light"
-            android:text="@string/backup_button" />
+            android:text="@string/backup_button"/>
 
         <Button
             android:id="@+id/restore"
@@ -27,7 +27,7 @@
             android:layout_gravity="center"
             android:layout_margin="10dp"
             android:background="@drawable/apptheme_btn_default_holo_light"
-            android:text="@string/restore_button" />
+            android:text="@string/restore_button"/>
 
         <Button
             android:id="@+id/deleteBackup"
