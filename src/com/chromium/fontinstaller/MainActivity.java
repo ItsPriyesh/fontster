@@ -20,10 +20,7 @@ import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity {
 
-	/*  TODO 
-	 * -Move strings to external file (WIP)
-	 * -Install Font From SD (WIP)
-	 */
+
 	SharedPreferences prefs = null;
 	Button openFontList, backup, testView;
 
