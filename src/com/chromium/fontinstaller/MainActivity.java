@@ -75,6 +75,9 @@ public class MainActivity extends ActionBarActivity {
 
 		if (prefs.getBoolean("firstrun", true)) { //stuff to do on first app opening
 
+			Intent openSplash = new Intent (MainActivity.this, Splash.class);
+			startActivity(openSplash);
+			
 			try{
 				Process getSU = Runtime.getRuntime().exec("su");
 				Process makeFallbackDir = Runtime.getRuntime().exec(new String[] { "su", "-c", "mkdir /sdcard/FontFallback"});
@@ -102,12 +105,7 @@ public class MainActivity extends ActionBarActivity {
 			manager.enqueue(downloadStockFontZip);
 			manager.enqueue(downloadCondensedFallback);
 			manager.enqueue(downloadLightFallback);
-
-			CustomAlerts.showSingleButtonAlert ("Welcome!", "It is strongly suggested that you backup your current fonts using " +
-					"the backup option found in this app prior to installing any custom ones.\n\nFor further safety, " +
-					"a recovery flashable zip of the stock fonts has been placed in your downloads folder. In the " +
-					"unlikely, but possible event that you encounter issues, please flash this zip.\n", MainActivity.this);
-
+			
 			prefs.edit().putBoolean("firstrun", false).commit();
 		}
 	}

@@ -145,6 +145,15 @@ public class About extends PreferenceActivity {
 			}
 		});
 
+		Preference splash = (Preference) findPreference("viewSplash");
+		splash.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			public boolean onPreferenceClick(Preference preference) {
+				Intent openSplash = new Intent (About.this, Splash.class);
+				startActivity(openSplash);				
+				return true; 
+			}
+		});
+		
 		Preference source = (Preference) findPreference("source");
 		source.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			public boolean onPreferenceClick(Preference preference) {

@@ -15,12 +15,16 @@
             android:title="@string/reboot_preference" />
         <Preference
             android:key="restartSysUI"
-            android:summary="@string/restart_systemui_message"    
+            android:summary="@string/restart_systemui_message"
             android:title="@string/restart_systemui" />
     </PreferenceCategory>
     <PreferenceCategory android:title="About" >
         <com.chromium.fontinstaller.VersionPreference android:title="Version" />
 
+        <Preference
+            android:key="viewSplash"
+            android:summary="Display initial welcome page."
+            android:title="View splash screen" />
         <Preference
             android:key="source"
             android:summary="@string/source_message"
