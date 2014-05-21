@@ -1,4 +1,4 @@
-![Alt text](https://raw.githubusercontent.com/Chromium1/FontInstaller/master/ic_launcher-web.png)
+![Alt text](http://i.imgur.com/uOvPNeI.png)
 
 Description
 =============
