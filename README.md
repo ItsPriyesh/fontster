@@ -1,4 +1,4 @@
-![Alt text](http://i.imgur.com/OFfApE1.png)
+![Alt text](http://i.imgur.com/uOvPNeI.png)
 
 Description
 =============
