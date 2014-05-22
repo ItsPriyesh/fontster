@@ -19,8 +19,7 @@
             android:title="@string/restart_systemui" />
     </PreferenceCategory>
     <PreferenceCategory android:title="About" >
-        <com.chromium.fontinstaller.VersionPreference android:title="Version" />
-
+        <com.chromium.fontinstaller.VersionPreference android:title="Version" />        
         <Preference
             android:key="viewSplash"
             android:summary="Display initial welcome page."
@@ -38,9 +37,13 @@
             android:summary="@string/website_message"
             android:title="@string/website_title" />
         <Preference
+            android:key="inAppBilling"
+            android:summary="Support the developer via Google Play In-app Billing"
+            android:title="Donate using In-app Billing" />
+        <Preference
             android:key="donate"
-            android:summary="@string/donate_message"
-            android:title="@string/donate_title" />
+            android:summary="Support the developer via PayPal"
+            android:title="Donate using PayPal" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/contributors" >
         <Preference

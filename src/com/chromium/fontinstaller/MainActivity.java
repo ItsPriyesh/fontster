@@ -20,7 +20,11 @@ import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity {
 
-
+	//TODO
+	// - Remove Install from Storage option
+	// - Add Vinque font
+	// - Display each fontname in its actual font
+	
 	SharedPreferences prefs = null;
 	Button openFontList, backup, testView;
 

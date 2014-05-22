@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.chromium.fontinstaller"
-    android:versionCode="6"
-    android:versionName="0.6" >
+    android:versionCode="7"
+    android:versionName="0.7" >
  
     <uses-sdk
         android:minSdkVersion="14"
@@ -12,7 +12,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
-
+    <uses-permission android:name="com.android.vending.BILLING" />
+    
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -38,6 +39,13 @@
             android:parentActivityName="com.chromium.fontinstaller.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
+        </activity>
+        
+        <activity
+            android:name="com.chromium.fontinstaller.RemoveAds"
+            android:label="@string/app_name"
+            android:parentActivityName="com.chromium.fontinstaller.About"
+            android:screenOrientation="portrait" >
         </activity>
         
         <activity

@@ -2,13 +2,23 @@ package com.chromium.fontinstaller;
 
 import java.io.File;
 import java.io.IOException;
+
+import com.chromium.fontinstaller.util.IabHelper;
+import com.chromium.fontinstaller.util.IabResult;
+import com.chromium.fontinstaller.util.Inventory;
+import com.chromium.fontinstaller.util.Purchase;
+
 import android.app.ActionBar;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.Preference.OnPreferenceClickListener;
@@ -22,6 +32,9 @@ import android.widget.Toast;
 public class About extends PreferenceActivity {
 
 	int easterEggClicks = 10;
+	private static final String TAG = "com.chromium.fontinstaller";
+	IabHelper mHelper;
+	static final String ITEM_SKU = "com.chromium.fontster.donate";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +44,24 @@ public class About extends PreferenceActivity {
 		ActionBar ab = getActionBar();
 		ab.setDisplayHomeAsUpEnabled(true);
 
+		String base64EncodedPublicKey = 
+				"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjZla6YOR6Od3NTxs98KfxlQV68oTdGZmiRO2vzVIQ7W3oYP6FjNpjMhyckjvkD2sCtHBPU6OjkSD75TzB17knW2FK7ZZGQkEMdCLD9qX8IbJ17w0UDGpW3b71sOWiOV92f0aIzgRZFl7IERzsgzFEnpCLx3Yxdl4JLmErPaE19ZxHeJ+r25O4NMYCmzAPHdmtBOKRiNGqg6gQPsZqBlfy0XV+pEZB7HagpMlaYvy0eBXA5PkvtpRjDciukOw3j6hqTK/FHepNC4PxO1BWBjGaeZh4u/HbGzXplI8UHZOThfUpHWqzIM3kT8bJ9+JfrViM7pLYpBSy9+xhIGIcKHKkQIDAQAB";
+
+		mHelper = new IabHelper(this, base64EncodedPublicKey);
+
+		mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+			public void onIabSetupFinished(IabResult result) 
+			{
+				if (!result.isSuccess()) {
+					Log.d(TAG, "In-app Billing setup failed: " + 
+							result);
+				} else {             
+					Log.d(TAG, "In-app Billing is set up OK");
+				}
+			    mHelper.queryInventoryAsync(mReceivedInventoryListener);
+			}
+		});
+		
 		Preference clearCache = (Preference) findPreference("clearCache");
 		clearCache.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			public boolean onPreferenceClick(Preference preference) {
@@ -153,6 +184,14 @@ public class About extends PreferenceActivity {
 				return true; 
 			}
 		});
+
+		Preference donateInAppBilling = (Preference) findPreference("inAppBilling");
+		donateInAppBilling.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			public boolean onPreferenceClick(Preference preference) {				
+				mHelper.launchPurchaseFlow(About.this, ITEM_SKU, 10001, mPurchaseFinishedListener, "mypurchasetoken");
+				return true; 
+			}
+		});
 		
 		Preference source = (Preference) findPreference("source");
 		source.setOnPreferenceClickListener(new OnPreferenceClickListener() {
@@ -217,5 +256,60 @@ public class About extends PreferenceActivity {
 			}
 		});
 	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) 
+	{
+		if (!mHelper.handleActivityResult(requestCode, resultCode, data)) {     
+			super.onActivityResult(requestCode, resultCode, data);
+		}
+	}
 
+	IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
+		public void onIabPurchaseFinished(IabResult result, Purchase purchase) 
+		{
+			if (result.isFailure()) {
+				Toast.makeText(getApplicationContext(), "Failed to make purchase.", Toast.LENGTH_LONG).show();
+				return;
+			}      
+			else if (purchase.getSku().equals(ITEM_SKU)) {
+				consumeItem();
+			}
+
+		}
+	};
+
+	public void consumeItem() {
+		mHelper.queryInventoryAsync(mReceivedInventoryListener);
+	}
+
+	IabHelper.QueryInventoryFinishedListener mReceivedInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
+		public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
+			if (result.isFailure()) {
+				// Handle failure				
+			}
+			Purchase donate = inventory.getPurchase(ITEM_SKU);
+
+	        if (donate != null) {
+	            mHelper.consumeAsync(inventory.getPurchase(ITEM_SKU), mConsumeFinishedListener);
+	        }
+		}
+	};
+
+	IabHelper.OnConsumeFinishedListener mConsumeFinishedListener = new IabHelper.OnConsumeFinishedListener() {
+		public void onConsumeFinished(Purchase purchase, IabResult result) {
+			if (result.isSuccess()) {		    	 
+				CustomAlerts.showBasicAlert("Thanks", "We appreciate your support.", About.this);
+			} else {
+				// handle error
+			}
+		}
+	};
+	
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		if (mHelper != null) mHelper.dispose();
+		mHelper = null;
+	}
 }
