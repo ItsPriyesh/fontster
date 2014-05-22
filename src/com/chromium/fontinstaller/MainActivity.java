@@ -24,6 +24,7 @@ public class MainActivity extends ActionBarActivity {
 	// - Remove Install from Storage option
 	// - Add Vinque font
 	// - Display each fontname in its actual font
+	// - Add tooltips to splash
 	
 	SharedPreferences prefs = null;
 	Button openFontList, backup, testView;

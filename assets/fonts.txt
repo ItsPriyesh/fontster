@@ -132,6 +132,7 @@ Ubuntu
 Ubuntu Light
 Ubuntu Tall
 Venera
+Vinque
 Wagnasty
 Webly Sleek UI
 Zekton
