@@ -87,42 +87,42 @@ public class About extends PreferenceActivity {
 					CustomAlerts.showBasicAlert("Already enabled", "This option is already being used", About.this);
 				}
 				else {
-				DownloadManager.Request downloadPreviewZip = new DownloadManager.Request(Uri.parse("https://github.com/Chromium1/Fonts/raw/master/ListPreviews.zip"));
-				downloadPreviewZip.allowScanningByMediaScanner();
-				downloadPreviewZip.setDestinationInExternalPublicDir("/ListPreviews/", "ListPreviews.zip");
-				downloadPreviewZip.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);	
+					DownloadManager.Request downloadPreviewZip = new DownloadManager.Request(Uri.parse("https://github.com/Chromium1/Fonts/raw/master/ListPreviews.zip"));
+					downloadPreviewZip.allowScanningByMediaScanner();
+					downloadPreviewZip.setDestinationInExternalPublicDir("/ListPreviews/", "ListPreviews.zip");
+					downloadPreviewZip.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);	
 
-				DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+					DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
 
-				//display a progress dialog just before the request is sent
-				downloadProgress = new ProgressDialog(About.this);
-				downloadProgress.setMessage("Downloading font previews...");
-				downloadProgress.show();
+					//display a progress dialog just before the request is sent
+					downloadProgress = new ProgressDialog(About.this);
+					downloadProgress.setMessage("Downloading font previews...");
+					downloadProgress.show();
 
-				manager.enqueue(downloadPreviewZip);
-				counter = 1;
+					manager.enqueue(downloadPreviewZip);
+					counter = 1;
 
-				// listen for download completion, and close the progress dialog once it is detected
-				BroadcastReceiver receiver1 = new BroadcastReceiver() {
-					@Override
-					public void onReceive(Context context, Intent intent) {
-						String action1 = intent.getAction();
-						if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action1)) {
-							counter--; //reduce value to 0, indicating download completion					
-						}
-						if (counter == 0){
-							downloadProgress.dismiss();
-							// Extract zip
-							try {
-								unzip();
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
+					// listen for download completion, and close the progress dialog once it is detected
+					BroadcastReceiver receiver1 = new BroadcastReceiver() {
+						@Override
+						public void onReceive(Context context, Intent intent) {
+							String action1 = intent.getAction();
+							if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action1)) {
+								counter--; //reduce value to 0, indicating download completion					
+							}
+							if (counter == 0){
+								downloadProgress.dismiss();
+								// Extract zip
+								try {
+									unzip();
+								} catch (IOException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
 							}
 						}
-					}
-				};
-				registerReceiver(receiver1, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+					};
+					registerReceiver(receiver1, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
 				}
 				return true; 
 			}
@@ -430,8 +430,7 @@ public class About extends PreferenceActivity {
 		mHelper = null;
 	}
 
-	public void unzip() throws IOException 
-	{
+	public void unzip() throws IOException {
 		mProgressDialog = new ProgressDialog(About.this);
 		mProgressDialog.setMessage("Extracting previews...");
 		mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -440,21 +439,17 @@ public class About extends PreferenceActivity {
 		new UnZipTask().execute(StorezipFileLocation, DirectoryName);
 	}
 
-	private class UnZipTask extends AsyncTask<String, Void, Boolean> 
-	{
+	private class UnZipTask extends AsyncTask<String, Void, Boolean> {
 		@SuppressWarnings("rawtypes")
 		@Override
-		protected Boolean doInBackground(String... params) 
-		{
+		protected Boolean doInBackground(String... params) {
 			String filePath = params[0];
 			String destinationPath = params[1];
 
 			File archive = new File(filePath);
-			try 
-			{
+			try {
 				ZipFile zipfile = new ZipFile(archive);
-				for (Enumeration e = zipfile.entries(); e.hasMoreElements();) 
-				{
+				for (Enumeration e = zipfile.entries(); e.hasMoreElements();) {
 					ZipEntry entry = (ZipEntry) e.nextElement();
 					unzipEntry(zipfile, entry, destinationPath);
 				}
@@ -462,32 +457,27 @@ public class About extends PreferenceActivity {
 				UnzipUtil d = new UnzipUtil(StorezipFileLocation, DirectoryName); 
 				d.unzip();
 			} 
-			catch (Exception e) 
-			{
+			catch (Exception e) {
 				return false;
 			}
 			return true;
 		}
 
 		@Override
-		protected void onPostExecute(Boolean result) 
-		{
+		protected void onPostExecute(Boolean result) {
 			mProgressDialog.dismiss();
 			CustomAlerts.showBasicAlert("Previews downloaded", "Font previews for the list have been successfully saved onto your device", About.this);
 		}
 
-		private void unzipEntry(ZipFile zipfile, ZipEntry entry,String outputDir) throws IOException 
-		{
+		private void unzipEntry(ZipFile zipfile, ZipEntry entry,String outputDir) throws IOException {
 
-			if (entry.isDirectory()) 
-			{
+			if (entry.isDirectory()) {
 				createDir(new File(outputDir, entry.getName()));
 				return;
 			}
 
 			File outputFile = new File(outputDir, entry.getName());
-			if (!outputFile.getParentFile().exists())
-			{
+			if (!outputFile.getParentFile().exists()) {
 				createDir(outputFile.getParentFile());
 			}
 
@@ -495,27 +485,22 @@ public class About extends PreferenceActivity {
 			BufferedInputStream inputStream = new BufferedInputStream(zipfile.getInputStream(entry));
 			BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(outputFile));
 
-			try 
-			{
-
+			try {
 			}
-			finally 
-			{
+			finally {
 				outputStream.flush();
 				outputStream.close();
 				inputStream.close();
 			}
 		}
 
-		private void createDir(File dir) 
-		{
-			if (dir.exists()) 
-			{
+		private void createDir(File dir) {
+			if (dir.exists()) {
 				return;
 			}
-			if (!dir.mkdirs()) 
-			{
+			if (!dir.mkdirs()) {
 				throw new RuntimeException("Can not create dir " + dir);
 			}
-		}}
+		}
+	}
 }
