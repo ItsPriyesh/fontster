@@ -2,6 +2,14 @@
 
     <PreferenceCategory android:title="General" >
         <Preference
+            android:key="displayFontsInList"
+            android:summary="Show each font name in its actual font."
+            android:title="Display fonts in list" />
+        <Preference
+            android:key="disableDisplayFontsInList"
+            android:summary="Reverts changes made by the option above."
+            android:title="Don't display fonts in list" />
+        <Preference
             android:key="clearCache"
             android:summary="@string/clear_cache_message"
             android:title="@string/clear_cache_title" />

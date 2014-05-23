@@ -15,40 +15,41 @@
         android:gravity="center"
         android:src="@drawable/title" />
 
-     <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingBottom="0dp"
-                android:paddingLeft="10dp"
-                android:paddingTop="10dp" >
-    <ImageButton
-        android:id="@+id/icon"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:background="@null"
-        android:gravity="center"
-        android:src="@drawable/ic_launcher" />
-     <ImageButton
-        android:id="@+id/help"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:background="@null"
-        android:gravity="center"
-        android:src="@drawable/help" />
-</LinearLayout>
+        android:orientation="horizontal"
+        android:paddingBottom="0dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp" >
+<ImageButton
+            android:id="@+id/help"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:background="@null"
+            android:gravity="center"
+            android:src="@drawable/help" />
+        <ImageButton
+            android:id="@+id/icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:background="@null"
+            android:gravity="center"
+            android:src="@drawable/ic_launcher" />
+
+        
+    </LinearLayout>
+
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:gravity="center"
-        android:text="Click the icon above to begin\nor click the icon below for help"
+        android:text="Click the help icon first,\nthen click the app icon to begin!"
         android:textColor="#ffffff"
         android:textSize="18sp" />
-    
-   
 
 </LinearLayout>

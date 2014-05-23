@@ -1,7 +1,13 @@
 package com.chromium.fontinstaller;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Enumeration;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 import com.chromium.fontinstaller.util.IabHelper;
 import com.chromium.fontinstaller.util.IabResult;
@@ -10,14 +16,19 @@ import com.chromium.fontinstaller.util.Purchase;
 
 import android.app.ActionBar;
 import android.app.Dialog;
+import android.app.DownloadManager;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.IBinder;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
@@ -31,10 +42,14 @@ import android.widget.Toast;
 
 public class About extends PreferenceActivity {
 
-	int easterEggClicks = 10;
+	int easterEggClicks = 10, counter;
 	private static final String TAG = "com.chromium.fontinstaller";
 	IabHelper mHelper;
 	static final String ITEM_SKU = "com.chromium.fontster.donate";
+	ProgressDialog downloadProgress, mProgressDialog;
+
+	String StorezipFileLocation = Environment.getExternalStorageDirectory() + "/ListPreviews/ListPreviews.zip"; 
+	String DirectoryName = Environment.getExternalStorageDirectory() + "/ListPreviews/";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,10 +73,113 @@ public class About extends PreferenceActivity {
 				} else {             
 					Log.d(TAG, "In-app Billing is set up OK");
 				}
-			    mHelper.queryInventoryAsync(mReceivedInventoryListener);
+				mHelper.queryInventoryAsync(mReceivedInventoryListener);
 			}
 		});
-		
+
+		Preference displayFontsInList = (Preference) findPreference("displayFontsInList");
+		displayFontsInList.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			public boolean onPreferenceClick(Preference preference) {
+
+				File dir = new File(Environment.getExternalStorageDirectory() + "/ListPreviews/");
+
+				if(dir.exists())  {
+					CustomAlerts.showBasicAlert("Already enabled", "This option is already being used", About.this);
+				}
+				else {
+				DownloadManager.Request downloadPreviewZip = new DownloadManager.Request(Uri.parse("https://github.com/Chromium1/Fonts/raw/master/ListPreviews.zip"));
+				downloadPreviewZip.allowScanningByMediaScanner();
+				downloadPreviewZip.setDestinationInExternalPublicDir("/ListPreviews/", "ListPreviews.zip");
+				downloadPreviewZip.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);	
+
+				DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+
+				//display a progress dialog just before the request is sent
+				downloadProgress = new ProgressDialog(About.this);
+				downloadProgress.setMessage("Downloading font previews...");
+				downloadProgress.show();
+
+				manager.enqueue(downloadPreviewZip);
+				counter = 1;
+
+				// listen for download completion, and close the progress dialog once it is detected
+				BroadcastReceiver receiver1 = new BroadcastReceiver() {
+					@Override
+					public void onReceive(Context context, Intent intent) {
+						String action1 = intent.getAction();
+						if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action1)) {
+							counter--; //reduce value to 0, indicating download completion					
+						}
+						if (counter == 0){
+							downloadProgress.dismiss();
+							// Extract zip
+							try {
+								unzip();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+					}
+				};
+				registerReceiver(receiver1, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+				}
+				return true; 
+			}
+		});
+
+		Preference disableDisplayFontsInList = (Preference) findPreference("disableDisplayFontsInList");
+		disableDisplayFontsInList.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			public boolean onPreferenceClick(Preference preference) {
+				File previewListDir = new File("/sdcard/ListPreviews");
+
+				if (previewListDir.exists() || previewListDir.exists()) {
+					AsyncTask<Void, Void, Void> revertFontsInListView = new AsyncTask<Void, Void, Void>()  { 
+						//display progress dialog while fonts are copied in background
+						ProgressDialog deletionProgress;
+
+						@Override
+						protected void onPreExecute() {
+							super.onPreExecute();
+							deletionProgress = new ProgressDialog (About.this);
+							deletionProgress.setMessage("Reverting 'Display fonts in list' option...");
+							deletionProgress.show();
+						}
+
+						@Override
+						protected Void doInBackground(Void... params) {
+
+							String previews = "rm -r /sdcard/ListPreviews";
+							Runtime runtime = Runtime.getRuntime();
+							try {
+								runtime.exec(previews);
+							}
+							catch (IOException e) { 
+
+							}
+							return null;
+						}
+
+						@Override
+						protected void onPostExecute(Void result) {
+							super.onPostExecute(result);
+							if (deletionProgress != null) {
+								if (deletionProgress.isShowing()) {
+									deletionProgress.dismiss();
+								}
+							}
+							CustomAlerts.showBasicAlert ("Done", "'Display fonts in list' has been reverted. Restart the app for changes to take effect.", About.this);
+						}
+					};
+					revertFontsInListView.execute((Void[])null);
+
+				}
+				else
+					CustomAlerts.showBasicAlert ("Not necessary", "'Display fonts in list' has not been enabled. No need to undo it.", About.this);
+				return true; 
+			}
+		});
+
 		Preference clearCache = (Preference) findPreference("clearCache");
 		clearCache.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			public boolean onPreferenceClick(Preference preference) {
@@ -107,7 +225,6 @@ public class About extends PreferenceActivity {
 								}
 							}
 							CustomAlerts.showBasicAlert ("Done", "Cached fonts have been deleted.", About.this);
-
 						}
 					};
 					cleanCache.execute((Void[])null);
@@ -192,7 +309,7 @@ public class About extends PreferenceActivity {
 				return true; 
 			}
 		});
-		
+
 		Preference source = (Preference) findPreference("source");
 		source.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			public boolean onPreferenceClick(Preference preference) {
@@ -256,7 +373,7 @@ public class About extends PreferenceActivity {
 			}
 		});
 	}
-	
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) 
 	{
@@ -290,9 +407,9 @@ public class About extends PreferenceActivity {
 			}
 			Purchase donate = inventory.getPurchase(ITEM_SKU);
 
-	        if (donate != null) {
-	            mHelper.consumeAsync(inventory.getPurchase(ITEM_SKU), mConsumeFinishedListener);
-	        }
+			if (donate != null) {
+				mHelper.consumeAsync(inventory.getPurchase(ITEM_SKU), mConsumeFinishedListener);
+			}
 		}
 	};
 
@@ -305,11 +422,100 @@ public class About extends PreferenceActivity {
 			}
 		}
 	};
-	
+
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
 		if (mHelper != null) mHelper.dispose();
 		mHelper = null;
 	}
+
+	public void unzip() throws IOException 
+	{
+		mProgressDialog = new ProgressDialog(About.this);
+		mProgressDialog.setMessage("Extracting previews...");
+		mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		mProgressDialog.setCancelable(false);
+		mProgressDialog.show();
+		new UnZipTask().execute(StorezipFileLocation, DirectoryName);
+	}
+
+	private class UnZipTask extends AsyncTask<String, Void, Boolean> 
+	{
+		@SuppressWarnings("rawtypes")
+		@Override
+		protected Boolean doInBackground(String... params) 
+		{
+			String filePath = params[0];
+			String destinationPath = params[1];
+
+			File archive = new File(filePath);
+			try 
+			{
+				ZipFile zipfile = new ZipFile(archive);
+				for (Enumeration e = zipfile.entries(); e.hasMoreElements();) 
+				{
+					ZipEntry entry = (ZipEntry) e.nextElement();
+					unzipEntry(zipfile, entry, destinationPath);
+				}
+
+				UnzipUtil d = new UnzipUtil(StorezipFileLocation, DirectoryName); 
+				d.unzip();
+			} 
+			catch (Exception e) 
+			{
+				return false;
+			}
+			return true;
+		}
+
+		@Override
+		protected void onPostExecute(Boolean result) 
+		{
+			mProgressDialog.dismiss();
+			CustomAlerts.showBasicAlert("Previews downloaded", "Font previews for the list have been successfully saved onto your device", About.this);
+		}
+
+		private void unzipEntry(ZipFile zipfile, ZipEntry entry,String outputDir) throws IOException 
+		{
+
+			if (entry.isDirectory()) 
+			{
+				createDir(new File(outputDir, entry.getName()));
+				return;
+			}
+
+			File outputFile = new File(outputDir, entry.getName());
+			if (!outputFile.getParentFile().exists())
+			{
+				createDir(outputFile.getParentFile());
+			}
+
+			// Log.v("", "Extracting: " + entry);
+			BufferedInputStream inputStream = new BufferedInputStream(zipfile.getInputStream(entry));
+			BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(outputFile));
+
+			try 
+			{
+
+			}
+			finally 
+			{
+				outputStream.flush();
+				outputStream.close();
+				inputStream.close();
+			}
+		}
+
+		private void createDir(File dir) 
+		{
+			if (dir.exists()) 
+			{
+				return;
+			}
+			if (!dir.mkdirs()) 
+			{
+				throw new RuntimeException("Can not create dir " + dir);
+			}
+		}}
 }
