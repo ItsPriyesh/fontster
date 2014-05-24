@@ -441,17 +441,9 @@ public class FontList extends Activity  {
 		case R.id.menu_help:
 			CustomAlerts.showBasicAlertWithImage ("Instructions", "To install a font simply tap on the one that you want.\n\nIf you would like to preview a font prior to installing, press and hold it.", FontList.this);
 			return true;
-		case R.id.menu_custom_install:
-			openStorageInstall();
-			return true;
 		default:
 			return super.onOptionsItemSelected(menuItem);
 		}
-	}
-	
-	private void openStorageInstall() {
-		Intent storageInstall = new Intent(FontList.this, StorageInstall.class);
-		startActivity(storageInstall);
 	}
 	
 	public static boolean deleteDirectory(File path) {

@@ -9,12 +9,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -22,8 +25,6 @@ public class MainActivity extends ActionBarActivity {
 
 	//TODO
 	// - Remove Install from Storage option
-	// - Display each fontname in its actual font (WIP)
-	// - Make bars translucent in other activities
 	
 	SharedPreferences prefs = null;
 	Button openFontList, backup, testView;
@@ -38,6 +39,11 @@ public class MainActivity extends ActionBarActivity {
 		setContentView(R.layout.main_card);
 		prefs = getSharedPreferences("com.chromium.fontinstaller", MODE_PRIVATE);
 
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+	    	Window win = getWindow();
+	    	win.setFlags (WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+	    }
+		
 		// Look up the AdView as a resource and load a request.
 		AdView adView = (AdView) findViewById(R.id.adView);
 		AdRequest adRequest = new AdRequest.Builder()
