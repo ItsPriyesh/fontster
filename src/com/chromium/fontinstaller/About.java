@@ -136,7 +136,7 @@ public class About extends PreferenceActivity {
 						protected void onPreExecute() {
 							super.onPreExecute();
 							deletionProgress = new ProgressDialog (About.this);
-							deletionProgress.setMessage("Reverting 'Display fonts in list' option...");
+							deletionProgress.setMessage("Reverting 'Enable True Font Display' option...");
 							deletionProgress.show();
 						}
 
@@ -162,14 +162,14 @@ public class About extends PreferenceActivity {
 									deletionProgress.dismiss();
 								}
 							}
-							CustomAlerts.showBasicAlert ("Done", "'Display fonts in list' has been reverted. Restart the app for changes to take effect.", About.this);
+							CustomAlerts.showBasicAlert ("Done", "'True Font Display' has been disabled. Restart the app for changes to take effect.", About.this);
 						}
 					};
 					revertFontsInListView.execute((Void[])null);
 
 				}
 				else
-					CustomAlerts.showBasicAlert ("Not necessary", "'Display fonts in list' has not been enabled. No need to undo it.", About.this);
+					CustomAlerts.showBasicAlert ("Not necessary", "'True Font Display' has not been enabled. No need to undo it.", About.this);
 				return true; 
 			}
 		});

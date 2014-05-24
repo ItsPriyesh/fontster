@@ -60,7 +60,7 @@ public class CustomAdapter extends ArrayAdapter<String> {
 			}
 			else {
 				CustomAlerts.showBasicAlert("Unable to load fonts", "Some fonts failed to be set." +
-						" Please go to the settings of this app, choose the 'Don't display fonts in list' option," +
+						" Please go to the settings of this app, choose the 'Disable True Font Display' option," +
 						" then try again.", context);
 			}	
 		}
