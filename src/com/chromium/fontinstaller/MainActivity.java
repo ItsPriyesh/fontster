@@ -24,7 +24,6 @@ import android.widget.Toast;
 public class MainActivity extends ActionBarActivity {
 
 	//TODO
-	// - Remove Install from Storage option
 	
 	SharedPreferences prefs = null;
 	Button openFontList, backup, testView;
