@@ -22,9 +22,8 @@ public class MainActivity extends ActionBarActivity {
 
 	//TODO
 	// - Remove Install from Storage option
-	// - Display each fontname in its actual font
+	// - Display each fontname in its actual font (WIP)
 	// - Make bars translucent in other activities
-	// - Fix Calibri
 	
 	SharedPreferences prefs = null;
 	Button openFontList, backup, testView;

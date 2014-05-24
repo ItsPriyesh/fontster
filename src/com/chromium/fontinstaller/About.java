@@ -228,7 +228,6 @@ public class About extends PreferenceActivity {
 						}
 					};
 					cleanCache.execute((Void[])null);
-
 				}
 				else
 					CustomAlerts.showBasicAlert ("Nothing to clean", "There are currently no cached fonts.", About.this);
