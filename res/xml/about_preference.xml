@@ -1,6 +1,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <PreferenceCategory android:title="General" >
+    <PreferenceCategory android:title="Appearance" >
         <Preference
             android:key="displayFontsInList"
             android:summary="Show each font name in its actual font."
@@ -9,6 +9,8 @@
             android:key="disableDisplayFontsInList"
             android:summary="Reverts changes made by the option above."
             android:title="Disable True Font Display" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="General" >
         <Preference
             android:key="clearCache"
             android:summary="@string/clear_cache_message"
@@ -27,7 +29,7 @@
             android:title="@string/restart_systemui" />
     </PreferenceCategory>
     <PreferenceCategory android:title="About" >
-        <com.chromium.fontinstaller.VersionPreference android:title="Version" />        
+        <com.chromium.fontinstaller.VersionPreference android:title="Version" />
         <Preference
             android:key="viewSplash"
             android:summary="Display initial welcome page."

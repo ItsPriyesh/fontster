@@ -24,7 +24,9 @@ import android.widget.Toast;
 public class MainActivity extends ActionBarActivity {
 
 	//TODO
-	
+	/*
+	 * 
+	 */
 	SharedPreferences prefs = null;
 	Button openFontList, backup, testView;
 
@@ -149,7 +151,7 @@ public class MainActivity extends ActionBarActivity {
 		Intent share = new Intent(); 
 		share.setAction(Intent.ACTION_SEND);
 		share.setType("text/plain");
-		share.putExtra(Intent.EXTRA_TEXT, "Check out Fontster, at fontster.cf!" );  
+		share.putExtra(Intent.EXTRA_TEXT, "Check out Fontster, http://goo.gl/ybK5ST!" );  
 		startActivity(Intent.createChooser(share, "Share Fontster"));
 	}
 }
