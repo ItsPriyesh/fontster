@@ -58,7 +58,7 @@ public class About extends PreferenceActivity {
 
 		mHelper = new IabHelper(this, base64EncodedPublicKey);
 
-	/*	mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+		mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
 			public void onIabSetupFinished(IabResult result) 
 			{
 				if (!result.isSuccess()) {
@@ -69,7 +69,7 @@ public class About extends PreferenceActivity {
 				}
 				mHelper.queryInventoryAsync(mReceivedInventoryListener);
 			}
-		});*/
+		});
 
 		Preference displayFontsInList = (Preference) findPreference("displayFontsInList");
 		displayFontsInList.setOnPreferenceClickListener(new OnPreferenceClickListener() {
