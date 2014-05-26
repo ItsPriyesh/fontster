@@ -25,7 +25,8 @@ public class MainActivity extends ActionBarActivity {
 
 	//TODO
 	/*
-	 * 
+	 * Theme actionbar
+	 * Make actionbar transparent while scrolling in listview
 	 */
 	SharedPreferences prefs = null;
 	Button openFontList, backup, testView;

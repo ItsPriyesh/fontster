@@ -206,45 +206,69 @@ public class BackupRestore extends Activity {
 
 				File backupDir = new File("/sdcard/FontBackup");
 				if (backupDir.exists()) { 
-					AsyncTask<Void, Void, Void> delBackup = new AsyncTask<Void, Void, Void>()  { 
-						//display progress dialog while fonts are copied in background
-						ProgressDialog prog;
 
-						@Override
-						protected void onPreExecute() {
-							super.onPreExecute();
-							prog = new ProgressDialog (BackupRestore.this);
-							prog.setMessage("Deleting backup...");
-							prog.show();
-						}
+					final Dialog confirm3 = new Dialog(BackupRestore.this);
 
-						@Override
-						protected Void doInBackground(Void... params) {
+					confirm3.requestWindowFeature(Window.FEATURE_NO_TITLE);
+					confirm3.setContentView(R.layout.two_button_alert);	
+					TextView alertTitle = (TextView) confirm3.findViewById(R.id.title);
+					alertTitle.setText("Confirm delete");
+					TextView alertMessage = (TextView) confirm3.findViewById(R.id.message);
+					alertMessage.setText("Are you sure you want to delete your font backup?");
+					Button positiveButton = (Button) confirm3.findViewById(R.id.positive);
+					Button negativeButton = (Button) confirm3.findViewById(R.id.negative);
 
-							String backup = "rm -r /sdcard/FontBackup";
-							Runtime runtime = Runtime.getRuntime();
-							try {
-								runtime.exec(backup);
-							}
-							catch (IOException e) { 
+					positiveButton.setOnClickListener(new View.OnClickListener() { // confirm yes
+						public void onClick(View v){
+							confirm3.cancel();
 
-							}
-							return null;
-						}
+							AsyncTask<Void, Void, Void> delBackup = new AsyncTask<Void, Void, Void>()  { 
+								//display progress dialog while fonts are copied in background
+								ProgressDialog prog;
 
-						@Override
-						protected void onPostExecute(Void result) {
-							super.onPostExecute(result);
-							if (prog != null) {
-								if (prog.isShowing()) {
-									prog.dismiss();
+								@Override
+								protected void onPreExecute() {
+									super.onPreExecute();
+									prog = new ProgressDialog (BackupRestore.this);
+									prog.setMessage("Deleting backup...");
+									prog.show();
 								}
-							}
-							CustomAlerts.showBasicAlert ("Done", "Your backup has been deleted.", BackupRestore.this);
 
+								@Override
+								protected Void doInBackground(Void... params) {
+
+									String backup = "rm -r /sdcard/FontBackup";
+									Runtime runtime = Runtime.getRuntime();
+									try {
+										runtime.exec(backup);
+									}
+									catch (IOException e) { 
+
+									}
+									return null;
+								}
+
+								@Override
+								protected void onPostExecute(Void result) {
+									super.onPostExecute(result);
+									if (prog != null) {
+										if (prog.isShowing()) {
+											prog.dismiss();
+										}
+									}
+									CustomAlerts.showBasicAlert ("Done", "Your backup has been deleted.", BackupRestore.this);
+
+								}
+							};
+							delBackup.execute((Void[])null);
 						}
-					};
-					delBackup.execute((Void[])null);
+					});
+					negativeButton.setOnClickListener(new View.OnClickListener() { // confirm no
+						public void onClick(View v){
+							confirm3.cancel();
+						}			
+					});
+					confirm3.show();
 				}
 				else {
 					CustomAlerts.showBasicAlert("No backup", "You have not made a backup.", BackupRestore.this);
