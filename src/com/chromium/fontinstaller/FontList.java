@@ -10,6 +10,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
 import android.content.Intent; //imports android.content.Intent
+import android.app.ActionBar;
 import android.app.Activity; //imports android.app.Acticity
 import android.app.Dialog; //imports android.app.Dialog
 import android.app.DownloadManager; //imports android.app.DownloadManager
@@ -18,11 +19,15 @@ import android.content.BroadcastReceiver; //imports content.BroadcastReveiver
 import android.content.Context; //imports android.content.Context
 import android.content.IntentFilter; //imports android.content.IntentFilter
 import android.content.SharedPreferences; //imports android.content.SharedPreferences
+import android.graphics.Color;
 import android.graphics.Typeface; //imports android.graphics.Typeface
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri; //imports android.net.Uri
 import android.os.AsyncTask; //imports android.os.AsyncTask
 import android.os.Bundle; //imports android.os.Bundle
 import android.os.Environment; //imports android.os.Environment
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView; //imports android.widget.AdapterView
 import android.widget.ArrayAdapter; //imports android.widget.ArrayAdapter
 import android.widget.Button; //imports android.widget.Button
@@ -40,29 +45,31 @@ public class FontList extends Activity  {
 	static String fontDest, fontName, previewName, selectedFromList, longPressed;	
 	static int dlLeft, sampleFontDL;
 	static TextView alertTitle, alertMessage;
-	
+
 	//Font url strings
 	String urlRobotoBold, urlRobotoBoldItalic, urlRobotoItalic, 
 	urlRobotoLight, urlRobotoLightItalic, urlRobotoRegular, urlRobotoThin, 
 	urlRobotoThinItalic, urlRobotoCondensedBold, urlRobotoCondensedBoldItalic, 
 	urlRobotoCondensedItalic, urlRobotoCondensedRegular, urlPreviewFont;		
 
+	ActionBar bar = getActionBar();
+	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.font_list);
 		prefs = getSharedPreferences("com.chromium.fontinstaller.fontlist", MODE_PRIVATE);
-		
+
 		// Look up the AdView as a resource and load a request.
 		AdView adView = (AdView) findViewById(R.id.adView);
 		AdRequest adRequest = new AdRequest.Builder()
 		.addTestDevice(AdRequest.DEVICE_ID_EMULATOR)        // All emulators
 		.addTestDevice("2797F5D9304B6B3A15771A0519A4F687")  // HTC Desire
 		.addTestDevice("D674E5DF79F70B01D8866A5F99A2ACBA") // Samsung i9000
-    	.build();
+		.build();
 		adView.loadAd(adRequest);
-		
+
 		fontDest = "/system/fonts"; //change path to /system/fonts when releasing
-				
+
 		lv = (ListView) findViewById(R.id.listView1);
 
 		ArrayList<String> fontList = new ArrayList<String>();
@@ -89,7 +96,7 @@ public class FontList extends Activity  {
 		// Font Installing
 		lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View clickView, int position, long id) {
-				
+
 				selectedFromList = (lv.getItemAtPosition(position).toString());
 
 				fontName = removeSpaces(selectedFromList); //remove the spaces from the item so that it can later be passed into the URL string
@@ -359,7 +366,7 @@ public class FontList extends Activity  {
 				previewName = removeSpaces(longPressed);
 
 				File sampleFont = new File(Environment.getExternalStorageDirectory() + "/SampleFonts/" + previewName + "/sample.ttf");
-				
+
 				if(sampleFont.exists())  {
 					//Create new typeface from downloaded regular preview font
 					Typeface sampleFontReUsed = Typeface.createFromFile("/sdcard/SampleFonts/" + previewName + "/sample.ttf");
@@ -414,6 +421,19 @@ public class FontList extends Activity  {
 				return true;
 			}
 		});
+		
+		lv.setOnScrollListener(new OnScrollListener(){
+			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+				// TODO Auto-generated method stub
+			}
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				if(scrollState == OnScrollListener.SCROLL_STATE_IDLE) {
+					
+					bar.setBackgroundDrawable(new ColorDrawable(Color.BLACK)); 
+				}
+			}
+		});
+
 	}	 
 
 	@Override
@@ -445,7 +465,7 @@ public class FontList extends Activity  {
 			return super.onOptionsItemSelected(menuItem);
 		}
 	}
-	
+
 	public static boolean deleteDirectory(File path) {
 		if( path.exists() ) {
 			File[] files = path.listFiles();
@@ -476,5 +496,5 @@ public class FontList extends Activity  {
 		}
 		return line;
 	}
-	
+
 }

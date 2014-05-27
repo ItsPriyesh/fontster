@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,6 +28,7 @@ public class MainActivity extends ActionBarActivity {
 	/*
 	 * Theme actionbar
 	 * Make actionbar transparent while scrolling in listview
+	 * Put all folders created on storage into one
 	 */
 	SharedPreferences prefs = null;
 	Button openFontList, backup, testView;
@@ -34,7 +36,7 @@ public class MainActivity extends ActionBarActivity {
 	String stockFontURL = "https://github.com/Chromium1/Fonts/raw/master/RestoreStockFonts.zip";
 	String fallbackCondensed = "https://github.com/Chromium1/Fonts/raw/master/StockRoboto/RobotoCondensed-Regular.ttf";
 	String fallbackLight = "https://github.com/Chromium1/Fonts/raw/master/StockRoboto/Roboto-Light.ttf";
-
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
