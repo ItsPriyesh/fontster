@@ -9,7 +9,7 @@ backup/restore, veiw current installed font, and options.
 
 Requirements
 =============
-* Rooted Phone
+* Operating System with root/SuperUser
 * Android Ice Cream Sandwich or higher (Version 4.0+)
 
 Instructions
