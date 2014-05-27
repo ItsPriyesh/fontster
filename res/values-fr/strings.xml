@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">Fontster</string>
+	
+	<string name="install_button">Installer une police</string>
+	<string name="backup_restore_button">Sauvegarder et restaurer des polices</string>
+	<string name="view_current_button">Voir les polices actuellement installées</string>
+    
+	<string name="backup_button">Sauvegarder</string>
+	<string name="restore_button">Restaurer</string>
+	<string name="delete_backup_button">Supprimer la sauvegarde</string>
+    
+	<string name="regular">Normal</string>
+	<string name="italic">Italique</string>
+	<string name="bold">Gras</string>
+	<string name="bold_italic">Gras italique</string>
+	<string name="light">Léger</string>
+	<string name="light_italic">Italique léger</string>
+	<string name="thin">Fin</string>
+	<string name="thin_italic">Italique fin</string>
+	<string name="condensed">Condensé</string>
+	<string name="condensed_italic">Italique condensé</string>
+	<string name="condensed_bold">Gras condensé</string>
+	<string name="condensed_bold_italic">Gras italique condensé</string>
+	
+	<string name="clear_cache_message">Supprimer les anciennes polices précédemment téléchargées.</string>
+	<string name="clear_cache_title">Vider le cache</string>
+	<string name="request_message">Envoyez-nous une police que vous voulez voir ajouter.</string>
+	<string name="request_title">Demandez une police</string>
+    
+	<string name="reboot_preference">Redémarrer</string>
+	<string name="reboot_preference_message">Redémarrer l\'appareil.</string>
+	<string name="restart_systemui">Redémarrer SystemUI</string>
+	<string name="restart_systemui_message">Rafraichir l\'interface système.</string>
+	<string name="source_message">Voir le code de cette app sur GitHub.</string>
+	<string name="source_title">Source</string>
+	<string name="contact_message">Envoyez un email au développeur.</string>
+	<string name="contact_title">Contact</string>
+	<string name="website_message">Consultez notre site web.</string>
+	<string name="website_title">Site web</string>
+	<string name="donate_message">Donner au développeur.</string>
+	<string name="donate_title">Donner</string>
+	<string name="contributors">Contributeurs</string>
+	<string name="lead_developer">Développeur principal</string>
+	<string name="priyesh">Priyesh Patel</string>
+	<string name="marketing">Chef du marketing</string>
+	<string name="arjun">Arjun Sharma</string>
+	<string name="co">Co-développeur</string>
+	<string name="ethan">Ethan Chen</string>
+</resources>
