@@ -51,8 +51,6 @@ public class FontList extends Activity  {
 	urlRobotoLight, urlRobotoLightItalic, urlRobotoRegular, urlRobotoThin, 
 	urlRobotoThinItalic, urlRobotoCondensedBold, urlRobotoCondensedBoldItalic, 
 	urlRobotoCondensedItalic, urlRobotoCondensedRegular, urlPreviewFont;		
-
-	ActionBar bar = getActionBar();
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -421,19 +419,6 @@ public class FontList extends Activity  {
 				return true;
 			}
 		});
-		
-		lv.setOnScrollListener(new OnScrollListener(){
-			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-				// TODO Auto-generated method stub
-			}
-			public void onScrollStateChanged(AbsListView view, int scrollState) {
-				if(scrollState == OnScrollListener.SCROLL_STATE_IDLE) {
-					
-					bar.setBackgroundDrawable(new ColorDrawable(Color.BLACK)); 
-				}
-			}
-		});
-
 	}	 
 
 	@Override
