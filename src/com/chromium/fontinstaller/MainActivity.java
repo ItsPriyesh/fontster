@@ -46,7 +46,7 @@ public class MainActivity extends ActionBarActivity {
 	 * Make actionbar transparent while scrolling in listview
 	 * Put all folders created on storage into one
 	 * Check for internet connection before downloading
-	 * Add roboto regular to list
+	 * Add roboto regular to list - done
 	 */
 	
 	SharedPreferences prefs = null;
