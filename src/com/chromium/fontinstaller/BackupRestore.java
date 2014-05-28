@@ -50,6 +50,7 @@ public class BackupRestore extends Activity {
 		.build();
 		adView.loadAd(adRequest);
 
+		
 		backup = (Button)findViewById(R.id.backup);
 		backup.setOnClickListener(new View.OnClickListener() { //copy fonts from system to sd
 			public void onClick(View v){
