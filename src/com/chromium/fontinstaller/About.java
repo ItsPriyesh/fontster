@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 package com.chromium.fontinstaller;
 
 import java.io.BufferedInputStream;
@@ -36,6 +36,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -94,45 +96,51 @@ public class About extends PreferenceActivity {
 				File dir = new File(Environment.getExternalStorageDirectory() + "/ListPreviews/");
 
 				if(dir.exists())  {
-					CustomAlerts.showBasicAlert("Already enabled", "This option is already being used", About.this);
+					CustomAlerts.showBasicAlert("Already enabled", "This option is already being used.", About.this);
 				}
 				else {
-					DownloadManager.Request downloadPreviewZip = new DownloadManager.Request(Uri.parse("https://github.com/Chromium1/Fonts/raw/master/ListPreviews.zip"));
-					downloadPreviewZip.allowScanningByMediaScanner();
-					downloadPreviewZip.setDestinationInExternalPublicDir("/ListPreviews/", "ListPreviews.zip");
-					downloadPreviewZip.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);	
+					if (haveNetworkConnection()){ //connection available								
 
-					DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+						DownloadManager.Request downloadPreviewZip = new DownloadManager.Request(Uri.parse("https://github.com/Chromium1/Fonts/raw/master/ListPreviews.zip"));
+						downloadPreviewZip.allowScanningByMediaScanner();
+						downloadPreviewZip.setDestinationInExternalPublicDir("/ListPreviews/", "ListPreviews.zip");
+						downloadPreviewZip.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);	
 
-					//display a progress dialog just before the request is sent
-					downloadProgress = new ProgressDialog(About.this);
-					downloadProgress.setMessage("Downloading font previews...");
-					downloadProgress.show();
+						DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
 
-					manager.enqueue(downloadPreviewZip);
-					counter = 1;
+						//display a progress dialog just before the request is sent
+						downloadProgress = new ProgressDialog(About.this);
+						downloadProgress.setMessage("Downloading font previews...");
+						downloadProgress.show();
 
-					// listen for download completion, and close the progress dialog once it is detected
-					BroadcastReceiver receiver1 = new BroadcastReceiver() {
-						@Override
-						public void onReceive(Context context, Intent intent) {
-							String action1 = intent.getAction();
-							if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action1)) {
-								counter--; //reduce value to 0, indicating download completion					
-							}
-							if (counter == 0){
-								downloadProgress.dismiss();
-								// Extract zip
-								try {
-									unzip();
-								} catch (IOException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
+						manager.enqueue(downloadPreviewZip);
+						counter = 1;
+
+						// listen for download completion, and close the progress dialog once it is detected
+						BroadcastReceiver receiver1 = new BroadcastReceiver() {
+							@Override
+							public void onReceive(Context context, Intent intent) {
+								String action1 = intent.getAction();
+								if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action1)) {
+									counter--; //reduce value to 0, indicating download completion					
+								}
+								if (counter == 0){
+									downloadProgress.dismiss();
+									// Extract zip
+									try {
+										unzip();
+									} catch (IOException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
 								}
 							}
-						}
-					};
-					registerReceiver(receiver1, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+						};
+						registerReceiver(receiver1, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+					}
+					else { //no connection
+						CustomAlerts.showBasicAlert("No connection", "Your phone must be connected to the internet.", About.this);
+					}
 				}
 				return true; 
 			}
@@ -511,5 +519,23 @@ public class About extends PreferenceActivity {
 				throw new RuntimeException("Can not create dir " + dir);
 			}
 		}
+
+	}
+
+	private boolean haveNetworkConnection() {
+		boolean haveConnectedWifi = false;
+		boolean haveConnectedMobile = false;
+
+		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo[] netInfo = cm.getAllNetworkInfo();
+		for (NetworkInfo ni : netInfo) {
+			if (ni.getTypeName().equalsIgnoreCase("WIFI"))
+				if (ni.isConnected())
+					haveConnectedWifi = true;
+			if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
+				if (ni.isConnected())
+					haveConnectedMobile = true;
+		}
+		return haveConnectedWifi || haveConnectedMobile;
 	}
 }
