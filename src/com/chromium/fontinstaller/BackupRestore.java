@@ -50,7 +50,12 @@ public class BackupRestore extends Activity {
 		.build();
 		adView.loadAd(adRequest);
 
-		
+		/**
+		 * Listens for user click on 'Backup' button.
+		 * First a confirmation dialog is shown, and once
+		 * the user agrees to back up, fonts are copied from
+		 * /system/fonts to /sdcard.
+		 */
 		backup = (Button)findViewById(R.id.backup);
 		backup.setOnClickListener(new View.OnClickListener() { //copy fonts from system to sd
 			public void onClick(View v){
@@ -131,6 +136,12 @@ public class BackupRestore extends Activity {
 			}
 		});
 
+		/**
+		 * Listens for user click on 'Restore' button.
+		 * First a confirmation dialog is shown, and once
+		 * the user agrees to restore, fonts are copied from
+		 * /system/fonts to /sdcard.
+		 */
 		restore = (Button)findViewById(R.id.restore);
 		restore.setOnClickListener(new View.OnClickListener() { //copy backed up fonts from sd to system
 			public void onClick(View v){
@@ -218,6 +229,13 @@ public class BackupRestore extends Activity {
 		});
 
 		deleteBackup = (Button)findViewById(R.id.deleteBackup);
+		
+		/**
+		 * Listens for user click on 'Delete backup' button.
+		 * First a confirmation dialog is shown, and once
+		 * the user agrees to delete their backup, fonts are 
+		 * copied from /system/fonts to /sdcard.
+		 */
 		deleteBackup.setOnClickListener(new View.OnClickListener() { //copy fonts from system to sd
 			public void onClick(View v){
 
@@ -260,7 +278,6 @@ public class BackupRestore extends Activity {
 										runtime.exec(backup);
 									}
 									catch (IOException e) { 
-
 									}
 									return null;
 								}

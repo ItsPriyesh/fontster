@@ -32,13 +32,25 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+/**
+ * Contains all AlertDialog's used throughout
+ * the app. 
+ * 
+ * @author Priyesh
+ *
+ */
 public class CustomAlerts{
 
-	/*
-	 * Basic Dialog with Title and Message (NO BUTTONS)
+	/**
+	 * This displays a basic dialog box containing a
+	 * title, message and context of the activity that
+	 * it is being called from.
+	 * 
+	 * @param title
+	 * @param message
+	 * @param context
 	 */
 	public static void showBasicAlert (String title, String message, Context context) { 
-		//method to show custom styled dialog. params are the title, the message, and the context of the alert
 
 		Dialog help = new Dialog(context);
 
@@ -51,8 +63,19 @@ public class CustomAlerts{
 		help.show();
 	}
 
+	/**
+	 * This displays a basic dialog box containing a
+	 * title, message and context of the activity that
+	 * it is being called from. In addition it contains
+	 * an image inside of the description. This is used
+	 * in the Instructions dialog to indicate to the user
+	 * the significance of the checkmark icon.
+	 * 
+	 * @param title
+	 * @param message
+	 * @param context
+	 */
 	public static void showBasicAlertWithImage (String title, String message, Context context) { 
-		//method to show custom styled dialog. params are the title, the message, and the context of the alert
 
 		Dialog help = new Dialog(context);
 
@@ -78,8 +101,19 @@ public class CustomAlerts{
 		help.show();
 	}
 
-	/*
-	 *  Dialog with EditText and Button to send request
+	/**
+	 * This method is called when the user selects the
+	 * 'Request a font' button inside of the About activity.
+	 * It contains a textfield for the user to input their
+	 * desired font, and a button to send the request.
+	 * 
+	 * This request feature works essentially through email.
+	 * The method contains the credentials for the email 
+	 * address and presets the subject and recipient, while
+	 * the actual message is made up from the text that the user
+	 * has input into the font name field.
+	 * 
+	 * @param context
 	 */
 	public static void showRequestAlert (final Context context) { 
 
@@ -139,12 +173,24 @@ public class CustomAlerts{
 		req.show();
 	}
 	
-	/*
-	 *  Dialog with Title, Message, and EditText all with custom Typeface (FOR PREVIEWING)
+	/**
+	 * This displays the dialog shown when the user long presses
+	 * a font in the FontList activity which initiates a preview.
+	 * The dialog shows the name of the font, and a sample sentence
+	 * containing every letter of the English alphabet (pangram) in
+	 * the selected font. In addition it has a textfield allowing the
+	 * user to try out the font using their own custom text. Finally
+	 * there is a button labelled 'View all styles' which will display
+	 * all 12 font classes (bold, italic, etc.) when clicked.
+	 * 
+	 * @param title
+	 * @param message
+	 * @param font - the actual TypeFace variable that is to be set
+	 * @param fontName - the name of the font stored as a string
+	 * @param context
 	 */
 	public static void showPreviewAlert (String title, String message, Typeface font, final String fontName, final Context context) { 
-		//method for preview dialog. has extra param for typeface
-
+		
 		final Dialog preview = new Dialog(context);
 
 		preview.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -172,12 +218,17 @@ public class CustomAlerts{
 		preview.show();
 	}
 
-	/*
-	 * Reboot Dialog with Title, Message, and a Button for reboot function
+	/**
+	 * Display's a dialog prompting the user to reboot
+	 * their device after installing a font. 
+	 * 
+	 * @param title
+	 * @param message
+	 * @param button - When clicked, this will reboot the device.
+	 * @param context
 	 */
 	public static void showRebootAlert (String title, String message, String button, Context context) { 
-		//method to show custom styled dialog. params are the title, message and button of the alert
-
+		
 		Dialog reboot = new Dialog(context);
 
 		Typeface fallbackCondensed = Typeface.createFromFile("/sdcard/FontFallback/RobotoCondensed-Regular.ttf");
@@ -214,10 +265,16 @@ public class CustomAlerts{
 		reboot.show();
 	}
 
-	/*
-	 * Dialog with Title, Message, and single Button that dismisses dialog
+	/**
+	 * Basic dialog containing a title, message and generic button.
+	 * When button is clicked the dialog will be dismessed.
+	 * 
+	 * @param title
+	 * @param message
+	 * @param context
 	 */
 	public static void showSingleButtonAlert (String title, String message, Context context) { 
+		
 		final Dialog singleButtonDialog = new Dialog(context);
 
 		singleButtonDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);

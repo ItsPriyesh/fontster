@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 package com.chromium.fontinstaller;
 
 import java.io.File;
@@ -44,6 +44,12 @@ public class CustomAdapter extends ArrayAdapter<String> {
 		this.data = fontList;
 	}
 
+	/**
+	 * This is called when the FontList activity is opened in order to
+	 * populate the list. First it checks if the directory of each font
+	 * exists - if it exists, it will display a checkmark indicator beside
+	 * that font - if it does not exist, no checkmark will be displayed.
+	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View row = convertView;
@@ -66,7 +72,7 @@ public class CustomAdapter extends ArrayAdapter<String> {
 		File previewListDir = new File(Environment.getExternalStorageDirectory() + "/ListPreviews");
 
 		if (previewListDir.isDirectory()) {
-			
+
 			File specificFontFile = new File(Environment.getExternalStorageDirectory() + "/ListPreviews/" + fontNameWithoutSpaces + "FontPack/Roboto-Regular.ttf");
 			if (specificFontFile.exists()){
 				// create new typeface from /sdcard/previewfont 
@@ -83,12 +89,17 @@ public class CustomAdapter extends ArrayAdapter<String> {
 		return row;
 	}
 
-	public static String removeSpaces (String line)
-	{//method to remove spaces
-		for (int x = 0 ; x < line.length () ; x++)
-		{
-			if (line.charAt (x) == ' ')
-			{
+	/**
+	 * This method removes spaces from strings and is used to construct
+	 * download URL's from the original font names which usually have spaces
+	 * in them. The URL must not contain spaces.
+	 * 
+	 * @param line is the the input string that is to be processed
+	 * @return The initial inputted string is returned as a new string containing no spaces
+	 */
+	public static String removeSpaces (String line) {
+		for (int x = 0 ; x < line.length () ; x++) {
+			if (line.charAt (x) == ' '){
 				String newLine = line.substring (0, x) + line.substring (x+1);
 				return removeSpaces (newLine);
 			}
