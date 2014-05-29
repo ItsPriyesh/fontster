@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 package com.chromium.fontinstaller;
 
 import java.io.File;
@@ -127,7 +127,7 @@ public class Preview {
 			String urlRobotoCondensedItalic = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/RobotoCondensed-Italic.ttf";	
 
 			String path = "/SampleFonts/" + fontName + "/";
-			
+
 			// 12 requests for all font styles
 			DownloadManager.Request request1 = new DownloadManager.Request(Uri.parse(urlRobotoBold));
 			request1.allowScanningByMediaScanner();
@@ -224,67 +224,67 @@ public class Preview {
 						downloadPreviewProgress.dismiss();
 
 						try {
-						//Create new typefaces from downloaded preview fonts
-						Typeface regular = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/Roboto-Regular.ttf");
-						Typeface italic = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/Roboto-Italic.ttf");
-						Typeface bold = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/Roboto-Bold.ttf");
-						Typeface boldItalic = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/Roboto-BoldItalic.ttf");
-						Typeface light = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/Roboto-Light.ttf");
-						Typeface lightItalic = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/Roboto-LightItalic.ttf");
-						Typeface thin = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/Roboto-Thin.ttf");
-						Typeface thinItalic = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/Roboto-ThinItalic.ttf");
-						Typeface condensed = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/RobotoCondensed-Regular.ttf");
-						Typeface condensedItalic = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/RobotoCondensed-Italic.ttf");
-						Typeface condensedBold = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/RobotoCondensed-Bold.ttf");
-						Typeface condensedBoldItalic = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/RobotoCondensed-BoldItalic.ttf");
+							//Create new typefaces from downloaded preview fonts
+							Typeface regular = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/Roboto-Regular.ttf");
+							Typeface italic = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/Roboto-Italic.ttf");
+							Typeface bold = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/Roboto-Bold.ttf");
+							Typeface boldItalic = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/Roboto-BoldItalic.ttf");
+							Typeface light = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/Roboto-Light.ttf");
+							Typeface lightItalic = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/Roboto-LightItalic.ttf");
+							Typeface thin = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/Roboto-Thin.ttf");
+							Typeface thinItalic = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/Roboto-ThinItalic.ttf");
+							Typeface condensed = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/RobotoCondensed-Regular.ttf");
+							Typeface condensedItalic = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/RobotoCondensed-Italic.ttf");
+							Typeface condensedBold = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/RobotoCondensed-Bold.ttf");
+							Typeface condensedBoldItalic = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/RobotoCondensed-BoldItalic.ttf");
+
+							//open dialog with all styles here
+							Dialog fullPreview = new Dialog(context);
+
+							fullPreview.requestWindowFeature(Window.FEATURE_NO_TITLE);
+							fullPreview.setContentView(R.layout.full_preview_alert);
+
+							TextView regularTV = (TextView) fullPreview.findViewById(R.id.regular);
+							regularTV.setTypeface(regular);
+
+							TextView italicTV = (TextView) fullPreview.findViewById(R.id.italic);
+							italicTV.setTypeface(italic);
+
+							TextView boldTV = (TextView) fullPreview.findViewById(R.id.bold);
+							boldTV.setTypeface(bold);
+
+							TextView boldItalicTV = (TextView) fullPreview.findViewById(R.id.bolditalic);
+							boldItalicTV.setTypeface(boldItalic);
+
+							TextView lightTV = (TextView) fullPreview.findViewById(R.id.light);
+							lightTV.setTypeface(light);
+
+							TextView lightItalicTV = (TextView) fullPreview.findViewById(R.id.lightitalic);
+							lightItalicTV.setTypeface(lightItalic);
+
+							TextView thinTV = (TextView) fullPreview.findViewById(R.id.thin);
+							thinTV.setTypeface(thin);
+
+							TextView thinItalicTV = (TextView) fullPreview.findViewById(R.id.thinitalic);
+							thinItalicTV.setTypeface(thinItalic);
+
+							TextView condTV = (TextView) fullPreview.findViewById(R.id.condensed);
+							condTV.setTypeface(condensed);
+
+							TextView condItalicTV = (TextView) fullPreview.findViewById(R.id.condenseditalic);
+							condItalicTV.setTypeface(condensedItalic);
+
+							TextView condBoldTV = (TextView) fullPreview.findViewById(R.id.condensedbold);
+							condBoldTV.setTypeface(condensedBold);
+
+							TextView condBoldItalicTV = (TextView) fullPreview.findViewById(R.id.condensedbolditalic);
+							condBoldItalicTV.setTypeface(condensedBoldItalic);
+
+							fullPreview.show();
 						}
-						catch(RuntimeException e){
+						catch (RuntimeException e){
 							Toast.makeText(context, "Unable to create some fonts. Try again.", Toast.LENGTH_SHORT).show();
-
 						}
-						//open dialog with all styles here
-						Dialog fullPreview = new Dialog(context);
-
-						fullPreview.requestWindowFeature(Window.FEATURE_NO_TITLE);
-						fullPreview.setContentView(R.layout.full_preview_alert);
-
-						TextView regularTV = (TextView) fullPreview.findViewById(R.id.regular);
-						regularTV.setTypeface(regular);
-
-						TextView italicTV = (TextView) fullPreview.findViewById(R.id.italic);
-						italicTV.setTypeface(italic);
-
-						TextView boldTV = (TextView) fullPreview.findViewById(R.id.bold);
-						boldTV.setTypeface(bold);
-
-						TextView boldItalicTV = (TextView) fullPreview.findViewById(R.id.bolditalic);
-						boldItalicTV.setTypeface(boldItalic);
-
-						TextView lightTV = (TextView) fullPreview.findViewById(R.id.light);
-						lightTV.setTypeface(light);
-
-						TextView lightItalicTV = (TextView) fullPreview.findViewById(R.id.lightitalic);
-						lightItalicTV.setTypeface(lightItalic);
-
-						TextView thinTV = (TextView) fullPreview.findViewById(R.id.thin);
-						thinTV.setTypeface(thin);
-
-						TextView thinItalicTV = (TextView) fullPreview.findViewById(R.id.thinitalic);
-						thinItalicTV.setTypeface(thinItalic);
-
-						TextView condTV = (TextView) fullPreview.findViewById(R.id.condensed);
-						condTV.setTypeface(condensed);
-
-						TextView condItalicTV = (TextView) fullPreview.findViewById(R.id.condenseditalic);
-						condItalicTV.setTypeface(condensedItalic);
-
-						TextView condBoldTV = (TextView) fullPreview.findViewById(R.id.condensedbold);
-						condBoldTV.setTypeface(condensedBold);
-
-						TextView condBoldItalicTV = (TextView) fullPreview.findViewById(R.id.condensedbolditalic);
-						condBoldItalicTV.setTypeface(condensedBoldItalic);
-
-						fullPreview.show();
 					}
 				}
 			};
