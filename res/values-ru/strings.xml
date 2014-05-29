@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Fontster</string>
+    
+    <string name="install_button">Установить шрифт</string>
+    <string name="backup_restore_button">Резерв. и восст. шрифтов</string>
+    <string name="view_current_button">Показать установленный шрифт</string>
+    
+    <string name="backup_button">Создать рез. копию</string>
+    <string name="restore_button">Восстановить</string>
+    <string name="delete_backup_button">Удалить рез. копию</string>
+
+    <string name="regular">Regular</string>
+    <string name="italic">Italic</string>
+    <string name="bold">Bold</string>
+    <string name="bold_italic">Bold Italic</string>
+    <string name="light">Light</string>
+    <string name="light_italic">Light Italic</string>
+    <string name="thin">Thin</string>
+    <string name="thin_italic">Thin Italic</string>
+    <string name="condensed">Condensed</string>
+    <string name="condensed_italic">Condensed Italic</string>
+    <string name="condensed_bold">Condensed Bold</string>
+    <string name="condensed_bold_italic">Condensed Bold Italic</string>
+    
+    <string name="clear_cache_message">Удалить ранее загруженные шрифты.</string>
+    <string name="clear_cache_title">Очистить кэш
+    <string name="request_message">Отправьте нам шрифт, который Вы хотели бы увидеть.</string>
+    <string name="request_title">Запросить шрифт
+
+    <string name="reboot_preference">Перезагрузка</string>
+    <string name="reboot_preference_message">Перезагрузить устройство.</string>
+    <string name="restart_systemui">Перезапустить SystemUI</string>
+    <string name="restart_systemui_message">Обновить интерфейс системы.</string>
+    <string name="source_message">Просмотреть исходный код приложения на Github.</string>
+    <string name="source_title">Исходники</string>
+    <string name="contact_message">Написать эл. письмо разработчику.</string>
+    <string name="contact_title">Обратная связь</string>
+    <string name="website_message">Посетить наш сайт.</string>
+    <string name="website_title">Вебсайт</string>
+    <string name="donate_message">Поддержать разработчиков.</string>
+    <string name="donate_title">Пожертвования</string>
+    <string name="contributors">Авторы</string>
+    <string name="lead_developer">Ведущий разработчик</string>
+    <string name="priyesh">Priyesh Patel</string>
+    <string name="marketing">Управляющий по маркетингу</string>
+    <string name="arjun">Arjun Sharma</string>
+    <string name="co">Соразработчик</string>
+    <string name="ethan">Ethan Chen</string>
+</resources>
