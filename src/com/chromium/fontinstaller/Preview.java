@@ -29,6 +29,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.view.Window;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Preview {
 
@@ -222,6 +223,7 @@ public class Preview {
 					if (sampleFontDL == 0){
 						downloadPreviewProgress.dismiss();
 
+						try {
 						//Create new typefaces from downloaded preview fonts
 						Typeface regular = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/Roboto-Regular.ttf");
 						Typeface italic = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/Roboto-Italic.ttf");
@@ -235,7 +237,11 @@ public class Preview {
 						Typeface condensedItalic = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/RobotoCondensed-Italic.ttf");
 						Typeface condensedBold = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/RobotoCondensed-Bold.ttf");
 						Typeface condensedBoldItalic = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/RobotoCondensed-BoldItalic.ttf");
+						}
+						catch(RuntimeException e){
+							Toast.makeText(context, "Unable to create some fonts. Try again.", Toast.LENGTH_SHORT).show();
 
+						}
 						//open dialog with all styles here
 						Dialog fullPreview = new Dialog(context);
 
