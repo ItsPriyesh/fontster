@@ -78,7 +78,7 @@ public class BackupRestore extends Activity {
 							protected void onPreExecute() {
 								super.onPreExecute();
 								progressDialog = new ProgressDialog (BackupRestore.this);
-								progressDialog.setMessage("Backing up fonts to SD card...");
+								progressDialog.setMessage("Backing up fonts to storage...");
 								progressDialog.show();
 							}
 
@@ -162,7 +162,7 @@ public class BackupRestore extends Activity {
 								protected void onPreExecute() {
 									super.onPreExecute();
 									progressDialog = new ProgressDialog (BackupRestore.this);
-									progressDialog.setMessage("Restoring fonts from SD card to system...");
+									progressDialog.setMessage("Restoring fonts from storage to system...");
 									progressDialog.show();
 								}
 

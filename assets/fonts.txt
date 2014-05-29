@@ -25,6 +25,7 @@ Biko
 Briem Script
 Brixton
 Calugraphy
+Cambria
 Cantarell
 Cartoonist Hand
 Cartoonist Hand All Caps
@@ -38,6 +39,7 @@ Cocon
 Consolas
 Continuum
 Corporate Rounded
+Courier New
 Covington
 Dolce Vita
 Dosis
