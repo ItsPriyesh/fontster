@@ -76,9 +76,11 @@ public class About extends PreferenceActivity {
 
 		mHelper = new IabHelper(this, base64EncodedPublicKey);
 
+		/**
+		 * Method to start in-app billing service for donations
+		 */
 		mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
-			public void onIabSetupFinished(IabResult result) 
-			{
+			public void onIabSetupFinished(IabResult result) {
 				if (!result.isSuccess()) {
 					Log.d(TAG, "In-app Billing setup failed: " + 
 							result);
@@ -89,6 +91,13 @@ public class About extends PreferenceActivity {
 			}
 		});
 
+		/**
+		 * Listens for click of the 'Enable True Font Display' preference
+		 * When clicked, this will download the zip containing the previews
+		 * then extract the file onto the users storage. Later when the user
+		 * opens the FontList activity the font titles will be displayed in
+		 * their respective fonts.
+		 */
 		Preference displayFontsInList = (Preference) findPreference("displayFontsInList");
 		displayFontsInList.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			public boolean onPreferenceClick(Preference preference) {
@@ -146,6 +155,12 @@ public class About extends PreferenceActivity {
 			}
 		});
 
+		/**
+		 * Listens for click of the 'Disable True Font Display' preference
+		 * When clicked, this will delete the ListPreviews directory 
+		 * created by the option above, hence disabling the font names
+		 * being shown in their actual fonts.
+		 */
 		Preference disableDisplayFontsInList = (Preference) findPreference("disableDisplayFontsInList");
 		disableDisplayFontsInList.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			public boolean onPreferenceClick(Preference preference) {
@@ -198,6 +213,11 @@ public class About extends PreferenceActivity {
 			}
 		});
 
+		/**
+		 * Listens for click of the 'Clear cache' preference
+		 * When clicked, this will delete the DownloadedFonts
+		 * and SampleFonts directories.
+		 */
 		Preference clearCache = (Preference) findPreference("clearCache");
 		clearCache.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			public boolean onPreferenceClick(Preference preference) {
@@ -253,6 +273,10 @@ public class About extends PreferenceActivity {
 			}
 		});
 
+		/**
+		 * Takes value inputted by user into textfield and 
+		 * sends email containing this string.
+		 */
 		Preference requestFont = (Preference) findPreference("fontRequest");
 		requestFont.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			public boolean onPreferenceClick(Preference preference) {
@@ -261,6 +285,10 @@ public class About extends PreferenceActivity {
 			}
 		});
 
+		/**
+		 * First shows a confirmation, then reboots the
+		 * device when the user clicks yes to the promt.
+		 */
 		Preference reboot = (Preference) findPreference("reboot");
 		reboot.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			public boolean onPreferenceClick(Preference preference) {
@@ -297,6 +325,10 @@ public class About extends PreferenceActivity {
 			}
 		});
 
+		/**
+		 * Refreshes the SystemUI of the system
+		 * by excecuting a shell command.
+		 */
 		Preference restartSysUI = (Preference) findPreference("restartSysUI");
 		restartSysUI.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			public boolean onPreferenceClick(Preference preference) {
@@ -310,6 +342,9 @@ public class About extends PreferenceActivity {
 			}
 		});
 
+		/**
+		 * Opens the Splash activity.
+		 */
 		Preference splash = (Preference) findPreference("viewSplash");
 		splash.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			public boolean onPreferenceClick(Preference preference) {
@@ -319,6 +354,9 @@ public class About extends PreferenceActivity {
 			}
 		});
 
+		/**
+		 * Launches the In App Billing Service.
+		 */
 		Preference donateInAppBilling = (Preference) findPreference("inAppBilling");
 		donateInAppBilling.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			public boolean onPreferenceClick(Preference preference) {				
@@ -327,6 +365,9 @@ public class About extends PreferenceActivity {
 			}
 		});
 
+		/**
+		 * Opens the GitHub repository of the app.
+		 */
 		Preference source = (Preference) findPreference("source");
 		source.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			public boolean onPreferenceClick(Preference preference) {
@@ -339,6 +380,9 @@ public class About extends PreferenceActivity {
 			}
 		});
 
+		/**
+		 * Opens our website - fontster.cf
+		 */
 		Preference site = (Preference) findPreference("website");
 		site.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			public boolean onPreferenceClick(Preference preference) {
@@ -351,6 +395,9 @@ public class About extends PreferenceActivity {
 			}
 		});
 
+		/**
+		 * Sends the developer an email.
+		 */
 		Preference contact = (Preference) findPreference("contact");
 		contact.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			public boolean onPreferenceClick(Preference preference) {
@@ -363,6 +410,9 @@ public class About extends PreferenceActivity {
 			}
 		});
 
+		/**
+		 * Opens our PayPal donation link
+		 */
 		Preference donate = (Preference) findPreference("donate");
 		donate.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			public boolean onPreferenceClick(Preference preference) {
@@ -392,16 +442,14 @@ public class About extends PreferenceActivity {
 	}
 
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) 
-	{
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (!mHelper.handleActivityResult(requestCode, resultCode, data)) {     
 			super.onActivityResult(requestCode, resultCode, data);
 		}
 	}
 
 	IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
-		public void onIabPurchaseFinished(IabResult result, Purchase purchase) 
-		{
+		public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
 			if (result.isFailure()) {
 				Toast.makeText(getApplicationContext(), "Failed to make purchase.", Toast.LENGTH_LONG).show();
 				return;
@@ -409,7 +457,6 @@ public class About extends PreferenceActivity {
 			else if (purchase.getSku().equals(ITEM_SKU)) {
 				consumeItem();
 			}
-
 		}
 	};
 
@@ -522,6 +569,11 @@ public class About extends PreferenceActivity {
 
 	}
 
+	/**
+	 * Checks if users device has an internet connection,
+	 * to either WiFi or Mobile Data.
+	 * @return Returns true if connection is available, and false if it is not
+	 */
 	private boolean haveNetworkConnection() {
 		boolean haveConnectedWifi = false;
 		boolean haveConnectedMobile = false;
