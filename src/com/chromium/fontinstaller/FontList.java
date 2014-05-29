@@ -109,7 +109,23 @@ public class FontList extends Activity  {
 
 		lv.setAdapter(adapter); 
 
-		// Font Installing
+		/**
+		 * FONT INSTALLATION
+		 * First a confirmation dialog is show. When the user accepts
+		 * the download URL's of each of the 12 font styles
+		 * are constructed based on the font that has been selected.
+		 * The app then checks to see if the font already exists on 
+		 * the devices storage (meaning that the user has previously
+		 * chosen this particular font). If it already exists, the fonts
+		 * are directly copied from the storage into the /system/fonts
+		 * directory. Once this has completed the reboot dialog is displayed
+		 * prompting the user to restart their device. If the font does
+		 * not exist, the URL's previously constructed are put through the
+		 * DownloadManager class and sent as requests to the GitHub repository
+		 * containing the fonts. Once all 12 fonts have been downloaded, they
+		 * are pushed into the /system/fonts directory and the user is prompted
+		 * to reboot their device.
+		 */
 		lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View clickView, int position, long id) {
 
@@ -381,7 +397,17 @@ public class FontList extends Activity  {
 
 		});
 
-		// Font Previewing
+		/**
+		 * FONT PREVIEWING
+		 * The font name that has been selected is passed through
+		 * the removeSpaces method to create a new string that has 
+		 * no spaces in it. Then a single URL is constructed only
+		 * for the regular style font that has been chosen. The 
+		 * download request is sent, and once it has completed the 
+		 * app calls the preview alert from the CustomAlerts class.
+		 * The download is skipped if the font is already available
+		 * on the phones storage.
+		 */
 		lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() { //long press on listview item
 			public boolean onItemLongClick(AdapterView<?> parent, View clickView, int position, long id) {
 
@@ -453,14 +479,19 @@ public class FontList extends Activity  {
 		});
 	}	 
 
+	/**
+	 * Called only on the first run of the app.
+	 * This displays general instructions on how to
+	 * install and preview fonts when the FontList 
+	 * activity is shown.
+	 */
 	@Override
 	protected void onResume() {
 		super.onResume();
-
-		if (prefs.getBoolean("firstrun", true)) { //stuff to do on first app opening
-
-			CustomAlerts.showBasicAlertWithImage ("Instructions", "To install a font simply tap on the one that you want.\n\nIf you would like to preview a font prior to installing, press and hold it.", FontList.this);
-
+		if (prefs.getBoolean("firstrun", true)) { 
+			CustomAlerts.showBasicAlertWithImage ("Instructions", "To install a font simply tap " +
+					"on the one that you want.\n\nIf you would like to preview a font prior to installing, " +
+					"press and hold it.", FontList.this);
 			prefs.edit().putBoolean("firstrun", false).commit();
 		}
 	}
@@ -483,6 +514,12 @@ public class FontList extends Activity  {
 		}
 	}
 
+	/**
+	 * Recursively deletes the directory
+	 * specified.
+	 * @param path to the directory that must be deleted
+	 * @return a boolean that specifies to delete or not to delete
+	 */
 	public static boolean deleteDirectory(File path) {
 		if( path.exists() ) {
 			File[] files = path.listFiles();
@@ -498,9 +535,15 @@ public class FontList extends Activity  {
 				}
 			}
 		}
-		return( path.delete() );
+		return(path.delete());
 	}
 
+	/**
+	 * Checks if users device has an internet connection,
+	 * to either WiFi or Mobile Data.
+	 * 
+	 * @return true if connection is available, and false if it is not
+	 */
 	private boolean haveNetworkConnection() {
 		boolean haveConnectedWifi = false;
 		boolean haveConnectedMobile = false;
@@ -518,17 +561,21 @@ public class FontList extends Activity  {
 		return haveConnectedWifi || haveConnectedMobile;
 	}
 
-	public static String removeSpaces (String line)
-	{//method to remove spaces
-		for (int x = 0 ; x < line.length () ; x++)
-		{
-			if (line.charAt (x) == ' ')
-			{
+	/**
+	 * This method removes spaces from strings and is used to construct
+	 * download URL's from the original font names which usually have spaces
+	 * in them. The URL must not contain spaces.
+	 * 
+	 * @param line is the the input string that is to be processed
+	 * @return The initial inputted string is returned as a new string containing no spaces
+	 */
+	public static String removeSpaces (String line){
+		for (int x = 0 ; x < line.length () ; x++){
+			if (line.charAt (x) == ' '){
 				String newLine = line.substring (0, x) + line.substring (x+1);
 				return removeSpaces (newLine);
 			}
 		}
 		return line;
 	}
-
 }

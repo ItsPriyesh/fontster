@@ -61,6 +61,7 @@ public class MainActivity extends ActionBarActivity {
 		setContentView(R.layout.main_card);
 		prefs = getSharedPreferences("com.chromium.fontinstaller", MODE_PRIVATE);
 
+		// Check if device is running KitKat or higher and enable translucent system bars for better aesthetics
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
 	    	Window win = getWindow();
 	    	win.setFlags (WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
@@ -75,6 +76,7 @@ public class MainActivity extends ActionBarActivity {
 		.build();
 		adView.loadAd(adRequest);	
 
+		// Open Install a font
 		openFontList = (Button)findViewById(R.id.installFont);
 		openFontList.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v){
@@ -84,6 +86,7 @@ public class MainActivity extends ActionBarActivity {
 			}
 		});
 
+		// Open Backup and restore fonts
 		backup = (Button)findViewById(R.id.backup);
 		backup.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v){
@@ -92,6 +95,7 @@ public class MainActivity extends ActionBarActivity {
 			}
 		});
 
+		// Open View currently installed fonts
 		testView = (Button)findViewById(R.id.test);
 		testView.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v){
@@ -101,12 +105,18 @@ public class MainActivity extends ActionBarActivity {
 		});
 	}
 
+	/**
+	 * Called only on the first run of the app.
+	 * This downloads in the background a recovery
+	 * zip that can be installed in the event that
+	 * the users device becomes soft bricked. It also
+	 * attempts to gain root access to the device for
+	 * future operations.
+	 */
 	@Override
 	protected void onResume() {
 		super.onResume();
-
-		if (prefs.getBoolean("firstrun", true)) { //stuff to do on first app opening
-
+		if (prefs.getBoolean("firstrun", true)) { 
 			Intent openSplash = new Intent (MainActivity.this, Splash.class);
 			startActivity(openSplash);
 			
@@ -168,6 +178,11 @@ public class MainActivity extends ActionBarActivity {
 		startActivity(about);
 	}
 
+	/**
+	 * Opens the share intent to allow
+	 * the user to send a link of Fontster
+	 * via other social applications.
+	 */
 	private void openShare() {
 		Intent share = new Intent(); 
 		share.setAction(Intent.ACTION_SEND);
