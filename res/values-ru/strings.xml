@@ -25,9 +25,9 @@
     <string name="condensed_bold_italic">Condensed Bold Italic</string>
     
     <string name="clear_cache_message">Удалить ранее загруженные шрифты.</string>
-    <string name="clear_cache_title">Очистить кэш
+    <string name="clear_cache_title">Очистить кэш</string>
     <string name="request_message">Отправьте нам шрифт, который Вы хотели бы увидеть.</string>
-    <string name="request_title">Запросить шрифт
+    <string name="request_title">Запросить шрифт</string>
 
     <string name="reboot_preference">Перезагрузка</string>
     <string name="reboot_preference_message">Перезагрузить устройство.</string>
@@ -48,4 +48,5 @@
     <string name="arjun">Arjun Sharma</string>
     <string name="co">Соразработчик</string>
     <string name="ethan">Ethan Chen</string>
+    
 </resources>

@@ -44,8 +44,7 @@ public class MainActivity extends ActionBarActivity {
 	/*
 	 * Theme actionbar
 	 * Make actionbar transparent while scrolling in listview
-	 * Put all folders created on storage into one
-	 * Check for internet connection before downloading
+	 * Check for internet connection before downloading- done
 	 * Add roboto regular to list - done
 	 */
 	
