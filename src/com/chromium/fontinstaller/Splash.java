@@ -28,6 +28,14 @@ import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+/**
+ * The Splash screen activity which is shown
+ * on the first run of the app. This screen
+ * displays a Fontster graphic, along with 
+ * two buttons - one to read info/help, and 
+ * another to start the MainActivity of the
+ * app.
+ */
 public class Splash extends Activity {
 
 	ImageButton continueToApp, help;
