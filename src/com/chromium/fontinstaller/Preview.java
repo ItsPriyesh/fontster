@@ -36,6 +36,14 @@ public class Preview {
 	static int sampleFontDL;
 	static ProgressDialog downloadPreviewProgress;
 
+	/**
+	 * Called when the user selects 'View all styles'
+	 * from the initial preview dialog. This creates
+	 * a new dialog that displays all the font classes.
+	 * 
+	 * @param fontname - String of the name of the font
+	 * @param context - context of the FontList activity
+	 */ 
 	public static void fullPreviewAlert (final String fontName, Context context){
 
 		File regularSample = new File(Environment.getExternalStorageDirectory() + "/SampleFonts/" + fontName + "/Roboto-Regular.ttf");
