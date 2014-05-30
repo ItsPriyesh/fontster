@@ -21,7 +21,12 @@ import android.os.Bundle;
 
 public class TestView extends Activity {
 
-	//Inflates the test view layout
+	/**
+	 * Inflates the test_view layout, which
+	 * basically contains a TextView of each
+	 * of the 12 font style names in their 
+	 * respective fonts
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
