@@ -484,6 +484,14 @@ public class FontList extends Activity  {
 			}
 		});
 
+		/**
+		 * Manages the theming of the actionbar in
+		 * the FontList activity. When the user scrolls
+		 * through the list, the actionbar will become 
+		 * translucent grey. Once scrolling has stopped
+		 * the actionbar will return to its initial
+		 * opaque grey colour.
+		 */
 		lv.setOnScrollListener(new OnScrollListener(){
 			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 				//scrolling started
