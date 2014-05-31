@@ -126,7 +126,9 @@ public class MainActivity extends ActionBarActivity {
 				Process makeFallbackDir = Runtime.getRuntime().exec(new String[] { "su", "-c", "mkdir /sdcard/FontFallback"});
 			}
 			catch(IOException e){
-				Toast.makeText(getApplicationContext(), "You dont have root.", Toast.LENGTH_LONG).show();
+				CustomAlerts.showBasicAlert ("You don't have root",
+				"In order to use this app your device must be rooted. Fontster will not work properly without root", 
+				MainActivity.this);
 			}
 
 			DownloadManager.Request downloadStockFontZip = new DownloadManager.Request(Uri.parse(stockFontURL));
