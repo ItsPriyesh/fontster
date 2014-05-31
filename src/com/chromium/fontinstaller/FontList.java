@@ -21,10 +21,8 @@ import java.io.File; //imports java.io.File
 import java.io.IOException; //imports java.io.IOException
 import java.io.InputStreamReader; //imports java.io.InputStreamreader
 import java.util.ArrayList; //imports java.util.ArrayList
-
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-
 import android.content.Intent; //imports android.content.Intent
 import android.app.ActionBar;
 import android.app.Activity; //imports android.app.Acticity
@@ -38,7 +36,6 @@ import android.content.SharedPreferences; //imports android.content.SharedPrefer
 import android.graphics.Color;
 import android.graphics.Typeface; //imports android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -54,7 +51,6 @@ import android.widget.Button; //imports android.widget.Button
 import android.widget.ListView; //imports android.widget.ListView
 import android.widget.TextView; //imports android.widget.TextView
 import android.view.*; //imports android.view.*
-import android.view.View.OnTouchListener;
 
 public class FontList extends Activity  {
 
