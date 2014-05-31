@@ -61,7 +61,7 @@ public class CustomAdapter extends ArrayAdapter<String> {
 		TextView textView = (TextView) row.findViewById(R.id.fontTextView);
 		textView.setText(data.get(position));
 
-		File dfDir = new File(Environment.getExternalStorageDirectory() + "/DownloadedFonts/"+ (removeSpaces(data.get(position))));
+		File dfDir = new File(Environment.getExternalStorageDirectory() + "/Fontster/DownloadedFonts/"+ (removeSpaces(data.get(position))));
 
 		if(dfDir.isDirectory()) {
 			alreadyDownloaded.setVisibility(View.VISIBLE);
@@ -69,14 +69,14 @@ public class CustomAdapter extends ArrayAdapter<String> {
 
 		String fontNameWithoutSpaces = (removeSpaces(data.get(position)));
 
-		File previewListDir = new File(Environment.getExternalStorageDirectory() + "/ListPreviews");
+		File previewListDir = new File(Environment.getExternalStorageDirectory() + "/Fontster/ListPreviews");
 
 		if (previewListDir.isDirectory()) {
 
-			File specificFontFile = new File(Environment.getExternalStorageDirectory() + "/ListPreviews/" + fontNameWithoutSpaces + "FontPack/Roboto-Regular.ttf");
+			File specificFontFile = new File(Environment.getExternalStorageDirectory() + "/Fontster/ListPreviews/" + fontNameWithoutSpaces + "FontPack/Roboto-Regular.ttf");
 			if (specificFontFile.exists()){
 				// create new typeface from /sdcard/previewfont 
-				Typeface preview = Typeface.createFromFile("/sdcard/ListPreviews/" + fontNameWithoutSpaces + "FontPack/Roboto-Regular.ttf");
+				Typeface preview = Typeface.createFromFile("/sdcard/Fontster/ListPreviews/" + fontNameWithoutSpaces + "FontPack/Roboto-Regular.ttf");
 				// set textView to the new typeface
 				textView.setTypeface(preview);
 			}

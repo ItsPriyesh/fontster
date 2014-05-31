@@ -92,19 +92,19 @@ public class BackupRestore extends Activity {
 
 								try {
 									Process mountSystem = Runtime.getRuntime().exec(new String[] { "su", "-c", "mount -o rw,remount /system"});
-									Process makeBackupDir = Runtime.getRuntime().exec(new String[] { "su", "-c", "mkdir /sdcard/FontBackup"});
-									Process process1 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /system/fonts/Roboto-Bold.ttf /sdcard/FontBackup"});
-									Process process2 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /system/fonts/Roboto-BoldItalic.ttf /sdcard/FontBackup"});
-									Process process3 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /system/fonts/Roboto-Regular.ttf /sdcard/FontBackup"});
-									Process process4 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /system/fonts/Roboto-Italic.ttf /sdcard/FontBackup"}); 
-									Process process5 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /system/fonts/Roboto-Light.ttf /sdcard/FontBackup"});
-									Process process6 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /system/fonts/Roboto-LightItalic.ttf /sdcard/FontBackup"});
-									Process process7 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /system/fonts/Roboto-Thin.ttf /sdcard/FontBackup"});
-									Process process8 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /system/fonts/Roboto-ThinItalic.ttf /sdcard/FontBackup"});
-									Process process9 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /system/fonts/RobotoCondensed-Bold.ttf /sdcard/FontBackup"});
-									Process process10 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /system/fonts/RobotoCondensed-BoldItalic.ttf /sdcard/FontBackup"});
-									Process process11 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /system/fonts/RobotoCondensed-Regular.ttf /sdcard/FontBackup"});
-									Process process12 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /system/fonts/RobotoCondensed-Italic.ttf /sdcard/FontBackup"});
+									Process makeBackupDir = Runtime.getRuntime().exec(new String[] { "su", "-c", "mkdir -p /sdcard/Fontster/FontBackup"});
+									Process process1 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /system/fonts/Roboto-Bold.ttf /sdcard/Fontster/FontBackup"});
+									Process process2 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /system/fonts/Roboto-BoldItalic.ttf /sdcard/Fontster/FontBackup"});
+									Process process3 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /system/fonts/Roboto-Regular.ttf /sdcard/Fontster/FontBackup"});
+									Process process4 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /system/fonts/Roboto-Italic.ttf /sdcard/Fontster/FontBackup"}); 
+									Process process5 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /system/fonts/Roboto-Light.ttf /sdcard/Fontster/FontBackup"});
+									Process process6 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /system/fonts/Roboto-LightItalic.ttf /sdcard/Fontster/FontBackup"});
+									Process process7 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /system/fonts/Roboto-Thin.ttf /sdcard/Fontster/FontBackup"});
+									Process process8 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /system/fonts/Roboto-ThinItalic.ttf /sdcard/Fontster/FontBackup"});
+									Process process9 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /system/fonts/RobotoCondensed-Bold.ttf /sdcard/Fontster/FontBackup"});
+									Process process10 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /system/fonts/RobotoCondensed-BoldItalic.ttf /sdcard/Fontster/FontBackup"});
+									Process process11 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /system/fonts/RobotoCondensed-Regular.ttf /sdcard/Fontster/FontBackup"});
+									Process process12 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /system/fonts/RobotoCondensed-Italic.ttf /sdcard/Fontster/FontBackup"});
 								} 
 								catch (IOException e) {
 									e.printStackTrace();
@@ -146,7 +146,7 @@ public class BackupRestore extends Activity {
 		restore.setOnClickListener(new View.OnClickListener() { //copy backed up fonts from sd to system
 			public void onClick(View v){
 
-				File backupDir = new File("/sdcard/FontBackup");
+				File backupDir = new File("/sdcard/Fontster/FontBackup");
 
 				if (backupDir.exists()) { //Only restore if a backup exists
 
@@ -182,18 +182,18 @@ public class BackupRestore extends Activity {
 
 									try {
 										Process mountSystem = Runtime.getRuntime().exec(new String[] { "su", "-c", "mount -o rw,remount /system"});
-										Process process1 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/FontBackup/Roboto-Bold.ttf /system/fonts"});
-										Process process2 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/FontBackup/Roboto-BoldItalic.ttf /system/fonts"});
-										Process process3 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/FontBackup/Roboto-Regular.ttf /system/fonts"});
-										Process process4 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/FontBackup/Roboto-Italic.ttf /system/fonts"}); 
-										Process process5 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/FontBackup/Roboto-Light.ttf /system/fonts"});
-										Process process6 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/FontBackup/Roboto-LightItalic.ttf /system/fonts"});
-										Process process7 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/FontBackup/Roboto-Thin.ttf /system/fonts"});
-										Process process8 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/FontBackup/Roboto-ThinItalic.ttf /system/fonts"});
-										Process process9 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/FontBackup/RobotoCondensed-Bold.ttf /system/fonts"});
-										Process process10 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/FontBackup/RobotoCondensed-BoldItalic.ttf /system/fonts"});
-										Process process11 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/FontBackup/RobotoCondensed-Regular.ttf /system/fonts"});
-										Process process12 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/FontBackup/RobotoCondensed-Italic.ttf /system/fonts"});
+										Process process1 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/Fontster/FontBackup/Roboto-Bold.ttf /system/fonts"});
+										Process process2 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/Fontster/FontBackup/Roboto-BoldItalic.ttf /system/fonts"});
+										Process process3 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/Fontster/FontBackup/Roboto-Regular.ttf /system/fonts"});
+										Process process4 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/Fontster/FontBackup/Roboto-Italic.ttf /system/fonts"}); 
+										Process process5 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/Fontster/FontBackup/Roboto-Light.ttf /system/fonts"});
+										Process process6 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/Fontster/FontBackup/Roboto-LightItalic.ttf /system/fonts"});
+										Process process7 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/Fontster/FontBackup/Roboto-Thin.ttf /system/fonts"});
+										Process process8 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/Fontster/FontBackup/Roboto-ThinItalic.ttf /system/fonts"});
+										Process process9 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/Fontster/FontBackup/RobotoCondensed-Bold.ttf /system/fonts"});
+										Process process10 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/Fontster/FontBackup/RobotoCondensed-BoldItalic.ttf /system/fonts"});
+										Process process11 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/Fontster/FontBackup/RobotoCondensed-Regular.ttf /system/fonts"});
+										Process process12 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/Fontster/FontBackup/RobotoCondensed-Italic.ttf /system/fonts"});
 									} 
 									catch (IOException e) {
 										e.printStackTrace();
@@ -239,7 +239,7 @@ public class BackupRestore extends Activity {
 		deleteBackup.setOnClickListener(new View.OnClickListener() { //copy fonts from system to sd
 			public void onClick(View v){
 
-				File backupDir = new File("/sdcard/FontBackup");
+				File backupDir = new File("/sdcard/Fontster/FontBackup");
 				if (backupDir.exists()) { 
 
 					final Dialog confirm3 = new Dialog(BackupRestore.this);
@@ -272,7 +272,7 @@ public class BackupRestore extends Activity {
 								@Override
 								protected Void doInBackground(Void... params) {
 
-									String backup = "rm -r /sdcard/FontBackup";
+									String backup = "rm -r /sdcard/Fontster/FontBackup";
 									Runtime runtime = Runtime.getRuntime();
 									try {
 										runtime.exec(backup);

@@ -46,34 +46,34 @@ public class Preview {
 	 */ 
 	public static void fullPreviewAlert (final String fontName, Context context){
 
-		File regularSample = new File(Environment.getExternalStorageDirectory() + "/SampleFonts/" + fontName + "/Roboto-Regular.ttf");
-		File italicSample = new File(Environment.getExternalStorageDirectory() + "/SampleFonts/" + fontName + "/Roboto-Italic.ttf");
-		File boldSample = new File(Environment.getExternalStorageDirectory() + "/SampleFonts/" + fontName + "/Roboto-Bold.ttf");
-		File boldItalicSample = new File(Environment.getExternalStorageDirectory() + "/SampleFonts/" + fontName + "/Roboto-BoldItalic.ttf");
-		File thinSample = new File(Environment.getExternalStorageDirectory() + "/SampleFonts/" + fontName + "/Roboto-Thin.ttf");
-		File thinItalicSample = new File(Environment.getExternalStorageDirectory() + "/SampleFonts/" + fontName + "/Roboto-ThinItalic.ttf");
-		File lightSample = new File(Environment.getExternalStorageDirectory() + "/SampleFonts/" + fontName + "/Roboto-Light.ttf");
-		File lightItalicSample = new File(Environment.getExternalStorageDirectory() + "/SampleFonts/" + fontName + "/Roboto-LightItalic.ttf");
-		File condensedSample = new File(Environment.getExternalStorageDirectory() + "/SampleFonts/" + fontName + "/RobotoCondensed-Regular.ttf");
-		File condensedItalicSample = new File(Environment.getExternalStorageDirectory() + "/SampleFonts/" + fontName + "/RobotoCondensed-Italic.ttf");
-		File condensedBoldSample = new File(Environment.getExternalStorageDirectory() + "/SampleFonts/" + fontName + "/RobotoCondensed-Bold.ttf");
-		File condensedBoldItalicSample = new File(Environment.getExternalStorageDirectory() + "/SampleFonts/" + fontName + "/RobotoCondensed-BoldItalic.ttf");
+		File regularSample = new File(Environment.getExternalStorageDirectory() + "/Fontster/SampleFonts/" + fontName + "/Roboto-Regular.ttf");
+		File italicSample = new File(Environment.getExternalStorageDirectory() + "/Fontster/SampleFonts/" + fontName + "/Roboto-Italic.ttf");
+		File boldSample = new File(Environment.getExternalStorageDirectory() + "/Fontster/SampleFonts/" + fontName + "/Roboto-Bold.ttf");
+		File boldItalicSample = new File(Environment.getExternalStorageDirectory() + "/Fontster/SampleFonts/" + fontName + "/Roboto-BoldItalic.ttf");
+		File thinSample = new File(Environment.getExternalStorageDirectory() + "/Fontster/SampleFonts/" + fontName + "/Roboto-Thin.ttf");
+		File thinItalicSample = new File(Environment.getExternalStorageDirectory() + "/Fontster/SampleFonts/" + fontName + "/Roboto-ThinItalic.ttf");
+		File lightSample = new File(Environment.getExternalStorageDirectory() + "/Fontster/SampleFonts/" + fontName + "/Roboto-Light.ttf");
+		File lightItalicSample = new File(Environment.getExternalStorageDirectory() + "/Fontster/SampleFonts/" + fontName + "/Roboto-LightItalic.ttf");
+		File condensedSample = new File(Environment.getExternalStorageDirectory() + "/Fontster/SampleFonts/" + fontName + "/RobotoCondensed-Regular.ttf");
+		File condensedItalicSample = new File(Environment.getExternalStorageDirectory() + "/Fontster/SampleFonts/" + fontName + "/RobotoCondensed-Italic.ttf");
+		File condensedBoldSample = new File(Environment.getExternalStorageDirectory() + "/Fontster/SampleFonts/" + fontName + "/RobotoCondensed-Bold.ttf");
+		File condensedBoldItalicSample = new File(Environment.getExternalStorageDirectory() + "/Fontster/SampleFonts/" + fontName + "/RobotoCondensed-BoldItalic.ttf");
 
 		if(regularSample.exists() && italicSample.exists() && boldSample.exists() && boldItalicSample.exists() && thinSample.exists() && thinItalicSample.exists()
 				&& lightSample.exists() && lightItalicSample.exists() && condensedSample.exists() && condensedItalicSample.exists() && condensedBoldSample.exists() && condensedBoldItalicSample.exists()) {
 			//Create new typefaces from downloaded preview fonts
-			Typeface regular = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/Roboto-Regular.ttf");
-			Typeface italic = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/Roboto-Italic.ttf");
-			Typeface bold = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/Roboto-Bold.ttf");
-			Typeface boldItalic = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/Roboto-BoldItalic.ttf");
-			Typeface light = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/Roboto-Light.ttf");
-			Typeface lightItalic = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/Roboto-LightItalic.ttf");
-			Typeface thin = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/Roboto-Thin.ttf");
-			Typeface thinItalic = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/Roboto-ThinItalic.ttf");
-			Typeface condensed = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/RobotoCondensed-Regular.ttf");
-			Typeface condensedItalic = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/RobotoCondensed-Italic.ttf");
-			Typeface condensedBold = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/RobotoCondensed-Bold.ttf");
-			Typeface condensedBoldItalic = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/RobotoCondensed-BoldItalic.ttf");
+			Typeface regular = Typeface.createFromFile("/sdcard/Fontster/SampleFonts/" + fontName + "/Roboto-Regular.ttf");
+			Typeface italic = Typeface.createFromFile("/sdcard/Fontster/SampleFonts/" + fontName + "/Roboto-Italic.ttf");
+			Typeface bold = Typeface.createFromFile("/sdcard/Fontster/SampleFonts/" + fontName + "/Roboto-Bold.ttf");
+			Typeface boldItalic = Typeface.createFromFile("/sdcard/Fontster/SampleFonts/" + fontName + "/Roboto-BoldItalic.ttf");
+			Typeface light = Typeface.createFromFile("/sdcard/Fontster/SampleFonts/" + fontName + "/Roboto-Light.ttf");
+			Typeface lightItalic = Typeface.createFromFile("/sdcard/Fontster/SampleFonts/" + fontName + "/Roboto-LightItalic.ttf");
+			Typeface thin = Typeface.createFromFile("/sdcard/Fontster/SampleFonts/" + fontName + "/Roboto-Thin.ttf");
+			Typeface thinItalic = Typeface.createFromFile("/sdcard/Fontster/SampleFonts/" + fontName + "/Roboto-ThinItalic.ttf");
+			Typeface condensed = Typeface.createFromFile("/sdcard/Fontster/SampleFonts/" + fontName + "/RobotoCondensed-Regular.ttf");
+			Typeface condensedItalic = Typeface.createFromFile("/sdcard/Fontster/SampleFonts/" + fontName + "/RobotoCondensed-Italic.ttf");
+			Typeface condensedBold = Typeface.createFromFile("/sdcard/Fontster/SampleFonts/" + fontName + "/RobotoCondensed-Bold.ttf");
+			Typeface condensedBoldItalic = Typeface.createFromFile("/sdcard/Fontster/SampleFonts/" + fontName + "/RobotoCondensed-BoldItalic.ttf");
 
 			//open dialog with all styles here
 			Dialog fullPreview = new Dialog(context);
@@ -134,7 +134,7 @@ public class Preview {
 			String urlRobotoCondensedRegular = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/RobotoCondensed-Regular.ttf";
 			String urlRobotoCondensedItalic = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/RobotoCondensed-Italic.ttf";	
 
-			String path = "/SampleFonts/" + fontName + "/";
+			String path = "/Fontster/SampleFonts/" + fontName + "/";
 
 			// 12 requests for all font styles
 			DownloadManager.Request request1 = new DownloadManager.Request(Uri.parse(urlRobotoBold));
@@ -233,18 +233,18 @@ public class Preview {
 
 						try {
 							//Create new typefaces from downloaded preview fonts
-							Typeface regular = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/Roboto-Regular.ttf");
-							Typeface italic = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/Roboto-Italic.ttf");
-							Typeface bold = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/Roboto-Bold.ttf");
-							Typeface boldItalic = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/Roboto-BoldItalic.ttf");
-							Typeface light = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/Roboto-Light.ttf");
-							Typeface lightItalic = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/Roboto-LightItalic.ttf");
-							Typeface thin = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/Roboto-Thin.ttf");
-							Typeface thinItalic = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/Roboto-ThinItalic.ttf");
-							Typeface condensed = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/RobotoCondensed-Regular.ttf");
-							Typeface condensedItalic = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/RobotoCondensed-Italic.ttf");
-							Typeface condensedBold = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/RobotoCondensed-Bold.ttf");
-							Typeface condensedBoldItalic = Typeface.createFromFile("/sdcard/SampleFonts/" + fontName + "/RobotoCondensed-BoldItalic.ttf");
+							Typeface regular = Typeface.createFromFile("/sdcard/Fontster/SampleFonts/" + fontName + "/Roboto-Regular.ttf");
+							Typeface italic = Typeface.createFromFile("/sdcard/Fontster/SampleFonts/" + fontName + "/Roboto-Italic.ttf");
+							Typeface bold = Typeface.createFromFile("/sdcard/Fontster/SampleFonts/" + fontName + "/Roboto-Bold.ttf");
+							Typeface boldItalic = Typeface.createFromFile("/sdcard/Fontster/SampleFonts/" + fontName + "/Roboto-BoldItalic.ttf");
+							Typeface light = Typeface.createFromFile("/sdcard/Fontster/SampleFonts/" + fontName + "/Roboto-Light.ttf");
+							Typeface lightItalic = Typeface.createFromFile("/sdcard/Fontster/SampleFonts/" + fontName + "/Roboto-LightItalic.ttf");
+							Typeface thin = Typeface.createFromFile("/sdcard/Fontster/SampleFonts/" + fontName + "/Roboto-Thin.ttf");
+							Typeface thinItalic = Typeface.createFromFile("/sdcard/Fontster/SampleFonts/" + fontName + "/Roboto-ThinItalic.ttf");
+							Typeface condensed = Typeface.createFromFile("/sdcard/Fontster/SampleFonts/" + fontName + "/RobotoCondensed-Regular.ttf");
+							Typeface condensedItalic = Typeface.createFromFile("/sdcard/Fontster/SampleFonts/" + fontName + "/RobotoCondensed-Italic.ttf");
+							Typeface condensedBold = Typeface.createFromFile("/sdcard/Fontster/SampleFonts/" + fontName + "/RobotoCondensed-Bold.ttf");
+							Typeface condensedBoldItalic = Typeface.createFromFile("/sdcard/Fontster/SampleFonts/" + fontName + "/RobotoCondensed-BoldItalic.ttf");
 
 							//open dialog with all styles here
 							Dialog fullPreview = new Dialog(context);

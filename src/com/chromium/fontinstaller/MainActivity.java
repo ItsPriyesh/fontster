@@ -122,7 +122,7 @@ public class MainActivity extends ActionBarActivity {
 			
 			try{
 				Process getSU = Runtime.getRuntime().exec("su");
-				Process makeFallbackDir = Runtime.getRuntime().exec(new String[] { "su", "-c", "mkdir /sdcard/FontFallback"});
+				Process makeFallbackDir = Runtime.getRuntime().exec(new String[] { "su", "-c", "mkdir -p /sdcard/Fontster/FontFallback"});
 			}
 			catch(IOException e){
 				CustomAlerts.showBasicAlert ("You don't have root",
@@ -137,12 +137,12 @@ public class MainActivity extends ActionBarActivity {
 
 			DownloadManager.Request downloadCondensedFallback = new DownloadManager.Request(Uri.parse(fallbackCondensed));
 			downloadCondensedFallback.allowScanningByMediaScanner();
-			downloadCondensedFallback.setDestinationInExternalPublicDir("/FontFallback/", "RobotoCondensed-Regular.ttf");
+			downloadCondensedFallback.setDestinationInExternalPublicDir("/Fontster/FontFallback/", "RobotoCondensed-Regular.ttf");
 			downloadCondensedFallback.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
 
 			DownloadManager.Request downloadLightFallback = new DownloadManager.Request(Uri.parse(fallbackLight));
 			downloadLightFallback.allowScanningByMediaScanner();
-			downloadLightFallback.setDestinationInExternalPublicDir("/FontFallback/", "Roboto-Light.ttf");
+			downloadLightFallback.setDestinationInExternalPublicDir("/Fontster/FontFallback/", "Roboto-Light.ttf");
 			downloadLightFallback.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
 
 			DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);

@@ -231,8 +231,8 @@ public class CustomAlerts{
 		
 		Dialog reboot = new Dialog(context);
 
-		Typeface fallbackCondensed = Typeface.createFromFile("/sdcard/FontFallback/RobotoCondensed-Regular.ttf");
-		Typeface fallbackLight = Typeface.createFromFile("/sdcard/FontFallback/Roboto-Light.ttf");
+		Typeface fallbackCondensed = Typeface.createFromFile("/sdcard/Fontster/FontFallback/RobotoCondensed-Regular.ttf");
+		Typeface fallbackLight = Typeface.createFromFile("/sdcard/Fontster/FontFallback/Roboto-Light.ttf");
 
 		reboot.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		reboot.setContentView(R.layout.single_button_alert);	

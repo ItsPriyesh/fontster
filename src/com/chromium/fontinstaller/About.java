@@ -60,8 +60,8 @@ public class About extends PreferenceActivity {
 	static final String ITEM_SKU = "com.chromium.fontster.donate";
 	ProgressDialog downloadProgress, mProgressDialog;
 
-	String StorezipFileLocation = Environment.getExternalStorageDirectory() + "/ListPreviews/ListPreviews.zip"; 
-	String DirectoryName = Environment.getExternalStorageDirectory() + "/ListPreviews/";
+	String StorezipFileLocation = Environment.getExternalStorageDirectory() + "/Fontster/ListPreviews/ListPreviews.zip"; 
+	String DirectoryName = Environment.getExternalStorageDirectory() + "/Fontster/ListPreviews/";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +102,7 @@ public class About extends PreferenceActivity {
 		displayFontsInList.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			public boolean onPreferenceClick(Preference preference) {
 
-				File dir = new File(Environment.getExternalStorageDirectory() + "/ListPreviews/");
+				File dir = new File(Environment.getExternalStorageDirectory() + "/Fontster/ListPreviews/");
 
 				if(dir.exists())  {
 					CustomAlerts.showBasicAlert("Already enabled", "This option is already being used.", About.this);
@@ -112,7 +112,7 @@ public class About extends PreferenceActivity {
 
 						DownloadManager.Request downloadPreviewZip = new DownloadManager.Request(Uri.parse("https://github.com/Chromium1/Fonts/raw/master/ListPreviews.zip"));
 						downloadPreviewZip.allowScanningByMediaScanner();
-						downloadPreviewZip.setDestinationInExternalPublicDir("/ListPreviews/", "ListPreviews.zip");
+						downloadPreviewZip.setDestinationInExternalPublicDir("/Fontster/ListPreviews/", "ListPreviews.zip");
 						downloadPreviewZip.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);	
 
 						DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
@@ -164,7 +164,7 @@ public class About extends PreferenceActivity {
 		Preference disableDisplayFontsInList = (Preference) findPreference("disableDisplayFontsInList");
 		disableDisplayFontsInList.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			public boolean onPreferenceClick(Preference preference) {
-				File previewListDir = new File("/sdcard/ListPreviews");
+				File previewListDir = new File("/sdcard/Fontster/ListPreviews");
 
 				if (previewListDir.exists() || previewListDir.exists()) {
 					AsyncTask<Void, Void, Void> revertFontsInListView = new AsyncTask<Void, Void, Void>()  { 
@@ -182,7 +182,7 @@ public class About extends PreferenceActivity {
 						@Override
 						protected Void doInBackground(Void... params) {
 
-							String previews = "rm -r /sdcard/ListPreviews";
+							String previews = "rm -r /sdcard/Fontster/ListPreviews";
 							Runtime runtime = Runtime.getRuntime();
 							try {
 								runtime.exec(previews);
@@ -222,8 +222,8 @@ public class About extends PreferenceActivity {
 		clearCache.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			public boolean onPreferenceClick(Preference preference) {
 
-				File downloadDir = new File("/sdcard/DownloadedFonts");
-				File previewDir = new File("/sdcard/SampleFonts");
+				File downloadDir = new File("/sdcard/Fontster/DownloadedFonts");
+				File previewDir = new File("/sdcard/Fontster/SampleFonts");
 
 				if (downloadDir.exists() || previewDir.exists()) {
 					AsyncTask<Void, Void, Void> cleanCache = new AsyncTask<Void, Void, Void>()  { 
@@ -241,8 +241,8 @@ public class About extends PreferenceActivity {
 						@Override
 						protected Void doInBackground(Void... params) {
 
-							String downloads = "rm -r /sdcard/DownloadedFonts";
-							String previews = "rm -r /sdcard/SampleFonts";
+							String downloads = "rm -r /sdcard/Fontster/DownloadedFonts";
+							String previews = "rm -r /sdcard/Fontster/SampleFonts";
 							Runtime runtime = Runtime.getRuntime();
 							try {
 								runtime.exec(downloads);
