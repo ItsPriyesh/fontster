@@ -38,6 +38,8 @@ import android.content.SharedPreferences; //imports android.content.SharedPrefer
 import android.graphics.Color;
 import android.graphics.Typeface; //imports android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri; //imports android.net.Uri
@@ -52,6 +54,7 @@ import android.widget.Button; //imports android.widget.Button
 import android.widget.ListView; //imports android.widget.ListView
 import android.widget.TextView; //imports android.widget.TextView
 import android.view.*; //imports android.view.*
+import android.view.View.OnTouchListener;
 
 public class FontList extends Activity  {
 
@@ -63,7 +66,9 @@ public class FontList extends Activity  {
 	static String fontDest, fontName, previewName, selectedFromList, longPressed;	
 	static int dlLeft, sampleFontDL;
 	static TextView alertTitle, alertMessage;
-
+	ActionBar ab;
+	boolean userScrolled;
+	
 	//Font url strings
 	String urlRobotoBold, urlRobotoBoldItalic, urlRobotoItalic, 
 	urlRobotoLight, urlRobotoLightItalic, urlRobotoRegular, urlRobotoThin, 
@@ -72,6 +77,7 @@ public class FontList extends Activity  {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
 		setContentView(R.layout.font_list);
 		prefs = getSharedPreferences("com.chromium.fontinstaller.fontlist", MODE_PRIVATE);
 
@@ -477,6 +483,32 @@ public class FontList extends Activity  {
 				return true;
 			}
 		});
+
+		lv.setOnScrollListener(new OnScrollListener(){
+			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+				//scrolling started
+				if (userScrolled){
+				ab = getActionBar();
+				ab.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#80000000")));
+				}
+			}
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				if(scrollState == OnScrollListener.SCROLL_STATE_IDLE) {
+					//scrolling stopped
+					ab = getActionBar();
+					ColorDrawable translucentBlack = new ColorDrawable(getResources().getColor(R.color.translucent_black));
+					ColorDrawable opaqueBlack = new ColorDrawable(getResources().getColor(R.color.ab_dark_grey));
+					ColorDrawable[] color = {translucentBlack, opaqueBlack}; 
+					TransitionDrawable trans = new TransitionDrawable(color);
+					ab.setBackgroundDrawable(trans);
+					trans.startTransition(500);
+				}
+				if(scrollState == OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
+		            userScrolled = true;
+		        }  
+			}
+		});
+
 	}	 
 
 	/**
