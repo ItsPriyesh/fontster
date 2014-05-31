@@ -607,7 +607,7 @@ public class FontList extends Activity  {
 	 * in them. The URL must not contain spaces.
 	 * 
 	 * @param line is the the input string that is to be processed
-	 * @return The initial inputted string is returned as a new string containing no spaces
+	 * @return The initial input string is returned as a new string containing no spaces
 	 */
 	public static String removeSpaces (String line){
 		for (int x = 0 ; x < line.length () ; x++){
