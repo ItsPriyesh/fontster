@@ -35,7 +35,9 @@ Champagne And Limousines
 China Cat
 Chivo
 Choco Cooky
+Clear Sans
 Cocon
+Comic Sans
 Consolas
 Continuum
 Corporate Rounded
@@ -86,6 +88,7 @@ Neuropol
 Neutra Light
 Nokia Pure
 Olney
+Open Dyslexic
 Open Sans
 Open Sans Condensed Light
 Open Sans Light

@@ -73,30 +73,33 @@ public class About extends PreferenceActivity {
 
 		String base64EncodedPublicKey = 
 				"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjZla6YOR6" +
-				"Od3NTxs98KfxlQV68oTdGZmiRO2vzVIQ7W3oYP6FjNpjMhyckjvkD" +
-				"2sCtHBPU6OjkSD75TzB17knW2FK7ZZGQkEMdCLD9qX8IbJ17w0UDG" +
-				"pW3b71sOWiOV92f0aIzgRZFl7IERzsgzFEnpCLx3Yxdl4JLmErPaE" +
-				"19ZxHeJ+r25O4NMYCmzAPHdmtBOKRiNGqg6gQPsZqBlfy0XV+pEZB" +
-				"7HagpMlaYvy0eBXA5PkvtpRjDciukOw3j6hqTK/FHepNC4PxO1BWB" +
-				"jGaeZh4u/HbGzXplI8UHZOThfUpHWqzIM3kT8bJ9+JfrViM7pLYpB" +
-				"Sy9+xhIGIcKHKkQIDAQAB";
+						"Od3NTxs98KfxlQV68oTdGZmiRO2vzVIQ7W3oYP6FjNpjMhyckjvkD" +
+						"2sCtHBPU6OjkSD75TzB17knW2FK7ZZGQkEMdCLD9qX8IbJ17w0UDG" +
+						"pW3b71sOWiOV92f0aIzgRZFl7IERzsgzFEnpCLx3Yxdl4JLmErPaE" +
+						"19ZxHeJ+r25O4NMYCmzAPHdmtBOKRiNGqg6gQPsZqBlfy0XV+pEZB" +
+						"7HagpMlaYvy0eBXA5PkvtpRjDciukOw3j6hqTK/FHepNC4PxO1BWB" +
+						"jGaeZh4u/HbGzXplI8UHZOThfUpHWqzIM3kT8bJ9+JfrViM7pLYpB" +
+						"Sy9+xhIGIcKHKkQIDAQAB";
 
 		mHelper = new IabHelper(this, base64EncodedPublicKey);
 
 		/**
 		 * Method to start in-app billing service for donations
 		 */
-		mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
-			public void onIabSetupFinished(IabResult result) {
-				if (!result.isSuccess()) {
-					Log.d(TAG, "In-app Billing setup failed: " + 
-							result);
-				} else {             
-					Log.d(TAG, "In-app Billing is set up OK");
+		boolean inAppBillingEnabled = false; //set false for emulator compatibility
+		if (inAppBillingEnabled){
+			mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+				public void onIabSetupFinished(IabResult result) {
+					if (!result.isSuccess()) {
+						Log.d(TAG, "In-app Billing setup failed: " + 
+								result);
+					} else {             
+						Log.d(TAG, "In-app Billing is set up OK");
+					}
+					mHelper.queryInventoryAsync(mReceivedInventoryListener);
 				}
-				mHelper.queryInventoryAsync(mReceivedInventoryListener);
-			}
-		});
+			});
+		}
 
 		/**
 		 * Listens for click of the 'Enable True Font Display' preference
