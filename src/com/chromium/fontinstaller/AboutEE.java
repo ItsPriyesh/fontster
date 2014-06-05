@@ -22,6 +22,14 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+/**
+ * Called to display the easter egg
+ * when the user interacts with the 
+ * app in a certain (secret) way.
+ * 
+ * @author Priyesh
+ *
+ */
 public class AboutEE extends Activity{
 
 	public void onCreate(Bundle savedInstanceState) {

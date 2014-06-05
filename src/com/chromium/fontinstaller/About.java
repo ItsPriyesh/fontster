@@ -55,6 +55,20 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * The About class is called when the user clicks
+ * on the Settings icon located in the ActionBar 
+ * of the MainActivity class.
+ * 
+ * This activity contains settings to modify the
+ * appearance and functionality of the app. In
+ * addition it has some relevant info pertaining
+ * to the app. (Version, Source, Website,
+ * Contributors, Donations, etc.)
+ * 
+ * @author Priyesh
+ *
+ */
 public class About extends PreferenceActivity {
 
 	int easterEggClicks = 10, counter;

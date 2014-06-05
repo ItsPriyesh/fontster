@@ -36,6 +36,26 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 
+/**
+ * When the user opens the app, this is the
+ * initial activity that is shown (with the
+ * exception of the first run which displays
+ * the Splash activity first). In this activity
+ * the user will be able to select from three
+ * options: 
+ * 
+ * - Install a font (FontList.class)
+ * - Backup and restore fonts (BackupRestore.class)
+ * - View currently installed font (TestView.class)
+ * 
+ * This activity also contains two buttons in 
+ * the ActionBar. One allows the user to share
+ * Fontster, and the other opens the Settings/About
+ * activity.
+ * 
+ * @author Priyesh
+ *
+ */
 public class MainActivity extends ActionBarActivity {
 
 	//TODO

@@ -29,6 +29,19 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+/**
+ * Runs operations to adjust the listview
+ * when the FontList activity is opened.
+ * This includes showing the checkmarks beside
+ * previously download fonts, as well as
+ * doing the heavy lifting for the True
+ * Font Display feature. When enabled, this 
+ * feature displays each font name in its 
+ * respective font.
+ * 
+ * @author Priyesh
+ *
+ */
 public class CustomAdapter extends ArrayAdapter<String> {
 	Context context;
 	int layoutResourceId;

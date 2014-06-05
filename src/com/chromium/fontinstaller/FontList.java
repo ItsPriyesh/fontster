@@ -52,6 +52,15 @@ import android.widget.ListView; //imports android.widget.ListView
 import android.widget.TextView; //imports android.widget.TextView
 import android.view.*; //imports android.view.*
 
+/**
+ * This class inflates a ListView layout essentially
+ * containing all font names read from a text file
+ * located in the assets of this app. It also is 
+ * responsible for font installations and previews
+ * 
+ * @author Priyesh
+ *
+ */
 public class FontList extends Activity  {
 
 	SharedPreferences prefs = null;

@@ -32,6 +32,20 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
+/**
+ * Activity which opens when the user clicks 
+ * on the Backup and Restore button located
+ * in the MainActivity class.
+ * 
+ * Contains three buttons along with OnClick
+ * Listeners namely Backup, Restore and Delete
+ * Backup. These functions are described in 
+ * more detail in the documentation of their 
+ * specific methods.
+ * 
+ * @author Priyesh
+ *
+ */
 public class BackupRestore extends Activity {
 
 	Button backup, restore, deleteBackup;

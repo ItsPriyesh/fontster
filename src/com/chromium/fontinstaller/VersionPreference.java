@@ -6,11 +6,12 @@ import android.content.pm.PackageManager;
 import android.preference.Preference;
 import android.util.AttributeSet;
 
+/**
+ * Called from the About activity to return
+ * the currently installed version.
+ */
 public class VersionPreference extends Preference {
-    /**
-     * Called from the About activity to return
-     * the currently installed version.
-     */
+
     public VersionPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
         String versionName;

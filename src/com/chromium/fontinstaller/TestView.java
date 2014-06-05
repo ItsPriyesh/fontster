@@ -19,14 +19,17 @@ package com.chromium.fontinstaller;
 import android.app.Activity;
 import android.os.Bundle;
 
+/**
+ * Called when user selects View currently
+ * installed font from the MainActivity.
+ * 
+ * Inflates the test_view layout, which
+ * basically contains a TextView of each
+ * of the 12 font style names in their 
+ * respective fonts
+ */
 public class TestView extends Activity {
 
-	/**
-	 * Inflates the test_view layout, which
-	 * basically contains a TextView of each
-	 * of the 12 font style names in their 
-	 * respective fonts
-	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

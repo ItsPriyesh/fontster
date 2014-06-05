@@ -31,6 +31,16 @@ import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * Contains the fullPreviewAlert() method
+ * which is called when the user opts to
+ * View all styles of the selected font.
+ * More details about how it works are found
+ * in the documentation of the actual method.
+ * 
+ * @author Priyesh
+ *
+ */
 public class Preview {
 
 	static int sampleFontDL;
