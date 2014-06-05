@@ -21,6 +21,8 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -36,6 +38,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.AssetManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -353,6 +356,91 @@ public class About extends PreferenceActivity {
 		});
 
 		/**
+		 * Copies persist script into appropriate folder.
+		 */
+		Preference enablePersistMode = (Preference) findPreference("persist");
+		enablePersistMode.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			public boolean onPreferenceClick(Preference preference) {
+
+				AsyncTask<Void, Void, Void> copyPersistFile = new AsyncTask<Void, Void, Void>()  { 
+					ProgressDialog copyPersistFileProgress;
+
+					@Override
+					protected void onPreExecute() {
+						super.onPreExecute();
+						copyPersistFileProgress = new ProgressDialog (About.this);
+						copyPersistFileProgress.setMessage("Extracting script...");
+						copyPersistFileProgress.show();
+					}
+
+					@Override
+					protected Void doInBackground(Void... params) {
+						copyFilesToSdCard();
+						return null;
+					}
+
+					@Override
+					protected void onPostExecute(Void result) {
+						super.onPostExecute(result);
+						if (copyPersistFileProgress != null) {
+							if (copyPersistFileProgress.isShowing()) {
+								copyPersistFileProgress.dismiss();
+							}
+						}
+
+						AsyncTask<Void, Void, Void> copyPersistFile2 = new AsyncTask<Void, Void, Void>()  { 
+							ProgressDialog copyPersistFileProgress2;
+
+							@Override
+							protected void onPreExecute() {
+								super.onPreExecute();
+								copyPersistFileProgress2 = new ProgressDialog (About.this);
+								copyPersistFileProgress2.setMessage("Copying script...");
+								copyPersistFileProgress2.show();
+							}
+
+							@Override
+							protected Void doInBackground(Void... params) {
+								try {
+									Process process = Runtime.getRuntime().exec("su");
+									OutputStream stdin = process.getOutputStream();
+									InputStream stderr = process.getErrorStream();
+									InputStream stdout = process.getInputStream();
+
+									stdin.write(("cp /sdcard/96-fontsterpersist.sh /system/addon.d\n").getBytes());
+
+									stdin.flush();
+									stdin.close();
+									process.waitFor();
+									process.destroy();
+								} catch (IOException | InterruptedException e) {
+									e.printStackTrace();
+								}
+								return null;
+							}
+
+							@Override
+							protected void onPostExecute(Void result) {
+								super.onPostExecute(result);
+								if (copyPersistFileProgress2 != null) {
+									if (copyPersistFileProgress2.isShowing()) {
+										copyPersistFileProgress2.dismiss();
+									}
+								}
+								CustomAlerts.showBasicAlert("Done", "Persistent Font Mode has been enabled.", About.this);
+							}
+						};
+						copyPersistFile2.execute((Void[])null);	
+
+					}
+				};
+				copyPersistFile.execute((Void[])null);				
+
+				return true; 
+			}
+		});
+
+		/**
 		 * Opens the Splash activity.
 		 */
 		Preference splash = (Preference) findPreference("viewSplash");
@@ -599,5 +687,66 @@ public class About extends PreferenceActivity {
 					haveConnectedMobile = true;
 		}
 		return haveConnectedWifi || haveConnectedMobile;
+	}
+
+	final static String TARGET_BASE_PATH = "/sdcard/";
+
+	private void copyFilesToSdCard() {
+		copyFileOrDir("96-fontsterpersist.sh"); // copy all files in assets folder in my project
+	}
+
+	private void copyFileOrDir(String path) {
+		AssetManager assetManager = this.getAssets();
+		String assets[] = null;
+		try {
+			Log.i("tag", "copyFileOrDir() "+path);
+			assets = assetManager.list(path);
+			if (assets.length == 0) {
+				copyFile(path);
+			} else {
+				String fullPath =  TARGET_BASE_PATH + path;
+				Log.i("tag", "path="+fullPath);
+				File dir = new File(fullPath);
+				for (int i = 0; i < assets.length; ++i) {
+					String p;
+					if (path.equals(""))
+						p = "";
+					else 
+						p = path + "/";
+				}
+			}
+		} catch (IOException ex) {
+			Log.e("tag", "I/O Exception", ex);
+		}
+	}
+
+	private void copyFile(String filename) {
+		AssetManager assetManager = this.getAssets();
+
+		InputStream in = null;
+		OutputStream out = null;
+		String newFileName = null;
+		try {
+			Log.i("tag", "copyFile() "+filename);
+			in = assetManager.open(filename);
+
+			newFileName = TARGET_BASE_PATH + filename;
+			out = new FileOutputStream(newFileName);
+
+			byte[] buffer = new byte[1024];
+			int read;
+			while ((read = in.read(buffer)) != -1) {
+				out.write(buffer, 0, read);
+			}
+			in.close();
+			in = null;
+			out.flush();
+			out.close();
+			out = null;
+		} catch (Exception e) {
+			Log.e("tag", "Exception in copyFile() of "+newFileName);
+			Log.e("tag", "Exception in copyFile() "+e.toString());
+		}
+
 	}
 }

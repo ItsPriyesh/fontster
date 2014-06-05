@@ -39,7 +39,7 @@ import android.widget.Button;
 public class MainActivity extends ActionBarActivity {
 
 	//TODO
-	/*
+	/*Add survival mode to make fonts survive rom updates
 	 * 
 	 */
 	

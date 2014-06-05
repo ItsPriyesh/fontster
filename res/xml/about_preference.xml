@@ -27,6 +27,10 @@
             android:key="restartSysUI"
             android:summary="@string/restart_systemui_message"
             android:title="@string/restart_systemui" />
+        <Preference 
+            android:key="persist"
+            android:summary="Fonts will survive after ROM updates."
+            android:title="Enable Persistent Font Mode"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="About" >
         <com.chromium.fontinstaller.VersionPreference android:title="Version" />
