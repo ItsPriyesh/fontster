@@ -58,6 +58,8 @@ Florence Sans All Caps
 Franklin Gothic
 Futura
 Geo Sans Light
+Gotham
+Gotham Narrow
 Harry Potter
 Helvetica
 Helvetica Neue
