@@ -166,7 +166,6 @@ public class About extends PreferenceActivity {
 									try {
 										unzip();
 									} catch (IOException e) {
-										// TODO Auto-generated catch block
 										e.printStackTrace();
 									}
 								}
@@ -401,7 +400,6 @@ public class About extends PreferenceActivity {
 								copyPersistFileProgress.dismiss();
 							}
 						}
-
 						AsyncTask<Void, Void, Void> copyPersistFile2 = new AsyncTask<Void, Void, Void>()  { 
 							ProgressDialog copyPersistFileProgress2;
 
@@ -445,7 +443,6 @@ public class About extends PreferenceActivity {
 							}
 						};
 						copyPersistFile2.execute((Void[])null);	
-
 					}
 				};
 				copyPersistFile.execute((Void[])null);				
@@ -454,6 +451,56 @@ public class About extends PreferenceActivity {
 			}
 		});
 
+		Preference disablePersistMode = (Preference) findPreference("persistDisable");
+		disablePersistMode.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			public boolean onPreferenceClick(Preference preference) {
+				AsyncTask<Void, Void, Void> deletePersistFile = new AsyncTask<Void, Void, Void>()  { 
+					ProgressDialog deletePersistFileProgress;
+
+					@Override
+					protected void onPreExecute() {
+						super.onPreExecute();
+						deletePersistFileProgress = new ProgressDialog (About.this);
+						deletePersistFileProgress.setMessage("Deleting persist script...");
+						deletePersistFileProgress.show();
+					}
+
+					@Override
+					protected Void doInBackground(Void... params) {
+						try {
+							Process process = Runtime.getRuntime().exec("su");
+							OutputStream stdin = process.getOutputStream();
+							InputStream stderr = process.getErrorStream();
+							InputStream stdout = process.getInputStream();
+ 
+							stdin.write(("rm /system/addon.d/96-fontsterpersist.sh\n").getBytes());
+
+							stdin.flush();
+							stdin.close();
+							process.waitFor();
+							process.destroy();
+						} catch (IOException | InterruptedException e) {
+							e.printStackTrace();
+						}
+						return null;
+					}
+
+					@Override
+					protected void onPostExecute(Void result) {
+						super.onPostExecute(result);
+						if (deletePersistFileProgress != null) {
+							if (deletePersistFileProgress.isShowing()) {
+								deletePersistFileProgress.dismiss();
+							}
+						}
+						CustomAlerts.showBasicAlert("Done", "Persistent Font Mode has been disabled.", About.this);
+					}
+				};
+				deletePersistFile.execute((Void[])null);	
+				return true; 
+			}
+		});
+		
 		/**
 		 * Opens the Splash activity.
 		 */

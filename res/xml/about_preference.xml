@@ -12,10 +12,6 @@
     </PreferenceCategory>
     <PreferenceCategory android:title="General" >
         <Preference
-            android:key="clearCache"
-            android:summary="@string/clear_cache_message"
-            android:title="@string/clear_cache_title" />
-        <Preference
             android:key="fontRequest"
             android:summary="@string/request_message"
             android:title="@string/request_title" />
@@ -27,13 +23,24 @@
             android:key="restartSysUI"
             android:summary="@string/restart_systemui_message"
             android:title="@string/restart_systemui" />
-        <Preference 
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Advanced" >
+        <Preference
+            android:key="clearCache"
+            android:summary="@string/clear_cache_message"
+            android:title="@string/clear_cache_title" />
+        <Preference
             android:key="persist"
             android:summary="Fonts will survive after ROM updates."
-            android:title="Enable Persistent Font Mode"/>
+            android:title="Enable Persistent Font Mode" />
+        <Preference
+            android:key="persistDisable"
+            android:summary="Fonts will no longer survive after ROM updates."
+            android:title="Disable Persistent Font Mode" />
     </PreferenceCategory>
     <PreferenceCategory android:title="About" >
         <com.chromium.fontinstaller.VersionPreference android:title="Version" />
+
         <Preference
             android:key="viewSplash"
             android:summary="Display initial welcome page."
