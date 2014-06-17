@@ -231,8 +231,15 @@ public class CustomAlerts{
 		
 		Dialog reboot = new Dialog(context);
 
-		Typeface fallbackCondensed = Typeface.createFromFile("/sdcard/Fontster/FontFallback/RobotoCondensed-Regular.ttf");
-		Typeface fallbackLight = Typeface.createFromFile("/sdcard/Fontster/FontFallback/Roboto-Light.ttf");
+		File fallback1 = new File ("/sdcard/Fontster/FontFallback/RobotoCondensed-Regular.ttf");
+		File fallback2 = new File ("/sdcard/Fontster/FontFallback/Roboto-Light.ttf");
+		if(fallback1.exists() && fallback2.exists()){
+		    Typeface fallbackCondensed = Typeface.createFromFile ("/sdcard/Fontster/FontFallback/RobotoCondensed-Regular.ttf");
+		    Typeface fallbackLight = Typeface.createFromFile ("/sdcard/Fontster/FontFallback/Roboto-Light.ttf");	
+		}  
+		else
+		// Some users dont have the file since it is downloaded only the first time that they open the app,
+		// and version 1.1+ stores it in a different location. This is whats causing the recent crashes.
 
 		reboot.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		reboot.setContentView(R.layout.single_button_alert);	
