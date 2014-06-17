@@ -237,7 +237,10 @@ public class CustomAlerts{
 		    Typeface fallbackCondensed = Typeface.createFromFile ("/sdcard/Fontster/FontFallback/RobotoCondensed-Regular.ttf");
 		    Typeface fallbackLight = Typeface.createFromFile ("/sdcard/Fontster/FontFallback/Roboto-Light.ttf");	
 		}  
-		else
+		else { //use the old directory
+		    Typeface fallbackCondensed = Typeface.createFromFile ("/sdcard/FontFallback/RobotoCondensed-Regular.ttf");
+		    Typeface fallbackLight = Typeface.createFromFile ("/sdcard/FontFallback/Roboto-Light.ttf");	
+		}
 		// Some users dont have the file since it is downloaded only the first time that they open the app,
 		// and version 1.1+ stores it in a different location. This is whats causing the recent crashes.
 
