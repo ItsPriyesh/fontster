@@ -104,6 +104,7 @@ public class About extends PreferenceActivity {
 		 * Method to start in-app billing service for donations
 		 */
 		boolean inAppBillingEnabled = false; //set false for emulator compatibility
+		
 		if (inAppBillingEnabled){
 			mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
 				public void onIabSetupFinished(IabResult result) {
