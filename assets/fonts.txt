@@ -7,7 +7,6 @@ Aleo Light
 Alex
 Aller
 Aller Light
-Andrea Print Upright
 Android Logo
 Antipasto Light
 Antipasto Regular
@@ -17,56 +16,34 @@ Arimo
 Arvo
 Asap
 Aubrey
-Avenir
-Avenir Next Ultra Light
 Baron Neue
-Bauhaus
 Biko
-Briem Script
 Brixton
 Calugraphy
-Cambria
 Cantarell
 Cartoonist Hand
 Cartoonist Hand All Caps
 Caviar Dreams
-Century Gothic
 Champagne And Limousines
 China Cat
 Chivo
 Choco Cooky
 Clear Sans
-Cocon
-Comic Sans
-Consolas
 Continuum
 Corporate Rounded
-Courier New
 Covington
 Dolce Vita
 Dosis
 Economica
 Engebrechtre
-Eras
 Essence Sans
-Eurostile
 Exo
 Expletus Sans
-Facit
 Fira Sans
 Florence Sans All Caps
 Franklin Gothic
-Futura
 Geo Sans Light
-Gotham
-Gotham Narrow
 Harry Potter
-Helvetica
-Helvetica Neue
-Helvetica Neue Condensed
-Helvetica Neue Light
-Helvetica Neue Light Condensed
-Helvetica S
 Homizio Nova
 HTC M8
 Imagine
@@ -79,15 +56,12 @@ Kontrapunkt
 Lato
 Liberation Sans
 Lido STF
-Lucida Calligraphy
 Marvel
 Merriweather Sans
 Monaco
 Monako
 Monofonto
-Myriad Pro
 Neuropol
-Neutra Light
 Nokia Pure
 Olney
 Open Dyslexic
@@ -95,13 +69,10 @@ Open Sans
 Open Sans Condensed Light
 Open Sans Light
 Oswald
-Palatino Linotype
 Plentiful
 Poiret One
 Prelude
 Print Clearly
-Proxima Nova
-Proxima Nova Light
 PT Sans
 Quantico
 Quicksand
@@ -121,24 +92,14 @@ Roboto Thin
 Rosario
 Rosemary
 Sansation
-Scala Sans
-Segoe
 Signika
-Slate Pro
-Sonrisa
 Sony Sketch
 Sony Xperia
 Source Sans Pro
 Sovba
 Square
-Terfens
-Terfens Light
 Tertre
-Times New Roman
 Titillium Web
-Trade Gothic
-Trebuchet MS
-Typograph Pro
 Ubuntu
 Ubuntu Light
 Ubuntu Tall
