@@ -7,7 +7,6 @@ Aleo Light
 Alex
 Aller
 Aller Light
-Android Logo
 Antipasto Light
 Antipasto Regular
 Arch Rival
@@ -30,6 +29,7 @@ Chivo
 Choco Cooky
 Clear Sans
 Continuum
+Coolvetica
 Corporate Rounded
 Covington
 Dolce Vita
@@ -58,6 +58,7 @@ Liberation Sans
 Lido STF
 Marvel
 Merriweather Sans
+Minya Nouvelle
 Monaco
 Monako
 Monofonto
@@ -68,6 +69,7 @@ Open Dyslexic
 Open Sans
 Open Sans Condensed Light
 Open Sans Light
+Opificio
 Oswald
 Plentiful
 Poiret One
@@ -87,7 +89,6 @@ Roboto Condensed Italic
 Roboto Condensed Light
 Roboto Light
 Roboto Slab
-Roboto Soft
 Roboto Thin
 Rosario
 Rosemary

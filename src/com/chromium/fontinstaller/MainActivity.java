@@ -66,9 +66,9 @@ public class MainActivity extends ActionBarActivity {
 	SharedPreferences prefs = null;
 	Button openFontList, backup, testView;
 
-	String stockFontURL = "https://github.com/Chromium1/Fonts/raw/master/RestoreStockFonts.zip";
-	String fallbackCondensed = "https://github.com/Chromium1/Fonts/raw/master/StockRoboto/RobotoCondensed-Regular.ttf";
-	String fallbackLight = "https://github.com/Chromium1/Fonts/raw/master/StockRoboto/Roboto-Light.ttf";
+	String stockFontURL = "https://github.com/ItsPriyesh/FontsterFontsRepo/raw/master/RestoreStockFonts.zip";
+	String fallbackCondensed = "https://github.com/ItsPriyesh/FontsterFontsRepo/raw/master/StockRoboto/RobotoCondensed-Regular.ttf";
+	String fallbackLight = "https://github.com/ItsPriyesh/FontsterFontsRepo/raw/master/StockRoboto/Roboto-Light.ttf";
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

@@ -138,7 +138,7 @@ public class About extends PreferenceActivity {
 				else {
 					if (haveNetworkConnection()){ //connection available								
 
-						DownloadManager.Request downloadPreviewZip = new DownloadManager.Request(Uri.parse("https://github.com/Chromium1/Fonts/raw/master/ListPreviews.zip"));
+						DownloadManager.Request downloadPreviewZip = new DownloadManager.Request(Uri.parse("https://github.com/ItsPriyesh/FontsterFontsRepo/raw/master/ListPreviews.zip"));
 						downloadPreviewZip.allowScanningByMediaScanner();
 						downloadPreviewZip.setDestinationInExternalPublicDir("/Fontster/ListPreviews/", "ListPreviews.zip");
 						downloadPreviewZip.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);	
@@ -534,7 +534,7 @@ public class About extends PreferenceActivity {
 				Intent git = new Intent();
 				git.setAction(Intent.ACTION_VIEW);
 				git.addCategory(Intent.CATEGORY_BROWSABLE);
-				git.setData(Uri.parse("https://github.com/Chromium1/FontInstaller"));
+				git.setData(Uri.parse("https://github.com/ItsPriyesh/FontInstaller"));
 				startActivity(git);
 				return true; 
 			}

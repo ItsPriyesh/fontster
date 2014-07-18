@@ -145,18 +145,18 @@ public class FontList extends Activity  {
 				fontName = removeSpaces(selectedFromList); //remove the spaces from the item so that it can later be passed into the URL string
 
 				//urls for fonts
-				urlRobotoBold = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/Roboto-Bold.ttf";
-				urlRobotoBoldItalic = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/Roboto-BoldItalic.ttf";
-				urlRobotoRegular = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/Roboto-Regular.ttf";
-				urlRobotoItalic = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/Roboto-Italic.ttf";		
-				urlRobotoLight = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/Roboto-Light.ttf";
-				urlRobotoLightItalic = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/Roboto-LightItalic.ttf";
-				urlRobotoThin = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/Roboto-Thin.ttf";
-				urlRobotoThinItalic = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/Roboto-ThinItalic.ttf";
-				urlRobotoCondensedBold = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/RobotoCondensed-Bold.ttf";
-				urlRobotoCondensedBoldItalic = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/RobotoCondensed-BoldItalic.ttf";
-				urlRobotoCondensedRegular = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/RobotoCondensed-Regular.ttf";
-				urlRobotoCondensedItalic = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/RobotoCondensed-Italic.ttf";
+				urlRobotoBold = "https://github.com/ItsPriyesh/FontsterFontsRepo/raw/master/" + fontName + "FontPack/Roboto-Bold.ttf";
+				urlRobotoBoldItalic = "https://github.com/ItsPriyesh/FontsterFontsRepo/raw/master/" + fontName + "FontPack/Roboto-BoldItalic.ttf";
+				urlRobotoRegular = "https://github.com/ItsPriyesh/FontsterFontsRepo/raw/master/" + fontName + "FontPack/Roboto-Regular.ttf";
+				urlRobotoItalic = "https://github.com/ItsPriyesh/FontsterFontsRepo/raw/master/" + fontName + "FontPack/Roboto-Italic.ttf";		
+				urlRobotoLight = "https://github.com/ItsPriyesh/FontsterFontsRepo/raw/master/" + fontName + "FontPack/Roboto-Light.ttf";
+				urlRobotoLightItalic = "https://github.com/ItsPriyesh/FontsterFontsRepo/raw/master/" + fontName + "FontPack/Roboto-LightItalic.ttf";
+				urlRobotoThin = "https://github.com/ItsPriyesh/FontsterFontsRepo/raw/master/" + fontName + "FontPack/Roboto-Thin.ttf";
+				urlRobotoThinItalic = "https://github.com/ItsPriyesh/FontsterFontsRepo/raw/master/" + fontName + "FontPack/Roboto-ThinItalic.ttf";
+				urlRobotoCondensedBold = "https://github.com/ItsPriyesh/FontsterFontsRepo/raw/master/" + fontName + "FontPack/RobotoCondensed-Bold.ttf";
+				urlRobotoCondensedBoldItalic = "https://github.com/ItsPriyesh/FontsterFontsRepo/raw/master/" + fontName + "FontPack/RobotoCondensed-BoldItalic.ttf";
+				urlRobotoCondensedRegular = "https://github.com/ItsPriyesh/FontsterFontsRepo/raw/master/" + fontName + "FontPack/RobotoCondensed-Regular.ttf";
+				urlRobotoCondensedItalic = "https://github.com/ItsPriyesh/FontsterFontsRepo/raw/master/" + fontName + "FontPack/RobotoCondensed-Italic.ttf";
 
 				confirm = new Dialog(FontList.this);
 
@@ -439,7 +439,7 @@ public class FontList extends Activity  {
 				else {
 
 					if (haveNetworkConnection()){ //connection available
-						urlPreviewFont = "https://github.com/Chromium1/Fonts/raw/master/" + previewName + "FontPack/Roboto-Regular.ttf";
+						urlPreviewFont = "https://github.com/ItsPriyesh/FontsterFontsRepo/raw/master/" + previewName + "FontPack/Roboto-Regular.ttf";
 
 						String path = "/Fontster/SampleFonts/" + previewName + "/";
 						DownloadManager.Request downloadSample = new DownloadManager.Request(Uri.parse(urlPreviewFont));

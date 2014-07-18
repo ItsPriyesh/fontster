@@ -131,18 +131,18 @@ public class Preview {
 		}
 		else {
 			//urls for fonts
-			String urlRobotoBold = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/Roboto-Bold.ttf";
-			String urlRobotoBoldItalic = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/Roboto-BoldItalic.ttf";
-			String urlRobotoRegular = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/Roboto-Regular.ttf";
-			String urlRobotoItalic = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/Roboto-Italic.ttf";		
-			String urlRobotoLight = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/Roboto-Light.ttf";
-			String urlRobotoLightItalic = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/Roboto-LightItalic.ttf";
-			String urlRobotoThin = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/Roboto-Thin.ttf";
-			String urlRobotoThinItalic = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/Roboto-ThinItalic.ttf";
-			String urlRobotoCondensedBold = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/RobotoCondensed-Bold.ttf";
-			String urlRobotoCondensedBoldItalic = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/RobotoCondensed-BoldItalic.ttf";
-			String urlRobotoCondensedRegular = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/RobotoCondensed-Regular.ttf";
-			String urlRobotoCondensedItalic = "https://github.com/Chromium1/Fonts/raw/master/" + fontName + "FontPack/RobotoCondensed-Italic.ttf";	
+			String urlRobotoBold = "https://github.com/ItsPriyesh/FontsterFontsRepo/raw/master/" + fontName + "FontPack/Roboto-Bold.ttf";
+			String urlRobotoBoldItalic = "https://github.com/ItsPriyesh/FontsterFontsRepo/raw/master/" + fontName + "FontPack/Roboto-BoldItalic.ttf";
+			String urlRobotoRegular = "https://github.com/ItsPriyesh/FontsterFontsRepo/raw/master/" + fontName + "FontPack/Roboto-Regular.ttf";
+			String urlRobotoItalic = "https://github.com/ItsPriyesh/FontsterFontsRepo/raw/master/" + fontName + "FontPack/Roboto-Italic.ttf";		
+			String urlRobotoLight = "https://github.com/ItsPriyesh/FontsterFontsRepo/raw/master/" + fontName + "FontPack/Roboto-Light.ttf";
+			String urlRobotoLightItalic = "https://github.com/ItsPriyesh/FontsterFontsRepo/raw/master/" + fontName + "FontPack/Roboto-LightItalic.ttf";
+			String urlRobotoThin = "https://github.com/ItsPriyesh/FontsterFontsRepo/raw/master/" + fontName + "FontPack/Roboto-Thin.ttf";
+			String urlRobotoThinItalic = "https://github.com/ItsPriyesh/FontsterFontsRepo/raw/master/" + fontName + "FontPack/Roboto-ThinItalic.ttf";
+			String urlRobotoCondensedBold = "https://github.com/ItsPriyesh/FontsterFontsRepo/raw/master/" + fontName + "FontPack/RobotoCondensed-Bold.ttf";
+			String urlRobotoCondensedBoldItalic = "https://github.com/ItsPriyesh/FontsterFontsRepo/raw/master/" + fontName + "FontPack/RobotoCondensed-BoldItalic.ttf";
+			String urlRobotoCondensedRegular = "https://github.com/ItsPriyesh/FontsterFontsRepo/raw/master/" + fontName + "FontPack/RobotoCondensed-Regular.ttf";
+			String urlRobotoCondensedItalic = "https://github.com/ItsPriyesh/FontsterFontsRepo/raw/master/" + fontName + "FontPack/RobotoCondensed-Italic.ttf";	
 
 			String path = "/Fontster/SampleFonts/" + fontName + "/";
 
