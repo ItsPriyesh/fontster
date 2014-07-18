@@ -232,9 +232,7 @@ public class CustomAlerts{
 		
 		Dialog reboot = new Dialog(context);
 
-		File fallback1 = new File ("/sdcard/Fontster/FontFallback/RobotoCondensed-Regular.ttf");
-		File fallback2 = new File ("/sdcard/Fontster/FontFallback/Roboto-Light.ttf");
-		if(fallback1.exists() && fallback2.exists()){
+		
 		    Typeface fallbackCondensed = Typeface.createFromFile ("/sdcard/Fontster/FontFallback/RobotoCondensed-Regular.ttf");
 		    Typeface fallbackLight = Typeface.createFromFile ("/sdcard/Fontster/FontFallback/Roboto-Light.ttf");
 		    
@@ -267,44 +265,6 @@ public class CustomAlerts{
 			});
 
 			reboot.show();
-		}  
-		else { //use the old directory
-		    Typeface fallbackCondensed = Typeface.createFromFile ("/sdcard/FontFallback/RobotoCondensed-Regular.ttf");
-		    Typeface fallbackLight = Typeface.createFromFile ("/sdcard/FontFallback/Roboto-Light.ttf");	
-		    
-		    reboot.requestWindowFeature(Window.FEATURE_NO_TITLE);
-			reboot.setContentView(R.layout.single_button_alert);	
-
-			TextView alertTitle = (TextView) reboot.findViewById(R.id.title);
-			alertTitle.setTypeface(fallbackCondensed);
-			alertTitle.setText(title);
-
-			TextView alertMessage = (TextView) reboot.findViewById(R.id.message);
-			alertMessage.setTypeface(fallbackLight);
-			alertMessage.setText(message);
-
-			Button positiveButton = (Button) reboot.findViewById(R.id.positive);
-			positiveButton.setTypeface(fallbackLight);
-			positiveButton.setText(button);
-
-			positiveButton.setOnClickListener(new View.OnClickListener() {
-				public void onClick(View v){
-
-					try {
-						Process reboot = Runtime.getRuntime().exec(new String[] { "su", "-c", "reboot"});
-					}
-					catch (IOException e) {
-						e.printStackTrace();
-					}
-
-				}			
-			});
-
-			reboot.show();
-		}
-		// Some users dont have the file since it is downloaded only the first time that they open the app,
-		// and version 1.1+ stores it in a different location. This is whats causing the recent crashes.
-
 		
 	}
 
