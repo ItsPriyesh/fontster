@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 package com.chromium.fontinstaller;
 
 import java.io.File;
@@ -86,17 +86,17 @@ public class CustomAlerts{
 		alertTitle.setText(title);
 		TextView alertMessage = (TextView) help.findViewById(R.id.message);
 		alertMessage.setText(message);
- 
+
 		TextView imageMessage  = (TextView) help.findViewById (R.id.imageMessage); 
-		
-        Drawable d = context.getResources().getDrawable(R.drawable.ic_action_accept); 
-        d.setBounds(0, 0, 40, 40); 
-        
-        ImageSpan is = new ImageSpan(d, ImageSpan.ALIGN_BOTTOM); 
-        
+
+		Drawable d = context.getResources().getDrawable(R.drawable.ic_action_accept); 
+		d.setBounds(0, 0, 40, 40); 
+
+		ImageSpan is = new ImageSpan(d, ImageSpan.ALIGN_BOTTOM); 
+
 		SpannableString texts = new SpannableString(imageMessage.getText().toString().concat(""));
 		texts.setSpan(is, 4, 5, 0);
-         
+
 		imageMessage.setText(texts);
 
 		help.show();
@@ -124,21 +124,21 @@ public class CustomAlerts{
 		req.setContentView(R.layout.request_alert);	
 
 		final EditText fontReqET = (EditText) req.findViewById(R.id.reqFont);
-	
+
 		Button sendReq = (Button) req.findViewById(R.id.sendReq);
 		sendReq.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v){
 				req.dismiss();			
-				
+
 				AsyncTask<Void, Void, String> sendEmail = new AsyncTask <Void, Void, String>() {
 					ProgressDialog sendProgress;
-					
+
 					@Override
 					protected String doInBackground(Void... params)
 					{
 						try {
-						GMailSender sender = new GMailSender("fontsterapp@gmail.com","Fontster123");
-						sender.sendMail("Font Request", fontReqET.getText().toString(), "fontsterapp@gmail.com", "priyesh.96@hotmail.com");
+							GMailSender sender = new GMailSender("fontsterapp@gmail.com","Fontster123");
+							sender.sendMail("Font Request", fontReqET.getText().toString(), "fontsterapp@gmail.com", "priyesh.96@hotmail.com");
 						}
 						catch(Exception e)
 						{
@@ -173,7 +173,7 @@ public class CustomAlerts{
 		});
 		req.show();
 	}
-	
+
 	/**
 	 * This displays the dialog shown when the user long presses
 	 * a font in the FontList activity which initiates a preview.
@@ -191,7 +191,7 @@ public class CustomAlerts{
 	 * @param context
 	 */
 	public static void showPreviewAlert (String title, String message, Typeface font, final String fontName, final Context context) { 
-		
+
 		final Dialog preview = new Dialog(context);
 
 		preview.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -229,43 +229,41 @@ public class CustomAlerts{
 	 * @param context
 	 */
 	public static void showRebootAlert (String title, String message, String button, Context context) { 
-		
+
 		Dialog reboot = new Dialog(context);
 
-		
-		    Typeface fallbackCondensed = Typeface.createFromFile ("/sdcard/Fontster/FontFallback/RobotoCondensed-Regular.ttf");
-		    Typeface fallbackLight = Typeface.createFromFile ("/sdcard/Fontster/FontFallback/Roboto-Light.ttf");
-		    
-		    reboot.requestWindowFeature(Window.FEATURE_NO_TITLE);
-			reboot.setContentView(R.layout.single_button_alert);	
+		Typeface fallbackCondensed = Typeface.createFromFile ("/sdcard/Fontster/FontFallback/RobotoCondensed-Regular.ttf");
+		Typeface fallbackLight = Typeface.createFromFile ("/sdcard/Fontster/FontFallback/Roboto-Light.ttf");
 
-			TextView alertTitle = (TextView) reboot.findViewById(R.id.title);
-			alertTitle.setTypeface(fallbackCondensed);
-			alertTitle.setText(title);
+		reboot.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		reboot.setContentView(R.layout.single_button_alert);	
 
-			TextView alertMessage = (TextView) reboot.findViewById(R.id.message);
-			alertMessage.setTypeface(fallbackLight);
-			alertMessage.setText(message);
+		TextView alertTitle = (TextView) reboot.findViewById(R.id.title);
+		alertTitle.setTypeface(fallbackCondensed);
+		alertTitle.setText(title);
 
-			Button positiveButton = (Button) reboot.findViewById(R.id.positive);
-			positiveButton.setTypeface(fallbackLight);
-			positiveButton.setText(button);
+		TextView alertMessage = (TextView) reboot.findViewById(R.id.message);
+		alertMessage.setTypeface(fallbackLight);
+		alertMessage.setText(message);
 
-			positiveButton.setOnClickListener(new View.OnClickListener() {
-				public void onClick(View v){
+		Button positiveButton = (Button) reboot.findViewById(R.id.positive);
+		positiveButton.setTypeface(fallbackLight);
+		positiveButton.setText(button);
 
-					try {
-						Process reboot = Runtime.getRuntime().exec(new String[] { "su", "-c", "reboot"});
-					}
-					catch (IOException e) {
-						e.printStackTrace();
-					}
+		positiveButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v){
 
-				}			
-			});
+				try {
+					Process reboot = Runtime.getRuntime().exec(new String[] { "su", "-c", "reboot"});
+				}
+				catch (IOException e) {
+					e.printStackTrace();
+				}
 
-			reboot.show();
-		
+			}			
+		});
+
+		reboot.show();
 	}
 
 	/**
@@ -277,7 +275,7 @@ public class CustomAlerts{
 	 * @param context
 	 */
 	public static void showSingleButtonAlert (String title, String message, Context context) { 
-		
+
 		final Dialog singleButtonDialog = new Dialog(context);
 
 		singleButtonDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);

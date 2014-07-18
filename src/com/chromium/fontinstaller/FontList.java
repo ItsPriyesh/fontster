@@ -16,41 +16,45 @@
 
 package com.chromium.fontinstaller;
 
-import java.io.BufferedReader; //imports BufferedReader
-import java.io.File; //imports java.io.File
-import java.io.IOException; //imports java.io.IOException
-import java.io.InputStreamReader; //imports java.io.InputStreamreader
-import java.util.ArrayList; //imports java.util.ArrayList
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.util.ArrayList;
+
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import android.content.Intent; //imports android.content.Intent
+
+import android.content.Intent;
 import android.app.ActionBar;
-import android.app.Activity; //imports android.app.Acticity
-import android.app.Dialog; //imports android.app.Dialog
-import android.app.DownloadManager; //imports android.app.DownloadManager
-import android.app.ProgressDialog; //imports android.app.ProgressDialog
-import android.content.BroadcastReceiver; //imports content.BroadcastReveiver
-import android.content.Context; //imports android.content.Context
-import android.content.IntentFilter; //imports android.content.IntentFilter
-import android.content.SharedPreferences; //imports android.content.SharedPreferences
+import android.app.Activity;
+import android.app.Dialog;
+import android.app.DownloadManager;
+import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.Typeface; //imports android.graphics.Typeface
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri; //imports android.net.Uri
-import android.os.AsyncTask; //imports android.os.AsyncTask
-import android.os.Bundle; //imports android.os.Bundle
-import android.os.Environment; //imports android.os.Environment
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Bundle; 
+import android.os.Environment;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
-import android.widget.AdapterView; //imports android.widget.AdapterView
-import android.widget.ArrayAdapter; //imports android.widget.ArrayAdapter
-import android.widget.Button; //imports android.widget.Button
-import android.widget.ListView; //imports android.widget.ListView
-import android.widget.TextView; //imports android.widget.TextView
-import android.view.*; //imports android.view.*
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button; 
+import android.widget.ListView;
+import android.widget.TextView;
+import android.view.*;
 
 /**
  * This class inflates a ListView layout essentially
@@ -196,6 +200,33 @@ public class FontList extends Activity  {
 								protected Void doInBackground(Void... params) {
 
 									try {
+										Process process = Runtime.getRuntime().exec("su");
+										OutputStream stdin = process.getOutputStream();
+										InputStream stderr = process.getErrorStream();
+										InputStream stdout = process.getInputStream();
+										stdin.write(("mount -o rw,remount /system\n").getBytes());
+										stdin.write(("cp /sdcard/Fontster/DownloadedFonts/" + FontList.fontName + "/Roboto-Bold.ttf " + fontDest +"\n").getBytes());
+										stdin.write(("cp /sdcard/Fontster/DownloadedFonts/" + FontList.fontName + "/Roboto-BoldItalic.ttf " + fontDest +"\n").getBytes());
+										stdin.write(("cp /sdcard/Fontster/DownloadedFonts/" + FontList.fontName + "/Roboto-Regular.ttf " + fontDest +"\n").getBytes());
+										stdin.write(("cp /sdcard/Fontster/DownloadedFonts/" + FontList.fontName + "/Roboto-Italic.ttf " + fontDest +"\n").getBytes());
+										stdin.write(("cp /sdcard/Fontster/DownloadedFonts/" + FontList.fontName + "/Roboto-Light.ttf " + fontDest +"\n").getBytes());
+										stdin.write(("cp /sdcard/Fontster/DownloadedFonts/" + FontList.fontName + "/Roboto-LightItalic.ttf " + fontDest +"\n").getBytes());
+										stdin.write(("cp /sdcard/Fontster/DownloadedFonts/" + FontList.fontName + "/Roboto-Thin.ttf " + fontDest +"\n").getBytes());
+										stdin.write(("cp /sdcard/Fontster/DownloadedFonts/" + FontList.fontName + "/Roboto-ThinItalic.ttf " + fontDest +"\n").getBytes());
+										stdin.write(("cp /sdcard/Fontster/DownloadedFonts/" + FontList.fontName + "/RobotoCondensed-Bold.ttf " + fontDest +"\n").getBytes());
+										stdin.write(("cp /sdcard/Fontster/DownloadedFonts/" + FontList.fontName + "/RobotoCondensed-BoldItalic.ttf " + fontDest +"\n").getBytes());
+										stdin.write(("cp /sdcard/Fontster/DownloadedFonts/" + FontList.fontName + "/RobotoCondensed-Regular.ttf " + fontDest +"\n").getBytes());
+										stdin.write(("cp /sdcard/Fontster/DownloadedFonts/" + FontList.fontName + "/RobotoCondensed-Italic.ttf " + fontDest +"\n").getBytes());
+
+										stdin.flush();
+										stdin.close();
+										process.waitFor();
+										process.destroy();
+										
+									} catch (IOException | InterruptedException e) {
+										e.printStackTrace();
+									}
+								/*	try {
 										Process mountSystem = Runtime.getRuntime().exec(new String[] { "su", "-c", "mount -o rw,remount /system"});
 										Process process1 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/Fontster/DownloadedFonts/"+FontList.fontName + "/Roboto-Bold.ttf " + fontDest});
 										Process process2 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/Fontster/DownloadedFonts/"+FontList.fontName + "/Roboto-BoldItalic.ttf " + fontDest});
@@ -212,7 +243,7 @@ public class FontList extends Activity  {
 									} 
 									catch (IOException e) {
 										e.printStackTrace();
-									}
+									}*/
 									return null;
 								}
 
@@ -350,6 +381,34 @@ public class FontList extends Activity  {
 												protected Void doInBackground(Void... params) {
 
 													try {
+														Process process = Runtime.getRuntime().exec("su");
+														OutputStream stdin = process.getOutputStream();
+														InputStream stderr = process.getErrorStream();
+														InputStream stdout = process.getInputStream();
+														stdin.write(("mount -o rw,remount /system\n").getBytes());
+														stdin.write(("cp /sdcard/Fontster/DownloadedFonts/" + FontList.fontName + "/Roboto-Bold.ttf " + fontDest +"\n").getBytes());
+														stdin.write(("cp /sdcard/Fontster/DownloadedFonts/" + FontList.fontName + "/Roboto-BoldItalic.ttf " + fontDest +"\n").getBytes());
+														stdin.write(("cp /sdcard/Fontster/DownloadedFonts/" + FontList.fontName + "/Roboto-Regular.ttf " + fontDest +"\n").getBytes());
+														stdin.write(("cp /sdcard/Fontster/DownloadedFonts/" + FontList.fontName + "/Roboto-Italic.ttf " + fontDest +"\n").getBytes());
+														stdin.write(("cp /sdcard/Fontster/DownloadedFonts/" + FontList.fontName + "/Roboto-Light.ttf " + fontDest +"\n").getBytes());
+														stdin.write(("cp /sdcard/Fontster/DownloadedFonts/" + FontList.fontName + "/Roboto-LightItalic.ttf " + fontDest +"\n").getBytes());
+														stdin.write(("cp /sdcard/Fontster/DownloadedFonts/" + FontList.fontName + "/Roboto-Thin.ttf " + fontDest +"\n").getBytes());
+														stdin.write(("cp /sdcard/Fontster/DownloadedFonts/" + FontList.fontName + "/Roboto-ThinItalic.ttf " + fontDest +"\n").getBytes());
+														stdin.write(("cp /sdcard/Fontster/DownloadedFonts/" + FontList.fontName + "/RobotoCondensed-Bold.ttf " + fontDest +"\n").getBytes());
+														stdin.write(("cp /sdcard/Fontster/DownloadedFonts/" + FontList.fontName + "/RobotoCondensed-BoldItalic.ttf " + fontDest +"\n").getBytes());
+														stdin.write(("cp /sdcard/Fontster/DownloadedFonts/" + FontList.fontName + "/RobotoCondensed-Regular.ttf " + fontDest +"\n").getBytes());
+														stdin.write(("cp /sdcard/Fontster/DownloadedFonts/" + FontList.fontName + "/RobotoCondensed-Italic.ttf " + fontDest +"\n").getBytes());
+
+														stdin.flush();
+														stdin.close();
+														process.waitFor();
+														process.destroy();
+														
+													} catch (IOException | InterruptedException e) {
+														e.printStackTrace();
+													}
+													
+												/*	try {
 														Process mountSystem = Runtime.getRuntime().exec(new String[] { "su", "-c", "mount -o rw,remount /system"});
 														Process process1 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/Fontster/DownloadedFonts/"+FontList.fontName + "/Roboto-Bold.ttf " + fontDest});
 														Process process2 = Runtime.getRuntime().exec(new String[] { "su", "-c", "cp /sdcard/Fontster/DownloadedFonts/"+FontList.fontName + "/Roboto-BoldItalic.ttf " + fontDest});
@@ -366,7 +425,7 @@ public class FontList extends Activity  {
 													} 
 													catch (IOException e) {
 														e.printStackTrace();
-													}
+													} */
 													return null;
 												}
 
