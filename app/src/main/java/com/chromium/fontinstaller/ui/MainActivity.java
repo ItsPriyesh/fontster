@@ -33,7 +33,7 @@ public class MainActivity extends ActionBarActivity {
 
     public void download(View view) {
         Timber.i("clicked");
-        FontPackage fontPackage = new FontPackage("Komika");
+        FontPackage fontPackage = new FontPackage("OpenSans");
         FontDownloader fontDownloader = new FontDownloader(fontPackage, this);
         fontDownloader.download();
     }
