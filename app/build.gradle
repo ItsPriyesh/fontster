@@ -1,8 +1,14 @@
 apply plugin: 'com.android.application'
+apply plugin: 'retrolambda'
 
 android {
     compileSdkVersion 21
     buildToolsVersion "21.1.2"
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 
     defaultConfig {
         applicationId "com.chromium.fontinstaller"
@@ -17,6 +23,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+}
+
+retrolambda {
+    jdk '/Library/Java/JavaVirtualMachines/jdk1.8.0_31.jdk/Contents/Home'
+    oldJdk '/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Content/Home'
+    javaVersion JavaVersion.VERSION_1_6
 }
 
 dependencies {

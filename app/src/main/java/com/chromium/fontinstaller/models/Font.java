@@ -8,18 +8,18 @@ public class Font {
     private int style;
     private String url;
 
-    public static final int BOLD = 1;
-    public static final int BOLD_ITALIC = 2;
-    public static final int ITALIC = 3;
-    public static final int LIGHT = 4;
-    public static final int LIGHT_ITALIC = 5;
-    public static final int REGULAR = 6;
-    public static final int THIN = 7;
-    public static final int THIN_ITALIC = 8;
-    public static final int CONDENSED_BOLD = 9;
-    public static final int CONDENSED_BOLD_ITALIC = 10;
-    public static final int CONDENSED_ITALIC = 11;
-    public static final int CONDENSED_REGULAR = 12;
+    public static final int BOLD = 0;
+    public static final int BOLD_ITALIC = 1;
+    public static final int ITALIC = 2;
+    public static final int LIGHT = 3;
+    public static final int LIGHT_ITALIC = 4;
+    public static final int REGULAR = 5;
+    public static final int THIN = 6;
+    public static final int THIN_ITALIC = 7;
+    public static final int CONDENSED_BOLD = 8;
+    public static final int CONDENSED_BOLD_ITALIC = 9;
+    public static final int CONDENSED_ITALIC = 10;
+    public static final int CONDENSED_REGULAR = 11;
 
     public Font(String name, String url) {
         this.name = name;

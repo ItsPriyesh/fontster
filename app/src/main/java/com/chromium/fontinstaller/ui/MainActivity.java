@@ -33,26 +33,11 @@ public class MainActivity extends ActionBarActivity {
 
     public void download(View view) {
         Timber.i("clicked");
-        FontPackage fontPackage = new FontPackage("Lato");
+        FontPackage fontPackage = new FontPackage("Komika");
         FontDownloader fontDownloader = new FontDownloader(fontPackage, this);
-       fontDownloader.download();
-
-       /* String path = "/sdcard/Fonts/Roboto.ttf";
-        //downloading =
-        Ion.with(this)
-                .load("https://raw.githubusercontent.com/ItsPriyesh/FontsterFontsRepo/master/LatoFontPack/Roboto-Light.ttf")
-                .write(new File(getExternalCacheDir() + "/Roboto.ttf"))
-                .setCallback(new FutureCallback<File>() {
-                    @Override
-                    public void onCompleted(Exception e, File result) {
-                        if (e != null) {
-                            Timber.i("Error downloading " + result);
-                            return;
-                        }
-                        Timber.i("Downloaded " + result);
-                    }
-                });*/
+        fontDownloader.download();
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
