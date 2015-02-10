@@ -6,18 +6,18 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
+import com.chromium.fontinstaller.BusProvider;
 import com.chromium.fontinstaller.R;
+import com.chromium.fontinstaller.events.DownloadCompleteEvent;
 import com.chromium.fontinstaller.models.FontPackage;
 import com.chromium.fontinstaller.util.FontDownloader;
-import com.koushikdutta.async.future.Future;
 import com.koushikdutta.ion.Ion;
-
-import java.io.File;
+import com.squareup.otto.Subscribe;
 
 
 public class MainActivity extends ActionBarActivity {
-    Future<File> downloading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +30,14 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void download(View view) {
-        FontPackage fontPackage = new FontPackage("OpenSans");
+        FontPackage fontPackage = new FontPackage("RobotoSlab");
         FontDownloader fontDownloader = new FontDownloader(fontPackage, this);
         fontDownloader.download();
+    }
+
+    @Subscribe
+    public void startInstallation(DownloadCompleteEvent event) {
+        Toast.makeText(this, "Download complete", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -40,6 +45,18 @@ public class MainActivity extends ActionBarActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        BusProvider.getInstance().register(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        BusProvider.getInstance().unregister(this);
     }
 
     @Override
