@@ -15,8 +15,6 @@ import com.koushikdutta.ion.Ion;
 
 import java.io.File;
 
-import timber.log.Timber;
-
 
 public class MainActivity extends ActionBarActivity {
     Future<File> downloading;
@@ -32,7 +30,6 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void download(View view) {
-        Timber.i("clicked");
         FontPackage fontPackage = new FontPackage("OpenSans");
         FontDownloader fontDownloader = new FontDownloader(fontPackage, this);
         fontDownloader.download();
