@@ -22,7 +22,8 @@ public class FontDownloader {
     private FontPackage fontPackage;
     private Activity context;
 
-    private enum CompletionStatus { INCOMPLETE, COMPLETE, ERROR };
+    private enum CompletionStatus {INCOMPLETE, COMPLETE, ERROR}
+
     private HashMap<Font, CompletionStatus> hashMap = new HashMap<>(12);
 
     public FontDownloader(FontPackage fontPackage, Activity context) {
