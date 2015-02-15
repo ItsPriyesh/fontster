@@ -1,36 +1,68 @@
+/*
+ * Copyright 2015 Priyesh Patel
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.chromium.fontinstaller.ui;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.Toast;
 
-import com.chromium.fontinstaller.BusProvider;
 import com.chromium.fontinstaller.R;
+import com.chromium.fontinstaller.core.FontDownloader;
 import com.chromium.fontinstaller.events.DownloadCompleteEvent;
 import com.chromium.fontinstaller.models.FontPackage;
-import com.chromium.fontinstaller.util.FontDownloader;
-import com.koushikdutta.ion.Ion;
+import com.chromium.fontinstaller.ui.common.BaseActionBarActivity;
+import com.chromium.fontinstaller.ui.common.FontListAdapter;
 import com.squareup.otto.Subscribe;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
 
-public class MainActivity extends ActionBarActivity {
+import butterknife.InjectView;
+
+
+public class MainActivity extends BaseActionBarActivity {
+
+    @InjectView(R.id.font_list_view)
+    ListView fontListView;
+
+    ArrayList<FontPackage> fontList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Ion.getDefault(this).configure().setLogging("ion-sample", Log.DEBUG);
+        fontList = new ArrayList<>();
+        populateFontList();
+
+        FontListAdapter fontListAdapter = new FontListAdapter(this, fontList);
+        fontListView.setAdapter(fontListAdapter);
+
+       // Ion.getDefault(this).configure().setLogging("ion-sample", Log.DEBUG);
 
 
     }
 
     public void download(View view) {
-        FontPackage fontPackage = new FontPackage("RobotoSlab");
+        FontPackage fontPackage = new FontPackage("Roboto Slab");
         FontDownloader fontDownloader = new FontDownloader(fontPackage, this);
         fontDownloader.download();
     }
@@ -48,18 +80,6 @@ public class MainActivity extends ActionBarActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        BusProvider.getInstance().register(this);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        BusProvider.getInstance().unregister(this);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -72,5 +92,17 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void populateFontList() {
+        try {
+            Scanner scanner = new Scanner(getAssets().open("fonts"));
+            while (scanner.hasNextLine()) {
+                fontList.add(new FontPackage(scanner.nextLine()));
+            }
+            scanner.close();
+        } catch (IOException e) {
+
+        }
     }
 }

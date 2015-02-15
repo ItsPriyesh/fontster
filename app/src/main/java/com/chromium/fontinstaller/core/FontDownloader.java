@@ -1,4 +1,20 @@
-package com.chromium.fontinstaller.util;
+/*
+ * Copyright 2015 Priyesh Patel
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.chromium.fontinstaller.core;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -9,6 +25,9 @@ import com.chromium.fontinstaller.BusProvider;
 import com.chromium.fontinstaller.events.DownloadCompleteEvent;
 import com.chromium.fontinstaller.models.Font;
 import com.chromium.fontinstaller.models.FontPackage;
+import com.chromium.fontinstaller.util.AlertUtils;
+import com.chromium.fontinstaller.util.FileUtils;
+import com.chromium.fontinstaller.util.NetworkUtils;
 import com.koushikdutta.ion.Ion;
 
 import java.io.File;
@@ -45,7 +64,7 @@ public class FontDownloader {
             for (Font font : fontPackage.getFontList()) {
                 hashMap.put(font, CompletionStatus.INCOMPLETE);
                 File file = new File(context.getExternalCacheDir() + File.separator +
-                        fontPackage.getName() + File.separator + font.getName());
+                        fontPackage.getNameFormatted() + File.separator + font.getName());
 
                 Ion.with(context).load(font.getUrl()).write(file)
                         .setCallback((e, downloadedFile) -> {
@@ -64,7 +83,7 @@ public class FontDownloader {
     }
 
     private void createCacheDir() {
-        File dir = new File(context.getExternalCacheDir() + File.separator + fontPackage.getName());
+        File dir = new File(context.getExternalCacheDir() + File.separator + fontPackage.getNameFormatted());
         dir.mkdirs();
     }
 
@@ -88,32 +107,12 @@ public class FontDownloader {
         AlertDialog.Builder builder = new AlertDialog.Builder(context)
                 .setTitle("Download failed")
                 .setMessage("An error was encountered while downloading the font pack.")
-                .setNegativeButton("Cancel", (dialog, which) -> {
-                    deleteFontPack(new File(context.getExternalCacheDir() + File.separator, fontPackage.getName()), false);
-                })
+                .setNegativeButton("Cancel", (dialog, which) -> FileUtils.clearIonCache(context))
                 .setPositiveButton("Retry", (dialog, which) -> {
-                    deleteFontPack(new File(context.getExternalCacheDir() + File.separator, fontPackage.getName()), true);
+                    FileUtils.clearIonCache(context);
+                    download();
                 });
         builder.create().show();
     }
 
-    private void deleteFontPack(final File fontPackDir, boolean retry) {
-        final ProgressDialog dialog = ProgressDialog.show(context, null, "Removing corrupt files.", true);
-
-        new Thread(() -> {
-            deleteRecursive(fontPackDir);
-            context.runOnUiThread(() -> {
-                dialog.dismiss();
-                if (retry) download();
-            });
-        }).start();
-    }
-
-    private void deleteRecursive(File file) {
-        if (file.isDirectory())
-            for (File child : file.listFiles())
-                deleteRecursive(child);
-
-        file.delete();
-    }
 }

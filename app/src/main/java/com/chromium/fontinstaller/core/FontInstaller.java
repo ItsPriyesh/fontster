@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package com.chromium.fontinstaller.events;
+package com.chromium.fontinstaller.core;
 
 /**
  * Created by priyeshpatel on 15-02-10.
  */
-public class DownloadCompleteEvent {
+public class FontInstaller {
+
 }

@@ -4,5 +4,7 @@
     <string name="app_name">Fontster</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_base_action_bar">BaseActionBarActivity</string>
+    <string name="title_activity_font">FontActivity</string>
 
 </resources>
