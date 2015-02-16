@@ -63,7 +63,7 @@ public class MainActivity extends BaseActionBarActivity {
     }
 
     public void download(View view) {
-        fontPackage = new FontPackage("Aleo");
+        fontPackage = new FontPackage("Komika");
         FontDownloader fontDownloader = new FontDownloader(fontPackage, this);
         fontDownloader.download();
     }

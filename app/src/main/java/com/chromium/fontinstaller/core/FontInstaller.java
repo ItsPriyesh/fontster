@@ -52,7 +52,7 @@ public class FontInstaller {
             }
 
             InstallTask installTask = new InstallTask(context);
-            installTask.execute(copyCommands.toArray(new String[12]));
+            installTask.execute(copyCommands.toArray(new String[copyCommands.size()]));
         }
     }
 }

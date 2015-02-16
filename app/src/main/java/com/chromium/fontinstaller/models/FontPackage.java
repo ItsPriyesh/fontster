@@ -16,6 +16,8 @@
 
 package com.chromium.fontinstaller.models;
 
+import android.os.Build;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -54,8 +56,21 @@ public class FontPackage {
     private void generateFonts() {
         for (String style : styles) {
             Font font = new Font(style, BASE_URL + nameFormatted + "/" + style);
-            this.fontList.add(font);
+            fontList.add(font);
         }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) generateLollipopFonts();
+    }
+
+    private void generateLollipopFonts() {
+        fontList.addAll(Arrays.asList(
+                new Font("Roboto-Black.ttf", BASE_URL + nameFormatted + "/Roboto-Bold.ttf"),
+                new Font("Roboto-BlackItalic.ttf", BASE_URL + nameFormatted + "/Roboto-BoldItalic.ttf"),
+                new Font("Roboto-Medium.ttf", BASE_URL + nameFormatted + "/Roboto-Regular.ttf"),
+                new Font("Roboto-MediumItalic.ttf", BASE_URL + nameFormatted + "/Roboto-Italic.ttf"),
+                new Font("RobotoCondensed-Light.ttf", BASE_URL + nameFormatted + "/RobotoCondensed-Regular.ttf"),
+                new Font("RobotoCondensed-LightItalic.ttf", BASE_URL + nameFormatted + "/RobotoCondensed-Italic.ttf")
+        ));
     }
 
     public ArrayList<Font> getFontList() {
