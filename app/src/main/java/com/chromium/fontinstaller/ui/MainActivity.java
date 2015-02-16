@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.core.FontDownloader;
+import com.chromium.fontinstaller.core.FontInstaller;
 import com.chromium.fontinstaller.events.DownloadCompleteEvent;
 import com.chromium.fontinstaller.models.FontPackage;
 import com.chromium.fontinstaller.ui.common.BaseActionBarActivity;
@@ -44,7 +45,7 @@ public class MainActivity extends BaseActionBarActivity {
     ListView fontListView;
 
     ArrayList<FontPackage> fontList;
-
+    FontPackage fontPackage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +63,7 @@ public class MainActivity extends BaseActionBarActivity {
     }
 
     public void download(View view) {
-        FontPackage fontPackage = new FontPackage("Roboto Slab");
+        fontPackage = new FontPackage("Aleo");
         FontDownloader fontDownloader = new FontDownloader(fontPackage, this);
         fontDownloader.download();
     }
@@ -70,6 +71,9 @@ public class MainActivity extends BaseActionBarActivity {
     @Subscribe
     public void startInstallation(DownloadCompleteEvent event) {
         Toast.makeText(this, "Download complete", Toast.LENGTH_SHORT).show();
+        FontInstaller fontInstaller = new FontInstaller(fontPackage, this);
+        fontInstaller.install();
+
     }
 
     @Override

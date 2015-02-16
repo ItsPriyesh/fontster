@@ -16,9 +16,9 @@
 
 package com.chromium.fontinstaller.core;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Handler;
 
 import com.chromium.fontinstaller.BusProvider;
@@ -40,7 +40,7 @@ import timber.log.Timber;
  */
 public class FontDownloader {
     private FontPackage fontPackage;
-    private Activity context;
+    private Context context;
 
     private enum CompletionStatus {INCOMPLETE, COMPLETE, ERROR}
 
@@ -48,7 +48,7 @@ public class FontDownloader {
 
     ProgressDialog downloadProgress;
 
-    public FontDownloader(FontPackage fontPackage, Activity context) {
+    public FontDownloader(FontPackage fontPackage, Context context) {
         this.fontPackage = fontPackage;
         this.context = context;
 
