@@ -17,7 +17,16 @@
 package com.chromium.fontinstaller.util;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Typeface;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.TextView;
+
+import com.chromium.fontinstaller.R;
+
+import butterknife.ButterKnife;
 
 /**
  * Created by priyeshpatel on 15-02-10.
@@ -37,5 +46,29 @@ public class AlertUtils {
                 .setMessage(message)
                 .setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
         alert.create().show();
+    }
+
+    public static void showRebootAlert(Context context) {
+        Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.reboot_dialog);
+
+        Typeface robotoReg = Typeface.createFromAsset(context.getAssets(), "Roboto-Regular.ttf");
+        Typeface robotoMed = Typeface.createFromAsset(context.getAssets(), "Roboto-Medium.ttf");
+
+        TextView title = ButterKnife.findById(dialog, R.id.title);
+        TextView content = ButterKnife.findById(dialog, R.id.content);
+        Button reboot = ButterKnife.findById(dialog, R.id.reboot_button);
+        Button dismiss = ButterKnife.findById(dialog, R.id.dismiss_button);
+
+        title.setTypeface(robotoMed);
+        content.setTypeface(robotoReg);
+        reboot.setTypeface(robotoMed);
+        dismiss.setTypeface(robotoMed);
+
+        reboot.setOnClickListener(v -> RootUtils.runBackgroundCommand("reboot", false, context));
+        dismiss.setOnClickListener(v -> dialog.dismiss());
+
+        dialog.show();
     }
 }

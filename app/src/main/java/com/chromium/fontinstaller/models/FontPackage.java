@@ -85,8 +85,4 @@ public class FontPackage {
         return nameFormatted;
     }
 
-    public Font getFont(int style) {
-        return fontList.get(style);
-    }
-
 }

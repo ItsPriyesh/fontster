@@ -17,37 +17,65 @@
 package com.chromium.fontinstaller.ui.common;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.chromium.fontinstaller.R;
-import com.chromium.fontinstaller.models.FontPackage;
+import com.chromium.fontinstaller.ui.FontActivity;
 
 import java.util.ArrayList;
 
 /**
  * Created by priyeshpatel on 15-02-15.
  */
-public class FontListAdapter extends ArrayAdapter<FontPackage> {
+public class FontListAdapter extends RecyclerView.Adapter<FontListAdapter.ViewHolder> {
 
-    private ArrayList<FontPackage> fonts;
+    private static ArrayList<String> fontNames;
 
-    public FontListAdapter(Context context, ArrayList<FontPackage> fonts) {
-        super(context, 0, fonts);
-        this.fonts = fonts;
+    private static Context context;
+
+    public FontListAdapter(Context context, ArrayList<String> fontNames) {
+        this.fontNames = fontNames;
+        this.context = context;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.font_list_item, parent, false);
+    public FontListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.font_list_item, parent, false);
+        return new ViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        holder.fontName.setText(fontNames.get(position));
+
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return fontNames.size();
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        public TextView fontName;
+
+        public ViewHolder(View view) {
+            super(view);
+            view.setOnClickListener(this);
+            fontName = (TextView) view;
         }
 
-        TextView fontName = (TextView) convertView.findViewById(R.id.font_name);
-        fontName.setText(fonts.get(position).getName());
-        return convertView;
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(context, FontActivity.class);
+            intent.putExtra("FONT_NAME", fontNames.get(getPosition()));
+            context.startActivity(intent);
+        }
     }
+
 }

@@ -20,6 +20,9 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import com.chromium.fontinstaller.BusProvider;
+import com.chromium.fontinstaller.events.InstallCompleteEvent;
+
 import eu.chainfire.libsuperuser.Shell;
 
 /**
@@ -54,6 +57,7 @@ public class InstallTask extends AsyncTask<String, Void, Void> {
     @Override
     protected void onPostExecute(Void v) {
         installProgress.dismiss();
+        BusProvider.getInstance().post(new InstallCompleteEvent());
     }
 
 }

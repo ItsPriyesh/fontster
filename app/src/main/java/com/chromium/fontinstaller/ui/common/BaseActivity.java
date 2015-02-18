@@ -16,29 +16,11 @@
 
 package com.chromium.fontinstaller.ui.common;
 
-import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.Toolbar;
 
 import com.chromium.fontinstaller.BusProvider;
-import com.chromium.fontinstaller.R;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-
-public class BaseActionBarActivity extends ActionBarActivity {
-
-    @InjectView(R.id.app_bar)
-    Toolbar toolbar;
-
-    @Override
-    public void setContentView(int layoutResId) {
-        super.setContentView(layoutResId);
-        ButterKnife.inject(this);
-
-        toolbar.setTitleTextColor(Color.WHITE);
-        setSupportActionBar(toolbar);
-    }
+public class BaseActivity extends ActionBarActivity {
 
     @Override
     protected void onResume() {

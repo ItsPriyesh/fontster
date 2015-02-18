@@ -16,21 +16,64 @@
 
 package com.chromium.fontinstaller.ui;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.chromium.fontinstaller.R;
+import com.chromium.fontinstaller.core.FontDownloader;
+import com.chromium.fontinstaller.core.FontInstaller;
+import com.chromium.fontinstaller.events.DownloadCompleteEvent;
+import com.chromium.fontinstaller.events.InstallCompleteEvent;
+import com.chromium.fontinstaller.models.FontPackage;
+import com.chromium.fontinstaller.ui.common.BaseActivity;
+import com.chromium.fontinstaller.util.AlertUtils;
+import com.squareup.otto.Subscribe;
 
-public class FontActivity extends ActionBarActivity {
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
+
+public class FontActivity extends BaseActivity {
+
+    @InjectView(R.id.font_name)
+    TextView fontTitle;
+
+    private String fontName;
+    private FontPackage fontPackage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_font);
+        ButterKnife.inject(this);
+
+        fontName = getIntent().getStringExtra("FONT_NAME");
+        fontPackage = new FontPackage(fontName);
+
+        fontTitle.setText(fontName);
     }
 
+    @OnClick(R.id.install_button)
+    public void installButtonClicked() {
+        FontDownloader fontDownloader = new FontDownloader(fontPackage, this);
+        fontDownloader.download();
+    }
+
+    @Subscribe
+    public void downloadComplete(DownloadCompleteEvent event) {
+        Toast.makeText(this, "Download complete", Toast.LENGTH_SHORT).show();
+
+        FontInstaller fontInstaller = new FontInstaller(fontPackage, this);
+        fontInstaller.install();
+    }
+
+    @Subscribe
+    public void installComplete(InstallCompleteEvent event) {
+        AlertUtils.showRebootAlert(this);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

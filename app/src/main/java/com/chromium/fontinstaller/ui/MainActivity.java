@@ -16,64 +16,72 @@
 
 package com.chromium.fontinstaller.ui;
 
+import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import com.chromium.fontinstaller.R;
-import com.chromium.fontinstaller.core.FontDownloader;
-import com.chromium.fontinstaller.core.FontInstaller;
-import com.chromium.fontinstaller.events.DownloadCompleteEvent;
 import com.chromium.fontinstaller.models.FontPackage;
-import com.chromium.fontinstaller.ui.common.BaseActionBarActivity;
+import com.chromium.fontinstaller.ui.common.BaseActivity;
 import com.chromium.fontinstaller.ui.common.FontListAdapter;
-import com.squareup.otto.Subscribe;
+import com.chromium.fontinstaller.util.RootUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 
-public class MainActivity extends BaseActionBarActivity {
+public class MainActivity extends BaseActivity {
+
+    @InjectView(R.id.app_bar)
+    Toolbar toolbar;
+
+    @InjectView(R.id.drawer_layout)
+    DrawerLayout drawerLayout;
 
     @InjectView(R.id.font_list_view)
-    ListView fontListView;
+    RecyclerView recyclerView;
 
-    ArrayList<FontPackage> fontList;
+    private RecyclerView.Adapter listAdapter;
+    private RecyclerView.LayoutManager listManager;
+
+    ArrayList<String> fontList;
     FontPackage fontPackage;
+    ActionBarDrawerToggle drawerToggle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.inject(this);
+
+        toolbar.setSubtitleTextAppearance(this, R.style.ToolbarSubtitleAppearance);
+        toolbar.setSubtitle("Select a font");
+        setSupportActionBar(toolbar);
+
+        RootUtils.requestAccess();
+
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
+        drawerLayout.setDrawerListener(drawerToggle);
 
         fontList = new ArrayList<>();
         populateFontList();
 
-        FontListAdapter fontListAdapter = new FontListAdapter(this, fontList);
-        fontListView.setAdapter(fontListAdapter);
-
-       // Ion.getDefault(this).configure().setLogging("ion-sample", Log.DEBUG);
-
-
-    }
-
-    public void download(View view) {
-        fontPackage = new FontPackage("Komika");
-        FontDownloader fontDownloader = new FontDownloader(fontPackage, this);
-        fontDownloader.download();
-    }
-
-    @Subscribe
-    public void startInstallation(DownloadCompleteEvent event) {
-        Toast.makeText(this, "Download complete", Toast.LENGTH_SHORT).show();
-        FontInstaller fontInstaller = new FontInstaller(fontPackage, this);
-        fontInstaller.install();
-
+        listAdapter = new FontListAdapter(this, fontList);
+        listManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(listManager);
+        recyclerView.setAdapter(listAdapter);
     }
 
     @Override
@@ -98,11 +106,38 @@ public class MainActivity extends BaseActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        drawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        drawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(Gravity.START | Gravity.LEFT)) {
+            drawerLayout.closeDrawers();
+            return;
+        }
+        super.onBackPressed();
+    }
+
+    private void listItemClicked(int position) {
+        Intent intent = new Intent(this, FontActivity.class);
+        intent.putExtra("FONT_NAME", fontList.get(position));
+        startActivity(intent);
+    }
+
     private void populateFontList() {
         try {
             Scanner scanner = new Scanner(getAssets().open("fonts"));
             while (scanner.hasNextLine()) {
-                fontList.add(new FontPackage(scanner.nextLine()));
+                fontList.add(scanner.nextLine());
             }
             scanner.close();
         } catch (IOException e) {

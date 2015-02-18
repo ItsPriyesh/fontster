@@ -5,23 +5,42 @@
     tools:context=".MainActivity">
 
     <include
-        layout="@layout/app_bar"
-        android:id="@+id/app_bar"/>
+        layout="@layout/app_bar_extended"
+        android:id="@+id/app_bar" />
 
-    <Button
-        android:layout_below="@id/app_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Download"
-        android:id="@+id/download"
-        android:onClick="download" />
-
-
-    <ListView
-        android:id="@+id/font_list_view"
-        android:layout_below="@id/download"
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:divider="@color/black_0_opacity"/>
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".MainActivity">
+
+            <include
+                layout="@layout/app_bar_extended"
+                android:id="@+id/app_bar" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/font_list_view"
+                android:layout_below="@id/app_bar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@color/black_0_opacity" />
+
+        </RelativeLayout>
+
+        <ListView
+            android:id="@+id/left_drawer"
+            android:layout_width="240dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:choiceMode="singleChoice"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="0dp"
+            android:background="@color/white_100_opacity" />
+
+    </android.support.v4.widget.DrawerLayout>
 
 </RelativeLayout>

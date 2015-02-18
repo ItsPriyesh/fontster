@@ -9,8 +9,14 @@
     tools:context="com.chromium.fontinstaller.ui.FontActivity">
 
     <TextView
-        android:text="@string/hello_world"
+        android:id="@+id/font_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/install_button"
+        android:text="Download" />
 
 </RelativeLayout>
