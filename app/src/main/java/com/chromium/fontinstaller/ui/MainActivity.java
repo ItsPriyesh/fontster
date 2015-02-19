@@ -16,30 +16,29 @@
 
 package com.chromium.fontinstaller.ui;
 
-import android.content.Intent;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 
 import com.chromium.fontinstaller.R;
-import com.chromium.fontinstaller.models.FontPackage;
 import com.chromium.fontinstaller.ui.common.BaseActivity;
-import com.chromium.fontinstaller.ui.common.FontListAdapter;
+import com.chromium.fontinstaller.ui.common.NavDrawerAdapter;
+import com.chromium.fontinstaller.ui.common.NavDrawerItem;
 import com.chromium.fontinstaller.util.RootUtils;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnItemClick;
 
 
 public class MainActivity extends BaseActivity {
@@ -50,15 +49,12 @@ public class MainActivity extends BaseActivity {
     @InjectView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
 
-    @InjectView(R.id.font_list_view)
-    RecyclerView recyclerView;
+    @InjectView(R.id.drawer_list)
+    ListView drawerList;
 
-    private RecyclerView.Adapter listAdapter;
-    private RecyclerView.LayoutManager listManager;
-
-    ArrayList<String> fontList;
-    FontPackage fontPackage;
-    ActionBarDrawerToggle drawerToggle;
+    private ActionBarDrawerToggle drawerToggle;
+    private FragmentManager fragmentManager;
+    private Fragment fontListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,14 +70,43 @@ public class MainActivity extends BaseActivity {
 
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
         drawerLayout.setDrawerListener(drawerToggle);
+        drawerList.setAdapter(new NavDrawerAdapter(this, generateNavItems()));
 
-        fontList = new ArrayList<>();
-        populateFontList();
+        fragmentManager = getFragmentManager();
+        fontListFragment = new FontListFragment();
 
-        listAdapter = new FontListAdapter(this, fontList);
-        listManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(listManager);
-        recyclerView.setAdapter(listAdapter);
+        startFragment(fontListFragment);
+    }
+
+    private ArrayList<NavDrawerItem> generateNavItems() {
+        ArrayList<NavDrawerItem> items = new ArrayList<>(3);
+        String[] titles = getResources().getStringArray(R.array.nav_drawer_titles);
+        String[] icons = getResources().getStringArray(R.array.nav_drawer_icons);
+
+        for (int i = 0; i < Math.min(titles.length, icons.length); i++) {
+            items.add(new NavDrawerItem(titles[i],
+                    getDrawable(getResources().getIdentifier(icons[i], "drawable", getPackageName()))));
+        }
+
+        return items;
+    }
+
+    private void startFragment(Fragment fragment) {
+        fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+    }
+
+    @OnItemClick(R.id.drawer_list)
+    public void onNavItemClicked(int position) {
+        switch (position) {
+            case 0:
+                startFragment(fontListFragment);
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+        }
+        drawerLayout.closeDrawers();
     }
 
     @Override
@@ -125,23 +150,5 @@ public class MainActivity extends BaseActivity {
             return;
         }
         super.onBackPressed();
-    }
-
-    private void listItemClicked(int position) {
-        Intent intent = new Intent(this, FontActivity.class);
-        intent.putExtra("FONT_NAME", fontList.get(position));
-        startActivity(intent);
-    }
-
-    private void populateFontList() {
-        try {
-            Scanner scanner = new Scanner(getAssets().open("fonts"));
-            while (scanner.hasNextLine()) {
-                fontList.add(scanner.nextLine());
-            }
-            scanner.close();
-        } catch (IOException e) {
-
-        }
     }
 }
