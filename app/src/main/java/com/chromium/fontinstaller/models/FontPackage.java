@@ -16,11 +16,13 @@
 
 package com.chromium.fontinstaller.models;
 
-import android.os.Build;
+import android.graphics.Typeface;
 
+import com.chromium.fontinstaller.core.FontInstaller;
+
+import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.HashMap;
 
 /**
  * Created by priyeshpatel on 15-02-06.
@@ -28,21 +30,7 @@ import java.util.List;
 public class FontPackage {
     private String name;
     private String nameFormatted;
-    private ArrayList<Font> fontList = new ArrayList<>();
-    private static final List<String> styles = Arrays.asList(
-            "Roboto-Bold.ttf",
-            "Roboto-BoldItalic.ttf",
-            "Roboto-Italic.ttf",
-            "Roboto-Light.ttf",
-            "Roboto-LightItalic.ttf",
-            "Roboto-Regular.ttf",
-            "Roboto-Thin.ttf",
-            "Roboto-ThinItalic.ttf",
-            "RobotoCondensed-Bold.ttf",
-            "RobotoCondensed-BoldItalic.ttf",
-            "RobotoCondensed-Italic.ttf",
-            "RobotoCondensed-Regular.ttf"
-    );
+    private HashMap<Font, Style> fontList = new HashMap<>();
 
     private static final String BASE_URL = "https://raw.githubusercontent.com/ItsPriyesh/FontsterFontsRepo/master/";
 
@@ -54,27 +42,14 @@ public class FontPackage {
     }
 
     private void generateFonts() {
-        for (String style : styles) {
-            Font font = new Font(style, BASE_URL + nameFormatted + "/" + style);
-            fontList.add(font);
+        for (Style style : Style.values()) {
+            Font font = new Font(style, BASE_URL + nameFormatted + "/" + style.getRemoteName());
+            fontList.put(font, style);
         }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) generateLollipopFonts();
-    }
-
-    private void generateLollipopFonts() {
-        fontList.addAll(Arrays.asList(
-                new Font("Roboto-Black.ttf", BASE_URL + nameFormatted + "/Roboto-Bold.ttf"),
-                new Font("Roboto-BlackItalic.ttf", BASE_URL + nameFormatted + "/Roboto-BoldItalic.ttf"),
-                new Font("Roboto-Medium.ttf", BASE_URL + nameFormatted + "/Roboto-Regular.ttf"),
-                new Font("Roboto-MediumItalic.ttf", BASE_URL + nameFormatted + "/Roboto-Italic.ttf"),
-                new Font("RobotoCondensed-Light.ttf", BASE_URL + nameFormatted + "/RobotoCondensed-Regular.ttf"),
-                new Font("RobotoCondensed-LightItalic.ttf", BASE_URL + nameFormatted + "/RobotoCondensed-Italic.ttf")
-        ));
     }
 
     public ArrayList<Font> getFontList() {
-        return fontList;
+        return new ArrayList<>(fontList.keySet());
     }
 
     public String getName() {
@@ -83,6 +58,11 @@ public class FontPackage {
 
     public String getNameFormatted() {
         return nameFormatted;
+    }
+
+    public Typeface getFont(Style style) {
+        String path = FontInstaller.CACHE_DIR + nameFormatted + File.separator + style.getLocalName();
+        return Typeface.createFromFile(path);
     }
 
 }

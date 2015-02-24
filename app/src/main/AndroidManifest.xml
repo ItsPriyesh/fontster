@@ -11,11 +11,12 @@
         android:name=".FontsterApp"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:label="@string/app_name">
         <activity
-            android:name=".ui.MainActivity"
-            android:label="@string/app_name">
+            android:name=".ui.main.MainActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,8 +24,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.FontActivity"
-            android:label="@string/title_activity_font"></activity>
+            android:name=".ui.font.FontActivity"
+            android:label="@string/title_activity_font"
+            android:theme="@style/AppTheme.FontActivity"
+            android:parentActivityName=".ui.main.MainActivity">
+            <!-- Parent activity meta-data to support API level 7+ -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.main.MainActivity" />></activity>
     </application>
 
 </manifest>

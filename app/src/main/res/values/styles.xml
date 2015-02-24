@@ -17,11 +17,14 @@
 
 <resources>
 
-    <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
+    </style>
+
+    <style name="AppTheme.FontActivity" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimaryDark">@color/dark_grey</item>
+        <item name="android:navigationBarColor">@color/primary_dark</item>
     </style>
 
     <style name="ToolbarSubtitleAppearance">

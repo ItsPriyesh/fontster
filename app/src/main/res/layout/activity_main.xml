@@ -49,6 +49,7 @@
 
         <ListView
             android:id="@+id/drawer_list"
+            android:paddingTop="16dp"
             android:layout_marginTop="128dp"
             android:layout_width="240dp"
             android:layout_height="match_parent"

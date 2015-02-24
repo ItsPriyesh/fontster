@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.chromium.fontinstaller.ui;
+package com.chromium.fontinstaller.ui.main;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
@@ -30,8 +30,6 @@ import android.widget.ListView;
 
 import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.ui.common.BaseActivity;
-import com.chromium.fontinstaller.ui.common.NavDrawerAdapter;
-import com.chromium.fontinstaller.ui.common.NavDrawerItem;
 import com.chromium.fontinstaller.util.RootUtils;
 
 import java.util.ArrayList;
@@ -69,13 +67,15 @@ public class MainActivity extends BaseActivity {
         RootUtils.requestAccess();
 
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
+
         drawerLayout.setDrawerListener(drawerToggle);
         drawerList.setAdapter(new NavDrawerAdapter(this, generateNavItems()));
 
-        fragmentManager = getFragmentManager();
+        fragmentManager = getSupportFragmentManager();
         fontListFragment = new FontListFragment();
 
         startFragment(fontListFragment);
+
     }
 
     private ArrayList<NavDrawerItem> generateNavItems() {

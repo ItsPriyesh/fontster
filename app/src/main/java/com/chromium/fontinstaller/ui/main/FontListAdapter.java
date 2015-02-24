@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.chromium.fontinstaller.ui.common;
+package com.chromium.fontinstaller.ui.main;
 
 import android.content.Context;
 import android.content.Intent;
@@ -25,7 +25,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.chromium.fontinstaller.R;
-import com.chromium.fontinstaller.ui.FontActivity;
+import com.chromium.fontinstaller.ui.font.FontActivity;
 
 import java.util.ArrayList;
 
@@ -52,8 +52,6 @@ public class FontListAdapter extends RecyclerView.Adapter<FontListAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.fontName.setText(fontNames.get(position));
-
-
     }
 
     @Override

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.chromium.fontinstaller.ui.common;
+package com.chromium.fontinstaller.ui.main;
 
 import android.graphics.drawable.Drawable;
 

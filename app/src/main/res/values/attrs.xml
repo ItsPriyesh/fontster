@@ -16,5 +16,7 @@
   -->
 
 <resources>
-
+    <declare-styleable name="AutoScaleTextView">
+        <attr name="max_lines" format="integer"/>
+    </declare-styleable>
 </resources>

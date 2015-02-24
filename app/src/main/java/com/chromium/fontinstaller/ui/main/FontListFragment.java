@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.chromium.fontinstaller.ui;
+package com.chromium.fontinstaller.ui.main;
 
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -27,7 +27,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.chromium.fontinstaller.R;
-import com.chromium.fontinstaller.ui.common.FontListAdapter;
 
 import java.io.IOException;
 import java.util.ArrayList;

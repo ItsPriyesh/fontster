@@ -17,7 +17,6 @@
 package com.chromium.fontinstaller.core;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Handler;
 
@@ -25,9 +24,7 @@ import com.chromium.fontinstaller.BusProvider;
 import com.chromium.fontinstaller.events.DownloadCompleteEvent;
 import com.chromium.fontinstaller.models.Font;
 import com.chromium.fontinstaller.models.FontPackage;
-import com.chromium.fontinstaller.util.AlertUtils;
 import com.chromium.fontinstaller.util.FileUtils;
-import com.chromium.fontinstaller.util.NetworkUtils;
 import com.koushikdutta.ion.Ion;
 
 import java.io.File;
@@ -46,7 +43,7 @@ public class FontDownloader {
 
     private HashMap<Font, CompletionStatus> hashMap = new HashMap<>(12);
 
-    ProgressDialog downloadProgress;
+  //  ProgressDialog downloadProgress;
 
     public FontDownloader(FontPackage fontPackage, Context context) {
         this.fontPackage = fontPackage;
@@ -56,30 +53,30 @@ public class FontDownloader {
     }
 
     public void download() {
-        if (NetworkUtils.isConnectedToInternet(context)) {
+     /*   if (NetworkUtils.isConnectedToInternet(context)) {
             downloadProgress = new ProgressDialog(context);
             downloadProgress.setMessage("Downloading");
             downloadProgress.show();
+*/
+        for (Font font : fontPackage.getFontList()) {
+            hashMap.put(font, CompletionStatus.INCOMPLETE);
+            File file = new File(context.getExternalCacheDir() + File.separator +
+                    fontPackage.getNameFormatted() + File.separator + font.getName());
 
-            for (Font font : fontPackage.getFontList()) {
-                hashMap.put(font, CompletionStatus.INCOMPLETE);
-                File file = new File(context.getExternalCacheDir() + File.separator +
-                        fontPackage.getNameFormatted() + File.separator + font.getName());
+            Ion.with(context).load(font.getUrl()).write(file)
+                    .setCallback((e, downloadedFile) -> {
+                        if (e != null) {
+                            Timber.i("Download failed " + e);
+                            hashMap.put(font, CompletionStatus.ERROR);
+                            return;
+                        }
+                        hashMap.put(font, CompletionStatus.COMPLETE);
+                        Timber.i("Download successful " + file);
+                    });
+        }
+        checkCompletion();
+        // } else AlertUtils.showBasicAlert("No network connection is available", context);
 
-                Ion.with(context).load(font.getUrl()).write(file)
-                        .setCallback((e, downloadedFile) -> {
-                            if (e != null) {
-                                Timber.i("Download failed " + e);
-                                hashMap.put(font, CompletionStatus.ERROR);
-                                return;
-                            }
-                            hashMap.put(font, CompletionStatus.COMPLETE);
-                            Timber.i("Download successful " + file);
-                        });
-            }
-            checkCompletion();
-
-        } else AlertUtils.showBasicAlert("No network connection is available", context);
     }
 
     private void createCacheDir() {
@@ -95,7 +92,7 @@ public class FontDownloader {
     }
 
     private void evaluateCompletionStatus() {
-        downloadProgress.dismiss();
+   //     downloadProgress.dismiss();
         if (hashMap.containsValue(CompletionStatus.ERROR)) handleError();
         else {
             Timber.i("Download success");

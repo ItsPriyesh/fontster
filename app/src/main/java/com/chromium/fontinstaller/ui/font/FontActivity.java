@@ -14,22 +14,30 @@
  * limitations under the License.
  */
 
-package com.chromium.fontinstaller.ui;
+package com.chromium.fontinstaller.ui.font;
 
+import android.animation.Animator;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewAnimationUtils;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.core.FontDownloader;
-import com.chromium.fontinstaller.core.FontInstaller;
 import com.chromium.fontinstaller.events.DownloadCompleteEvent;
 import com.chromium.fontinstaller.events.InstallCompleteEvent;
 import com.chromium.fontinstaller.models.FontPackage;
 import com.chromium.fontinstaller.ui.common.BaseActivity;
 import com.chromium.fontinstaller.util.AlertUtils;
+import com.melnykov.fab.FloatingActionButton;
 import com.squareup.otto.Subscribe;
 
 import butterknife.ButterKnife;
@@ -38,11 +46,25 @@ import butterknife.OnClick;
 
 public class FontActivity extends BaseActivity {
 
+    @InjectView(R.id.app_bar)
+    Toolbar toolbar;
+
     @InjectView(R.id.font_name)
     TextView fontTitle;
 
+    @InjectView(R.id.install_fab)
+    FloatingActionButton installButton;
+
+    @InjectView(R.id.progress)
+    ProgressBar progressBar;
+
+    @InjectView(R.id.preview_pager)
+    ViewPager previewPager;
+
     private String fontName;
     private FontPackage fontPackage;
+    //  private FragmentManager fragmentManager;
+    //   private PreviewFragment previewFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,13 +72,50 @@ public class FontActivity extends BaseActivity {
         setContentView(R.layout.activity_font);
         ButterKnife.inject(this);
 
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
         fontName = getIntent().getStringExtra("FONT_NAME");
         fontPackage = new FontPackage(fontName);
+        FontDownloader fontDownloader = new FontDownloader(fontPackage, this);
+        fontDownloader.download();
 
         fontTitle.setText(fontName);
+//        previewFragment = new PreviewFragment();
+
+
     }
 
-    @OnClick(R.id.install_button)
+    private class PreviewPagerAdapter extends FragmentPagerAdapter {
+        public PreviewPagerAdapter(FragmentManager fragmentManager) {
+            super(fragmentManager);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    return PreviewFragment.newInstance(fontPackage);
+                case 1:
+                    return WordsFragment.newInstance(fontPackage);
+                default:
+                    return PreviewFragment.newInstance(fontPackage);
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return 2;
+        }
+    }
+
+  /*  private void startFragment(Fragment fragment) {
+        previewFragment.setFontPackage(fontPackage);
+        fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+    }*/
+
+    @OnClick(R.id.install_fab)
     public void installButtonClicked() {
         FontDownloader fontDownloader = new FontDownloader(fontPackage, this);
         fontDownloader.download();
@@ -64,10 +123,24 @@ public class FontActivity extends BaseActivity {
 
     @Subscribe
     public void downloadComplete(DownloadCompleteEvent event) {
-        Toast.makeText(this, "Download complete", Toast.LENGTH_SHORT).show();
 
-        FontInstaller fontInstaller = new FontInstaller(fontPackage, this);
-        fontInstaller.install();
+        int cx = (previewPager.getLeft() + previewPager.getRight()) / 2;
+        int cy = (previewPager.getTop() + previewPager.getBottom()) / 2;
+
+        int finalRadius = Math.max(previewPager.getWidth(), previewPager.getHeight());
+
+        Animator anim = ViewAnimationUtils.createCircularReveal(previewPager, cx, cy, 0, finalRadius);
+
+        previewPager.setVisibility(View.VISIBLE);
+
+        progressBar.setVisibility(View.GONE);
+        previewPager.setAdapter(new PreviewPagerAdapter(getSupportFragmentManager()));
+
+
+        //  startFragment(previewFragment);
+
+        // FontInstaller fontInstaller = new FontInstaller(fontPackage, this);
+        //fontInstaller.install();
     }
 
     @Subscribe

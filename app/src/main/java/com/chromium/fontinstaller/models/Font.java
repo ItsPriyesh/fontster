@@ -20,16 +20,16 @@ package com.chromium.fontinstaller.models;
  * Created by priyeshpatel on 15-02-07.
  */
 public class Font {
-    private String name;
+    private Style style;
     private String url;
 
-    public Font(String name, String url) {
-        this.name = name;
+    public Font(Style style, String url) {
+        this.style = style;
         this.url = url;
     }
 
     public String getName() {
-        return name;
+        return style.getLocalName();
     }
 
     public String getUrl() {
