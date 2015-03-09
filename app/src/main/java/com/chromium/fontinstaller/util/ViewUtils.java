@@ -52,6 +52,11 @@ public class ViewUtils {
         view.setVisibility(View.VISIBLE);
     }
 
+    public static void animateShrinkToCenter(View view, Context context) {
+        view.startAnimation(AnimationUtils.loadAnimation(context, R.anim.shrink_to_center));
+        view.setVisibility(View.INVISIBLE);
+    }
+
     public static void animSlideBottomIn(View view, Context context) {
         view.startAnimation(AnimationUtils.loadAnimation(context, R.anim.abc_slide_in_bottom));
         view.setVisibility(View.VISIBLE);

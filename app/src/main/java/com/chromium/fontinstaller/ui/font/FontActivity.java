@@ -31,6 +31,7 @@ import android.widget.TextView;
 
 import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.core.FontDownloader;
+import com.chromium.fontinstaller.core.FontInstaller;
 import com.chromium.fontinstaller.events.DownloadCompleteEvent;
 import com.chromium.fontinstaller.events.InstallCompleteEvent;
 import com.chromium.fontinstaller.models.FontPackage;
@@ -79,7 +80,7 @@ public class FontActivity extends BaseActivity {
     private PreviewFragment boldFragment;
     private PreviewFragment italicFragment;
     private PreviewFragment[] previewPages = new PreviewFragment[3];
-    private String[] tabTitles = {"Regular", "Bold", "Italic"};
+    private final String[] tabTitles = {"Regular", "Bold", "Italic"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,14 +104,6 @@ public class FontActivity extends BaseActivity {
         slidingTabLayout.setDistributeEvenly(true);
     }
 
-    private void startDownload() {
-        if (isVisible(errorContainer)) hide(errorContainer);
-
-        show(downloadProgress);
-        FontDownloader fontDownloader = new FontDownloader(fontPackage, this);
-        fontDownloader.download();
-    }
-
     private void initializeFragments() {
         regularFragment = PreviewFragment.newInstance(fontPackage, Style.REGULAR);
         boldFragment = PreviewFragment.newInstance(fontPackage, Style.BOLD);
@@ -121,31 +114,22 @@ public class FontActivity extends BaseActivity {
         previewPages[2] = italicFragment;
     }
 
-    private class PreviewPagerAdapter extends FragmentPagerAdapter {
-        public PreviewPagerAdapter(FragmentManager fragmentManager) {
-            super(fragmentManager);
-        }
+    private void startDownload() {
+        if (isVisible(errorContainer)) hide(errorContainer);
 
-        @Override
-        public Fragment getItem(int position) {
-            return previewPages[position];
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return tabTitles[position];
-        }
-
-        @Override
-        public int getCount() {
-            return 3;
-        }
+        show(downloadProgress);
+        FontDownloader fontDownloader = new FontDownloader(fontPackage, this);
+        fontDownloader.download();
     }
 
-    @OnClick(R.id.install_fab)
-    public void installButtonClicked() {
-        ViewUtils.animCenterGrowIn(installProgress, this);
-        show(installProgress);
+    private void handleFailedDownload() {
+        ViewUtils.animSlideUp(downloadProgress, this);
+
+        new Handler().postDelayed(() -> {
+            hideGone(downloadProgress);
+            ViewUtils.animSlideBottomIn(errorContainer, this);
+            show(errorContainer);
+        }, 400);
     }
 
     private void setupPager() {
@@ -170,14 +154,38 @@ public class FontActivity extends BaseActivity {
         }, 400);
     }
 
-    private void handleFailedDownload() {
-        ViewUtils.animSlideUp(downloadProgress, this);
+    private class PreviewPagerAdapter extends FragmentPagerAdapter {
+        public PreviewPagerAdapter(FragmentManager fragmentManager) {
+            super(fragmentManager);
+        }
 
-        new Handler().postDelayed(() -> {
-            hideGone(downloadProgress);
-            ViewUtils.animSlideBottomIn(errorContainer, this);
-            show(errorContainer);
-        }, 400);
+        @Override
+        public Fragment getItem(int position) {
+            return previewPages[position];
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return tabTitles[position];
+        }
+
+        @Override
+        public int getCount() {
+            return 3;
+        }
+    }
+
+    private void startInstall() {
+        ViewUtils.animCenterGrowIn(installProgress, this);
+        show(installProgress);
+
+        FontInstaller fontInstaller = new FontInstaller(fontPackage, this);
+        fontInstaller.install();
+    }
+
+    @OnClick(R.id.install_fab)
+    public void installButtonClicked() {
+        startInstall();
     }
 
     @OnClick(R.id.retry)
@@ -186,14 +194,20 @@ public class FontActivity extends BaseActivity {
     }
 
     @Subscribe
-    public void downloadComplete(DownloadCompleteEvent event) {
+    public void onDownloadComplete(DownloadCompleteEvent event) {
         if (event.wasSuccessful()) setupPager();
         else handleFailedDownload();
     }
 
     @Subscribe
-    public void installComplete(InstallCompleteEvent event) {
-        AlertUtils.showRebootAlert(this);
+    public void onInstallComplete(InstallCompleteEvent event) {
+        new Handler().postDelayed(() -> {
+            ViewUtils.animateShrinkToCenter(installProgress, this);
+            installButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_done_white));
+            installButton.setColorNormal(getResources().getColor(R.color.accent_light));
+            ViewUtils.animCenterGrowIn(installButton, this);
+            new Handler().postDelayed(() -> AlertUtils.showRebootAlert(this), 500);
+        }, 1000);
     }
 
     @Override
