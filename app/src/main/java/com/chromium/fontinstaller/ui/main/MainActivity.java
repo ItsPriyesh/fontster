@@ -31,6 +31,7 @@ import android.widget.ListView;
 import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.ui.common.BaseActivity;
 import com.chromium.fontinstaller.util.RootUtils;
+import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 
@@ -50,6 +51,9 @@ public class MainActivity extends BaseActivity {
     @InjectView(R.id.drawer_list)
     ListView drawerList;
 
+    @InjectView(R.id.adView)
+    AdView adView;
+
     private ActionBarDrawerToggle drawerToggle;
     private FragmentManager fragmentManager;
     private Fragment fontListFragment;
@@ -59,6 +63,8 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
+
+        initializeAd(adView);
 
         toolbar.setSubtitleTextAppearance(this, R.style.ToolbarSubtitleAppearance);
         toolbar.setSubtitle("Select a font");

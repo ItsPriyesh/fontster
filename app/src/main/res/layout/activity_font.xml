@@ -21,31 +21,78 @@
     android:layout_height="match_parent"
     tools:context="com.chromium.fontinstaller.ui.font.FontActivity">
 
-    <include
-        layout="@layout/app_bar_light"
-        android:id="@+id/app_bar" />
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/primary"
+        android:elevation="4dp">
+
+        <include
+            layout="@layout/app_bar"
+            android:id="@+id/app_bar" />
+
+        <com.chromium.fontinstaller.ui.common.SlidingTabLayout
+            android:visibility="invisible"
+            android:background="@color/primary"
+            android:id="@+id/sliding_tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/app_bar"
+        android:layout_below="@id/header"
         android:layout_above="@+id/bottom_bar">
 
-        <!--<FrameLayout
-            android:id="@+id/container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />-->
         <android.support.v4.view.ViewPager
-            android:id="@+id/preview_pager"
             android:visibility="invisible"
+            android:id="@+id/preview_pager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
 
         <ProgressBar
+            android:visibility="invisible"
             android:id="@+id/progress"
             android:layout_centerInParent="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
+        <RelativeLayout
+            android:visibility="invisible"
+            android:id="@+id/errorContainer"
+            android:layout_centerInParent="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/sadCloud"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/sad_cloud" />
+
+            <TextView
+                android:id="@+id/noInternetMessage"
+                android:textSize="12dp"
+                android:fontFamily="sans-serif-light"
+                android:text="Fontster was unable to download this font."
+                android:layout_below="@id/sadCloud"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/retry"
+                android:text="Retry"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/noInternetMessage"
+                style="?android:attr/borderlessButtonStyle"
+                android:textColor="@color/primary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
     </RelativeLayout>
 
     <RelativeLayout
@@ -70,6 +117,7 @@
     </RelativeLayout>
 
     <com.melnykov.fab.FloatingActionButton
+        android:visibility="invisible"
         android:id="@+id/install_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -78,7 +126,9 @@
         android:layout_alignParentBottom="true"
         android:layout_marginRight="32dp"
         android:layout_marginBottom="72dp"
+        android:elevation="6dp"
         app:fab_colorNormal="@color/accent"
         app:fab_colorPressed="@color/accent_light"
-        app:fab_colorRipple="@color/accent_light" />
+        app:fab_colorRipple="@color/accent_light"
+        app:fab_shadow="true" />
 </RelativeLayout>

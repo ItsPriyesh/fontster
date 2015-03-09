@@ -16,8 +16,8 @@
 
 package com.chromium.fontinstaller.ui.font;
 
-import android.animation.Animator;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -25,8 +25,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewAnimationUtils;
+import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -35,8 +34,11 @@ import com.chromium.fontinstaller.core.FontDownloader;
 import com.chromium.fontinstaller.events.DownloadCompleteEvent;
 import com.chromium.fontinstaller.events.InstallCompleteEvent;
 import com.chromium.fontinstaller.models.FontPackage;
+import com.chromium.fontinstaller.models.Style;
 import com.chromium.fontinstaller.ui.common.BaseActivity;
+import com.chromium.fontinstaller.ui.common.SlidingTabLayout;
 import com.chromium.fontinstaller.util.AlertUtils;
+import com.chromium.fontinstaller.util.ViewUtils;
 import com.melnykov.fab.FloatingActionButton;
 import com.squareup.otto.Subscribe;
 
@@ -61,10 +63,20 @@ public class FontActivity extends BaseActivity {
     @InjectView(R.id.preview_pager)
     ViewPager previewPager;
 
+    @InjectView(R.id.sliding_tabs)
+    SlidingTabLayout slidingTabLayout;
+
+    @InjectView(R.id.errorContainer)
+    ViewGroup errorContainer;
+
     private String fontName;
     private FontPackage fontPackage;
-    //  private FragmentManager fragmentManager;
-    //   private PreviewFragment previewFragment;
+    private PreviewPagerAdapter pagerAdapter;
+    private PreviewFragment regularFragment;
+    private PreviewFragment boldFragment;
+    private PreviewFragment italicFragment;
+    private PreviewFragment[] previewPages = new PreviewFragment[3];
+    private String[] tabTitles = {"Regular", "Bold", "Italic"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,19 +84,38 @@ public class FontActivity extends BaseActivity {
         setContentView(R.layout.activity_font);
         ButterKnife.inject(this);
 
+        toolbar.setElevation(0);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         fontName = getIntent().getStringExtra("FONT_NAME");
         fontPackage = new FontPackage(fontName);
-        FontDownloader fontDownloader = new FontDownloader(fontPackage, this);
-        fontDownloader.download();
+        startDownload();
 
         fontTitle.setText(fontName);
-//        previewFragment = new PreviewFragment();
 
+        slidingTabLayout.setCustomTabView(R.layout.tab_indicator, android.R.id.text1);
+        slidingTabLayout.setSelectedIndicatorColors(getResources().getColor(R.color.accent_light));
+        slidingTabLayout.setDistributeEvenly(true);
+    }
 
+    private void startDownload() {
+        if (isVisible(errorContainer)) hide(errorContainer);
+
+        show(progressBar);
+        FontDownloader fontDownloader = new FontDownloader(fontPackage, this);
+        fontDownloader.download();
+    }
+
+    private void initializeFragments() {
+        regularFragment = PreviewFragment.newInstance(fontPackage, Style.REGULAR);
+        boldFragment = PreviewFragment.newInstance(fontPackage, Style.BOLD);
+        italicFragment = PreviewFragment.newInstance(fontPackage, Style.ITALIC);
+
+        previewPages[0] = regularFragment;
+        previewPages[1] = boldFragment;
+        previewPages[2] = italicFragment;
     }
 
     private class PreviewPagerAdapter extends FragmentPagerAdapter {
@@ -94,53 +125,67 @@ public class FontActivity extends BaseActivity {
 
         @Override
         public Fragment getItem(int position) {
-            switch (position) {
-                case 0:
-                    return PreviewFragment.newInstance(fontPackage);
-                case 1:
-                    return WordsFragment.newInstance(fontPackage);
-                default:
-                    return PreviewFragment.newInstance(fontPackage);
-            }
+            return previewPages[position];
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return tabTitles[position];
         }
 
         @Override
         public int getCount() {
-            return 2;
+            return 3;
         }
     }
 
-  /*  private void startFragment(Fragment fragment) {
-        previewFragment.setFontPackage(fontPackage);
-        fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
-    }*/
-
     @OnClick(R.id.install_fab)
     public void installButtonClicked() {
-        FontDownloader fontDownloader = new FontDownloader(fontPackage, this);
-        fontDownloader.download();
+        //   FontDownloader fontDownloader = new FontDownloader(fontPackage, this);
+        // fontDownloader.download();
+    }
+
+    private void setupPager() {
+        initializeFragments();
+        pagerAdapter = new PreviewPagerAdapter(getSupportFragmentManager());
+        previewPager.setOffscreenPageLimit(2);
+        previewPager.setAdapter(pagerAdapter);
+        slidingTabLayout.setViewPager(previewPager);
+
+        animateViews();
+    }
+
+    private void animateViews() {
+        ViewUtils.animSlideUp(progressBar, this);
+
+        new Handler().postDelayed(() -> {
+            hideGone(progressBar);
+
+            ViewUtils.animSlideBottomIn(slidingTabLayout, this);
+            ViewUtils.animCenterRevealIn(previewPager);
+            ViewUtils.animCenterGrowIn(installButton, this);
+        }, 400);
+    }
+
+    private void handleFailedDownload() {
+        ViewUtils.animSlideUp(progressBar, this);
+
+        new Handler().postDelayed(() -> {
+            hideGone(progressBar);
+            ViewUtils.animSlideBottomIn(errorContainer, this);
+            show(errorContainer);
+        }, 400);
+    }
+
+    @OnClick(R.id.retry)
+    public void retryButtonClicked() {
+        startDownload();
     }
 
     @Subscribe
     public void downloadComplete(DownloadCompleteEvent event) {
-
-        int cx = (previewPager.getLeft() + previewPager.getRight()) / 2;
-        int cy = (previewPager.getTop() + previewPager.getBottom()) / 2;
-
-        int finalRadius = Math.max(previewPager.getWidth(), previewPager.getHeight());
-
-        Animator anim = ViewAnimationUtils.createCircularReveal(previewPager, cx, cy, 0, finalRadius);
-
-        previewPager.setVisibility(View.VISIBLE);
-
-        progressBar.setVisibility(View.GONE);
-        previewPager.setAdapter(new PreviewPagerAdapter(getSupportFragmentManager()));
-
-
-        //  startFragment(previewFragment);
-
-        // FontInstaller fontInstaller = new FontInstaller(fontPackage, this);
-        //fontInstaller.install();
+        if (event.wasSuccessful()) setupPager();
+        else handleFailedDownload();
     }
 
     @Subscribe
@@ -150,21 +195,19 @@ public class FontActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_font, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case R.id.toggle_case:
+                for (PreviewFragment fragment : previewPages) {
+                    fragment.toggleCase();
+                }
+                pagerAdapter.notifyDataSetChanged();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);

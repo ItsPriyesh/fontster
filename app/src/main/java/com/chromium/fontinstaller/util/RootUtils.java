@@ -57,7 +57,7 @@ public class RootUtils {
     public static void requestAccess() {
         new Thread(() -> {
             android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
-            Shell.SU.available();
+            if (Shell.SU.available());
         }).start();
     }
 

@@ -25,6 +25,7 @@
         android:layout_below="@id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@color/black_0_opacity" />
+        android:divider="@color/black_0_opacity"
+        android:scrollbars="vertical"/>
 
 </FrameLayout>

@@ -20,4 +20,13 @@ package com.chromium.fontinstaller.events;
  * Created by priyeshpatel on 15-02-10.
  */
 public class DownloadCompleteEvent {
+    private boolean success = false;
+
+    public DownloadCompleteEvent(boolean success) {
+        this.success = success;
+    }
+
+    public boolean wasSuccessful() {
+        return success;
+    }
 }

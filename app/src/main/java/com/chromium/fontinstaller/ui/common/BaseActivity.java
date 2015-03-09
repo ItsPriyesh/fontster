@@ -17,8 +17,12 @@
 package com.chromium.fontinstaller.ui.common;
 
 import android.support.v7.app.ActionBarActivity;
+import android.view.View;
 
 import com.chromium.fontinstaller.BusProvider;
+import com.chromium.fontinstaller.R;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 public class BaseActivity extends ActionBarActivity {
 
@@ -32,5 +36,29 @@ public class BaseActivity extends ActionBarActivity {
     protected void onPause() {
         super.onPause();
         BusProvider.getInstance().unregister(this);
+    }
+
+    protected void initializeAd(AdView adView) {
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(getResources().getString(R.string.nexus_5_device_id))
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+        adView.loadAd(adRequest);
+    }
+
+    protected void show(View view) {
+        view.setVisibility(View.VISIBLE);
+    }
+
+    protected void hide(View view) {
+        view.setVisibility(View.INVISIBLE);
+    }
+
+    protected void hideGone(View view) {
+        view.setVisibility(View.GONE);
+    }
+
+    protected boolean isVisible(View view) {
+        return view.getVisibility() == View.VISIBLE;
     }
 }

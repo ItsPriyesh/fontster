@@ -16,7 +16,6 @@
 
 package com.chromium.fontinstaller.core;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Handler;
 
@@ -24,7 +23,6 @@ import com.chromium.fontinstaller.BusProvider;
 import com.chromium.fontinstaller.events.DownloadCompleteEvent;
 import com.chromium.fontinstaller.models.Font;
 import com.chromium.fontinstaller.models.FontPackage;
-import com.chromium.fontinstaller.util.FileUtils;
 import com.koushikdutta.ion.Ion;
 
 import java.io.File;
@@ -36,14 +34,11 @@ import timber.log.Timber;
  * Created by priyeshpatel on 15-02-07.
  */
 public class FontDownloader {
+
     private FontPackage fontPackage;
     private Context context;
-
     private enum CompletionStatus {INCOMPLETE, COMPLETE, ERROR}
-
     private HashMap<Font, CompletionStatus> hashMap = new HashMap<>(12);
-
-  //  ProgressDialog downloadProgress;
 
     public FontDownloader(FontPackage fontPackage, Context context) {
         this.fontPackage = fontPackage;
@@ -53,11 +48,6 @@ public class FontDownloader {
     }
 
     public void download() {
-     /*   if (NetworkUtils.isConnectedToInternet(context)) {
-            downloadProgress = new ProgressDialog(context);
-            downloadProgress.setMessage("Downloading");
-            downloadProgress.show();
-*/
         for (Font font : fontPackage.getFontList()) {
             hashMap.put(font, CompletionStatus.INCOMPLETE);
             File file = new File(context.getExternalCacheDir() + File.separator +
@@ -68,15 +58,13 @@ public class FontDownloader {
                         if (e != null) {
                             Timber.i("Download failed " + e);
                             hashMap.put(font, CompletionStatus.ERROR);
-                            return;
+                        } else {
+                            hashMap.put(font, CompletionStatus.COMPLETE);
+                            Timber.i("Download successful " + file);
                         }
-                        hashMap.put(font, CompletionStatus.COMPLETE);
-                        Timber.i("Download successful " + file);
                     });
         }
         checkCompletion();
-        // } else AlertUtils.showBasicAlert("No network connection is available", context);
-
     }
 
     private void createCacheDir() {
@@ -92,24 +80,13 @@ public class FontDownloader {
     }
 
     private void evaluateCompletionStatus() {
-   //     downloadProgress.dismiss();
-        if (hashMap.containsValue(CompletionStatus.ERROR)) handleError();
-        else {
+        if (hashMap.containsValue(CompletionStatus.ERROR)) {
+            //handleError();
+            Timber.i("Download failed");
+            BusProvider.getInstance().post(new DownloadCompleteEvent(false));
+        } else {
             Timber.i("Download success");
-            BusProvider.getInstance().post(new DownloadCompleteEvent());
+            BusProvider.getInstance().post(new DownloadCompleteEvent(true));
         }
     }
-
-    private void handleError() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context)
-                .setTitle("Download failed")
-                .setMessage("An error was encountered while downloading the font pack.")
-                .setNegativeButton("Cancel", (dialog, which) -> FileUtils.clearIonCache(context))
-                .setPositiveButton("Retry", (dialog, which) -> {
-                    FileUtils.clearIonCache(context);
-                    download();
-                });
-        builder.create().show();
-    }
-
 }

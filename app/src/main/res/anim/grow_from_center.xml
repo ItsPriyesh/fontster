@@ -14,14 +14,15 @@
   ~ limitations under the License.
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.chromium.fontinstaller.ui.font.FontActivity">
-    <item
-        android:id="@+id/toggle_case"
-        android:title="Toggle case"
-        android:orderInCategory="100"
-        android:icon="@drawable/ic_caps_white"
-        app:showAsAction="always" />
-</menu>
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <scale
+        android:fromXScale="0"
+        android:fromYScale="0"
+        android:toYScale="1"
+        android:toXScale="1"
+        android:pivotX="50%"
+        android:pivotY="50%"
+        android:interpolator="@android:interpolator/accelerate_decelerate"
+        android:duration="400" />
+</set>

@@ -76,12 +76,12 @@ public class WordsFragment extends Fragment {
         text3.setTypeface(fontPackage.getFont(Style.LIGHT));
         text4.setTypeface(fontPackage.getFont(Style.THIN));
 
-        Set set = new HashSet();
+        Set set = new HashSet(textViews.length);
         while (set.size() < textViews.length) set.add(random.nextInt(words.length));
-        for (AutoScaleTextView textView : textViews) {
-            textView.setText(set.);
+       /* for (A textView : textViews) {
+            textView.setText(set.s);
         }
-
+*/
         return view;
     }
 

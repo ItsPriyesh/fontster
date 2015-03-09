@@ -18,8 +18,8 @@
 <resources>
     <color name="primary">#3F51B5</color>
     <color name="primary_dark">#303F9F</color>
-    <color name="accent">#E91E63</color>
-    <color name="accent_light">#F06292</color>
+    <color name="accent">#FDD835</color>
+    <color name="accent_light">#FFFE93</color>
 
     <color name="dialog_button_color">#0099F1</color>
     <color name="dark_grey">#757575</color>

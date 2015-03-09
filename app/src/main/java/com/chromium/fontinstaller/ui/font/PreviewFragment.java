@@ -27,6 +27,8 @@ import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.models.FontPackage;
 import com.chromium.fontinstaller.models.Style;
 import com.chromium.fontinstaller.ui.common.AutoScaleTextView;
+import com.chromium.fontinstaller.util.ViewUtils;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
@@ -36,14 +38,19 @@ public class PreviewFragment extends Fragment {
     AutoScaleTextView previewText;
 
     private FontPackage fontPackage;
+    private Style style;
+    private boolean upperCase = true;
+    private static String alphabetUpper, alphabetLower;
 
     public PreviewFragment() {
 
     }
 
-    public static PreviewFragment newInstance(FontPackage fontPackage) {
+    public static PreviewFragment newInstance(FontPackage fontPackage, Style style) {
         PreviewFragment fragment = new PreviewFragment();
         fragment.setFontPackage(fontPackage);
+        fragment.setStyle(style);
+
         return fragment;
     }
 
@@ -51,14 +58,32 @@ public class PreviewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_preview, container, false);
         ButterKnife.inject(this, view);
-        previewText.setTypeface(fontPackage.getFont(Style.REGULAR));
-        previewText.setText(getResources().getString(R.string.alphabet_upper));
+
+        alphabetUpper = getActivity().getResources().getString(R.string.alphabet_upper);
+        alphabetLower = getActivity().getResources().getString(R.string.alphabet_lower);
+
+        previewText.setTypeface(fontPackage.getFont(style));
+        previewText.setText(alphabetUpper);
 
         return view;
     }
 
-    public void setFontPackage(FontPackage fontPackage) {
+    private void setFontPackage(FontPackage fontPackage) {
         this.fontPackage = fontPackage;
     }
 
+    private void setStyle(Style style) {
+        this.style = style;
+    }
+
+    public void toggleCase() {
+        if (upperCase) {
+            previewText.setText(alphabetLower);
+            upperCase = false;
+        } else {
+            previewText.setText(alphabetUpper);
+            upperCase = true;
+        }
+        ViewUtils.animSlideBottomIn(previewText, getActivity());
+    }
 }
