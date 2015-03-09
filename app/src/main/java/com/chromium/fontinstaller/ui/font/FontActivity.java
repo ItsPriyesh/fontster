@@ -141,8 +141,7 @@ public class FontActivity extends BaseActivity {
 
     @OnClick(R.id.install_fab)
     public void installButtonClicked() {
-        //   FontDownloader fontDownloader = new FontDownloader(fontPackage, this);
-        // fontDownloader.download();
+
     }
 
     private void setupPager() {
@@ -206,7 +205,6 @@ public class FontActivity extends BaseActivity {
                 for (PreviewFragment fragment : previewPages) {
                     fragment.toggleCase();
                 }
-                pagerAdapter.notifyDataSetChanged();
                 return true;
         }
 
