@@ -55,30 +55,29 @@
 
         <ProgressBar
             android:visibility="invisible"
-            android:id="@+id/progress"
+            android:id="@+id/download_progress"
             android:layout_centerInParent="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <RelativeLayout
+        <LinearLayout
             android:visibility="invisible"
-            android:id="@+id/errorContainer"
+            android:orientation="vertical"
+            android:id="@+id/error_container"
             android:layout_centerInParent="true"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:gravity="center">
 
             <ImageView
-                android:id="@+id/sadCloud"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:src="@drawable/sad_cloud" />
 
             <TextView
-                android:id="@+id/noInternetMessage"
                 android:textSize="12dp"
                 android:fontFamily="sans-serif-light"
                 android:text="Fontster was unable to download this font."
-                android:layout_below="@id/sadCloud"
                 android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -86,13 +85,11 @@
             <Button
                 android:id="@+id/retry"
                 android:text="Retry"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@id/noInternetMessage"
                 style="?android:attr/borderlessButtonStyle"
                 android:textColor="@color/primary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-        </RelativeLayout>
+        </LinearLayout>
     </RelativeLayout>
 
     <RelativeLayout
@@ -116,19 +113,35 @@
 
     </RelativeLayout>
 
-    <com.melnykov.fab.FloatingActionButton
-        android:visibility="invisible"
-        android:id="@+id/install_fab"
+    <RelativeLayout
+        android:elevation="6dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_file_download_white"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginRight="32dp"
-        android:layout_marginBottom="72dp"
-        android:elevation="6dp"
-        app:fab_colorNormal="@color/accent"
-        app:fab_colorPressed="@color/accent_light"
-        app:fab_colorRipple="@color/accent_light"
-        app:fab_shadow="true" />
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="64dp">
+
+        <ProgressBar
+            android:id="@+id/install_progress"
+            android:visibility="invisible"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_centerInParent="true"
+            android:elevation="6dp"/>
+
+        <com.melnykov.fab.FloatingActionButton
+            android:layout_centerInParent="true"
+            android:layout_margin="8dp"
+            android:visibility="invisible"
+            android:id="@+id/install_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_file_download_white"
+            android:elevation="6dp"
+            app:fab_colorNormal="@color/accent"
+            app:fab_colorPressed="@color/accent"
+            app:fab_colorRipple="@color/white_30_opacity"
+            app:fab_shadow="true" />
+    </RelativeLayout>
 </RelativeLayout>

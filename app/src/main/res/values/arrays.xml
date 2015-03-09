@@ -25,32 +25,4 @@
         <item>ic_backup_restore_grey</item>
         <item>ic_settings_grey</item>
     </string-array>
-
-    <string-array name="pangrams">
-        <item>How vexingly quick daft zebras jump.</item>
-        <item>Pack my box with five dozen liquor jugs.</item>
-        <item>The five boxing wizards jump quickly.</item>
-        <item>Sphinx of black quartz, judge my vow.</item>
-        <item>Sympathizing would fix Quaker objectives.</item>
-        <item>Two driven jocks help fax my big quiz. </item>
-    </string-array>
-    
-    <string-array name="words">
-        <item>Hypothesize</item>
-        <item>Illustrative</item>
-        <item>Millennium</item>
-        <item>Typography</item>
-        <item>Resolution</item>
-        <item>Cafeteria</item>
-        <item>Psychotherapy</item>
-        <item>Subdermatoglyphic</item>
-        <item>Quasiparticles</item>
-        <item>Entangled</item>
-        <item>Papercraft</item>
-        <item>Stationary</item>
-        <item>Theoretical</item>
-        <item>Momentum</item>
-        <item>Relativistic</item>
-        <item>Civilization</item>
-    </string-array>
 </resources>

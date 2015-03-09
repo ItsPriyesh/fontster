@@ -57,8 +57,11 @@ public class FontActivity extends BaseActivity {
     @InjectView(R.id.install_fab)
     FloatingActionButton installButton;
 
-    @InjectView(R.id.progress)
-    ProgressBar progressBar;
+    @InjectView(R.id.download_progress)
+    ProgressBar downloadProgress;
+
+    @InjectView(R.id.install_progress)
+    ProgressBar installProgress;
 
     @InjectView(R.id.preview_pager)
     ViewPager previewPager;
@@ -66,7 +69,7 @@ public class FontActivity extends BaseActivity {
     @InjectView(R.id.sliding_tabs)
     SlidingTabLayout slidingTabLayout;
 
-    @InjectView(R.id.errorContainer)
+    @InjectView(R.id.error_container)
     ViewGroup errorContainer;
 
     private String fontName;
@@ -103,7 +106,7 @@ public class FontActivity extends BaseActivity {
     private void startDownload() {
         if (isVisible(errorContainer)) hide(errorContainer);
 
-        show(progressBar);
+        show(downloadProgress);
         FontDownloader fontDownloader = new FontDownloader(fontPackage, this);
         fontDownloader.download();
     }
@@ -141,7 +144,8 @@ public class FontActivity extends BaseActivity {
 
     @OnClick(R.id.install_fab)
     public void installButtonClicked() {
-
+        ViewUtils.animCenterGrowIn(installProgress, this);
+        show(installProgress);
     }
 
     private void setupPager() {
@@ -155,10 +159,10 @@ public class FontActivity extends BaseActivity {
     }
 
     private void animateViews() {
-        ViewUtils.animSlideUp(progressBar, this);
+        ViewUtils.animSlideUp(downloadProgress, this);
 
         new Handler().postDelayed(() -> {
-            hideGone(progressBar);
+            hideGone(downloadProgress);
 
             ViewUtils.animSlideBottomIn(slidingTabLayout, this);
             ViewUtils.animCenterRevealIn(previewPager);
@@ -167,10 +171,10 @@ public class FontActivity extends BaseActivity {
     }
 
     private void handleFailedDownload() {
-        ViewUtils.animSlideUp(progressBar, this);
+        ViewUtils.animSlideUp(downloadProgress, this);
 
         new Handler().postDelayed(() -> {
-            hideGone(progressBar);
+            hideGone(downloadProgress);
             ViewUtils.animSlideBottomIn(errorContainer, this);
             show(errorContainer);
         }, 400);
@@ -202,9 +206,8 @@ public class FontActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.toggle_case:
-                for (PreviewFragment fragment : previewPages) {
-                    fragment.toggleCase();
-                }
+                for (PreviewFragment fragment : previewPages)
+                    if (fragment != null) fragment.toggleCase();
                 return true;
         }
 
