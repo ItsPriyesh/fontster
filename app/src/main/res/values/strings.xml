@@ -28,5 +28,6 @@
 
     <string name="banner_ad_unit_id">ca-app-pub-8798644144122718/6263923171</string>
     <string name="nexus_5_device_id">AAADAC4EC821D354F2BEF1C833EE7EFB</string>
+    <string name="title_activity_settings">SettingsActivity</string>
 
 </resources>

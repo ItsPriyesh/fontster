@@ -27,6 +27,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.chromium.fontinstaller.R;
+import com.eowise.recyclerview.stickyheaders.StickyHeadersBuilder;
+import com.eowise.recyclerview.stickyheaders.StickyHeadersItemDecoration;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -60,10 +62,20 @@ public class FontListFragment extends Fragment {
 
         listAdapter = new FontListAdapter(activity, fontList);
         listManager = new LinearLayoutManager(activity);
-        recyclerView.setLayoutManager(listManager);
+
         recyclerView.setAdapter(listAdapter);
+        recyclerView.setLayoutManager(listManager);
+        recyclerView.addItemDecoration(buildHeaderDecor());
 
         return view;
+    }
+
+    private StickyHeadersItemDecoration buildHeaderDecor() {
+        return new StickyHeadersBuilder()
+                .setAdapter(listAdapter)
+                .setRecyclerView(recyclerView)
+                .setStickyHeadersAdapter(new FontListHeaderAdapter(fontList), true)
+                .build();
     }
 
     private void populateFontList() {

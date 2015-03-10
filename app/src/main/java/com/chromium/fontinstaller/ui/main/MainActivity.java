@@ -16,13 +16,13 @@
 
 package com.chromium.fontinstaller.ui.main;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,20 +30,17 @@ import android.widget.ListView;
 
 import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.ui.common.BaseActivity;
+import com.chromium.fontinstaller.ui.settings.SettingsActivity;
 import com.chromium.fontinstaller.util.RootUtils;
 import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 
-import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnItemClick;
 
 
 public class MainActivity extends BaseActivity {
-
-    @InjectView(R.id.app_bar)
-    Toolbar toolbar;
 
     @InjectView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
@@ -62,13 +59,9 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.inject(this);
+        setToolbarTitle("Fontster");
 
         initializeAd(adView);
-
-        toolbar.setSubtitleTextAppearance(this, R.style.ToolbarSubtitleAppearance);
-        toolbar.setSubtitle("Select a font");
-        setSupportActionBar(toolbar);
 
         RootUtils.requestAccess();
 
@@ -124,14 +117,10 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                return true;
         }
 
         return super.onOptionsItemSelected(item);

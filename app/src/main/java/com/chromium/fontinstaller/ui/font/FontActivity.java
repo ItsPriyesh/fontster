@@ -22,7 +22,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
@@ -31,7 +30,6 @@ import android.widget.TextView;
 
 import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.core.FontDownloader;
-import com.chromium.fontinstaller.core.FontInstaller;
 import com.chromium.fontinstaller.events.DownloadCompleteEvent;
 import com.chromium.fontinstaller.events.InstallCompleteEvent;
 import com.chromium.fontinstaller.models.FontPackage;
@@ -43,14 +41,10 @@ import com.chromium.fontinstaller.util.ViewUtils;
 import com.melnykov.fab.FloatingActionButton;
 import com.squareup.otto.Subscribe;
 
-import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
 public class FontActivity extends BaseActivity {
-
-    @InjectView(R.id.app_bar)
-    Toolbar toolbar;
 
     @InjectView(R.id.font_name)
     TextView fontTitle;
@@ -86,12 +80,8 @@ public class FontActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_font);
-        ButterKnife.inject(this);
-
-        toolbar.setElevation(0);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        disableToolbarElevation();
+        showToolbarBackButton();
 
         fontName = getIntent().getStringExtra("FONT_NAME");
         fontPackage = new FontPackage(fontName);
@@ -154,33 +144,12 @@ public class FontActivity extends BaseActivity {
         }, 400);
     }
 
-    private class PreviewPagerAdapter extends FragmentPagerAdapter {
-        public PreviewPagerAdapter(FragmentManager fragmentManager) {
-            super(fragmentManager);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return previewPages[position];
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return tabTitles[position];
-        }
-
-        @Override
-        public int getCount() {
-            return 3;
-        }
-    }
-
     private void startInstall() {
         ViewUtils.animCenterGrowIn(installProgress, this);
         show(installProgress);
 
-        FontInstaller fontInstaller = new FontInstaller(fontPackage, this);
-        fontInstaller.install();
+        // FontInstaller fontInstaller = new FontInstaller(fontPackage, this);
+        // fontInstaller.install();
     }
 
     @OnClick(R.id.install_fab)
@@ -226,5 +195,26 @@ public class FontActivity extends BaseActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private class PreviewPagerAdapter extends FragmentPagerAdapter {
+        public PreviewPagerAdapter(FragmentManager fragmentManager) {
+            super(fragmentManager);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return previewPages[position];
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return tabTitles[position];
+        }
+
+        @Override
+        public int getCount() {
+            return 3;
+        }
     }
 }

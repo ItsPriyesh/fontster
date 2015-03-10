@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2015 Priyesh Patel
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,7 +22,7 @@
     tools:context=".MainActivity">
 
     <include
-        layout="@layout/app_bar_extended"
+        layout="@layout/app_bar"
         android:id="@+id/app_bar" />
 
     <android.support.v4.widget.DrawerLayout
@@ -33,16 +32,11 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context=".MainActivity">
-
-            <include
-                layout="@layout/app_bar_extended"
-                android:id="@+id/app_bar" />
+            android:layout_height="match_parent">
 
             <FrameLayout
                 android:id="@+id/container"
-                android:layout_below="@id/app_bar"
+                android:layout_marginTop="?attr/actionBarSize"
                 android:layout_above="@+id/adView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
@@ -61,7 +55,7 @@
         <ListView
             android:id="@+id/drawer_list"
             android:paddingTop="16dp"
-            android:layout_marginTop="128dp"
+            android:layout_marginTop="?attr/actionBarSize"
             android:layout_width="240dp"
             android:layout_height="match_parent"
             android:layout_gravity="start"

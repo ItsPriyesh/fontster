@@ -16,7 +16,10 @@
 
 package com.chromium.fontinstaller.ui.common;
 
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.chromium.fontinstaller.BusProvider;
@@ -24,7 +27,25 @@ import com.chromium.fontinstaller.R;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class BaseActivity extends ActionBarActivity {
+
+    @InjectView(R.id.app_bar)
+    protected Toolbar toolbar;
+
+    private ActionBar actionBar;
+
+    @Override
+    public void setContentView(int layoutResId) {
+        super.setContentView(layoutResId);
+        ButterKnife.inject(this);
+
+        setSupportActionBar(toolbar);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayShowTitleEnabled(false);
+    }
 
     @Override
     protected void onResume() {
@@ -38,12 +59,33 @@ public class BaseActivity extends ActionBarActivity {
         BusProvider.getInstance().unregister(this);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            this.finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     protected void initializeAd(AdView adView) {
         AdRequest adRequest = new AdRequest.Builder()
                 .addTestDevice(getResources().getString(R.string.nexus_5_device_id))
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                 .build();
         adView.loadAd(adRequest);
+    }
+
+    protected void setToolbarTitle(String title) {
+        toolbar.setTitle(title);
+    }
+
+    protected void disableToolbarElevation() {
+        toolbar.setElevation(0);
+    }
+
+    protected void showToolbarBackButton() {
+        actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     protected void show(View view) {

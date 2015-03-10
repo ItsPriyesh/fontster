@@ -41,6 +41,8 @@ public class FontListAdapter extends RecyclerView.Adapter<FontListAdapter.ViewHo
     public FontListAdapter(Context context, ArrayList<String> fontNames) {
         this.fontNames = fontNames;
         this.context = context;
+
+        setHasStableIds(true);
     }
 
     @Override
@@ -52,6 +54,11 @@ public class FontListAdapter extends RecyclerView.Adapter<FontListAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.fontName.setText(fontNames.get(position));
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return fontNames.get(position).hashCode();
     }
 
     @Override

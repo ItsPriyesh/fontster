@@ -49,4 +49,7 @@ dependencies {
     compile 'eu.chainfire:libsuperuser:1.0.0.+'
     compile 'com.melnykov:floatingactionbutton:1.2.0'
     compile 'com.r0adkll:slidableactivity:2.0.2'
+    compile 'com.eowise:recyclerview-stickyheaders:0.5.2@aar'
+    compile 'xyz.danoz:recyclerviewfastscroller:0.1.0'
+
 }
