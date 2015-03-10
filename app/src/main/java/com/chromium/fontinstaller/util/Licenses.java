@@ -87,6 +87,12 @@ public class Licenses {
                     new MITLicense()
             ),
             new Notice(
+                    "BlurDialogFragment",
+                    "https://github.com/tvbarthel/BlurDialogFragment",
+                    "Copyright (C) 2014 tvbarthel",
+                    new ApacheSoftwareLicense20()
+            ),
+            new Notice(
                     "LicensesDialog",
                     "http://psdev.de",
                     "Copyright 2013 Philip Schiffer <admin@psdev.de>",

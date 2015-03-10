@@ -18,6 +18,7 @@ package com.chromium.fontinstaller.ui.main;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -30,6 +31,7 @@ import android.widget.ListView;
 
 import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.ui.common.BaseActivity;
+import com.chromium.fontinstaller.ui.fontlist.FontListFragment;
 import com.chromium.fontinstaller.ui.settings.SettingsActivity;
 import com.chromium.fontinstaller.util.RootUtils;
 import com.google.android.gms.ads.AdView;
@@ -53,7 +55,7 @@ public class MainActivity extends BaseActivity {
 
     private ActionBarDrawerToggle drawerToggle;
     private FragmentManager fragmentManager;
-    private Fragment fontListFragment;
+    private FontListFragment fontListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +67,8 @@ public class MainActivity extends BaseActivity {
 
         RootUtils.requestAccess();
 
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
+        drawerToggle = new ActionBarDrawerToggle(
+                this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
 
         drawerLayout.setDrawerListener(drawerToggle);
         drawerList.setAdapter(new NavDrawerAdapter(this, generateNavItems()));
@@ -73,8 +76,13 @@ public class MainActivity extends BaseActivity {
         fragmentManager = getSupportFragmentManager();
         fontListFragment = new FontListFragment();
 
-        startFragment(fontListFragment);
+        swapFragment(fontListFragment);
 
+    }
+
+    private Drawable getDrawableFromArray(int position, String... array) {
+        return getResources().getDrawable(
+                getResources().getIdentifier(array[position], "drawable", getPackageName()));
     }
 
     private ArrayList<NavDrawerItem> generateNavItems() {
@@ -83,14 +91,13 @@ public class MainActivity extends BaseActivity {
         String[] icons = getResources().getStringArray(R.array.nav_drawer_icons);
 
         for (int i = 0; i < Math.min(titles.length, icons.length); i++) {
-            items.add(new NavDrawerItem(titles[i],
-                    getDrawable(getResources().getIdentifier(icons[i], "drawable", getPackageName()))));
+            items.add(new NavDrawerItem(titles[i], getDrawableFromArray(i, icons)));
         }
 
         return items;
     }
 
-    private void startFragment(Fragment fragment) {
+    private void swapFragment(Fragment fragment) {
         fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
     }
 
@@ -98,11 +105,12 @@ public class MainActivity extends BaseActivity {
     public void onNavItemClicked(int position) {
         switch (position) {
             case 0:
-                startFragment(fontListFragment);
+                swapFragment(fontListFragment);
                 break;
             case 1:
                 break;
             case 2:
+                startActivity(new Intent(this, SettingsActivity.class));
                 break;
         }
         drawerLayout.closeDrawers();
@@ -110,7 +118,6 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }

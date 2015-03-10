@@ -14,76 +14,87 @@
  * limitations under the License.
  */
 
-package com.chromium.fontinstaller.ui.font;
+package com.chromium.fontinstaller.ui.fontinstall;
 
-
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.models.FontPackage;
 import com.chromium.fontinstaller.models.Style;
-import com.chromium.fontinstaller.ui.common.AutoScaleTextView;
-import com.chromium.fontinstaller.util.ViewUtils;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
+import fr.tvbarthel.lib.blurdialogfragment.SupportBlurDialogFragment;
 
-public class PreviewFragment extends Fragment {
+public class TryFontFragment extends SupportBlurDialogFragment {
 
-    @InjectView(R.id.preview_text)
-    AutoScaleTextView previewText;
+    @InjectView(R.id.title)
+    TextView title;
+
+    @InjectView(R.id.input)
+    EditText input;
 
     private FontPackage fontPackage;
     private Style style;
-    private boolean upperCase = true;
-    private static String alphabetUpper, alphabetLower;
 
-    public PreviewFragment() {
-
+    public TryFontFragment() {
+        // Required empty public constructor
     }
 
-    public static PreviewFragment newInstance(FontPackage fontPackage, Style style) {
-        PreviewFragment fragment = new PreviewFragment();
+    public static TryFontFragment newInstance(FontPackage fontPackage, Style style) {
+        TryFontFragment fragment = new TryFontFragment();
         fragment.setFontPackage(fontPackage);
-        fragment.setStyle(style);
+        fragment.setFontStyle(style);
 
         return fragment;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_preview, container, false);
+        View view = inflater.inflate(R.layout.fragment_try_font, container, false);
         ButterKnife.inject(this, view);
 
-        alphabetUpper = getActivity().getResources().getString(R.string.alphabet_upper);
-        alphabetLower = getActivity().getResources().getString(R.string.alphabet_lower);
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        previewText.setTypeface(fontPackage.getFont(style));
-        previewText.setText(alphabetUpper);
+        title.setText(fontPackage.getName());
+        input.setTypeface(fontPackage.getFont(style));
 
         return view;
+    }
+
+    @OnClick(R.id.done_button)
+    public void doneButtonClicked() {
+        dismiss();
     }
 
     private void setFontPackage(FontPackage fontPackage) {
         this.fontPackage = fontPackage;
     }
 
-    private void setStyle(Style style) {
+    private void setFontStyle(Style style) {
         this.style = style;
     }
 
-    public void toggleCase() {
-        if (upperCase) {
-            previewText.setText(alphabetLower);
-            upperCase = false;
-        } else {
-            previewText.setText(alphabetUpper);
-            upperCase = true;
-        }
-        ViewUtils.animSlideBottomIn(previewText, getActivity());
+    @Override
+    protected boolean isActionBarBlurred() {
+        return true;
     }
+
+    @Override
+    protected boolean isDimmingEnable() {
+        return true;
+    }
+
+    @Override
+    protected boolean isRenderScriptEnable() {
+        return true;
+    }
+
 }

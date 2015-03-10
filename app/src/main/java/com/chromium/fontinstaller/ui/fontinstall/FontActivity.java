@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.chromium.fontinstaller.ui.font;
+package com.chromium.fontinstaller.ui.fontinstall;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -44,7 +44,7 @@ import com.squareup.otto.Subscribe;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
-public class FontActivity extends BaseActivity {
+public class FontActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
 
     @InjectView(R.id.font_name)
     TextView fontTitle;
@@ -68,6 +68,8 @@ public class FontActivity extends BaseActivity {
     ViewGroup errorContainer;
 
     private String fontName;
+    private boolean fragmentsInitialized = false;
+    private int currentPage = 0;
     private FontPackage fontPackage;
     private PreviewPagerAdapter pagerAdapter;
     private PreviewFragment regularFragment;
@@ -90,7 +92,7 @@ public class FontActivity extends BaseActivity {
         fontTitle.setText(fontName);
 
         slidingTabLayout.setCustomTabView(R.layout.tab_indicator, android.R.id.text1);
-        slidingTabLayout.setSelectedIndicatorColors(getResources().getColor(R.color.accent_light));
+        slidingTabLayout.setSelectedIndicatorColors(getResources().getColor(R.color.primary_accent));
         slidingTabLayout.setDistributeEvenly(true);
     }
 
@@ -102,6 +104,8 @@ public class FontActivity extends BaseActivity {
         previewPages[0] = regularFragment;
         previewPages[1] = boldFragment;
         previewPages[2] = italicFragment;
+
+        fragmentsInitialized = true;
     }
 
     private void startDownload() {
@@ -127,6 +131,7 @@ public class FontActivity extends BaseActivity {
         pagerAdapter = new PreviewPagerAdapter(getSupportFragmentManager());
         previewPager.setOffscreenPageLimit(2);
         previewPager.setAdapter(pagerAdapter);
+        slidingTabLayout.setOnPageChangeListener(this);
         slidingTabLayout.setViewPager(previewPager);
 
         animateViews();
@@ -152,6 +157,19 @@ public class FontActivity extends BaseActivity {
         // fontInstaller.install();
     }
 
+    private Style getCurrentPageStyle() {
+        switch (currentPage) {
+            case 0:
+                return Style.REGULAR;
+            case 1:
+                return Style.BOLD;
+            case 2:
+                return Style.ITALIC;
+            default:
+                return Style.REGULAR;
+        }
+    }
+
     @OnClick(R.id.install_fab)
     public void installButtonClicked() {
         startInstall();
@@ -173,10 +191,25 @@ public class FontActivity extends BaseActivity {
         new Handler().postDelayed(() -> {
             ViewUtils.animateShrinkToCenter(installProgress, this);
             installButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_done_white));
-            installButton.setColorNormal(getResources().getColor(R.color.accent_light));
+            installButton.setColorNormal(getResources().getColor(R.color.secondary_accent));
             ViewUtils.animCenterGrowIn(installButton, this);
             new Handler().postDelayed(() -> AlertUtils.showRebootAlert(this), 500);
         }, 1000);
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        currentPage = position;
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
     }
 
     @Override
@@ -189,12 +222,25 @@ public class FontActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.toggle_case:
-                for (PreviewFragment fragment : previewPages)
-                    if (fragment != null) fragment.toggleCase();
+                toggleCase();
+                return true;
+            case R.id.try_font:
+                showTryFontDialog();
                 return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showTryFontDialog() {
+        TryFontFragment dialog = TryFontFragment.newInstance(fontPackage, getCurrentPageStyle());
+        dialog.show(getSupportFragmentManager(), "TryFontFragment");
+    }
+
+    private void toggleCase() {
+        if (fragmentsInitialized)
+            for (PreviewFragment fragment : previewPages)
+                fragment.toggleCase();
     }
 
     private class PreviewPagerAdapter extends FragmentPagerAdapter {

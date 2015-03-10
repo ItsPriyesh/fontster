@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.chromium.fontinstaller.ui.main;
+package com.chromium.fontinstaller.ui.fontlist;
 
 
 import android.app.Activity;
@@ -42,7 +42,7 @@ public class FontListFragment extends Fragment {
     @InjectView(R.id.font_list_view)
     RecyclerView recyclerView;
 
-    private RecyclerView.Adapter listAdapter;
+    private FontListAdapter listAdapter;
     private RecyclerView.LayoutManager listManager;
     private ArrayList<String> fontList;
     private Activity activity;
@@ -90,4 +90,7 @@ public class FontListFragment extends Fragment {
         }
     }
 
+    public FontListAdapter getAdapter() {
+        return listAdapter;
+    }
 }

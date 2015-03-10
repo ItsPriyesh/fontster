@@ -49,6 +49,7 @@ dependencies {
     compile 'eu.chainfire:libsuperuser:1.0.0.+'
     compile 'com.melnykov:floatingactionbutton:1.2.0'
     compile 'com.eowise:recyclerview-stickyheaders:0.5.2@aar'
-    compile('de.psdev.licensesdialog:licensesdialog:1.7.0')
+    compile 'de.psdev.licensesdialog:licensesdialog:1.7.0'
+    compile 'fr.tvbarthel.lib.blurdialogfragment:lib:1.1.0@aar'
 
 }

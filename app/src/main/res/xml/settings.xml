@@ -17,6 +17,7 @@
     <PreferenceCategory android:title="About">
         <Preference
             android:title="Licenses"
+            android:summary="Details for open source libraries used in this app"
             android:key="licenses" />
     </PreferenceCategory>
 </PreferenceScreen>

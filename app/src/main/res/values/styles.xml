@@ -20,7 +20,7 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
-        <item name="colorAccent">@color/accent</item>
+        <item name="colorAccent">@color/secondary_accent</item>
     </style>
 
     <style name="AppTheme.FontActivity" parent="AppTheme">

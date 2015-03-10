@@ -28,7 +28,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.font.FontActivity"
+            android:name=".ui.fontinstall.FontActivity"
             android:label="@string/title_activity_font"
             android:parentActivityName=".ui.main.MainActivity"
             android:theme="@style/AppTheme.FontActivity">

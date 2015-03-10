@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.chromium.fontinstaller.ui.main;
+package com.chromium.fontinstaller.ui.fontlist;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;

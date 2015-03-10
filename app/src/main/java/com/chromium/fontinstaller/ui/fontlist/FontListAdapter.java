@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.chromium.fontinstaller.ui.main;
+package com.chromium.fontinstaller.ui.fontlist;
 
 import android.content.Context;
 import android.content.Intent;
@@ -25,7 +25,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.chromium.fontinstaller.R;
-import com.chromium.fontinstaller.ui.font.FontActivity;
+import com.chromium.fontinstaller.ui.fontinstall.FontActivity;
 
 import java.util.ArrayList;
 
@@ -35,7 +35,6 @@ import java.util.ArrayList;
 public class FontListAdapter extends RecyclerView.Adapter<FontListAdapter.ViewHolder> {
 
     private static ArrayList<String> fontNames;
-
     private static Context context;
 
     public FontListAdapter(Context context, ArrayList<String> fontNames) {
@@ -82,5 +81,4 @@ public class FontListAdapter extends RecyclerView.Adapter<FontListAdapter.ViewHo
             context.startActivity(intent);
         }
     }
-
 }
