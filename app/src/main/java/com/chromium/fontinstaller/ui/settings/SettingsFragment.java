@@ -17,14 +17,31 @@
 package com.chromium.fontinstaller.ui.settings;
 
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceFragment;
 
 import com.chromium.fontinstaller.R;
+import com.chromium.fontinstaller.util.Licenses;
+
+import de.psdev.licensesdialog.LicensesDialog;
 
 public class SettingsFragment extends PreferenceFragment {
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.settings);
+
+        Preference licenses = findPreference("licenses");
+        licenses.setOnPreferenceClickListener(pref -> {
+            openLicensesDialog();
+            return true;
+        });
+    }
+
+    private void openLicensesDialog() {
+        new LicensesDialog.Builder(getActivity())
+                .setNotices(Licenses.getNotices())
+                .build().show();
     }
 }
+
