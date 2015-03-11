@@ -84,14 +84,15 @@ public class FontListFragment extends Fragment {
         listManager = new LinearLayoutManager(activity);
         recyclerView.setLayoutManager(listManager);
 
-        if (prefs.getBoolean(PreferencesManager.KEY_ENABLE_TRUEFONT)) {
-            downloadFontList();
-        } else setupRecyclerViewAdapter(false);
+        if (prefs.getBoolean(PreferencesManager.KEY_ENABLE_TRUEFONT)) downloadFontList();
+        else setupRecyclerViewAdapter(false);
 
         return view;
     }
 
     private void setupRecyclerViewAdapter(boolean enableTrueFont) {
+        recyclerView.setVisibility(View.VISIBLE);
+
         listAdapter = new FontListAdapter(activity, fontList, enableTrueFont);
 
         recyclerView.setAdapter(listAdapter);
@@ -111,14 +112,12 @@ public class FontListFragment extends Fragment {
     }
 
     private void handleDownloadSuccess() {
-        setupRecyclerViewAdapter(true);
-
         ViewUtils.animSlideUp(downloadProgress, getActivity());
         new Handler().postDelayed(() -> {
             downloadProgress.setVisibility(View.INVISIBLE);
 
             ViewUtils.animFadeIn(recyclerView, getActivity());
-            recyclerView.setVisibility(View.VISIBLE);
+            setupRecyclerViewAdapter(true);
         }, 400);
     }
 
