@@ -17,7 +17,7 @@
     <PreferenceCategory android:title="General">
         <CheckBoxPreference
             android:title="TrueFont Display"
-            android:summary="Show font names in their corresponding typeface"
+            android:summary="Show font names in their corresponding typeface. This may hinder the apps performance."
             android:key="trueFont" />
     </PreferenceCategory>
     <PreferenceCategory android:title="About">

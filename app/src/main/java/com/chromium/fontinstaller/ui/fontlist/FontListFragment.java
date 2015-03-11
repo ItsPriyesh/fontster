@@ -26,16 +26,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.chromium.fontinstaller.BusProvider;
 import com.chromium.fontinstaller.R;
+import com.chromium.fontinstaller.core.FontDownloader;
+import com.chromium.fontinstaller.events.DownloadCompleteEvent;
+import com.chromium.fontinstaller.models.FontPackage;
+import com.chromium.fontinstaller.models.Style;
+import com.chromium.fontinstaller.util.PreferencesManager;
 import com.eowise.recyclerview.stickyheaders.StickyHeadersBuilder;
 import com.eowise.recyclerview.stickyheaders.StickyHeadersItemDecoration;
+import com.squareup.otto.Subscribe;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import timber.log.Timber;
 
 public class FontListFragment extends Fragment {
 
@@ -44,8 +53,10 @@ public class FontListFragment extends Fragment {
 
     private FontListAdapter listAdapter;
     private RecyclerView.LayoutManager listManager;
-    private ArrayList<String> fontList;
+    private ArrayList<String> fontList = new ArrayList<>();
+    ;
     private Activity activity;
+    private PreferencesManager prefs;
 
     public FontListFragment() {
 
@@ -55,19 +66,52 @@ public class FontListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_font_list, container, false);
         ButterKnife.inject(this, view);
+
         activity = getActivity();
 
-        fontList = new ArrayList<>();
+        prefs = PreferencesManager.getInstance(activity);
+
         populateFontList();
 
-        listAdapter = new FontListAdapter(activity, fontList);
         listManager = new LinearLayoutManager(activity);
-
-        recyclerView.setAdapter(listAdapter);
         recyclerView.setLayoutManager(listManager);
-        recyclerView.addItemDecoration(buildHeaderDecor());
+
+        if (prefs.getBoolean(PreferencesManager.KEY_ENABLE_TRUEFONT)) downloadFontList();
+        else setupRecyclerViewAdapter(false);
 
         return view;
+    }
+
+    private void setupRecyclerViewAdapter(boolean enableTrueFont) {
+        listAdapter = new FontListAdapter(activity, fontList, enableTrueFont);
+
+        recyclerView.setAdapter(listAdapter);
+        recyclerView.addItemDecoration(buildHeaderDecor());
+    }
+
+    private void downloadFontList() {
+        List<FontPackage> fontPackages = new ArrayList<>(fontList.size());
+        for (String fontName : fontList) fontPackages.add(new FontPackage(fontName));
+
+        new FontDownloader(activity).downloadFromList(fontPackages, Style.REGULAR);
+    }
+
+    @Subscribe
+    public void onDownloadFontListComplete(DownloadCompleteEvent event) {
+        if (event.wasSuccessful()) setupRecyclerViewAdapter(true);
+        else Timber.i("FAILED TO GET ALL FONTS");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        BusProvider.getInstance().register(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        BusProvider.getInstance().unregister(this);
     }
 
     private StickyHeadersItemDecoration buildHeaderDecor() {
@@ -93,4 +137,5 @@ public class FontListFragment extends Fragment {
     public FontListAdapter getAdapter() {
         return listAdapter;
     }
+
 }

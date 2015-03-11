@@ -60,9 +60,17 @@ public class FontPackage {
         return nameFormatted;
     }
 
-    public Typeface getFont(Style style) {
+    public Typeface getTypeface(Style style) {
         String path = FontInstaller.CACHE_DIR + nameFormatted + File.separator + style.getLocalName();
         return Typeface.createFromFile(path);
+    }
+
+    public Font getFont(Style style) {
+        for (Font font : fontList.keySet())
+            if (fontList.get(font).equals(style))
+                return font;
+
+        return null;
     }
 
 }

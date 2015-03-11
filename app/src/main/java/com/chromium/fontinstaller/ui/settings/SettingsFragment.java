@@ -55,7 +55,7 @@ public class SettingsFragment extends PreferenceFragment {
     }
 
     private boolean handleTrueFont(Object newValue) {
-        prefs.setBoolean(PreferencesManager.KEY_TRUE_FONT, (boolean) newValue);
+        prefs.setBoolean(PreferencesManager.KEY_ENABLE_TRUEFONT, (boolean) newValue);
         return true;
     }
 

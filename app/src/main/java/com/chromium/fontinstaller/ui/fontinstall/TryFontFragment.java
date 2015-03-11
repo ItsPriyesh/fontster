@@ -64,7 +64,7 @@ public class TryFontFragment extends SupportBlurDialogFragment {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         title.setText(fontPackage.getName());
-        input.setTypeface(fontPackage.getFont(style));
+        input.setTypeface(fontPackage.getTypeface(style));
 
         return view;
     }

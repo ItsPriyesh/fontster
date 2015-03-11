@@ -113,7 +113,7 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
 
         show(downloadProgress);
         FontDownloader fontDownloader = new FontDownloader(fontPackage, this);
-        fontDownloader.download();
+        fontDownloader.downloadAll();
     }
 
     private void handleFailedDownload() {

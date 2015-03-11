@@ -62,7 +62,7 @@ public class PreviewFragment extends Fragment {
         alphabetUpper = getActivity().getResources().getString(R.string.alphabet_upper);
         alphabetLower = getActivity().getResources().getString(R.string.alphabet_lower);
 
-        previewText.setTypeface(fontPackage.getFont(style));
+        previewText.setTypeface(fontPackage.getTypeface(style));
         previewText.setText(alphabetUpper);
 
         return view;

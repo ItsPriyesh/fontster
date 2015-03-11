@@ -25,7 +25,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.chromium.fontinstaller.R;
+import com.chromium.fontinstaller.models.FontPackage;
+import com.chromium.fontinstaller.models.Style;
 import com.chromium.fontinstaller.ui.fontinstall.FontActivity;
+import com.chromium.fontinstaller.util.PreferencesManager;
 
 import java.util.ArrayList;
 
@@ -36,12 +39,16 @@ public class FontListAdapter extends RecyclerView.Adapter<FontListAdapter.ViewHo
 
     private static ArrayList<String> fontNames;
     private static Context context;
+    private static boolean enableTrueFont;
+    private PreferencesManager prefs;
 
-    public FontListAdapter(Context context, ArrayList<String> fontNames) {
+    public FontListAdapter(Context context, ArrayList<String> fontNames, boolean enableTrueFont) {
         this.fontNames = fontNames;
         this.context = context;
+        this.enableTrueFont = enableTrueFont;
 
         setHasStableIds(true);
+        prefs = PreferencesManager.getInstance(context);
     }
 
     @Override
@@ -52,7 +59,13 @@ public class FontListAdapter extends RecyclerView.Adapter<FontListAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.fontName.setText(fontNames.get(position));
+        String currentFont = fontNames.get(position);
+
+        holder.fontName.setText(currentFont);
+
+        if (enableTrueFont) {
+            holder.fontName.setTypeface(new FontPackage(currentFont).getTypeface(Style.REGULAR));
+        }
     }
 
     @Override

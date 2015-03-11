@@ -23,10 +23,12 @@ import com.chromium.fontinstaller.BusProvider;
 import com.chromium.fontinstaller.events.DownloadCompleteEvent;
 import com.chromium.fontinstaller.models.Font;
 import com.chromium.fontinstaller.models.FontPackage;
+import com.chromium.fontinstaller.models.Style;
 import com.koushikdutta.ion.Ion;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 
 import timber.log.Timber;
 
@@ -38,18 +40,23 @@ public class FontDownloader {
     private FontPackage fontPackage;
     private Context context;
     private enum CompletionStatus {INCOMPLETE, COMPLETE, ERROR}
-    private HashMap<Font, CompletionStatus> hashMap = new HashMap<>(12);
+    private HashMap<Font, CompletionStatus> hashMap = new HashMap<>();
 
     public FontDownloader(FontPackage fontPackage, Context context) {
         this.fontPackage = fontPackage;
         this.context = context;
 
-        createCacheDir();
+        createCacheDir(fontPackage);
     }
 
-    public void download() {
+    public FontDownloader(Context context) {
+        this.context = context;
+    }
+
+    public void downloadAll() {
         for (Font font : fontPackage.getFontList()) {
             hashMap.put(font, CompletionStatus.INCOMPLETE);
+
             File file = new File(context.getExternalCacheDir() + File.separator +
                     fontPackage.getNameFormatted() + File.separator + font.getName());
 
@@ -60,14 +67,37 @@ public class FontDownloader {
                             hashMap.put(font, CompletionStatus.ERROR);
                         } else {
                             hashMap.put(font, CompletionStatus.COMPLETE);
-                            Timber.i("Download successful " + file);
+                            Timber.i("Download successful " + downloadedFile);
                         }
                     });
         }
         checkCompletion();
     }
 
-    private void createCacheDir() {
+    public void downloadFromList(List<FontPackage> fontPackages, Style style) {
+        for (FontPackage fontPackage : fontPackages) {
+            createCacheDir(fontPackage);
+
+            hashMap.put(fontPackage.getFont(style), CompletionStatus.INCOMPLETE);
+
+            File file = new File(context.getExternalCacheDir() + File.separator +
+                    fontPackage.getNameFormatted() + File.separator + style.getLocalName());
+
+            Ion.with(context).load(fontPackage.getFont(style).getUrl()).write(file)
+                    .setCallback((e, downloadedFile) -> {
+                        if (e != null) {
+                            Timber.i("Download failed " + e);
+                            hashMap.put(fontPackage.getFont(style), CompletionStatus.ERROR);
+                        } else {
+                            Timber.i("Download successful " + downloadedFile);
+                            hashMap.put(fontPackage.getFont(style), CompletionStatus.COMPLETE);
+                        }
+                    });
+        }
+        checkCompletion();
+    }
+
+    private void createCacheDir(FontPackage fontPackage) {
         File dir = new File(context.getExternalCacheDir() + File.separator + fontPackage.getNameFormatted());
         dir.mkdirs();
     }
@@ -81,7 +111,6 @@ public class FontDownloader {
 
     private void evaluateCompletionStatus() {
         if (hashMap.containsValue(CompletionStatus.ERROR)) {
-            //handleError();
             Timber.i("Download failed");
             BusProvider.getInstance().post(new DownloadCompleteEvent(false));
         } else {
