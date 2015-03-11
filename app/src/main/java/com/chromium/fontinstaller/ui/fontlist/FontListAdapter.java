@@ -18,6 +18,8 @@ package com.chromium.fontinstaller.ui.fontlist;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
+import android.support.v4.util.LruCache;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +30,7 @@ import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.models.FontPackage;
 import com.chromium.fontinstaller.models.Style;
 import com.chromium.fontinstaller.ui.fontinstall.FontActivity;
+import com.chromium.fontinstaller.util.FileUtils;
 import com.chromium.fontinstaller.util.PreferencesManager;
 
 import java.util.ArrayList;
@@ -37,10 +40,12 @@ import java.util.ArrayList;
  */
 public class FontListAdapter extends RecyclerView.Adapter<FontListAdapter.ViewHolder> {
 
+    private PreferencesManager prefs;
     private static ArrayList<String> fontNames;
     private static Context context;
     private static boolean enableTrueFont;
-    private PreferencesManager prefs;
+    private static LruCache<String, Typeface> fontCache;
+
 
     public FontListAdapter(Context context, ArrayList<String> fontNames, boolean enableTrueFont) {
         this.fontNames = fontNames;
@@ -49,6 +54,8 @@ public class FontListAdapter extends RecyclerView.Adapter<FontListAdapter.ViewHo
 
         setHasStableIds(true);
         prefs = PreferencesManager.getInstance(context);
+
+        fontCache = new LruCache<>(FileUtils.getMaxCacheSize(context));
     }
 
     @Override
@@ -59,12 +66,17 @@ public class FontListAdapter extends RecyclerView.Adapter<FontListAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        String currentFont = fontNames.get(position);
+        String currentFontName = fontNames.get(position);
 
-        holder.fontName.setText(currentFont);
+        holder.fontName.setText(currentFontName);
 
         if (enableTrueFont) {
-            holder.fontName.setTypeface(new FontPackage(currentFont).getTypeface(Style.REGULAR));
+            Typeface currentFont = fontCache.get(currentFontName);
+            if (currentFont == null) {
+                currentFont = new FontPackage(currentFontName).getTypeface(Style.REGULAR);
+                fontCache.put(currentFontName, currentFont);
+            }
+            holder.fontName.setTypeface(currentFont);
         }
     }
 

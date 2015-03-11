@@ -16,6 +16,7 @@
 
 package com.chromium.fontinstaller.util;
 
+import android.app.ActivityManager;
 import android.content.Context;
 
 import com.koushikdutta.ion.Ion;
@@ -27,5 +28,12 @@ public class FileUtils {
 
     public static void clearIonCache(Context context) {
         Ion.getDefault(context).configure().getResponseCache().clear();
+    }
+
+    public static int getMaxCacheSize(Context context) {
+        int memClass = ((ActivityManager)
+                context.getSystemService(Context.ACTIVITY_SERVICE)).getMemoryClass();
+
+        return 1024 * 1024 * memClass / 8;
     }
 }

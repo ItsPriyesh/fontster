@@ -54,7 +54,6 @@ public class FontListFragment extends Fragment {
     private FontListAdapter listAdapter;
     private RecyclerView.LayoutManager listManager;
     private ArrayList<String> fontList = new ArrayList<>();
-    ;
     private Activity activity;
     private PreferencesManager prefs;
 
@@ -102,18 +101,6 @@ public class FontListFragment extends Fragment {
         else Timber.i("FAILED TO GET ALL FONTS");
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        BusProvider.getInstance().register(this);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        BusProvider.getInstance().unregister(this);
-    }
-
     private StickyHeadersItemDecoration buildHeaderDecor() {
         return new StickyHeadersBuilder()
                 .setAdapter(listAdapter)
@@ -134,8 +121,16 @@ public class FontListFragment extends Fragment {
         }
     }
 
-    public FontListAdapter getAdapter() {
-        return listAdapter;
+    @Override
+    public void onResume() {
+        super.onResume();
+        BusProvider.getInstance().register(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        BusProvider.getInstance().unregister(this);
     }
 
 }
