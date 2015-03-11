@@ -16,32 +16,63 @@
 
 package com.chromium.fontinstaller.ui.settings;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 
+import com.chromium.fontinstaller.BuildConfig;
 import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.util.Licenses;
+import com.chromium.fontinstaller.util.PreferencesManager;
 
 import de.psdev.licensesdialog.LicensesDialog;
 
 public class SettingsFragment extends PreferenceFragment {
+
+    private PreferencesManager prefs;
+
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.settings);
 
+        prefs = PreferencesManager.getInstance(getActivity());
+
+        CheckBoxPreference trueFont = (CheckBoxPreference) findPreference("trueFont");
+        trueFont.setOnPreferenceChangeListener((pref, newValue) -> handleTrueFont(newValue));
+
+        Preference source = findPreference("viewSource");
+        source.setOnPreferenceClickListener(pref -> viewSource());
+
         Preference licenses = findPreference("licenses");
-        licenses.setOnPreferenceClickListener(pref -> {
-            openLicensesDialog();
-            return true;
-        });
+        licenses.setOnPreferenceClickListener(pref -> openLicensesDialog());
+
+        Preference appVersion = findPreference("appVersion");
+        appVersion.setSummary(BuildConfig.VERSION_NAME + " - " + BuildConfig.BUILD_TYPE);
     }
 
-    private void openLicensesDialog() {
+    private boolean handleTrueFont(Object newValue) {
+        prefs.setBoolean(PreferencesManager.KEY_TRUE_FONT, (boolean) newValue);
+        return true;
+    }
+
+    private boolean viewSource() {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.addCategory(Intent.CATEGORY_BROWSABLE);
+        intent.setData(Uri.parse("https://github.com/ItsPriyesh/FontInstaller"));
+        startActivity(intent);
+        return true;
+    }
+
+    private boolean openLicensesDialog() {
         new LicensesDialog.Builder(getActivity())
                 .setNotices(Licenses.getNotices())
                 .build().show();
+        return true;
     }
 }
 

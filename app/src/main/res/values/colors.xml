@@ -21,7 +21,7 @@
     <color name="primary_accent">#f67b14</color>
     <color name="secondary_accent">#ff3cd458</color>
 
-    <color name="background_dark">#2F383F</color>
+    <color name="background_dark">#dddddd</color>
 
     <color name="dialog_button_color">#0099F1</color>
     <color name="dark_grey">#757575</color>

@@ -16,8 +16,7 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
-        maven {
-            url 'https://github.com/tvbarthel/maven/raw/master/'
-        }
+        maven { url 'https://github.com/tvbarthel/maven/raw/master/' }
+        maven { url 'http://dl.bintray.com/amulyakhare/maven' }
     }
 }
