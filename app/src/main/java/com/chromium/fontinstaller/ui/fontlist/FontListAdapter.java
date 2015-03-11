@@ -31,7 +31,6 @@ import com.chromium.fontinstaller.models.FontPackage;
 import com.chromium.fontinstaller.models.Style;
 import com.chromium.fontinstaller.ui.fontinstall.FontActivity;
 import com.chromium.fontinstaller.util.FileUtils;
-import com.chromium.fontinstaller.util.PreferencesManager;
 
 import java.util.ArrayList;
 
@@ -40,20 +39,15 @@ import java.util.ArrayList;
  */
 public class FontListAdapter extends RecyclerView.Adapter<FontListAdapter.ViewHolder> {
 
-    private PreferencesManager prefs;
+    private boolean enableTrueFont;
     private static ArrayList<String> fontNames;
-    private static Context context;
-    private static boolean enableTrueFont;
     private static LruCache<String, Typeface> fontCache;
-
 
     public FontListAdapter(Context context, ArrayList<String> fontNames, boolean enableTrueFont) {
         this.fontNames = fontNames;
-        this.context = context;
         this.enableTrueFont = enableTrueFont;
 
         setHasStableIds(true);
-        prefs = PreferencesManager.getInstance(context);
 
         fontCache = new LruCache<>(FileUtils.getMaxCacheSize(context));
     }
@@ -101,9 +95,9 @@ public class FontListAdapter extends RecyclerView.Adapter<FontListAdapter.ViewHo
 
         @Override
         public void onClick(View view) {
-            Intent intent = new Intent(context, FontActivity.class);
+            Intent intent = new Intent(view.getContext(), FontActivity.class);
             intent.putExtra("FONT_NAME", fontNames.get(getPosition()));
-            context.startActivity(intent);
+            view.getContext().startActivity(intent);
         }
     }
 }

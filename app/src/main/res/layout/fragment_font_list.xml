@@ -21,6 +21,7 @@
     tools:context="com.chromium.fontinstaller.ui.fontlist.FontListFragment">
 
     <android.support.v7.widget.RecyclerView
+        android:visibility="invisible"
         android:id="@+id/font_list_view"
         android:layout_below="@id/app_bar"
         android:layout_width="match_parent"
@@ -29,6 +30,43 @@
         android:clipToPadding="false"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
-        android:scrollbars="vertical"/>
+        android:scrollbars="vertical" />
 
+    <ProgressBar
+        android:visibility="invisible"
+        android:id="@+id/download_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
+
+    <LinearLayout
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:id="@+id/error_container"
+        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/sad_cloud" />
+
+        <TextView
+            android:textSize="12dp"
+            android:fontFamily="sans-serif-light"
+            android:text="Fontster was unable to download the fonts"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/retry"
+            android:text="Retry"
+            style="?android:attr/borderlessButtonStyle"
+            android:textColor="@color/primary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 </RelativeLayout>

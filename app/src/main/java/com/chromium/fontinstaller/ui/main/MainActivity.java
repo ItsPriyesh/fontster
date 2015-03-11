@@ -29,6 +29,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import com.chromium.fontinstaller.BuildConfig;
 import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.ui.common.BaseActivity;
 import com.chromium.fontinstaller.ui.fontlist.FontListFragment;
@@ -65,7 +66,7 @@ public class MainActivity extends BaseActivity {
 
         initializeAd(adView);
 
-        RootUtils.requestAccess();
+        if (!BuildConfig.DEBUG) RootUtils.requestAccess();
 
         drawerToggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);

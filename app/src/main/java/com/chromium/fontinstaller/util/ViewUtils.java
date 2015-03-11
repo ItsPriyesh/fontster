@@ -47,6 +47,8 @@ public class ViewUtils {
         anim.start();
     }
 
+    //TODO remove setvisibilty
+
     public static void animCenterGrowIn(View view, Context context) {
         view.startAnimation(AnimationUtils.loadAnimation(context, R.anim.grow_from_center));
         view.setVisibility(View.VISIBLE);
@@ -64,5 +66,9 @@ public class ViewUtils {
 
     public static void animSlideUp(View view, Context context) {
         view.startAnimation(AnimationUtils.loadAnimation(context, R.anim.abc_slide_out_top));
+    }
+
+    public static void animFadeIn(View view, Context context) {
+        view.startAnimation(AnimationUtils.loadAnimation(context, R.anim.abc_fade_in));
     }
 }
