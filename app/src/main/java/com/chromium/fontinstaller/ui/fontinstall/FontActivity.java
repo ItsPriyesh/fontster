@@ -121,7 +121,8 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
 
         new Handler().postDelayed(() -> {
             hideGone(downloadProgress);
-            ViewUtils.animSlideBottomIn(errorContainer, this);
+
+            ViewUtils.animSlideInBottom(errorContainer, this);
             show(errorContainer);
         }, 400);
     }
@@ -143,14 +144,19 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
         new Handler().postDelayed(() -> {
             hideGone(downloadProgress);
 
-            ViewUtils.animSlideBottomIn(slidingTabLayout, this);
+            ViewUtils.animSlideInBottom(slidingTabLayout, this);
+            show(slidingTabLayout);
+
             ViewUtils.animCenterRevealIn(previewPager);
-            ViewUtils.animCenterGrowIn(installButton, this);
+
+            ViewUtils.animGrowFromCenter(installButton, this);
+            show(installButton);
+
         }, 400);
     }
 
     private void startInstall() {
-        ViewUtils.animCenterGrowIn(installProgress, this);
+        ViewUtils.animGrowFromCenter(installProgress, this);
         show(installProgress);
 
         // FontInstaller fontInstaller = new FontInstaller(fontPackage, this);
@@ -189,10 +195,15 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
     @Subscribe
     public void onInstallComplete(InstallCompleteEvent event) {
         new Handler().postDelayed(() -> {
-            ViewUtils.animateShrinkToCenter(installProgress, this);
+            ViewUtils.animShrinkToCenter(installProgress, this);
+            hide(installProgress);
+
             installButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_done_white));
             installButton.setColorNormal(getResources().getColor(R.color.secondary_accent));
-            ViewUtils.animCenterGrowIn(installButton, this);
+
+            ViewUtils.animGrowFromCenter(installButton, this);
+            show(installButton);
+
             new Handler().postDelayed(() -> AlertUtils.showRebootAlert(this), 500);
         }, 1000);
     }

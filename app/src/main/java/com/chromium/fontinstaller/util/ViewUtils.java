@@ -47,21 +47,16 @@ public class ViewUtils {
         anim.start();
     }
 
-    //TODO remove setvisibilty
-
-    public static void animCenterGrowIn(View view, Context context) {
+    public static void animGrowFromCenter(View view, Context context) {
         view.startAnimation(AnimationUtils.loadAnimation(context, R.anim.grow_from_center));
-        view.setVisibility(View.VISIBLE);
     }
 
-    public static void animateShrinkToCenter(View view, Context context) {
+    public static void animShrinkToCenter(View view, Context context) {
         view.startAnimation(AnimationUtils.loadAnimation(context, R.anim.shrink_to_center));
-        view.setVisibility(View.INVISIBLE);
     }
 
-    public static void animSlideBottomIn(View view, Context context) {
+    public static void animSlideInBottom(View view, Context context) {
         view.startAnimation(AnimationUtils.loadAnimation(context, R.anim.abc_slide_in_bottom));
-        view.setVisibility(View.VISIBLE);
     }
 
     public static void animSlideUp(View view, Context context) {

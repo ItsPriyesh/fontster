@@ -84,6 +84,6 @@ public class PreviewFragment extends Fragment {
             previewText.setText(alphabetUpper);
             upperCase = true;
         }
-        ViewUtils.animSlideBottomIn(previewText, getActivity());
+        ViewUtils.animSlideInBottom(previewText, getActivity());
     }
 }

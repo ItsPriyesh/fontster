@@ -127,7 +127,7 @@ public class FontListFragment extends Fragment {
         new Handler().postDelayed(() -> {
             downloadProgress.setVisibility(View.INVISIBLE);
 
-            ViewUtils.animSlideBottomIn(errorContainer, getActivity());
+            ViewUtils.animSlideInBottom(errorContainer, getActivity());
             errorContainer.setVisibility(View.VISIBLE);
         }, 400);
     }
