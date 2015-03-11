@@ -16,15 +16,18 @@
 
 package com.chromium.fontinstaller.ui.settings;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.support.v4.app.ActivityCompat;
 
 import com.chromium.fontinstaller.BuildConfig;
 import com.chromium.fontinstaller.R;
+import com.chromium.fontinstaller.ui.main.MainActivity;
 import com.chromium.fontinstaller.util.Licenses;
 import com.chromium.fontinstaller.util.PreferencesManager;
 
@@ -56,6 +59,7 @@ public class SettingsFragment extends PreferenceFragment {
 
     private boolean handleTrueFont(Object newValue) {
         prefs.setBoolean(PreferencesManager.KEY_ENABLE_TRUEFONT, (boolean) newValue);
+        showRestartDialog();
         return true;
     }
 
@@ -73,6 +77,18 @@ public class SettingsFragment extends PreferenceFragment {
                 .setNotices(Licenses.getNotices())
                 .build().show();
         return true;
+    }
+
+    private void showRestartDialog() {
+        new AlertDialog.Builder(getActivity())
+                .setMessage("Restart the app for the change to take effect.")
+                .setPositiveButton("Restart", (dialog, id) -> restartApp())
+                .create().show();
+    }
+
+    private void restartApp() {
+        ActivityCompat.finishAffinity(getActivity());
+        startActivity(new Intent(getActivity(), MainActivity.class));
     }
 }
 
