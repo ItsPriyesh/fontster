@@ -60,16 +60,20 @@ public class FontDownloader {
             File file = new File(context.getExternalCacheDir() + File.separator +
                     fontPackage.getNameFormatted() + File.separator + font.getName());
 
-            Ion.with(context).load(font.getUrl()).write(file)
-                    .setCallback((e, downloadedFile) -> {
-                        if (e != null) {
-                            Timber.i("Download failed " + e);
-                            hashMap.put(font, CompletionStatus.ERROR);
-                        } else {
-                            hashMap.put(font, CompletionStatus.COMPLETE);
-                            Timber.i("Download successful " + downloadedFile);
-                        }
-                    });
+            if (!file.exists()) {
+                Ion.with(context).load(font.getUrl()).write(file)
+                        .setCallback((e, downloadedFile) -> {
+                            if (e != null) {
+                                Timber.i("Download failed " + e);
+                                hashMap.put(font, CompletionStatus.ERROR);
+                            } else {
+                                hashMap.put(font, CompletionStatus.COMPLETE);
+                                Timber.i("Download successful " + downloadedFile);
+                            }
+                        });
+            } else {
+                hashMap.put(font, CompletionStatus.COMPLETE);
+            }
         }
         checkCompletion();
     }
@@ -83,22 +87,27 @@ public class FontDownloader {
             File file = new File(context.getExternalCacheDir() + File.separator +
                     fontPackage.getNameFormatted() + File.separator + style.getLocalName());
 
-            Ion.with(context).load(fontPackage.getFont(style).getUrl()).write(file)
-                    .setCallback((e, downloadedFile) -> {
-                        if (e != null) {
-                            Timber.i("Download failed " + e);
-                            hashMap.put(fontPackage.getFont(style), CompletionStatus.ERROR);
-                        } else {
-                            Timber.i("Download successful " + downloadedFile);
-                            hashMap.put(fontPackage.getFont(style), CompletionStatus.COMPLETE);
-                        }
-                    });
+            if (!file.exists()) {
+                Ion.with(context).load(fontPackage.getFont(style).getUrl()).write(file)
+                        .setCallback((e, downloadedFile) -> {
+                            if (e != null) {
+                                Timber.i("Download failed " + e);
+                                hashMap.put(fontPackage.getFont(style), CompletionStatus.ERROR);
+                            } else {
+                                Timber.i("Download successful " + downloadedFile);
+                                hashMap.put(fontPackage.getFont(style), CompletionStatus.COMPLETE);
+                            }
+                        });
+            } else {
+                hashMap.put(fontPackage.getFont(style), CompletionStatus.COMPLETE);
+            }
         }
         checkCompletion();
     }
 
     private void createCacheDir(FontPackage fontPackage) {
-        File dir = new File(context.getExternalCacheDir() + File.separator + fontPackage.getNameFormatted());
+        File dir = new File(context.getExternalCacheDir() +
+                File.separator + fontPackage.getNameFormatted());
         dir.mkdirs();
     }
 
