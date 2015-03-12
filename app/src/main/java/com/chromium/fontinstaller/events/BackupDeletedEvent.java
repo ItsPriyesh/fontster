@@ -17,22 +17,7 @@
 package com.chromium.fontinstaller.events;
 
 /**
- * Created by priyeshpatel on 15-02-16.
+ * Created by priyeshpatel on 15-03-12.
  */
-public class BackupCompleteEvent extends Event {
-    private String backupName;
-    private String date;
-
-    public BackupCompleteEvent(String backupName, String date) {
-        this.backupName = backupName;
-        this.date = date;
-    }
-
-    public String getBackupName() {
-        return backupName;
-    }
-
-    public String getDate() {
-        return date;
-    }
+public class BackupDeletedEvent extends Event{
 }

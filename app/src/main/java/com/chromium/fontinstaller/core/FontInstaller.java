@@ -36,7 +36,7 @@ public class FontInstaller {
     private Context context;
     private List<String> copyCommands = new ArrayList<>();
 
-    public static final String FONT_INSTALL_DIR = "/system/fonts";
+    private static final String FONT_INSTALL_DIR = "/system/fonts";
     public static final String CACHE_DIR = "/sdcard/Android/data/com.chromium.fontinstaller/cache/";
 
     public FontInstaller(FontPackage fontPackage, Context context) {

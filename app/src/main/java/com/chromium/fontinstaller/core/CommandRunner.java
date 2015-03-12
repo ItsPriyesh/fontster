@@ -44,6 +44,8 @@ public class CommandRunner extends AsyncTask<String, Void, Void> {
 
     @Override
     protected Void doInBackground(String... commands) {
+        for (String command : commands) Timber.i(command);
+
         Shell.SU.run(MOUNT_SYSTEM);
         Shell.SU.run(commands);
 
@@ -52,6 +54,7 @@ public class CommandRunner extends AsyncTask<String, Void, Void> {
 
     @Override
     protected void onPostExecute(Void v) {
+        Timber.i("CommandTask complete");
         BusProvider.getInstance().post(onCompleteEvent);
     }
 

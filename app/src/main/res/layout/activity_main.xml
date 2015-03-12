@@ -43,6 +43,7 @@
 
             <com.google.android.gms.ads.AdView
                 android:id="@id/adView"
+                android:background="@color/primary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"

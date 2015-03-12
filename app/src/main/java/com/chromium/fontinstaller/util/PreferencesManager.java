@@ -25,7 +25,9 @@ import android.content.SharedPreferences;
 public class PreferencesManager {
     private static final String PREFS_NAME = "com.chromium.fontinstaller.PREFS";
 
-    public static final String KEY_ENABLE_TRUEFONT = "true_font";
+    public static final String KEY_ENABLE_TRUEFONT = "1";
+    public static final String KEY_BACKUP_NAME = "2";
+    public static final String KEY_BACKUP_DATE = "3";
 
     private static SharedPreferences sharedPreferences = null;
     private static PreferencesManager prefsManager = null;
