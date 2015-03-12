@@ -30,6 +30,8 @@ import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.core.BackupManager;
 import com.chromium.fontinstaller.events.BackupCompleteEvent;
 import com.chromium.fontinstaller.events.BackupDeletedEvent;
+import com.chromium.fontinstaller.events.RestoreCompleteTask;
+import com.chromium.fontinstaller.util.AlertUtils;
 import com.chromium.fontinstaller.util.PreferencesManager;
 import com.chromium.fontinstaller.util.ViewUtils;
 import com.squareup.otto.Subscribe;
@@ -37,7 +39,6 @@ import com.squareup.otto.Subscribe;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import timber.log.Timber;
 
 public class BackupRestoreFragment extends Fragment {
 
@@ -108,7 +109,7 @@ public class BackupRestoreFragment extends Fragment {
                 .setItems(new String[] {"Restore", "Delete"}, (dialog, index) -> {
                     switch (index) {
                         case 0:
-                            Timber.i("Restore");
+                            backupManager.restore();
                             break;
                         case 1:
                             backupManager.deleteBackup();
@@ -136,6 +137,11 @@ public class BackupRestoreFragment extends Fragment {
     @Subscribe
     public void onBackupDeleted(BackupDeletedEvent event) {
         checkForBackup();
+    }
+
+    @Subscribe
+    public void onRestoreComplete(RestoreCompleteTask event) {
+        AlertUtils.showRebootAlert(getActivity());
     }
 
     @Override

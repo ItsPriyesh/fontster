@@ -18,11 +18,16 @@ package com.chromium.fontinstaller.core;
 
 import com.chromium.fontinstaller.events.BackupCompleteEvent;
 import com.chromium.fontinstaller.events.BackupDeletedEvent;
+import com.chromium.fontinstaller.events.RestoreCompleteTask;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+
+import eu.chainfire.libsuperuser.Shell;
 
 /**
  * Created by priyeshpatel on 15-03-12.
@@ -34,7 +39,7 @@ public class BackupManager {
     private final Date currentDate = Calendar.getInstance().getTime();
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy");
 
-    private static final String SOURCE_DIR = "/system/fonts";
+    private static final String SOURCE_DIR = "/system/fonts/";
     private static final String BACKUP_DIR = "/sdcard/Android/data/com.chromium.fontinstaller/cache/Backup/";
 
     public BackupManager() {
@@ -51,11 +56,20 @@ public class BackupManager {
         BackupCompleteEvent event = new BackupCompleteEvent(name, dateFormat.format(currentDate));
 
         CommandRunner backupTask = new CommandRunner(event);
-        backupTask.execute("cp -R " + SOURCE_DIR + " " + BACKUP_DIR);
+        backupTask.execute("cp -R " + SOURCE_DIR + ". " + BACKUP_DIR);
     }
 
     public void restore() {
+        if (Shell.SU.available()) {
+            List<String> restoreCommands = new ArrayList<>();
 
+            for (File file : backupDirectory.listFiles()) {
+                restoreCommands.add("cp " + file.getAbsolutePath() + " " + SOURCE_DIR);
+            }
+
+            CommandRunner restoreTask = new CommandRunner(new RestoreCompleteTask());
+            restoreTask.execute(restoreCommands.toArray(new String[restoreCommands.size()]));
+        }
     }
 
     public void deleteBackup() {
