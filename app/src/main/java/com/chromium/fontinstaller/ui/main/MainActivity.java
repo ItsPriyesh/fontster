@@ -31,6 +31,7 @@ import android.widget.ListView;
 
 import com.chromium.fontinstaller.BuildConfig;
 import com.chromium.fontinstaller.R;
+import com.chromium.fontinstaller.ui.backuprestore.BackupRestoreFragment;
 import com.chromium.fontinstaller.ui.common.BaseActivity;
 import com.chromium.fontinstaller.ui.fontlist.FontListFragment;
 import com.chromium.fontinstaller.ui.settings.SettingsActivity;
@@ -57,6 +58,7 @@ public class MainActivity extends BaseActivity {
     private ActionBarDrawerToggle drawerToggle;
     private FragmentManager fragmentManager;
     private FontListFragment fontListFragment;
+    private BackupRestoreFragment backupRestoreFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,9 +78,9 @@ public class MainActivity extends BaseActivity {
 
         fragmentManager = getSupportFragmentManager();
         fontListFragment = new FontListFragment();
+        backupRestoreFragment = new BackupRestoreFragment();
 
         swapFragment(fontListFragment);
-
     }
 
     private Drawable getDrawableFromArray(int position, String... array) {
@@ -109,6 +111,7 @@ public class MainActivity extends BaseActivity {
                 swapFragment(fontListFragment);
                 break;
             case 1:
+                swapFragment(backupRestoreFragment);
                 break;
             case 2:
                 startActivity(new Intent(this, SettingsActivity.class));

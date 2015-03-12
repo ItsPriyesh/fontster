@@ -19,5 +19,5 @@ package com.chromium.fontinstaller.events;
 /**
  * Created by priyeshpatel on 15-02-16.
  */
-public class InstallCompleteEvent {
+public class InstallCompleteEvent extends Event {
 }

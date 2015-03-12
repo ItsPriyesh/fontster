@@ -17,16 +17,8 @@
 package com.chromium.fontinstaller.events;
 
 /**
- * Created by priyeshpatel on 15-02-10.
+ * Created by priyeshpatel on 15-03-11.
  */
-public class DownloadCompleteEvent extends Event {
-    private boolean success = false;
-
-    public DownloadCompleteEvent(boolean success) {
-        this.success = success;
-    }
-
-    public boolean wasSuccessful() {
-        return success;
-    }
+public class Event {
+    // Super class for all other events
 }

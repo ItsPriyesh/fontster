@@ -18,6 +18,7 @@ package com.chromium.fontinstaller.core;
 
 import android.content.Context;
 
+import com.chromium.fontinstaller.events.InstallCompleteEvent;
 import com.chromium.fontinstaller.models.Font;
 import com.chromium.fontinstaller.models.FontPackage;
 
@@ -51,7 +52,7 @@ public class FontInstaller {
                         File.separator + font.getName() + " " + FONT_INSTALL_DIR);
             }
 
-            InstallTask installTask = new InstallTask(context);
+            CommandRunner installTask = new CommandRunner(new InstallCompleteEvent());
             installTask.execute(copyCommands.toArray(new String[copyCommands.size()]));
         }
     }

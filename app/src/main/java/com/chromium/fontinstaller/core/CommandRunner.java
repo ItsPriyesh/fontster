@@ -16,34 +16,30 @@
 
 package com.chromium.fontinstaller.core;
 
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.AsyncTask;
 
 import com.chromium.fontinstaller.BusProvider;
-import com.chromium.fontinstaller.events.InstallCompleteEvent;
+import com.chromium.fontinstaller.events.Event;
 
 import eu.chainfire.libsuperuser.Shell;
+import timber.log.Timber;
 
 /**
  * Created by priyeshpatel on 15-02-16.
  */
-public class InstallTask extends AsyncTask<String, Void, Void> {
+public class CommandRunner extends AsyncTask<String, Void, Void> {
 
-    private Context context;
-    private ProgressDialog installProgress;
+    private Event onCompleteEvent;
 
     public static final String MOUNT_SYSTEM = "mount -o rw,remount /system";
 
-    public InstallTask(Context context) {
-        this.context = context;
+    public CommandRunner(Event onCompleteEvent) {
+        this.onCompleteEvent = onCompleteEvent;
     }
 
     @Override
     protected void onPreExecute() {
-        installProgress = new ProgressDialog(context);
-        installProgress.setMessage("Installing");
-        installProgress.show();
+        Timber.i("CommandTask started");
     }
 
     @Override
@@ -56,8 +52,7 @@ public class InstallTask extends AsyncTask<String, Void, Void> {
 
     @Override
     protected void onPostExecute(Void v) {
-        installProgress.dismiss();
-        BusProvider.getInstance().post(new InstallCompleteEvent());
+        BusProvider.getInstance().post(onCompleteEvent);
     }
 
 }
