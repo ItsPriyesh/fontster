@@ -181,22 +181,26 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
         }
     }
 
+    @SuppressWarnings("unused")
     @OnClick(R.id.install_fab)
     public void installButtonClicked() {
         startInstall();
     }
 
+    @SuppressWarnings("unused")
     @OnClick(R.id.retry)
     public void retryButtonClicked() {
         startDownload();
     }
 
+    @SuppressWarnings("unused")
     @Subscribe
     public void onDownloadComplete(DownloadCompleteEvent event) {
         if (event.wasSuccessful()) setupPager();
         else handleFailedDownload();
     }
 
+    @SuppressWarnings("unused")
     @Subscribe
     public void onInstallComplete(InstallCompleteEvent event) {
         new Handler().postDelayed(() -> {

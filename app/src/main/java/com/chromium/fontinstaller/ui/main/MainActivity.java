@@ -105,6 +105,7 @@ public class MainActivity extends BaseActivity {
         fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
     }
 
+    @SuppressWarnings("unused")
     @OnItemClick(R.id.drawer_list)
     public void onNavItemClicked(int position) {
         switch (position) {

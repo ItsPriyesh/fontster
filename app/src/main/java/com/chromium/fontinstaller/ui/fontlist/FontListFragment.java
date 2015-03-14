@@ -131,11 +131,13 @@ public class FontListFragment extends Fragment {
         }, 400);
     }
 
+    @SuppressWarnings("unused")
     @OnClick(R.id.retry)
     public void retryButtonClicked() {
         downloadFontList();
     }
 
+    @SuppressWarnings("unused")
     @Subscribe
     public void onDownloadFontListComplete(DownloadCompleteEvent event) {
         if (event.wasSuccessful()) handleDownloadSuccess();

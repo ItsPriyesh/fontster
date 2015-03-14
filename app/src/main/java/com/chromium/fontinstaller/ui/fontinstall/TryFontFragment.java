@@ -69,6 +69,7 @@ public class TryFontFragment extends SupportBlurDialogFragment {
         return view;
     }
 
+    @SuppressWarnings("unused")
     @OnClick(R.id.done_button)
     public void doneButtonClicked() {
         dismiss();

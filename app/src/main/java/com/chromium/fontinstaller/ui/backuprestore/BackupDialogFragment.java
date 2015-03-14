@@ -60,6 +60,7 @@ public class BackupDialogFragment extends SupportBlurDialogFragment {
         return view;
     }
 
+    @SuppressWarnings("unused")
     @OnClick(R.id.backup_button)
     public void backupButtonClicked() {
         if (input.getText().toString().equals("")) {
@@ -71,6 +72,7 @@ public class BackupDialogFragment extends SupportBlurDialogFragment {
         }
     }
 
+    @SuppressWarnings("unused")
     @OnClick(R.id.cancel_button)
     public void cancelButtonClicked() {
         dismiss();

@@ -103,6 +103,7 @@ public class BackupRestoreFragment extends Fragment {
         backupDate.setText(prefs.getString(PreferencesManager.KEY_BACKUP_DATE));
     }
 
+    @SuppressWarnings("unused")
     @OnClick(R.id.backup_available_container)
     public void backupContainerClicked() {
         new AlertDialog.Builder(getActivity())
@@ -119,6 +120,7 @@ public class BackupRestoreFragment extends Fragment {
                 .create().show();
     }
 
+    @SuppressWarnings("unused")
     @OnClick(R.id.backup_fab)
     public void backupFabClicked() {
         BackupDialogFragment backupDialog = new BackupDialogFragment();
@@ -126,6 +128,7 @@ public class BackupRestoreFragment extends Fragment {
         backupDialog.setOnBackupClickedListener(backupName -> backupManager.backup(backupName));
     }
 
+    @SuppressWarnings("unused")
     @Subscribe
     public void onBackupComplete(BackupCompleteEvent event) {
         prefs.setString(PreferencesManager.KEY_BACKUP_NAME, event.getBackupName());
@@ -134,11 +137,13 @@ public class BackupRestoreFragment extends Fragment {
         checkForBackup();
     }
 
+    @SuppressWarnings("unused")
     @Subscribe
     public void onBackupDeleted(BackupDeletedEvent event) {
         checkForBackup();
     }
 
+    @SuppressWarnings("unused")
     @Subscribe
     public void onRestoreComplete(RestoreCompleteTask event) {
         AlertUtils.showRebootAlert(getActivity());
