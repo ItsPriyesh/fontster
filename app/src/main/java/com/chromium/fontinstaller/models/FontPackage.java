@@ -17,6 +17,8 @@
 package com.chromium.fontinstaller.models;
 
 import android.graphics.Typeface;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.chromium.fontinstaller.core.FontInstaller;
 
@@ -27,7 +29,7 @@ import java.util.HashMap;
 /**
  * Created by priyeshpatel on 15-02-06.
  */
-public class FontPackage {
+public class FontPackage implements Parcelable {
     private String name;
     private String nameFormatted;
     private HashMap<Font, Style> fontList = new HashMap<>();
@@ -73,4 +75,35 @@ public class FontPackage {
         return null;
     }
 
+
+    protected FontPackage(Parcel in) {
+        name = in.readString();
+        nameFormatted = in.readString();
+        fontList = (HashMap) in.readValue(HashMap.class.getClassLoader());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeString(nameFormatted);
+        dest.writeValue(fontList);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<FontPackage> CREATOR = new Parcelable.Creator<FontPackage>() {
+        @Override
+        public FontPackage createFromParcel(Parcel in) {
+            return new FontPackage(in);
+        }
+
+        @Override
+        public FontPackage[] newArray(int size) {
+            return new FontPackage[size];
+        }
+    };
 }

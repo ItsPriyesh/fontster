@@ -16,10 +16,13 @@
 
 package com.chromium.fontinstaller.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by priyeshpatel on 15-02-07.
  */
-public class Font {
+public class Font implements Parcelable {
     private Style style;
     private String url;
 
@@ -36,4 +39,33 @@ public class Font {
         return url;
     }
 
+
+    protected Font(Parcel in) {
+        style = (Style) in.readValue(Style.class.getClassLoader());
+        url = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(style);
+        dest.writeString(url);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Font> CREATOR = new Parcelable.Creator<Font>() {
+        @Override
+        public Font createFromParcel(Parcel in) {
+            return new Font(in);
+        }
+
+        @Override
+        public Font[] newArray(int size) {
+            return new Font[size];
+        }
+    };
 }

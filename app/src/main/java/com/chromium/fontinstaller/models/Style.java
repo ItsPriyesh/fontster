@@ -16,10 +16,13 @@
 
 package com.chromium.fontinstaller.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by priyeshpatel on 15-02-23.
  */
-public enum Style {
+public enum Style implements Parcelable{
     BOLD,
     BOLD_ITALIC,
     ITALIC,
@@ -109,4 +112,26 @@ public enum Style {
     public String getLocalName() {
         return this.toString();
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(final Parcel dest, final int flags) {
+        dest.writeInt(ordinal());
+    }
+
+    public static final Creator<Style> CREATOR = new Creator<Style>() {
+        @Override
+        public Style createFromParcel(final Parcel source) {
+            return Style.values()[source.readInt()];
+        }
+
+        @Override
+        public Style[] newArray(final int size) {
+            return new Style[size];
+        }
+    };
 }

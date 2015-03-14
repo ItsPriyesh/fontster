@@ -12,19 +12,16 @@
   ~ distributed under the License is distributed on an "AS IS" BASIS,
   ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   ~ See the License for the specific language governing permissions and
-  ~ limitations under the License. 3F51B5 303F9F FDD835 FFFE93
+  ~ limitations under the License.
   -->
 
 <resources>
     <color name="primary">#2F383F</color>
-    <color name="primary_dark">#ff2a3239</color>
+    <color name="primary_dark">#262D32</color>
     <color name="primary_accent">#f67b14</color>
-    <color name="secondary_accent">#ff3cd458</color>
+    <color name="secondary_accent">#009688</color>
 
     <color name="background_dark">#dddddd</color>
-
-    <color name="dialog_button_color">#0099F1</color>
-    <color name="dark_grey">#757575</color>
 
     <color name="white_0_opacity">#00FFFFFF</color>
     <color name="white_5_opacity">#0DFFFFFF</color>

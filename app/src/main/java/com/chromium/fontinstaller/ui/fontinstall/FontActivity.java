@@ -78,14 +78,18 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
     private PreviewFragment[] previewPages = new PreviewFragment[3];
     private final String[] tabTitles = {"Regular", "Bold", "Italic"};
 
+    public static final String FONT_NAME = "fontName";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_font);
         disableToolbarElevation();
         showToolbarBackButton();
 
-        fontName = getIntent().getStringExtra("FONT_NAME");
+        fontName = getIntent().getStringExtra(FONT_NAME);
+
         fontPackage = new FontPackage(fontName);
         startDownload();
 
@@ -100,6 +104,7 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
         regularFragment = PreviewFragment.newInstance(fontPackage, Style.REGULAR);
         boldFragment = PreviewFragment.newInstance(fontPackage, Style.BOLD);
         italicFragment = PreviewFragment.newInstance(fontPackage, Style.ITALIC);
+
 
         previewPages[0] = regularFragment;
         previewPages[1] = boldFragment;
@@ -205,7 +210,7 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
             show(installButton);
 
             new Handler().postDelayed(() -> AlertUtils.showRebootAlert(this), 500);
-        }, 1000);
+        }, 2000);
     }
 
     @Override
@@ -260,6 +265,13 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
         }
 
         @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            PreviewFragment fragment = (PreviewFragment) super.instantiateItem(container, position);
+            previewPages[position] = fragment;
+            return fragment;
+        }
+
+        @Override
         public Fragment getItem(int position) {
             return previewPages[position];
         }
@@ -271,7 +283,7 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
 
         @Override
         public int getCount() {
-            return 3;
+            return previewPages.length;
         }
     }
 }

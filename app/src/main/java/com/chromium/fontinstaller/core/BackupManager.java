@@ -79,7 +79,6 @@ public class BackupManager {
 
     public boolean backupExists() {
         if (backupDirectory.listFiles() == null) return false;
-        else if (backupDirectory.listFiles().length == 0) return false;
-        else return true;
+        else return backupDirectory.listFiles().length != 0;
     }
 }

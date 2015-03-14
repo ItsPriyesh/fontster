@@ -31,6 +31,7 @@ import android.widget.ListView;
 
 import com.chromium.fontinstaller.BuildConfig;
 import com.chromium.fontinstaller.R;
+import com.chromium.fontinstaller.models.NavDrawerItem;
 import com.chromium.fontinstaller.ui.backuprestore.BackupRestoreFragment;
 import com.chromium.fontinstaller.ui.common.BaseActivity;
 import com.chromium.fontinstaller.ui.fontlist.FontListFragment;

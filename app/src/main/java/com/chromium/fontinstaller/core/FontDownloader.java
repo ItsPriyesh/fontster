@@ -120,10 +120,10 @@ public class FontDownloader {
 
     private void evaluateCompletionStatus() {
         if (hashMap.containsValue(CompletionStatus.ERROR)) {
-            Timber.i("Download failed");
+            Timber.i("Dispatching download complete event - failed");
             BusProvider.getInstance().post(new DownloadCompleteEvent(false));
         } else {
-            Timber.i("Download success");
+            Timber.i("Dispatching download complete event - succeeded");
             BusProvider.getInstance().post(new DownloadCompleteEvent(true));
         }
     }

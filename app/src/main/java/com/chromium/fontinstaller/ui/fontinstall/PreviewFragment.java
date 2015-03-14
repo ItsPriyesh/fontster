@@ -17,8 +17,8 @@
 package com.chromium.fontinstaller.ui.fontinstall;
 
 
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +41,9 @@ public class PreviewFragment extends Fragment {
     private Style style;
     private boolean upperCase = true;
     private static String alphabetUpper, alphabetLower;
+    private static final String STATE_FONT_PACKAGE = "fontPackage";
+    private static final String STATE_FONT_STYLE = "style";
+    private static final String STATE_UPPER_CASE = "upperCase";
 
     public PreviewFragment() {
 
@@ -59,13 +62,27 @@ public class PreviewFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_preview, container, false);
         ButterKnife.inject(this, view);
 
-        alphabetUpper = getActivity().getResources().getString(R.string.alphabet_upper);
-        alphabetLower = getActivity().getResources().getString(R.string.alphabet_lower);
+        alphabetUpper = getString(R.string.alphabet_upper);
+        alphabetLower = getString(R.string.alphabet_lower);
+
+        if (savedInstanceState != null) {
+            fontPackage = savedInstanceState.getParcelable(STATE_FONT_PACKAGE);
+            style = savedInstanceState.getParcelable(STATE_FONT_STYLE);
+            upperCase = savedInstanceState.getBoolean(STATE_UPPER_CASE);
+        }
 
         previewText.setTypeface(fontPackage.getTypeface(style));
-        previewText.setText(alphabetUpper);
+        previewText.setText(getAlphabet());
 
         return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putParcelable(STATE_FONT_PACKAGE, fontPackage);
+        savedInstanceState.putParcelable(STATE_FONT_STYLE, style);
+        savedInstanceState.putBoolean(STATE_UPPER_CASE, upperCase);
     }
 
     private void setFontPackage(FontPackage fontPackage) {
@@ -74,6 +91,11 @@ public class PreviewFragment extends Fragment {
 
     private void setStyle(Style style) {
         this.style = style;
+    }
+
+    private String getAlphabet() {
+        if (upperCase) return alphabetUpper;
+        else return alphabetLower;
     }
 
     public void toggleCase() {

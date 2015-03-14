@@ -131,7 +131,7 @@
             android:layout_centerInParent="true"
             android:elevation="6dp"
             android:indeterminate="true"
-            android:indeterminateTint="#F00"
+            android:indeterminateTint="@color/secondary_accent"
             android:indeterminateTintMode="src_in"/>
 
         <com.melnykov.fab.FloatingActionButton

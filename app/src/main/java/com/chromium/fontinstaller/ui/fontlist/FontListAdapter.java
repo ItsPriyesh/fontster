@@ -96,7 +96,7 @@ public class FontListAdapter extends RecyclerView.Adapter<FontListAdapter.ViewHo
         @Override
         public void onClick(View view) {
             Intent intent = new Intent(view.getContext(), FontActivity.class);
-            intent.putExtra("FONT_NAME", fontNames.get(getPosition()));
+            intent.putExtra(FontActivity.FONT_NAME, fontNames.get(getPosition()));
             view.getContext().startActivity(intent);
         }
     }
