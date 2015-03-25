@@ -5,5 +5,5 @@
 .DS_Store
 /build
 
-/app/src/main/java/SecretStuff.java
+/app/src/main/java/com/chromium/fontinstaller/SecretStuff.java
 /app/manifest-merger-release-report.txt
