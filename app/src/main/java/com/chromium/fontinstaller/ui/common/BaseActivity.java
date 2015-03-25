@@ -24,6 +24,9 @@ import android.view.View;
 
 import com.chromium.fontinstaller.BusProvider;
 import com.chromium.fontinstaller.R;
+import com.chromium.fontinstaller.SecretStuff;
+import com.chromium.fontinstaller.ui.settings.SettingsFragment;
+import com.chromium.fontinstaller.util.billing.IabHelper;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
@@ -36,11 +39,16 @@ public class BaseActivity extends ActionBarActivity {
     protected Toolbar toolbar;
 
     private ActionBar actionBar;
+    private IabHelper billingHelper;
+    private boolean billingSetup = false;
 
     @Override
     public void setContentView(int layoutResId) {
         super.setContentView(layoutResId);
         ButterKnife.inject(this);
+
+        billingHelper = new IabHelper(this, SecretStuff.LICENSE_KEY);
+        billingHelper.startSetup(result -> billingSetup = result.isSuccess());
 
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
@@ -69,11 +77,19 @@ public class BaseActivity extends ActionBarActivity {
     }
 
     protected void initializeAd(AdView adView) {
-        AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice(getResources().getString(R.string.nexus_5_device_id))
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                .build();
-        adView.loadAd(adRequest);
+        if (billingSetup) {
+            billingHelper.queryInventoryAsync((result, inventory) -> {
+                boolean userDonated = inventory.hasPurchase(SettingsFragment.DONATE_SKU);
+                if (userDonated) adView.setVisibility(View.GONE);
+                else {
+                    AdRequest adRequest = new AdRequest.Builder()
+                            .addTestDevice(getResources().getString(R.string.nexus_5_device_id))
+                            .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                            .build();
+                    adView.loadAd(adRequest);
+                }
+            });
+        }
     }
 
     protected void setToolbarTitle(String title) {

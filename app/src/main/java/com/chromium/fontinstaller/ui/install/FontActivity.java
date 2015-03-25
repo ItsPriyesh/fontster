@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.chromium.fontinstaller.ui.fontinstall;
+package com.chromium.fontinstaller.ui.install;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,6 +30,7 @@ import android.widget.TextView;
 
 import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.core.FontDownloader;
+import com.chromium.fontinstaller.core.FontInstaller;
 import com.chromium.fontinstaller.events.DownloadCompleteEvent;
 import com.chromium.fontinstaller.events.InstallCompleteEvent;
 import com.chromium.fontinstaller.models.FontPackage;
@@ -164,8 +165,8 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
         ViewUtils.animGrowFromCenter(installProgress, this);
         show(installProgress);
 
-        // FontInstaller fontInstaller = new FontInstaller(fontPackage, this);
-        // fontInstaller.install();
+        FontInstaller fontInstaller = new FontInstaller(fontPackage, this);
+        fontInstaller.install();
     }
 
     private Style getCurrentPageStyle() {

@@ -37,19 +37,34 @@
             <FrameLayout
                 android:id="@+id/container"
                 android:layout_marginTop="?attr/actionBarSize"
-                android:layout_above="@+id/adView"
+                android:layout_above="@+id/ad_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
-            <com.google.android.gms.ads.AdView
-                android:id="@id/adView"
-                android:background="@color/primary"
-                android:layout_width="match_parent"
+            <RelativeLayout
+                android:id="@+id/ad_container"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_alignParentBottom="true"
-                ads:adSize="BANNER"
-                ads:adUnitId="@string/banner_ad_unit_id" />
+                android:background="@color/primary"
+                android:layout_alignParentBottom="true">
+
+                <TextView
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ad Space"
+                    android:textColor="@android:color/white"
+                    android:textAllCaps="true"
+                    android:textStyle="bold"/>
+
+                <com.google.android.gms.ads.AdView
+                    android:id="@+id/adView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    ads:adSize="BANNER"
+                    ads:adUnitId="@string/banner_ad_unit_id" />
+
+            </RelativeLayout>
 
         </RelativeLayout>
 

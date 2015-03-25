@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.chromium.fontinstaller.ui.fontinstall;
+package com.chromium.fontinstaller.ui.install;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

@@ -30,4 +30,17 @@
     <string name="nexus_5_device_id">AAADAC4EC821D354F2BEF1C833EE7EFB</string>
     <string name="title_activity_settings">SettingsActivity</string>
 
+    <string name="regular">Regular</string>
+    <string name="italic">Italic</string>
+    <string name="bold">Bold</string>
+    <string name="bold_italic">Bold Italic</string>
+    <string name="light">Light</string>
+    <string name="light_italic">Light Italic</string>
+    <string name="thin">Thin</string>
+    <string name="thin_italic">Thin Italic</string>
+    <string name="condensed">Condensed</string>
+    <string name="condensed_italic">Condensed Italic</string>
+    <string name="condensed_bold">Condensed Bold</string>
+    <string name="condensed_bold_italic">Condensed Bold Italic</string>
+
 </resources>

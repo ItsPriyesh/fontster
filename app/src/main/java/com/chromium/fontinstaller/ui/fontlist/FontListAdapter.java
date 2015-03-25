@@ -29,7 +29,7 @@ import android.widget.TextView;
 import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.models.FontPackage;
 import com.chromium.fontinstaller.models.Style;
-import com.chromium.fontinstaller.ui.fontinstall.FontActivity;
+import com.chromium.fontinstaller.ui.install.FontActivity;
 import com.chromium.fontinstaller.util.FileUtils;
 
 import java.util.ArrayList;
