@@ -87,10 +87,10 @@ public class Licenses {
                     new MITLicense()
             ),
             new Notice(
-                    "BlurDialogFragment",
-                    "https://github.com/tvbarthel/BlurDialogFragment",
-                    "Copyright (C) 2014 tvbarthel",
-                    new ApacheSoftwareLicense20()
+                    "Snackbar",
+                    "https://github.com/nispok/snackbar",
+                    "Copyright (c) 2015 William Mora\n",
+                    new MITLicense()
             ),
             new Notice(
                     "LicensesDialog",
