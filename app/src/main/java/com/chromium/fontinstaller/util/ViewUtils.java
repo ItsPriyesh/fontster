@@ -18,6 +18,7 @@ package com.chromium.fontinstaller.util;
 
 import android.animation.Animator;
 import android.content.Context;
+import android.os.Build;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.animation.AnimationUtils;
@@ -34,17 +35,25 @@ public class ViewUtils {
         return (int) (dp * SCALE + 0.5f);
     }
 
+    public static boolean isLollipop() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
+    }
+
     public static void animCenterRevealIn(View view) {
-        int cx = (view.getLeft() + view.getRight()) / 2;
-        int cy = (view.getTop() + view.getBottom()) / 2;
+        if (isLollipop()) {
+            int cx = (view.getLeft() + view.getRight()) / 2;
+            int cy = (view.getTop() + view.getBottom()) / 2;
 
-        int finalRadius = Math.max(view.getWidth(), view.getHeight());
+            int finalRadius = Math.max(view.getWidth(), view.getHeight());
 
-        Animator anim = ViewAnimationUtils.createCircularReveal(view, cx, cy, 0, finalRadius);
+            Animator anim = ViewAnimationUtils.createCircularReveal(view, cx, cy, 0, finalRadius);
 
-        view.setVisibility(View.VISIBLE);
-        anim.setDuration(400);
-        anim.start();
+            view.setVisibility(View.VISIBLE);
+            anim.setDuration(400);
+            anim.start();
+        } else {
+            view.setVisibility(View.VISIBLE);
+        }
     }
 
     public static void animGrowFromCenter(View view, Context context) {

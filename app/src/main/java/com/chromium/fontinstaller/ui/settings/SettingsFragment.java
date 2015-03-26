@@ -45,7 +45,7 @@ public class SettingsFragment extends PreferenceFragment {
     private IabHelper.OnConsumeFinishedListener consumeListener;
     private Preference donate;
 
-    public static final String DONATE_SKU = "android.test.purchased";
+    public static final String DONATE_SKU = "com.chromium.fontster.donate";
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {

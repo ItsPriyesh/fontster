@@ -26,12 +26,14 @@ import com.chromium.fontinstaller.BusProvider;
 import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.SecretStuff;
 import com.chromium.fontinstaller.ui.settings.SettingsFragment;
+import com.chromium.fontinstaller.util.ViewUtils;
 import com.chromium.fontinstaller.util.billing.IabHelper;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import timber.log.Timber;
 
 public class BaseActivity extends ActionBarActivity {
 
@@ -80,6 +82,7 @@ public class BaseActivity extends ActionBarActivity {
         if (billingSetup) {
             billingHelper.queryInventoryAsync((result, inventory) -> {
                 boolean userDonated = inventory.hasPurchase(SettingsFragment.DONATE_SKU);
+                Timber.i("USER DONATED : " + userDonated);
                 if (userDonated) adView.setVisibility(View.GONE);
                 else {
                     AdRequest adRequest = new AdRequest.Builder()
@@ -97,7 +100,7 @@ public class BaseActivity extends ActionBarActivity {
     }
 
     protected void disableToolbarElevation() {
-        toolbar.setElevation(0);
+        if (ViewUtils.isLollipop()) toolbar.setElevation(0);
     }
 
     protected void showToolbarBackButton() {
