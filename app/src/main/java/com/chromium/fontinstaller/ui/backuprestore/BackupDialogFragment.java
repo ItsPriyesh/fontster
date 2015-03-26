@@ -17,6 +17,7 @@
 package com.chromium.fontinstaller.ui.backuprestore;
 
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,9 +30,8 @@ import com.chromium.fontinstaller.R;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import fr.tvbarthel.lib.blurdialogfragment.SupportBlurDialogFragment;
 
-public class BackupDialogFragment extends SupportBlurDialogFragment {
+public class BackupDialogFragment extends DialogFragment {
 
     @InjectView(R.id.input)
     EditText input;
@@ -76,21 +76,6 @@ public class BackupDialogFragment extends SupportBlurDialogFragment {
     @OnClick(R.id.cancel_button)
     public void cancelButtonClicked() {
         dismiss();
-    }
-
-    @Override
-    protected boolean isActionBarBlurred() {
-        return true;
-    }
-
-    @Override
-    protected boolean isDimmingEnable() {
-        return true;
-    }
-
-    @Override
-    protected boolean isRenderScriptEnable() {
-        return true;
     }
 
 }

@@ -17,6 +17,7 @@
 package com.chromium.fontinstaller.ui.install;
 
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,9 +32,8 @@ import com.chromium.fontinstaller.models.Style;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import fr.tvbarthel.lib.blurdialogfragment.SupportBlurDialogFragment;
 
-public class TryFontFragment extends SupportBlurDialogFragment {
+public class TryFontFragment extends DialogFragment {
 
     @InjectView(R.id.title)
     TextView title;
@@ -81,21 +81,6 @@ public class TryFontFragment extends SupportBlurDialogFragment {
 
     private void setFontStyle(Style style) {
         this.style = style;
-    }
-
-    @Override
-    protected boolean isActionBarBlurred() {
-        return true;
-    }
-
-    @Override
-    protected boolean isDimmingEnable() {
-        return true;
-    }
-
-    @Override
-    protected boolean isRenderScriptEnable() {
-        return true;
     }
 
 }
