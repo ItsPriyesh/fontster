@@ -35,6 +35,7 @@
             android:key="appVersion" />
         <Preference
             android:title="Donate"
+            android:enabled="false"
             android:summary="This will remove advertisements"
             android:key="donate" />
     </PreferenceCategory>

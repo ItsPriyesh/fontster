@@ -32,20 +32,21 @@ import com.chromium.fontinstaller.ui.main.MainActivity;
 import com.chromium.fontinstaller.util.Licenses;
 import com.chromium.fontinstaller.util.PreferencesManager;
 import com.chromium.fontinstaller.util.billing.IabHelper;
-import com.chromium.fontinstaller.util.billing.Purchase;
 import com.nispok.snackbar.Snackbar;
 
 import de.psdev.licensesdialog.LicensesDialog;
 
-public class SettingsFragment extends PreferenceFragment {
+public class SettingsFragment extends PreferenceFragment implements
+        DonateDialogFragment.DonationClickListener {
 
     private PreferencesManager prefs;
     private IabHelper billingHelper;
     private IabHelper.OnIabPurchaseFinishedListener purchaseListener;
-    private IabHelper.OnConsumeFinishedListener consumeListener;
     private Preference donate;
 
-    public static final String DONATE_SKU = "com.chromium.fontster.donate";
+    public static final String DONATE_SKU_SMALL = "com.chromium.fontster.donate";
+    public static final String DONATE_SKU_MED = "com.chromium.fontster.donate_med";
+    public static final String DONATE_SKU_LARGE = "com.chromium.fontster.donate_large";
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
@@ -71,13 +72,14 @@ public class SettingsFragment extends PreferenceFragment {
         donate = findPreference("donate");
 
         billingHelper.startSetup(result -> {
-            if (result.isFailure()) {
+            if (result.isSuccess()) {
+                donate.setEnabled(true);
+            } else {
                 donate.setSummary("A problem was encountered while setting up In-App Billing");
-                donate.setEnabled(false);
             }
         });
 
-        donate.setOnPreferenceClickListener(pref -> makeDonation());
+        donate.setOnPreferenceClickListener(pref -> showDonationDialog());
     }
 
     @Override
@@ -87,32 +89,29 @@ public class SettingsFragment extends PreferenceFragment {
         billingHelper = null;
     }
 
-    private boolean makeDonation() {
-        billingHelper.launchPurchaseFlow(getActivity(), DONATE_SKU, 1, purchaseListener, "");
+    private boolean showDonationDialog() {
+        DonateDialogFragment donateDialog = new DonateDialogFragment();
+        donateDialog.show(((SettingsActivity) getActivity()).getSupportFragmentManager(),
+                "DonateDialogFragment");
+        return true;
+    }
+
+    @Override
+    public void onDonationClick(String sku) {
+        makeDonation(sku);
+    }
+
+    private boolean makeDonation(String sku) {
+        billingHelper.launchPurchaseFlow(getActivity(), sku, 1, purchaseListener, "");
         purchaseListener = (result, purchase) -> {
             if (result.isFailure()) {
                 Snackbar.with(getActivity()).text("Failed to make donation").show(getActivity());
-            } else if (purchase.getSku().equals(DONATE_SKU)) {
-                queryInventory();
+            } else if (purchase.getSku().equals(sku)) {
+                Snackbar.with(getActivity()).text("Donation complete, thanks :)").show(getActivity());
             }
         };
 
         return true;
-    }
-
-    private void queryInventory() {
-        billingHelper.queryInventoryAsync((result, inventory) -> {
-            Purchase donation = inventory.getPurchase(DONATE_SKU);
-            if (donate != null) consumePurchase(donation);
-        });
-    }
-
-    private void consumePurchase(Purchase purchase) {
-        billingHelper.consumeAsync(purchase, consumeListener);
-        consumeListener = (consumedPurchase, result) -> {
-            if (result.isSuccess())
-                Snackbar.with(getActivity()).text("Donation made successfully").show(getActivity());
-        };
     }
 
     private boolean handleTrueFont(Object newValue) {

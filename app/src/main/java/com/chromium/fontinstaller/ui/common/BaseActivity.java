@@ -28,6 +28,7 @@ import com.chromium.fontinstaller.SecretStuff;
 import com.chromium.fontinstaller.ui.settings.SettingsFragment;
 import com.chromium.fontinstaller.util.ViewUtils;
 import com.chromium.fontinstaller.util.billing.IabHelper;
+import com.chromium.fontinstaller.util.billing.Inventory;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
@@ -42,7 +43,6 @@ public class BaseActivity extends ActionBarActivity {
 
     private ActionBar actionBar;
     private IabHelper billingHelper;
-    private boolean billingSetup = false;
 
     @Override
     public void setContentView(int layoutResId) {
@@ -50,7 +50,6 @@ public class BaseActivity extends ActionBarActivity {
         ButterKnife.inject(this);
 
         billingHelper = new IabHelper(this, SecretStuff.LICENSE_KEY);
-        billingHelper.startSetup(result -> billingSetup = result.isSuccess());
 
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
@@ -79,20 +78,34 @@ public class BaseActivity extends ActionBarActivity {
     }
 
     protected void initializeAd(AdView adView) {
-        if (billingSetup) {
-            billingHelper.queryInventoryAsync((result, inventory) -> {
-                boolean userDonated = inventory.hasPurchase(SettingsFragment.DONATE_SKU);
-                Timber.i("USER DONATED : " + userDonated);
-                if (userDonated) adView.setVisibility(View.GONE);
-                else {
-                    AdRequest adRequest = new AdRequest.Builder()
-                            .addTestDevice(getResources().getString(R.string.nexus_5_device_id))
-                            .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                            .build();
-                    adView.loadAd(adRequest);
-                }
-            });
-        }
+        billingHelper.startSetup(result -> {
+            if (result.isSuccess()) {
+                Timber.i("Billing setup");
+                billingHelper.queryInventoryAsync((queriedResult, inventory) -> {
+                    Timber.i("User Donated: " + userDonated(inventory));
+                    if (userDonated(inventory)) hideAd(adView);
+                    else displayAd(adView);
+                });
+            }
+        });
+    }
+
+    private boolean userDonated(Inventory inventory) {
+        return inventory.hasPurchase(SettingsFragment.DONATE_SKU_SMALL) ||
+                inventory.hasPurchase(SettingsFragment.DONATE_SKU_MED) ||
+                inventory.hasPurchase(SettingsFragment.DONATE_SKU_LARGE);
+    }
+
+    private void displayAd(AdView adView) {
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(getResources().getString(R.string.nexus_5_device_id))
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+        adView.loadAd(adRequest);
+    }
+
+    private void hideAd(AdView adView) {
+        adView.setVisibility(View.GONE);
     }
 
     protected void setToolbarTitle(String title) {
