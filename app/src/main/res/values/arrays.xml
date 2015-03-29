@@ -18,13 +18,11 @@
     <string-array name="nav_drawer_titles">
         <item>Fonts</item>
         <item>Backup &amp; restore</item>
-        <item>Current font</item>
         <item>Settings</item>
     </string-array>
     <string-array name="nav_drawer_icons">
         <item>ic_subject_grey</item>
         <item>ic_backup_restore_grey</item>
-        <item>ic_filter_list_grey</item>
         <item>ic_settings_grey</item>
     </string-array>
 </resources>

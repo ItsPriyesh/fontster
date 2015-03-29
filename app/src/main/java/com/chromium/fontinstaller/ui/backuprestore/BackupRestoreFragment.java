@@ -125,7 +125,7 @@ public class BackupRestoreFragment extends Fragment {
     public void backupFabClicked() {
         BackupDialogFragment backupDialog = new BackupDialogFragment();
         backupDialog.show(getActivity().getSupportFragmentManager(), "BackupDialogFragment");
-        backupDialog.setOnBackupClickedListener(backupName -> backupManager.backup(backupName));
+        backupDialog.setOnBackupClickedListener(backupManager::backup);
     }
 
     @SuppressWarnings("unused")
