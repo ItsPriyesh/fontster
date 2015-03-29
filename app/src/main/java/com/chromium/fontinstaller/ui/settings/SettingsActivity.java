@@ -16,12 +16,15 @@
 
 package com.chromium.fontinstaller.ui.settings;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.ui.common.BaseActivity;
 
 public class SettingsActivity extends BaseActivity {
+
+    private SettingsFragment settingsFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,8 +33,19 @@ public class SettingsActivity extends BaseActivity {
         setToolbarTitle("Settings");
         showToolbarBackButton();
 
+        settingsFragment = new SettingsFragment();
+
         getFragmentManager().beginTransaction()
-                .add(R.id.container, new SettingsFragment())
+                .add(R.id.container, settingsFragment)
                 .commit();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (settingsFragment.getBillingHelper() == null) return;
+
+        if (!settingsFragment.getBillingHelper().handleActivityResult(requestCode, resultCode, data)) {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 }

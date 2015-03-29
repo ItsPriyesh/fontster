@@ -52,14 +52,16 @@ public class DonateDialogFragment extends DialogFragment {
 
         getDialog().setTitle("Donation amount");
 
-        listener = (DonationClickListener) getParentFragment();
-
         return view;
+    }
+
+    public void setDonationClickListener(DonationClickListener listener) {
+        this.listener = listener;
     }
 
     @SuppressWarnings("unused")
     @OnClick(R.id.done_button)
-    private void dispatchDonationClick() {
+    public void dispatchDonationClick() {
         String sku;
         switch (radioGroup.getCheckedRadioButtonId()) {
             case R.id.donate_small:
@@ -76,5 +78,6 @@ public class DonateDialogFragment extends DialogFragment {
                 break;
         }
         listener.onDonationClick(sku);
+        dismiss();
     }
 }

@@ -39,8 +39,8 @@ import de.psdev.licensesdialog.LicensesDialog;
 public class SettingsFragment extends PreferenceFragment implements
         DonateDialogFragment.DonationClickListener {
 
-    private PreferencesManager prefs;
     private IabHelper billingHelper;
+    private PreferencesManager prefs;
     private IabHelper.OnIabPurchaseFinishedListener purchaseListener;
     private Preference donate;
 
@@ -89,10 +89,15 @@ public class SettingsFragment extends PreferenceFragment implements
         billingHelper = null;
     }
 
+    public IabHelper getBillingHelper() {
+        return billingHelper;
+    }
+
     private boolean showDonationDialog() {
         DonateDialogFragment donateDialog = new DonateDialogFragment();
         donateDialog.show(((SettingsActivity) getActivity()).getSupportFragmentManager(),
                 "DonateDialogFragment");
+        donateDialog.setDonationClickListener(this);
         return true;
     }
 
