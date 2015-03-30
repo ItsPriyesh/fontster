@@ -153,7 +153,7 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
             ViewUtils.animSlideInBottom(slidingTabLayout, this);
             show(slidingTabLayout);
 
-            ViewUtils.animCenterRevealIn(previewPager);
+            ViewUtils.reveal(this, previewPager, installButton, R.color.primary_accent);
 
             ViewUtils.animGrowFromCenter(installButton, this);
             show(installButton);
