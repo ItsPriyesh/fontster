@@ -19,21 +19,39 @@ package com.chromium.fontinstaller.util;
 import android.app.ActivityManager;
 import android.content.Context;
 
-import com.koushikdutta.ion.Ion;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * Created by priyeshpatel on 15-02-10.
  */
 public class FileUtils {
 
-    public static void clearIonCache(Context context) {
-        Ion.getDefault(context).configure().getResponseCache().clear();
-    }
-
     public static int getMaxCacheSize(Context context) {
         int memClass = ((ActivityManager)
                 context.getSystemService(Context.ACTIVITY_SERVICE)).getMemoryClass();
 
         return 1024 * 1024 * memClass / 8;
+    }
+
+    public static File getAssetsFile(String fileName, Context context) {
+        File file = new File(context.getExternalCacheDir() + File.separator + fileName);
+        if (!file.exists()) {
+            try {
+                InputStream in = context.getAssets().open(fileName);
+                OutputStream out = new FileOutputStream(file);
+                byte[] buffer = new byte[1024];
+                int read;
+                while ((read = in.read(buffer)) != -1) out.write(buffer, 0, read);
+                in.close();
+                out.close();
+            } catch (IOException e) {
+                file = null;
+            }
+        }
+        return file;
     }
 }

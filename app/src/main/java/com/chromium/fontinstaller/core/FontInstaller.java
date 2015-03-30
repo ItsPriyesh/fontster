@@ -21,6 +21,7 @@ import android.content.Context;
 import com.chromium.fontinstaller.events.InstallCompleteEvent;
 import com.chromium.fontinstaller.models.Font;
 import com.chromium.fontinstaller.models.FontPackage;
+import com.chromium.fontinstaller.util.FileUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -52,6 +53,9 @@ public class FontInstaller {
                 copyCommands.add("cp " + cacheDir + fontPackage.getNameFormatted() +
                         File.separator + font.getName() + " " + FONT_INSTALL_DIR);
             }
+
+            copyCommands.add("cp " + FileUtils.getAssetsFile("DroidSansFallback.ttf", context)
+                    .getAbsolutePath() + " " + FONT_INSTALL_DIR);
 
             CommandRunner installTask = new CommandRunner(new InstallCompleteEvent());
             installTask.execute(copyCommands.toArray(new String[copyCommands.size()]));
