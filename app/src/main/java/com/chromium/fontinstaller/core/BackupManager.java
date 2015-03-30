@@ -16,6 +16,8 @@
 
 package com.chromium.fontinstaller.core;
 
+import android.content.Context;
+
 import com.chromium.fontinstaller.events.BackupCompleteEvent;
 import com.chromium.fontinstaller.events.BackupDeletedEvent;
 import com.chromium.fontinstaller.events.RestoreCompleteTask;
@@ -40,14 +42,15 @@ public class BackupManager {
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy");
 
     private static final String SOURCE_DIR = "/system/fonts/";
-    private static final String BACKUP_DIR = "/sdcard/Android/data/com.chromium.fontinstaller/cache/Backup/";
+    private String backupDir;
 
-    public BackupManager() {
+    public BackupManager(Context context) {
+        backupDir = context.getExternalCacheDir() + File.separator + "Backup" + File.separator;
         createBackupDir();
     }
 
     private void createBackupDir() {
-        backupDirectory = new File(BACKUP_DIR);
+        backupDirectory = new File(backupDir);
         backupDirectory.mkdirs();
     }
 
@@ -56,7 +59,7 @@ public class BackupManager {
         BackupCompleteEvent event = new BackupCompleteEvent(name, dateFormat.format(currentDate));
 
         CommandRunner backupTask = new CommandRunner(event);
-        backupTask.execute("cp -R " + SOURCE_DIR + ". " + BACKUP_DIR);
+        backupTask.execute("cp -R " + SOURCE_DIR + ". " + backupDir);
     }
 
     public void restore() {
@@ -74,7 +77,7 @@ public class BackupManager {
 
     public void deleteBackup() {
         CommandRunner deleteBackupTask = new CommandRunner(new BackupDeletedEvent());
-        deleteBackupTask.execute("rm -rf " + BACKUP_DIR);
+        deleteBackupTask.execute("rm -rf " + backupDir);
     }
 
     public boolean backupExists() {

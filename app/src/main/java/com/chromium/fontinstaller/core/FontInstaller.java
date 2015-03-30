@@ -37,18 +37,19 @@ public class FontInstaller {
     private List<String> copyCommands = new ArrayList<>();
 
     private static final String FONT_INSTALL_DIR = "/system/fonts";
-    public static final String CACHE_DIR = "/sdcard/Android/data/com.chromium.fontinstaller/cache/";
+    private String cacheDir;
 
     public FontInstaller(FontPackage fontPackage, Context context) {
         this.fontPackage = fontPackage;
         this.context = context;
 
+        cacheDir = context.getExternalCacheDir() + File.separator;
     }
 
     public void install() {
         if (Shell.SU.available()) {
             for (Font font : fontPackage.getFontList()) {
-                copyCommands.add("cp " + CACHE_DIR + fontPackage.getNameFormatted() +
+                copyCommands.add("cp " + cacheDir + fontPackage.getNameFormatted() +
                         File.separator + font.getName() + " " + FONT_INSTALL_DIR);
             }
 

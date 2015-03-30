@@ -71,7 +71,7 @@ public class PreviewFragment extends Fragment {
             upperCase = savedInstanceState.getBoolean(STATE_UPPER_CASE);
         }
 
-        previewText.setTypeface(fontPackage.getTypeface(style));
+        previewText.setTypeface(fontPackage.getTypeface(style, getActivity()));
         previewText.setText(getAlphabet());
 
         return view;

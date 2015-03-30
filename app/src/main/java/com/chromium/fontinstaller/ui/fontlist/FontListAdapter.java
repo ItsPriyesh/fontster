@@ -67,7 +67,8 @@ public class FontListAdapter extends RecyclerView.Adapter<FontListAdapter.ViewHo
         if (enableTrueFont) {
             Typeface currentFont = fontCache.get(currentFontName);
             if (currentFont == null) {
-                currentFont = new FontPackage(currentFontName).getTypeface(Style.REGULAR);
+                currentFont = new FontPackage(currentFontName)
+                        .getTypeface(Style.REGULAR, holder.fontName.getContext());
                 fontCache.put(currentFontName, currentFont);
             }
             holder.fontName.setTypeface(currentFont);

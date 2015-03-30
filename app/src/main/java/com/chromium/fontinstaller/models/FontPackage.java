@@ -16,11 +16,10 @@
 
 package com.chromium.fontinstaller.models;
 
+import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import com.chromium.fontinstaller.core.FontInstaller;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -62,8 +61,9 @@ public class FontPackage implements Parcelable {
         return nameFormatted;
     }
 
-    public Typeface getTypeface(Style style) {
-        String path = FontInstaller.CACHE_DIR + nameFormatted + File.separator + style.getLocalName();
+    public Typeface getTypeface(Style style, Context context) {
+        String path = context.getExternalCacheDir() + File.separator +
+                nameFormatted + File.separator + style.getLocalName();
         return Typeface.createFromFile(path);
     }
 
@@ -74,7 +74,6 @@ public class FontPackage implements Parcelable {
 
         return null;
     }
-
 
     protected FontPackage(Parcel in) {
         name = in.readString();

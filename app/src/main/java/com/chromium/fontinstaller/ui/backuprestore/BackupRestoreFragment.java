@@ -66,7 +66,7 @@ public class BackupRestoreFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_backup_restore, container, false);
         ButterKnife.inject(this, view);
 
-        backupManager = new BackupManager();
+        backupManager = new BackupManager(getActivity());
         prefs = PreferencesManager.getInstance(getActivity());
 
         checkForBackup();
