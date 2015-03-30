@@ -23,9 +23,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.chromium.fontinstaller.R;
+import com.nispok.snackbar.Snackbar;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -64,8 +64,7 @@ public class BackupDialogFragment extends DialogFragment {
     @OnClick(R.id.backup_button)
     public void backupButtonClicked() {
         if (input.getText().toString().equals("")) {
-            Toast.makeText(getActivity(), "Please enter a name for the backup", Toast.LENGTH_SHORT)
-                    .show();
+            Snackbar.with(getActivity()).text("Please enter a name for the backup").show(getActivity());
         } else {
             listener.onBackupButtonClicked(input.getText().toString());
             dismiss();
