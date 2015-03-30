@@ -27,7 +27,7 @@
     <PreferenceCategory android:title="About">
         <Preference
             android:title="Source"
-            android:summary="View this apps source code"
+            android:summary="View this app's source code"
             android:key="viewSource" />
         <Preference
             android:title="Open source licenses"
