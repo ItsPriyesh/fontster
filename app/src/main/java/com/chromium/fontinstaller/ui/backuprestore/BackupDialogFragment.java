@@ -64,7 +64,9 @@ public class BackupDialogFragment extends DialogFragment {
     @OnClick(R.id.backup_button)
     public void backupButtonClicked() {
         if (input.getText().toString().equals("")) {
-            Snackbar.with(getActivity()).text("Please enter a name for the backup").show(getActivity());
+            Snackbar.with(getActivity())
+                    .text("Please enter a name for the backup")
+                    .show(getActivity());
         } else {
             listener.onBackupButtonClicked(input.getText().toString());
             dismiss();

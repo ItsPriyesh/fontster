@@ -17,6 +17,7 @@
 package com.chromium.fontinstaller.ui.settings;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -26,13 +27,21 @@ import android.preference.PreferenceFragment;
 import android.support.v4.app.ActivityCompat;
 
 import com.chromium.fontinstaller.BuildConfig;
+import com.chromium.fontinstaller.BusProvider;
 import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.SecretStuff;
+import com.chromium.fontinstaller.core.CommandRunner;
+import com.chromium.fontinstaller.events.CacheClearedEvent;
 import com.chromium.fontinstaller.ui.main.MainActivity;
 import com.chromium.fontinstaller.util.Licenses;
 import com.chromium.fontinstaller.util.PreferencesManager;
 import com.chromium.fontinstaller.util.billing.IabHelper;
 import com.nispok.snackbar.Snackbar;
+import com.squareup.otto.Subscribe;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import de.psdev.licensesdialog.LicensesDialog;
 
@@ -43,6 +52,7 @@ public class SettingsFragment extends PreferenceFragment implements
     private PreferencesManager prefs;
     private IabHelper.OnIabPurchaseFinishedListener purchaseListener;
     private Preference donate;
+    private ProgressDialog progressDialog;
 
     public static final String DONATE_SKU_SMALL = "com.chromium.fontster.donate";
     public static final String DONATE_SKU_MED = "com.chromium.fontster.donate_med";
@@ -59,6 +69,9 @@ public class SettingsFragment extends PreferenceFragment implements
 
         CheckBoxPreference trueFont = (CheckBoxPreference) findPreference("trueFont");
         trueFont.setOnPreferenceChangeListener((pref, newValue) -> handleTrueFont(newValue));
+
+        Preference clearCache = findPreference("clearCache");
+        clearCache.setOnPreferenceClickListener(pref -> clearCache());
 
         Preference source = findPreference("viewSource");
         source.setOnPreferenceClickListener(pref -> viewSource());
@@ -110,9 +123,13 @@ public class SettingsFragment extends PreferenceFragment implements
         billingHelper.launchPurchaseFlow(getActivity(), sku, 1, purchaseListener, "");
         purchaseListener = (result, purchase) -> {
             if (result.isFailure()) {
-                Snackbar.with(getActivity()).text("Failed to make donation").show(getActivity());
+                Snackbar.with(getActivity())
+                        .text("Failed to make donation")
+                        .show(getActivity());
             } else if (purchase.getSku().equals(sku)) {
-                Snackbar.with(getActivity()).text("Donation complete, thanks :)").show(getActivity());
+                Snackbar.with(getActivity())
+                        .text("Donation complete, thanks :)")
+                        .show(getActivity());
             }
         };
 
@@ -123,6 +140,33 @@ public class SettingsFragment extends PreferenceFragment implements
         prefs.setBoolean(PreferencesManager.KEY_ENABLE_TRUEFONT, (boolean) newValue);
         showRestartDialog();
         return true;
+    }
+
+    private boolean clearCache() {
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Clearing cache...");
+        progressDialog.show();
+
+        List<String> commands = new ArrayList<>();
+        File cacheDir = new File(getActivity().getExternalCacheDir() + File.separator);
+
+        for (File f : cacheDir.listFiles())
+            if (!f.getName().equals("Backup"))
+                commands.add("rm -rf " + f.getAbsolutePath());
+
+        CommandRunner clearCacheTask = new CommandRunner(new CacheClearedEvent());
+        clearCacheTask.execute(commands.toArray(new String[commands.size()]));
+
+        return true;
+    }
+
+    @SuppressWarnings("unused")
+    @Subscribe
+    public void onCacheCleared(CacheClearedEvent event) {
+        progressDialog.dismiss();
+        Snackbar.with(getActivity())
+                .text("Cache has been cleared")
+                .show(getActivity());
     }
 
     private boolean viewSource() {
@@ -151,6 +195,18 @@ public class SettingsFragment extends PreferenceFragment implements
     private void restartApp() {
         ActivityCompat.finishAffinity(getActivity());
         startActivity(new Intent(getActivity(), MainActivity.class));
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        BusProvider.getInstance().register(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        BusProvider.getInstance().unregister(this);
     }
 }
 

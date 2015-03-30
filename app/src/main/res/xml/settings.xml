@@ -19,6 +19,10 @@
             android:title="TrueFont Display"
             android:summary="Show font names in their corresponding typeface"
             android:key="trueFont" />
+        <Preference
+            android:title="Clear cache"
+            android:summary="Wipe stored fonts"
+            android:key="clearCache" />
     </PreferenceCategory>
     <PreferenceCategory android:title="About">
         <Preference
@@ -30,13 +34,13 @@
             android:summary="Details for libraries used in this app"
             android:key="licenses" />
         <Preference
-            android:title="App version"
-            android:enabled="false"
-            android:key="appVersion" />
-        <Preference
             android:title="Donate"
             android:enabled="false"
             android:summary="This will remove advertisements"
             android:key="donate" />
+        <Preference
+            android:title="App version"
+            android:enabled="false"
+            android:key="appVersion" />
     </PreferenceCategory>
 </PreferenceScreen>
