@@ -18,6 +18,9 @@ package com.chromium.fontinstaller;
 
 import android.app.Application;
 
+import com.crashlytics.android.Crashlytics;
+
+import io.fabric.sdk.android.Fabric;
 import timber.log.Timber;
 
 /**
@@ -26,8 +29,13 @@ import timber.log.Timber;
 public class FontsterApp extends Application {
     @Override
     public void onCreate() {
+        super.onCreate();
+        final Fabric fabric = new Fabric.Builder(this).kits(new Crashlytics()).build();
+        Fabric.with(this, new Crashlytics());
+
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
         }
     }
+
 }

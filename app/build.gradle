@@ -1,4 +1,19 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+    }
+
+    dependencies {
+        classpath 'io.fabric.tools:gradle:1.+'
+    }
+}
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
+
 apply plugin: 'retrolambda'
 
 android {
@@ -54,4 +69,7 @@ dependencies {
     compile 'com.eowise:recyclerview-stickyheaders:0.5.2@aar'
     compile 'de.psdev.licensesdialog:licensesdialog:1.7.0'
     compile 'com.nispok:snackbar:2.10.5'
+    compile('com.crashlytics.sdk.android:crashlytics:2.2.2@aar') {
+        transitive = true;
+    }
 }
