@@ -254,8 +254,10 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
     }
 
     private void showTryFontDialog() {
-        TryFontFragment dialog = TryFontFragment.newInstance(fontPackage, getCurrentPageStyle());
-        dialog.show(getSupportFragmentManager(), "TryFontFragment");
+        if (fragmentsInitialized) {
+            TryFontFragment dialog = TryFontFragment.newInstance(fontPackage, getCurrentPageStyle());
+            dialog.show(getSupportFragmentManager(), "TryFontFragment");
+        }
     }
 
     private void toggleCase() {
