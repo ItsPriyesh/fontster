@@ -31,6 +31,7 @@ import com.chromium.fontinstaller.core.BackupManager;
 import com.chromium.fontinstaller.events.BackupCompleteEvent;
 import com.chromium.fontinstaller.events.BackupDeletedEvent;
 import com.chromium.fontinstaller.events.RestoreCompleteTask;
+import com.chromium.fontinstaller.ui.common.BaseActivity;
 import com.chromium.fontinstaller.util.AlertUtils;
 import com.chromium.fontinstaller.util.PreferencesManager;
 import com.chromium.fontinstaller.util.ViewUtils;
@@ -65,6 +66,8 @@ public class BackupRestoreFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_backup_restore, container, false);
         ButterKnife.inject(this, view);
+
+        ((BaseActivity) getActivity()).setToolbarTitle("Backup & Restore");
 
         backupManager = new BackupManager(getActivity());
         prefs = PreferencesManager.getInstance(getActivity());

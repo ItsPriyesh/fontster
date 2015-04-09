@@ -108,7 +108,7 @@ public class BaseActivity extends ActionBarActivity {
         adView.setVisibility(View.GONE);
     }
 
-    protected void setToolbarTitle(String title) {
+    public void setToolbarTitle(String title) {
         toolbar.setTitle(title);
     }
 

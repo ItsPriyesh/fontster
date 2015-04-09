@@ -34,6 +34,7 @@ import com.chromium.fontinstaller.core.FontDownloader;
 import com.chromium.fontinstaller.events.DownloadCompleteEvent;
 import com.chromium.fontinstaller.models.FontPackage;
 import com.chromium.fontinstaller.models.Style;
+import com.chromium.fontinstaller.ui.main.MainActivity;
 import com.chromium.fontinstaller.util.PreferencesManager;
 import com.chromium.fontinstaller.util.ViewUtils;
 import com.eowise.recyclerview.stickyheaders.StickyHeadersBuilder;
@@ -76,6 +77,7 @@ public class FontListFragment extends Fragment {
         ButterKnife.inject(this, view);
 
         activity = getActivity();
+        ((MainActivity) activity).setToolbarTitle("Fontster");
 
         prefs = PreferencesManager.getInstance(activity);
 
