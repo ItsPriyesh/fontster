@@ -65,8 +65,13 @@ public class FontPackage implements Parcelable {
         String path = context.getExternalCacheDir() + File.separator +
                 nameFormatted + File.separator + style.getLocalName();
 
-        if (new File(path).exists()) return Typeface.createFromFile(path);
-        else return Typeface.DEFAULT;
+        if (new File(path).exists()) {
+            try {
+                return Typeface.createFromFile(path);
+            } catch (Exception e) {
+                return Typeface.DEFAULT;
+            }
+        } else return Typeface.DEFAULT;
     }
 
     public Font getFont(Style style) {

@@ -214,7 +214,7 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
             ViewUtils.animGrowFromCenter(installButton, this);
             show(installButton);
 
-            new Handler().postDelayed(() -> AlertUtils.showRebootAlert(this), 500);
+            if (!this.isFinishing()) AlertUtils.showRebootAlert(this);
         }, 2000);
     }
 
