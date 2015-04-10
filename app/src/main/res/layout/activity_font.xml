@@ -135,6 +135,7 @@
             android:indeterminateTintMode="src_in"/>
 
         <com.melnykov.fab.FloatingActionButton
+            android:clickable="true"
             android:layout_centerInParent="true"
             android:layout_margin="8dp"
             android:visibility="invisible"

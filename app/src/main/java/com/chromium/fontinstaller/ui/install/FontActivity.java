@@ -16,6 +16,7 @@
 
 package com.chromium.fontinstaller.ui.install;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -185,7 +186,11 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
     @SuppressWarnings("unused")
     @OnClick(R.id.install_fab)
     public void installButtonClicked() {
-        startInstall();
+        new AlertDialog.Builder(this)
+                .setMessage("Are you sure you want to install this font?")
+                .setNegativeButton("No", (dialog, id) -> dialog.dismiss())
+                .setPositiveButton("Yes", (dialog, id) -> startInstall())
+                .create().show();
     }
 
     @SuppressWarnings("unused")
