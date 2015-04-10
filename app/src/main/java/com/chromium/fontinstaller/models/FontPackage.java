@@ -18,6 +18,7 @@ package com.chromium.fontinstaller.models;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -85,7 +86,7 @@ public class FontPackage implements Parcelable {
     protected FontPackage(Parcel in) {
         name = in.readString();
         nameFormatted = in.readString();
-        fontList = (HashMap) in.readValue(HashMap.class.getClassLoader());
+        fontList = (HashMap<Font, Style>) in.readBundle().getSerializable("fontList");
     }
 
     @Override
@@ -97,7 +98,9 @@ public class FontPackage implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
         dest.writeString(nameFormatted);
-        dest.writeValue(fontList);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("fontList", fontList);
+        dest.writeBundle(bundle);
     }
 
     @SuppressWarnings("unused")
