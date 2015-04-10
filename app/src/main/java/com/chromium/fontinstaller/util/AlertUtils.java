@@ -43,15 +43,12 @@ public class AlertUtils {
         TextView title = ButterKnife.findById(dialog, R.id.title);
         TextView content = ButterKnife.findById(dialog, R.id.content);
         Button reboot = ButterKnife.findById(dialog, R.id.reboot_button);
-        Button dismiss = ButterKnife.findById(dialog, R.id.dismiss_button);
 
         title.setTypeface(robotoMed);
         content.setTypeface(robotoReg);
         reboot.setTypeface(robotoMed);
-        dismiss.setTypeface(robotoMed);
 
         reboot.setOnClickListener(v -> RootUtils.runBackgroundCommand("reboot", false, context));
-        dismiss.setOnClickListener(v -> dialog.dismiss());
 
         dialog.show();
     }
