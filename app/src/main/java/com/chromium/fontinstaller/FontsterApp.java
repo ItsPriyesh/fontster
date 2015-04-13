@@ -17,8 +17,10 @@
 package com.chromium.fontinstaller;
 
 import android.app.Application;
+import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
+import com.koushikdutta.ion.Ion;
 
 import io.fabric.sdk.android.Fabric;
 import timber.log.Timber;
@@ -30,11 +32,12 @@ public class FontsterApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        final Fabric fabric = new Fabric.Builder(this).kits(new Crashlytics()).build();
+
         Fabric.with(this, new Crashlytics());
 
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
+            Ion.getDefault(getApplicationContext()).configure().setLogging("ION LOG", Log.DEBUG);
         }
     }
 
