@@ -86,7 +86,10 @@ public class FontPackage implements Parcelable {
     protected FontPackage(Parcel in) {
         name = in.readString();
         nameFormatted = in.readString();
-        fontList = (HashMap<Font, Style>) in.readBundle().getSerializable("fontList");
+
+        Bundle bundle = in.readBundle();
+        bundle.setClassLoader(ClassLoader.getSystemClassLoader());
+        fontList = (HashMap<Font, Style>) bundle.getSerializable("fontList");
     }
 
     @Override
