@@ -91,6 +91,7 @@ public class BaseActivity extends ActionBarActivity {
     }
 
     private boolean userDonated(Inventory inventory) {
+        if (inventory == null) return false;
         return inventory.hasPurchase(SettingsFragment.DONATE_SKU_SMALL) ||
                 inventory.hasPurchase(SettingsFragment.DONATE_SKU_MED) ||
                 inventory.hasPurchase(SettingsFragment.DONATE_SKU_LARGE);

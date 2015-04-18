@@ -118,7 +118,6 @@ public class FontListFragment extends Fragment {
         new Handler().postDelayed(() -> {
             downloadProgress.setVisibility(View.INVISIBLE);
 
-            ViewUtils.animFadeIn(recyclerView, getActivity());
             setupRecyclerViewAdapter(true);
         }, 400);
     }
