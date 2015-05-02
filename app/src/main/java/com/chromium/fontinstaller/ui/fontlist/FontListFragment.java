@@ -75,6 +75,7 @@ public class FontListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_font_list, container, false);
         ButterKnife.inject(this, view);
+        BusProvider.getInstance().register(this);
 
         activity = getActivity();
         ((MainActivity) activity).setToolbarTitle("Fontster");
@@ -166,15 +167,9 @@ public class FontListFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        BusProvider.getInstance().register(this);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
+    public void onDestroy() {
         BusProvider.getInstance().unregister(this);
+        super.onDestroy();
     }
 
 }

@@ -48,6 +48,7 @@ public class BaseActivity extends ActionBarActivity {
     public void setContentView(int layoutResId) {
         super.setContentView(layoutResId);
         ButterKnife.inject(this);
+        BusProvider.getInstance().register(this);
 
         billingHelper = new IabHelper(this, SecretStuff.LICENSE_KEY);
 
@@ -57,15 +58,9 @@ public class BaseActivity extends ActionBarActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        BusProvider.getInstance().register(this);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onDestroy() {
         BusProvider.getInstance().unregister(this);
+        super.onPause();
     }
 
     @Override
