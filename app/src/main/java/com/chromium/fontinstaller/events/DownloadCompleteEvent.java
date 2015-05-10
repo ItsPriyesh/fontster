@@ -21,12 +21,21 @@ package com.chromium.fontinstaller.events;
  */
 public class DownloadCompleteEvent extends Event {
     private boolean success = false;
+    private final int type;
 
-    public DownloadCompleteEvent(boolean success) {
+    public static final int TYPE_NORMAL = 0;
+    public static final int TYPE_FROM_LIST = 1;
+
+    public DownloadCompleteEvent(boolean success, int type) {
         this.success = success;
+        this.type = type;
     }
 
     public boolean wasSuccessful() {
         return success;
+    }
+
+    public int getType() {
+        return type;
     }
 }

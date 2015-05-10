@@ -142,6 +142,7 @@ public class FontListFragment extends Fragment {
     @SuppressWarnings("unused")
     @Subscribe
     public void onDownloadFontListComplete(DownloadCompleteEvent event) {
+        if (event.getType() != DownloadCompleteEvent.TYPE_FROM_LIST) return;
         if (event.wasSuccessful()) handleDownloadSuccess();
         else handleDownloadFailure();
     }

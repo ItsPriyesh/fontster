@@ -39,6 +39,7 @@ public class FontDownloader {
 
     private FontPackage fontPackage;
     private Context context;
+    private int type;
     private enum CompletionStatus {INCOMPLETE, COMPLETE, ERROR}
     private HashMap<Font, CompletionStatus> hashMap = new HashMap<>();
 
@@ -54,6 +55,8 @@ public class FontDownloader {
     }
 
     public void downloadAll() {
+        type = DownloadCompleteEvent.TYPE_NORMAL;
+
         for (Font font : fontPackage.getFontList()) {
             hashMap.put(font, CompletionStatus.INCOMPLETE);
 
@@ -79,6 +82,8 @@ public class FontDownloader {
     }
 
     public void downloadFromList(List<FontPackage> fontPackages, Style style) {
+        type = DownloadCompleteEvent.TYPE_FROM_LIST;
+
         for (FontPackage fontPackage : fontPackages) {
             createCacheDir(fontPackage);
 
@@ -121,10 +126,10 @@ public class FontDownloader {
     private void evaluateCompletionStatus() {
         if (hashMap.containsValue(CompletionStatus.ERROR)) {
             Timber.i("Dispatching download complete event - failed");
-            BusProvider.getInstance().post(new DownloadCompleteEvent(false));
+            BusProvider.getInstance().post(new DownloadCompleteEvent(false, type));
         } else {
             Timber.i("Dispatching download complete event - succeeded");
-            BusProvider.getInstance().post(new DownloadCompleteEvent(true));
+            BusProvider.getInstance().post(new DownloadCompleteEvent(true, type));
         }
     }
 }

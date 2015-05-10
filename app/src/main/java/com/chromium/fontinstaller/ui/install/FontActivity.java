@@ -202,6 +202,7 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
     @SuppressWarnings("unused")
     @Subscribe
     public void onDownloadComplete(DownloadCompleteEvent event) {
+        if (event.getType() != DownloadCompleteEvent.TYPE_NORMAL) return;
         if (event.wasSuccessful()) setupPager();
         else handleFailedDownload();
     }
