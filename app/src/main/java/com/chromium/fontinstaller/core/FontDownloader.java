@@ -44,6 +44,7 @@ public class FontDownloader {
     private HashMap<Font, CompletionStatus> hashMap = new HashMap<>();
 
     public FontDownloader(FontPackage fontPackage, Context context) {
+        Ion.getDefault(context).getHttpClient().getSSLSocketMiddleware().setSpdyEnabled(false);
         this.fontPackage = fontPackage;
         this.context = context;
 
