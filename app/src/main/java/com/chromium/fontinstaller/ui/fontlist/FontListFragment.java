@@ -42,6 +42,7 @@ import com.eowise.recyclerview.stickyheaders.StickyHeadersItemDecoration;
 import com.squareup.otto.Subscribe;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -156,14 +157,19 @@ public class FontListFragment extends Fragment {
     }
 
     private void populateFontList() {
+        InputStream fontFile = null;
         try {
-            Scanner scanner = new Scanner(activity.getAssets().open("fonts"));
+            fontFile = activity.getAssets().open("fonts");
+            Scanner scanner = new Scanner(fontFile);
             while (scanner.hasNextLine()) {
                 fontList.add(scanner.nextLine());
             }
-            scanner.close();
-        } catch (IOException e) {
-
+        } catch (IOException ignored) {} finally {
+            if (fontFile != null) {
+                try {
+                    fontFile.close();
+                } catch (IOException ignored) {}
+            }
         }
     }
 
