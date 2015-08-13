@@ -21,17 +21,12 @@ import android.os.AsyncTask;
 import com.chromium.fontinstaller.BusProvider;
 import com.chromium.fontinstaller.events.Event;
 
-import eu.chainfire.libsuperuser.Shell;
 import timber.log.Timber;
 
-/**
- * Created by priyeshpatel on 15-02-16.
- */
 public class CommandRunner extends AsyncTask<String, Void, Void> {
 
     private Event onCompleteEvent;
 
-    public static final String MOUNT_SYSTEM = "mount -o rw,remount /system";
 
     public CommandRunner(Event onCompleteEvent) {
         this.onCompleteEvent = onCompleteEvent;
@@ -46,8 +41,7 @@ public class CommandRunner extends AsyncTask<String, Void, Void> {
     protected Void doInBackground(String... commands) {
         for (String command : commands) Timber.i(command);
 
-        Shell.SU.run(MOUNT_SYSTEM);
-        Shell.SU.run(commands);
+
 
         return null;
     }

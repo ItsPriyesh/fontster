@@ -37,7 +37,7 @@ import com.chromium.fontinstaller.R;
  */
 public class ViewUtils {
 
-    public int dpToPixels(int dp, Context context) {
+    public static int dpToPixels(int dp, Context context) {
         final float SCALE = context.getResources().getDisplayMetrics().density;
         return (int) (dp * SCALE + 0.5f);
     }

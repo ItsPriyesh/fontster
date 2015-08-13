@@ -18,25 +18,26 @@ package com.chromium.fontinstaller.core;
 
 import android.content.Context;
 
-import com.chromium.fontinstaller.events.InstallCompleteEvent;
 import com.chromium.fontinstaller.models.Font;
 import com.chromium.fontinstaller.models.FontPackage;
 import com.chromium.fontinstaller.util.FileUtils;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import eu.chainfire.libsuperuser.Shell;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
-/**
- * Created by priyeshpatel on 15-02-10.
- */
 public class FontInstaller {
     private FontPackage fontPackage;
     private Context context;
     private List<String> copyCommands = new ArrayList<>();
 
+    private static final String MOUNT_SYSTEM = "mount -o rw,remount /system";
     private static final String FONT_INSTALL_DIR = "/system/fonts";
     private String cacheDir;
 
@@ -45,20 +46,26 @@ public class FontInstaller {
         this.context = context;
 
         cacheDir = context.getExternalCacheDir() + File.separator;
+        for (Font font : fontPackage.getFontList()) {
+            copyCommands.add("cp " + cacheDir + fontPackage.getNameFormatted() +
+                    File.separator + font.getName() + " " + FONT_INSTALL_DIR);
+        }
+
+        copyCommands.add("cp " + FileUtils.getAssetsFile("DroidSansFallback.ttf", context)
+                .getAbsolutePath() + " " + FONT_INSTALL_DIR);
+        copyCommands = Collections.unmodifiableList(copyCommands);
     }
 
     public void install() {
-        if (Shell.SU.available()) {
-            for (Font font : fontPackage.getFontList()) {
-                copyCommands.add("cp " + cacheDir + fontPackage.getNameFormatted() +
-                        File.separator + font.getName() + " " + FONT_INSTALL_DIR);
+        Observable.create(subscriber -> {
+            if (Shell.SU.available()) {
+                Shell.SU.run(MOUNT_SYSTEM);
+                Shell.SU.run(copyCommands);
+                subscriber.onCompleted();
             }
-
-            copyCommands.add("cp " + FileUtils.getAssetsFile("DroidSansFallback.ttf", context)
-                    .getAbsolutePath() + " " + FONT_INSTALL_DIR);
-
-            CommandRunner installTask = new CommandRunner(new InstallCompleteEvent());
-            installTask.execute(copyCommands.toArray(new String[copyCommands.size()]));
-        }
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
     }
 }

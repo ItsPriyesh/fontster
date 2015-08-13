@@ -16,9 +16,6 @@
 
 package com.chromium.fontinstaller.events;
 
-/**
- * Created by priyeshpatel on 15-03-11.
- */
 public class Event {
     // Super class for all other events
 }

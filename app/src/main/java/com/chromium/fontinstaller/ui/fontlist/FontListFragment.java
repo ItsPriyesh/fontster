@@ -18,6 +18,7 @@ package com.chromium.fontinstaller.ui.fontlist;
 
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -105,40 +106,52 @@ public class FontListFragment extends Fragment {
         recyclerView.addItemDecoration(buildHeaderDecor());
     }
 
+    private ProgressDialog progressDialog;
+
+    private void dismissProgressDialog() {
+        if (progressDialog.isShowing()) progressDialog.dismiss();
+    }
+
     private void downloadFontList() {
-        if (errorContainer.getVisibility() == View.VISIBLE) {
-            errorContainer.setVisibility(View.GONE);
-        }
+        progressDialog = new ProgressDialog(activity);
+        progressDialog.setMessage("Downloading previews");
+        progressDialog.show();
+
+        if (errorContainer.getVisibility() == View.VISIBLE) errorContainer.setVisibility(View.GONE);
         downloadProgress.setVisibility(View.VISIBLE);
 
         List<FontPackage> fontPackages = new ArrayList<>(fontList.size());
-        for (String fontName : fontList) fontPackages.add(new FontPackage(fontName));
+        for (String fontName : fontList) {
+            FontPackage fontPackage = new FontPackage(fontName);
+            fontPackages.add(fontPackage);
+        }
         Observable
                 .from(fontPackages)
                 .flatMap(p -> FontDownloader.downloadStyledFonts(p, activity, Style.REGULAR))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        font -> {},
+                        font -> {
+                        },
                         this::handleDownloadFailure,
                         this::handleDownloadSuccess);
     }
 
     private void handleDownloadSuccess() {
+        dismissProgressDialog();
         ViewUtils.animSlideUp(downloadProgress, getActivity());
         new Handler().postDelayed(() -> {
             downloadProgress.setVisibility(View.INVISIBLE);
-
             setupRecyclerViewAdapter(true);
         }, 400);
     }
 
     private void handleDownloadFailure(Throwable error) {
+        dismissProgressDialog();
         Timber.e("Download failed: " + error.getMessage());
         ViewUtils.animSlideUp(downloadProgress, getActivity());
         new Handler().postDelayed(() -> {
             downloadProgress.setVisibility(View.INVISIBLE);
-
             ViewUtils.animSlideInBottom(errorContainer, getActivity());
             errorContainer.setVisibility(View.VISIBLE);
         }, 400);
@@ -166,11 +179,13 @@ public class FontListFragment extends Fragment {
             while (scanner.hasNextLine()) {
                 fontList.add(scanner.nextLine());
             }
-        } catch (IOException ignored) { } finally {
+        } catch (IOException ignored) {
+        } finally {
             if (fontFile != null) {
                 try {
                     fontFile.close();
-                } catch (IOException ignored) { }
+                } catch (IOException ignored) {
+                }
             }
         }
     }

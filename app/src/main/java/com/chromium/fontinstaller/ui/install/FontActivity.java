@@ -120,7 +120,7 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
         if (isVisible(errorContainer)) hide(errorContainer);
         show(downloadProgress);
 
-        FontDownloader.downloadAllFonts(fontPackage, this)
+        FontDownloader.downloadStyledFonts(fontPackage, this, Style.REGULAR, Style.BOLD, Style.ITALIC)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -174,7 +174,13 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
         show(installProgress);
 
         FontInstaller fontInstaller = new FontInstaller(fontPackage, this);
-        fontInstaller.install();
+        FontDownloader.downloadAllFonts(fontPackage, this)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        next -> { },
+                        this::handleFailedDownload,
+                        fontInstaller::install);
     }
 
     private Style getCurrentPageStyle() {
