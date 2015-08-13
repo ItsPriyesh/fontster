@@ -56,15 +56,15 @@ public class FontDownloader {
             final Request request = new Request.Builder().url(url).build();
             try {
                 if (!subscriber.isUnsubscribed()) {
-                    final Response response = CLIENT.newCall(request).execute();
                     final File file = new File(path);
-                    final BufferedSink sink = Okio.buffer(Okio.sink(file));
-                    sink.writeAll(response.body().source());
-                    sink.close();
-                    if (file.exists()) {
-                        subscriber.onNext(file);
-                        subscriber.onCompleted();
-                    } else subscriber.onError(new IOException("File was not downloaded"));
+                    if (!file.exists()) {
+                        final Response response = CLIENT.newCall(request).execute();
+                        final BufferedSink sink = Okio.buffer(Okio.sink(file));
+                        sink.writeAll(response.body().source());
+                        sink.close();
+                    }
+                    subscriber.onNext(file);
+                    subscriber.onCompleted();
                 }
             } catch (IOException e) {
                 subscriber.onError(e);
@@ -106,8 +106,7 @@ public class FontDownloader {
     }
 
     private static void createCacheDirectory(FontPackage fontPackage, Context context) {
-        File dir = new File(context.getExternalCacheDir() +
-                File.separator + fontPackage.getNameFormatted());
+        File dir = new File(context.getExternalCacheDir() + File.separator + fontPackage.getNameFormatted());
         dir.mkdirs();
     }
 
