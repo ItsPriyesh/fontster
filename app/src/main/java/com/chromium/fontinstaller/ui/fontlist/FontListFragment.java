@@ -51,6 +51,7 @@ import butterknife.OnClick;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+import timber.log.Timber;
 
 public class FontListFragment extends Fragment {
 
@@ -114,15 +115,13 @@ public class FontListFragment extends Fragment {
         for (String fontName : fontList) fontPackages.add(new FontPackage(fontName));
         Observable
                 .from(fontPackages)
-                .flatMap(fontPackage ->
-                        FontDownloader.downloadStyledFonts(fontPackage, activity, Style.REGULAR))
+                .flatMap(p -> FontDownloader.downloadStyledFonts(p, activity, Style.REGULAR))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        next -> {},
-                        error -> handleDownloadFailure(),
-                        this::handleDownloadSuccess
-                );
+                        font -> {},
+                        this::handleDownloadFailure,
+                        this::handleDownloadSuccess);
     }
 
     private void handleDownloadSuccess() {
@@ -134,7 +133,8 @@ public class FontListFragment extends Fragment {
         }, 400);
     }
 
-    private void handleDownloadFailure() {
+    private void handleDownloadFailure(Throwable error) {
+        Timber.e("Download failed: " + error.getMessage());
         ViewUtils.animSlideUp(downloadProgress, getActivity());
         new Handler().postDelayed(() -> {
             downloadProgress.setVisibility(View.INVISIBLE);
@@ -166,13 +166,11 @@ public class FontListFragment extends Fragment {
             while (scanner.hasNextLine()) {
                 fontList.add(scanner.nextLine());
             }
-        } catch (IOException ignored) {
-        } finally {
+        } catch (IOException ignored) { } finally {
             if (fontFile != null) {
                 try {
                     fontFile.close();
-                } catch (IOException ignored) {
-                }
+                } catch (IOException ignored) { }
             }
         }
     }

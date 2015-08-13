@@ -109,7 +109,6 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
         boldFragment = PreviewFragment.newInstance(fontPackage, Style.BOLD);
         italicFragment = PreviewFragment.newInstance(fontPackage, Style.ITALIC);
 
-
         previewPages[0] = regularFragment;
         previewPages[1] = boldFragment;
         previewPages[2] = italicFragment;
@@ -119,22 +118,19 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
 
     private void startDownload() {
         if (isVisible(errorContainer)) hide(errorContainer);
-
         show(downloadProgress);
+
         FontDownloader.downloadAllFonts(fontPackage, this)
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        next -> Timber.d("File downloaded: " + next.getName()),
-                        error -> {
-                            Timber.e(error.getMessage());
-                            handleFailedDownload();
-                        },
-                        this::setupPager
-                );
+                        font -> Timber.i("Font downloaded: " + font.getName()),
+                        this::handleFailedDownload,
+                        this::setupPager);
     }
 
-    private void handleFailedDownload() {
+    private void handleFailedDownload(Throwable error) {
+        Timber.e("Download failed: " + error.getMessage());
         ViewUtils.animSlideUp(downloadProgress, this);
 
         new Handler().postDelayed(() -> {
