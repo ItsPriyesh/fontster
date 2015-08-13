@@ -17,10 +17,8 @@
 package com.chromium.fontinstaller;
 
 import android.app.Application;
-import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
-import com.koushikdutta.ion.Ion;
 
 import io.fabric.sdk.android.Fabric;
 import timber.log.Timber;
@@ -37,7 +35,6 @@ public class FontsterApp extends Application {
 
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
-            Ion.getDefault(getApplicationContext()).configure().setLogging("ION LOG", Log.DEBUG);
         }
     }
 

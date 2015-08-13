@@ -31,7 +31,6 @@ import android.widget.ProgressBar;
 import com.chromium.fontinstaller.BusProvider;
 import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.core.FontDownloader;
-import com.chromium.fontinstaller.events.DownloadCompleteEvent;
 import com.chromium.fontinstaller.models.FontPackage;
 import com.chromium.fontinstaller.models.Style;
 import com.chromium.fontinstaller.ui.main.MainActivity;
@@ -39,7 +38,6 @@ import com.chromium.fontinstaller.util.PreferencesManager;
 import com.chromium.fontinstaller.util.ViewUtils;
 import com.eowise.recyclerview.stickyheaders.StickyHeadersBuilder;
 import com.eowise.recyclerview.stickyheaders.StickyHeadersItemDecoration;
-import com.squareup.otto.Subscribe;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -50,6 +48,9 @@ import java.util.Scanner;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class FontListFragment extends Fragment {
 
@@ -111,8 +112,17 @@ public class FontListFragment extends Fragment {
 
         List<FontPackage> fontPackages = new ArrayList<>(fontList.size());
         for (String fontName : fontList) fontPackages.add(new FontPackage(fontName));
-
-        new FontDownloader(activity).downloadFromList(fontPackages, Style.REGULAR);
+        Observable
+                .from(fontPackages)
+                .flatMap(fontPackage ->
+                        FontDownloader.downloadStyledFonts(fontPackage, activity, Style.REGULAR))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        next -> {},
+                        error -> handleDownloadFailure(),
+                        this::handleDownloadSuccess
+                );
     }
 
     private void handleDownloadSuccess() {
@@ -140,14 +150,6 @@ public class FontListFragment extends Fragment {
         downloadFontList();
     }
 
-    @SuppressWarnings("unused")
-    @Subscribe
-    public void onDownloadFontListComplete(DownloadCompleteEvent event) {
-        if (event.getType() != DownloadCompleteEvent.TYPE_FROM_LIST) return;
-        if (event.wasSuccessful()) handleDownloadSuccess();
-        else handleDownloadFailure();
-    }
-
     private StickyHeadersItemDecoration buildHeaderDecor() {
         return new StickyHeadersBuilder()
                 .setAdapter(listAdapter)
@@ -164,11 +166,13 @@ public class FontListFragment extends Fragment {
             while (scanner.hasNextLine()) {
                 fontList.add(scanner.nextLine());
             }
-        } catch (IOException ignored) {} finally {
+        } catch (IOException ignored) {
+        } finally {
             if (fontFile != null) {
                 try {
                     fontFile.close();
-                } catch (IOException ignored) {}
+                } catch (IOException ignored) {
+                }
             }
         }
     }

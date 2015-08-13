@@ -25,6 +25,7 @@ import android.os.Parcelable;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by priyeshpatel on 15-02-06.
@@ -32,7 +33,7 @@ import java.util.HashMap;
 public class FontPackage implements Parcelable {
     private String name;
     private String nameFormatted;
-    private HashMap<Font, Style> fontList = new HashMap<>();
+    private HashMap<Font, Style> fontStyleHashMap = new HashMap<>();
 
     private static final String BASE_URL = "https://raw.githubusercontent.com/ItsPriyesh/FontsterFontsRepo/master/";
 
@@ -46,13 +47,15 @@ public class FontPackage implements Parcelable {
     private void generateFonts() {
         for (Style style : Style.values()) {
             Font font = new Font(style, BASE_URL + nameFormatted + "/" + style.getRemoteName());
-            fontList.put(font, style);
+            fontStyleHashMap.put(font, style);
         }
     }
 
     public ArrayList<Font> getFontList() {
-        return new ArrayList<>(fontList.keySet());
+        return new ArrayList<>(fontStyleHashMap.keySet());
     }
+
+    public Map<Font, Style> getFontStyleMap() { return fontStyleHashMap; }
 
     public String getName() {
         return name;
@@ -76,8 +79,8 @@ public class FontPackage implements Parcelable {
     }
 
     public Font getFont(Style style) {
-        for (Font font : fontList.keySet())
-            if (fontList.get(font).equals(style))
+        for (Font font : fontStyleHashMap.keySet())
+            if (fontStyleHashMap.get(font).equals(style))
                 return font;
 
         return null;
@@ -89,7 +92,7 @@ public class FontPackage implements Parcelable {
 
         Bundle bundle = in.readBundle();
         bundle.setClassLoader(ClassLoader.getSystemClassLoader());
-        fontList = (HashMap<Font, Style>) bundle.getSerializable("fontList");
+        fontStyleHashMap = (HashMap<Font, Style>) bundle.getSerializable("fontList");
     }
 
     @Override
@@ -102,7 +105,7 @@ public class FontPackage implements Parcelable {
         dest.writeString(name);
         dest.writeString(nameFormatted);
         Bundle bundle = new Bundle();
-        bundle.putSerializable("fontList", fontList);
+        bundle.putSerializable("fontList", fontStyleHashMap);
         dest.writeBundle(bundle);
     }
 

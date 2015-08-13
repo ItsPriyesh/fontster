@@ -55,7 +55,7 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.2.2@aar') { transitive = true; }
 
     // Networking
-    compile 'com.koushikdutta.ion:ion:2.+'
+    compile 'com.squareup.okhttp:okhttp:2.4.0'
     compile 'io.reactivex:rxandroid:0.24.0'
 
     // Other

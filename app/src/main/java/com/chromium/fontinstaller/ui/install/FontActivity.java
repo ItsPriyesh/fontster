@@ -32,7 +32,6 @@ import android.widget.TextView;
 import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.core.FontDownloader;
 import com.chromium.fontinstaller.core.FontInstaller;
-import com.chromium.fontinstaller.events.DownloadCompleteEvent;
 import com.chromium.fontinstaller.events.InstallCompleteEvent;
 import com.chromium.fontinstaller.models.FontPackage;
 import com.chromium.fontinstaller.models.Style;
@@ -45,6 +44,9 @@ import com.squareup.otto.Subscribe;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+import timber.log.Timber;
 
 public class FontActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
 
@@ -119,8 +121,17 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
         if (isVisible(errorContainer)) hide(errorContainer);
 
         show(downloadProgress);
-        FontDownloader fontDownloader = new FontDownloader(fontPackage, this);
-        fontDownloader.downloadAll();
+        FontDownloader.downloadAllFonts(fontPackage, this)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(
+                        next -> Timber.d("File downloaded: " + next.getName()),
+                        error -> {
+                            Timber.e(error.getMessage());
+                            handleFailedDownload();
+                        },
+                        this::setupPager
+                );
     }
 
     private void handleFailedDownload() {
@@ -197,14 +208,6 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
     @OnClick(R.id.retry)
     public void retryButtonClicked() {
         startDownload();
-    }
-
-    @SuppressWarnings("unused")
-    @Subscribe
-    public void onDownloadComplete(DownloadCompleteEvent event) {
-        if (event.getType() != DownloadCompleteEvent.TYPE_NORMAL) return;
-        if (event.wasSuccessful()) setupPager();
-        else handleFailedDownload();
     }
 
     @SuppressWarnings("unused")

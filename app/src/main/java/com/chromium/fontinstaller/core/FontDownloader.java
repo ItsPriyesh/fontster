@@ -17,120 +17,98 @@
 package com.chromium.fontinstaller.core;
 
 import android.content.Context;
-import android.os.Handler;
+import android.util.Pair;
 
-import com.chromium.fontinstaller.BusProvider;
-import com.chromium.fontinstaller.events.DownloadCompleteEvent;
 import com.chromium.fontinstaller.models.Font;
 import com.chromium.fontinstaller.models.FontPackage;
 import com.chromium.fontinstaller.models.Style;
-import com.koushikdutta.ion.Ion;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 
 import java.io.File;
-import java.util.HashMap;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
-import timber.log.Timber;
+import okio.BufferedSink;
+import okio.Okio;
+import rx.Observable;
 
-/**
- * Created by priyeshpatel on 15-02-07.
- */
 public class FontDownloader {
 
-    private FontPackage fontPackage;
-    private Context context;
-    private int type;
-    private enum CompletionStatus {INCOMPLETE, COMPLETE, ERROR}
-    private HashMap<Font, CompletionStatus> hashMap = new HashMap<>();
+    private static final OkHttpClient CLIENT = new OkHttpClient();
 
-    public FontDownloader(FontPackage fontPackage, Context context) {
-        Ion.getDefault(context).getHttpClient().getSSLSocketMiddleware().setSpdyEnabled(false);
-        this.fontPackage = fontPackage;
-        this.context = context;
-
-        createCacheDir(fontPackage);
+    public static Observable<File> downloadAllFonts(FontPackage fontPackage, Context context) {
+        createCacheDirectory(fontPackage, context);
+        return downloadFonts(fontPackage, context, allFontFinder);
     }
 
-    public FontDownloader(Context context) {
-        this.context = context;
+    public static Observable<File> downloadStyledFonts(FontPackage fontPackage, Context context, Style... styles) {
+        createCacheDirectory(fontPackage, context);
+        return downloadFonts(fontPackage, context, styledFontFinder(Arrays.asList(styles)));
     }
 
-    public void downloadAll() {
-        type = DownloadCompleteEvent.TYPE_NORMAL;
-
-        for (Font font : fontPackage.getFontList()) {
-            hashMap.put(font, CompletionStatus.INCOMPLETE);
-
-            File file = new File(context.getExternalCacheDir() + File.separator +
-                    fontPackage.getNameFormatted() + File.separator + font.getName());
-
-            if (!file.exists()) {
-                Ion.with(context).load(font.getUrl()).write(file)
-                        .setCallback((e, downloadedFile) -> {
-                            if (e != null) {
-                                Timber.i("Download failed " + e);
-                                hashMap.put(font, CompletionStatus.ERROR);
-                            } else {
-                                hashMap.put(font, CompletionStatus.COMPLETE);
-                                Timber.i("Download successful " + downloadedFile);
-                            }
-                        });
-            } else {
-                hashMap.put(font, CompletionStatus.COMPLETE);
+    private static Observable<File> downloadFile(final String url, final String path) {
+        return Observable.create(subscriber -> {
+            final Request request = new Request.Builder().url(url).build();
+            try {
+                if (!subscriber.isUnsubscribed()) {
+                    final Response response = CLIENT.newCall(request).execute();
+                    final File file = new File(path);
+                    final BufferedSink sink = Okio.buffer(Okio.sink(file));
+                    sink.writeAll(response.body().source());
+                    sink.close();
+                    if (file.exists()) {
+                        subscriber.onNext(file);
+                        subscriber.onCompleted();
+                    } else subscriber.onError(new IOException("File was not downloaded"));
+                }
+            } catch (IOException e) {
+                subscriber.onError(e);
             }
-        }
-        checkCompletion();
+        });
     }
 
-    public void downloadFromList(List<FontPackage> fontPackages, Style style) {
-        type = DownloadCompleteEvent.TYPE_FROM_LIST;
+    private static Observable<File> downloadFiles(ArrayList<Pair<String, String>> files) {
+        return Observable.from(files).flatMap(p -> downloadFile(p.first, p.second));
+    }
 
-        for (FontPackage fontPackage : fontPackages) {
-            createCacheDir(fontPackage);
+    private static Observable<File> downloadFonts(FontPackage fontPackage, Context context, FontFinder finder) {
+        ArrayList<Pair<String, String>> urlsAndPaths = new ArrayList<>();
+        for (Font font : finder.findFonts(fontPackage)) {
+            String path = context.getExternalCacheDir() + File.separator +
+                    fontPackage.getNameFormatted() + File.separator + font.getName();
+            urlsAndPaths.add(new Pair<>(font.getUrl(), path));
+        }
+        return downloadFiles(urlsAndPaths);
+    }
 
-            hashMap.put(fontPackage.getFont(style), CompletionStatus.INCOMPLETE);
+    private interface FontFinder {
+        List<Font> findFonts(FontPackage fontPackage);
+    }
 
-            File file = new File(context.getExternalCacheDir() + File.separator +
-                    fontPackage.getNameFormatted() + File.separator + style.getLocalName());
+    private static FontFinder allFontFinder = FontPackage::getFontList;
 
-            if (!file.exists()) {
-                Ion.with(context).load(fontPackage.getFont(style).getUrl()).write(file)
-                        .setCallback((e, downloadedFile) -> {
-                            if (e != null) {
-                                Timber.i("Download failed " + e);
-                                hashMap.put(fontPackage.getFont(style), CompletionStatus.ERROR);
-                            } else {
-                                Timber.i("Download successful " + downloadedFile);
-                                hashMap.put(fontPackage.getFont(style), CompletionStatus.COMPLETE);
-                            }
-                        });
-            } else {
-                hashMap.put(fontPackage.getFont(style), CompletionStatus.COMPLETE);
+    private static FontFinder styledFontFinder(List<Style> acceptedStyles) {
+        return fontPackage -> {
+            Map<Font, Style> fontStyleMap = fontPackage.getFontStyleMap();
+            ArrayList<Font> rightFonts = new ArrayList<>();
+            for (Map.Entry<Font, Style> f : fontStyleMap.entrySet()) {
+                if (acceptedStyles.contains(f.getValue())) {
+                    rightFonts.add(f.getKey());
+                }
             }
-        }
-        checkCompletion();
+            return rightFonts;
+        };
     }
 
-    private void createCacheDir(FontPackage fontPackage) {
+    private static void createCacheDirectory(FontPackage fontPackage, Context context) {
         File dir = new File(context.getExternalCacheDir() +
                 File.separator + fontPackage.getNameFormatted());
         dir.mkdirs();
     }
 
-    private void checkCompletion() {
-        new Handler().postDelayed(() -> {
-            if (hashMap.containsValue(CompletionStatus.INCOMPLETE)) checkCompletion();
-            else evaluateCompletionStatus();
-        }, 500);
-    }
-
-    private void evaluateCompletionStatus() {
-        if (hashMap.containsValue(CompletionStatus.ERROR)) {
-            Timber.i("Dispatching download complete event - failed");
-            BusProvider.getInstance().post(new DownloadCompleteEvent(false, type));
-        } else {
-            Timber.i("Dispatching download complete event - succeeded");
-            BusProvider.getInstance().post(new DownloadCompleteEvent(true, type));
-        }
-    }
 }
