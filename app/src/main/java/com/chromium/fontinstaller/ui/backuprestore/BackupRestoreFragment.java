@@ -25,21 +25,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.chromium.fontinstaller.BusProvider;
 import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.core.BackupManager;
-import com.chromium.fontinstaller.events.BackupCompleteEvent;
-import com.chromium.fontinstaller.events.BackupDeletedEvent;
-import com.chromium.fontinstaller.events.RestoreCompleteTask;
 import com.chromium.fontinstaller.ui.common.BaseActivity;
 import com.chromium.fontinstaller.util.AlertUtils;
 import com.chromium.fontinstaller.util.PreferencesManager;
 import com.chromium.fontinstaller.util.ViewUtils;
-import com.squareup.otto.Subscribe;
+
+import java.util.Date;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class BackupRestoreFragment extends Fragment {
 
@@ -110,13 +109,23 @@ public class BackupRestoreFragment extends Fragment {
     @OnClick(R.id.backup_available_container)
     public void backupContainerClicked() {
         new AlertDialog.Builder(getActivity())
-                .setItems(new String[] {"Restore", "Delete"}, (dialog, index) -> {
+                .setItems(new String[]{"Restore", "Delete"}, (dialog, index) -> {
                     switch (index) {
                         case 0:
-                            backupManager.restore();
+                            backupManager
+                                    .restore()
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .doOnCompleted(this::onRestoreComplete)
+                                    .subscribe();
                             break;
                         case 1:
-                            backupManager.deleteBackup();
+                            backupManager
+                                    .deleteBackup()
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .doOnCompleted(this::onBackupDeleted)
+                                    .subscribe();
                             break;
                     }
                 })
@@ -128,40 +137,28 @@ public class BackupRestoreFragment extends Fragment {
     public void backupFabClicked() {
         BackupDialogFragment backupDialog = new BackupDialogFragment();
         backupDialog.show(getActivity().getSupportFragmentManager(), "BackupDialogFragment");
-        backupDialog.setOnBackupClickedListener(backupManager::backup);
+        backupDialog.setOnBackupClickedListener(name ->
+                        backupManager
+                                .backup()
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .doOnCompleted(() -> onBackupComplete(name))
+                                .subscribe()
+        );
     }
 
-    @SuppressWarnings("unused")
-    @Subscribe
-    public void onBackupComplete(BackupCompleteEvent event) {
-        prefs.setString(PreferencesManager.KEY_BACKUP_NAME, event.getBackupName());
-        prefs.setString(PreferencesManager.KEY_BACKUP_DATE, event.getDate());
-
+    public void onBackupComplete(String name) {
+        prefs.setString(PreferencesManager.KEY_BACKUP_NAME, name);
+        prefs.setString(PreferencesManager.KEY_BACKUP_DATE, BackupManager.dateFormat.format(new Date()));
         checkForBackup();
     }
 
-    @SuppressWarnings("unused")
-    @Subscribe
-    public void onBackupDeleted(BackupDeletedEvent event) {
+    public void onBackupDeleted() {
         checkForBackup();
     }
 
-    @SuppressWarnings("unused")
-    @Subscribe
-    public void onRestoreComplete(RestoreCompleteTask event) {
+    public void onRestoreComplete() {
         AlertUtils.showRebootAlert(getActivity());
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        BusProvider.getInstance().register(this);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        BusProvider.getInstance().unregister(this);
     }
 
 }

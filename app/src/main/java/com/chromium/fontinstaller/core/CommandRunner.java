@@ -16,40 +16,27 @@
 
 package com.chromium.fontinstaller.core;
 
-import android.os.AsyncTask;
+import java.util.Arrays;
+import java.util.List;
 
-import com.chromium.fontinstaller.BusProvider;
-import com.chromium.fontinstaller.events.Event;
+import eu.chainfire.libsuperuser.Shell;
+import rx.Observable;
 
-import timber.log.Timber;
+public class CommandRunner {
 
-public class CommandRunner extends AsyncTask<String, Void, Void> {
-
-    private Event onCompleteEvent;
-
-
-    public CommandRunner(Event onCompleteEvent) {
-        this.onCompleteEvent = onCompleteEvent;
+    public static Observable<Void> runCommands(List<String> commands) {
+        return Observable
+                .create(subscriber -> {
+                    if (Shell.SU.available()) {
+                        Shell.SU.run(commands);
+                    }
+                    subscriber.onNext(null);
+                    subscriber.onCompleted();
+                });
     }
 
-    @Override
-    protected void onPreExecute() {
-        Timber.i("CommandTask started");
-    }
-
-    @Override
-    protected Void doInBackground(String... commands) {
-        for (String command : commands) Timber.i(command);
-
-
-
-        return null;
-    }
-
-    @Override
-    protected void onPostExecute(Void v) {
-        Timber.i("CommandTask complete");
-        BusProvider.getInstance().post(onCompleteEvent);
+    public static Observable<Void> runCommand(String command) {
+        return runCommands(Arrays.asList(command));
     }
 
 }

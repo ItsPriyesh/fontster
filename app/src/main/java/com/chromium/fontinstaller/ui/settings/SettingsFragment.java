@@ -27,23 +27,22 @@ import android.preference.PreferenceFragment;
 import android.support.v4.app.ActivityCompat;
 
 import com.chromium.fontinstaller.BuildConfig;
-import com.chromium.fontinstaller.BusProvider;
 import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.SecretStuff;
 import com.chromium.fontinstaller.core.CommandRunner;
-import com.chromium.fontinstaller.events.CacheClearedEvent;
 import com.chromium.fontinstaller.ui.main.MainActivity;
 import com.chromium.fontinstaller.util.Licenses;
 import com.chromium.fontinstaller.util.PreferencesManager;
 import com.chromium.fontinstaller.util.billing.IabHelper;
 import com.nispok.snackbar.Snackbar;
-import com.squareup.otto.Subscribe;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import de.psdev.licensesdialog.LicensesDialog;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class SettingsFragment extends PreferenceFragment implements
         DonateDialogFragment.DonationClickListener {
@@ -154,15 +153,18 @@ public class SettingsFragment extends PreferenceFragment implements
             if (!f.getName().equals("Backup"))
                 commands.add("rm -rf " + f.getAbsolutePath());
 
-        CommandRunner clearCacheTask = new CommandRunner(new CacheClearedEvent());
-        clearCacheTask.execute(commands.toArray(new String[commands.size()]));
+        CommandRunner
+                .runCommands(commands)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnCompleted(this::onCacheCleared)
+                .subscribe();
 
         return true;
     }
 
     @SuppressWarnings("unused")
-    @Subscribe
-    public void onCacheCleared(CacheClearedEvent event) {
+    public void onCacheCleared() {
         progressDialog.dismiss();
         Snackbar.with(getActivity())
                 .text("Cache has been cleared")
@@ -196,17 +198,4 @@ public class SettingsFragment extends PreferenceFragment implements
         ActivityCompat.finishAffinity(getActivity());
         startActivity(new Intent(getActivity(), MainActivity.class));
     }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        BusProvider.getInstance().register(this);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        BusProvider.getInstance().unregister(this);
-    }
 }
-

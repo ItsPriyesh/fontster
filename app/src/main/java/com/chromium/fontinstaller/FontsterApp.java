@@ -23,9 +23,6 @@ import com.crashlytics.android.Crashlytics;
 import io.fabric.sdk.android.Fabric;
 import timber.log.Timber;
 
-/**
- * Created by priyeshpatel on 15-02-06.
- */
 public class FontsterApp extends Application {
     @Override
     public void onCreate() {

@@ -22,7 +22,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.chromium.fontinstaller.BusProvider;
 import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.SecretStuff;
 import com.chromium.fontinstaller.ui.settings.SettingsFragment;
@@ -48,19 +47,12 @@ public class BaseActivity extends ActionBarActivity {
     public void setContentView(int layoutResId) {
         super.setContentView(layoutResId);
         ButterKnife.inject(this);
-        BusProvider.getInstance().register(this);
 
         billingHelper = new IabHelper(this, SecretStuff.LICENSE_KEY);
 
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(false);
-    }
-
-    @Override
-    protected void onDestroy() {
-        BusProvider.getInstance().unregister(this);
-        super.onPause();
     }
 
     @Override
