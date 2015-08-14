@@ -18,10 +18,6 @@ package com.chromium.fontinstaller.core;
 
 import android.content.Context;
 
-import com.chromium.fontinstaller.events.BackupCompleteEvent;
-import com.chromium.fontinstaller.events.BackupDeletedEvent;
-import com.chromium.fontinstaller.events.RestoreCompleteTask;
-
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -30,6 +26,7 @@ import java.util.Date;
 import java.util.List;
 
 import eu.chainfire.libsuperuser.Shell;
+import rx.Observable;
 
 /**
  * Created by priyeshpatel on 15-03-12.
@@ -38,8 +35,8 @@ public class BackupManager {
 
     private File backupDirectory;
 
-    private final Date currentDate = Calendar.getInstance().getTime();
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy");
+    public static final Date currentDate = Calendar.getInstance().getTime();
+    public static final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy");
 
     private static final String SOURCE_DIR = "/system/fonts/";
     private String backupDir;
@@ -54,34 +51,28 @@ public class BackupManager {
         backupDirectory.mkdirs();
     }
 
-    public void backup(String name) {
+    public Observable<Void> backup() {
         createBackupDir();
-        BackupCompleteEvent event = new BackupCompleteEvent(name, dateFormat.format(currentDate));
-
-        CommandRunner backupTask = new CommandRunner(event);
-        backupTask.execute("cp -R " + SOURCE_DIR + ". " + backupDir);
+        return CommandRunner.runCommand("cp -R " + SOURCE_DIR + ". " + backupDir);
     }
 
-    public void restore() {
+    public Observable<Void> restore() {
         if (Shell.SU.available()) {
             List<String> restoreCommands = new ArrayList<>();
-
             for (File file : backupDirectory.listFiles()) {
                 restoreCommands.add("cp " + file.getAbsolutePath() + " " + SOURCE_DIR);
             }
-
-            CommandRunner restoreTask = new CommandRunner(new RestoreCompleteTask());
-            restoreTask.execute(restoreCommands.toArray(new String[restoreCommands.size()]));
+            return CommandRunner.runCommands(restoreCommands);
+        } else {
+            return Observable.empty();
         }
     }
 
-    public void deleteBackup() {
-        CommandRunner deleteBackupTask = new CommandRunner(new BackupDeletedEvent());
-        deleteBackupTask.execute("rm -rf " + backupDir);
+    public Observable<Void> deleteBackup() {
+        return CommandRunner.runCommand("rm -rf " + backupDir);
     }
 
     public boolean backupExists() {
-        if (backupDirectory.listFiles() == null) return false;
-        else return backupDirectory.listFiles().length != 0;
+        return backupDirectory.listFiles() != null && backupDirectory.listFiles().length != 0;
     }
 }

@@ -43,7 +43,7 @@ public class BackupDialogFragment extends DialogFragment {
     }
 
     public interface BackupDialogListener {
-        public void onBackupButtonClicked(String backupName);
+        void onBackupButtonClicked(String backupName);
     }
 
     public void setOnBackupClickedListener(BackupDialogListener listener){

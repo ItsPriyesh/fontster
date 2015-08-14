@@ -41,6 +41,10 @@ public class FontDownloader {
 
     private static final OkHttpClient CLIENT = new OkHttpClient();
 
+    public static class DownloadException extends Exception {
+        public DownloadException(Exception root) { super(root); }
+    }
+
     public static Observable<File> downloadAllFonts(FontPackage fontPackage, Context context) {
         createCacheDirectory(fontPackage, context);
         return downloadFonts(fontPackage, context, allFontFinder);
@@ -67,7 +71,7 @@ public class FontDownloader {
                     subscriber.onCompleted();
                 }
             } catch (IOException e) {
-                subscriber.onError(e);
+                subscriber.onError(new DownloadException(e));
             }
         });
     }

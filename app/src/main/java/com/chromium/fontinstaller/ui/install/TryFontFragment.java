@@ -32,6 +32,7 @@ import com.chromium.fontinstaller.models.Style;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import rx.functions.Action1;
 
 public class TryFontFragment extends DialogFragment {
 
@@ -43,15 +44,17 @@ public class TryFontFragment extends DialogFragment {
 
     private FontPackage fontPackage;
     private Style style;
+    private Action1<String> tryCallback;
 
     public TryFontFragment() {
         // Required empty public constructor
     }
 
-    public static TryFontFragment newInstance(FontPackage fontPackage, Style style) {
+    public static TryFontFragment newInstance(FontPackage fontPackage, Style style, Action1<String> tryCallback) {
         TryFontFragment fragment = new TryFontFragment();
         fragment.setFontPackage(fontPackage);
         fragment.setFontStyle(style);
+        fragment.setTryCallback(tryCallback);
 
         return fragment;
     }
@@ -72,7 +75,12 @@ public class TryFontFragment extends DialogFragment {
     @SuppressWarnings("unused")
     @OnClick(R.id.done_button)
     public void doneButtonClicked() {
+        tryCallback.call(input.getText().toString());
         dismiss();
+    }
+
+    private void setTryCallback(Action1<String> callback) {
+        this.tryCallback = callback;
     }
 
     private void setFontPackage(FontPackage fontPackage) {

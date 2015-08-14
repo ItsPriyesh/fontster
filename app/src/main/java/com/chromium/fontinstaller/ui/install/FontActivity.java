@@ -32,7 +32,6 @@ import android.widget.TextView;
 import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.core.FontDownloader;
 import com.chromium.fontinstaller.core.FontInstaller;
-import com.chromium.fontinstaller.events.InstallCompleteEvent;
 import com.chromium.fontinstaller.models.FontPackage;
 import com.chromium.fontinstaller.models.Style;
 import com.chromium.fontinstaller.ui.common.BaseActivity;
@@ -40,7 +39,7 @@ import com.chromium.fontinstaller.ui.common.SlidingTabLayout;
 import com.chromium.fontinstaller.util.AlertUtils;
 import com.chromium.fontinstaller.util.ViewUtils;
 import com.melnykov.fab.FloatingActionButton;
-import com.squareup.otto.Subscribe;
+import com.nispok.snackbar.Snackbar;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
@@ -141,6 +140,17 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
         }, 400);
     }
 
+    private void handleFailedInstall(Throwable error) {
+        new Handler().postDelayed(() -> {
+            Timber.e("Install failed: " + error.getMessage());
+            Snackbar.with(this).text("Install failed").show(this);
+            ViewUtils.animShrinkToCenter(installProgress, this);
+            hide(installProgress);
+            ViewUtils.animGrowFromCenter(installButton, this);
+            show(installButton);
+        }, 500);
+    }
+
     private void setupPager() {
         initializeFragments();
         pagerAdapter = new PreviewPagerAdapter(getSupportFragmentManager());
@@ -173,14 +183,20 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
         ViewUtils.animGrowFromCenter(installProgress, this);
         show(installProgress);
 
-        FontInstaller fontInstaller = new FontInstaller(fontPackage, this);
         FontDownloader.downloadAllFonts(fontPackage, this)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .last()
+                .flatMap(v -> FontInstaller.install(fontPackage, this))
+                .doOnCompleted(this::onInstallComplete)
                 .subscribe(
-                        next -> { },
-                        this::handleFailedDownload,
-                        fontInstaller::install);
+                        next -> {
+                        }, error -> {
+                            if (error instanceof FontDownloader.DownloadException)
+                                handleFailedDownload(error.getCause());
+                            else if (error instanceof FontInstaller.InstallException)
+                                handleFailedInstall(error);
+                        });
     }
 
     private Style getCurrentPageStyle() {
@@ -212,9 +228,7 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
         startDownload();
     }
 
-    @SuppressWarnings("unused")
-    @Subscribe
-    public void onInstallComplete(InstallCompleteEvent event) {
+    public void onInstallComplete() {
         new Handler().postDelayed(() -> {
             ViewUtils.animShrinkToCenter(installProgress, this);
             hide(installProgress);
@@ -266,8 +280,14 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
 
     private void showTryFontDialog() {
         if (fragmentsInitialized) {
-            TryFontFragment dialog = TryFontFragment.newInstance(fontPackage, getCurrentPageStyle());
+            TryFontFragment dialog = TryFontFragment.newInstance(fontPackage, getCurrentPageStyle(), this::tryFontCallback);
             dialog.show(getSupportFragmentManager(), "TryFontFragment");
+        }
+    }
+
+    private void tryFontCallback(String input) {
+        for (PreviewFragment fragment : previewPages) {
+            fragment.setPreviewText(input);
         }
     }
 

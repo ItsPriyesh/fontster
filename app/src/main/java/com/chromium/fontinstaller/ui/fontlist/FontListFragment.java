@@ -29,7 +29,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.chromium.fontinstaller.BusProvider;
 import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.core.FontDownloader;
 import com.chromium.fontinstaller.models.FontPackage;
@@ -79,7 +78,6 @@ public class FontListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_font_list, container, false);
         ButterKnife.inject(this, view);
-        BusProvider.getInstance().register(this);
 
         activity = getActivity();
         ((MainActivity) activity).setToolbarTitle("Fontster");
@@ -188,12 +186,6 @@ public class FontListFragment extends Fragment {
                 }
             }
         }
-    }
-
-    @Override
-    public void onDestroy() {
-        BusProvider.getInstance().unregister(this);
-        super.onDestroy();
     }
 
 }

@@ -77,6 +77,10 @@ public class PreviewFragment extends Fragment {
         return view;
     }
 
+    public void setPreviewText(String input) {
+        this.previewText.setText(input);
+    }
+
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
