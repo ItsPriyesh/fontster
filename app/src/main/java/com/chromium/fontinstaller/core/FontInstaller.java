@@ -22,18 +22,14 @@ import android.content.Context;
 import com.chromium.fontinstaller.models.Font;
 import com.chromium.fontinstaller.models.FontPackage;
 import com.chromium.fontinstaller.util.FileUtils;
-import com.nispok.snackbar.Snackbar;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import eu.chainfire.libsuperuser.Shell;
 import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 public class FontInstaller {
     private static final String MOUNT_SYSTEM = "mount -o rw,remount /system";
@@ -44,19 +40,18 @@ public class FontInstaller {
     }
 
     public static Observable<Void> install(final FontPackage fontPackage, final Activity context) {
-        String cacheDir = context.getExternalCacheDir() + File.separator;
+        final String cache = context.getExternalCacheDir() + File.separator;
         List<String> copyCommands = new ArrayList<>();
         return Observable.create(subscriber -> {
             for (Font font : fontPackage.getFontList()) {
-                String fileName = cacheDir + fontPackage.getNameFormatted() + File.separator + font.getName();
-                if (!new File(fileName).exists()) {
+                final String file = cache + fontPackage.getNameFormatted() + File.separator + font.getName();
+                if (!new File(file).exists()) {
                     subscriber.onError(new InstallException(new IOException("File not found!")));
                     return;
                 }
-                copyCommands.add("cp " + fileName + " " + FONT_INSTALL_DIR);
+                copyCommands.add("cp " + file + " " + FONT_INSTALL_DIR);
             }
-            copyCommands.add("cp " + FileUtils.getAssetsFile("DroidSansFallback.ttf", context)
-                    .getAbsolutePath() + " " + FONT_INSTALL_DIR);
+            copyCommands.add(generateLockscreenFixCommand(context));
             if (Shell.SU.available()) {
                 Shell.SU.run(MOUNT_SYSTEM);
                 Shell.SU.run(copyCommands);
@@ -64,5 +59,11 @@ public class FontInstaller {
                 subscriber.onCompleted();
             }
         });
+    }
+
+    // This font file is copied as a workaround/fix to the lockscreen colon bug
+    private static String generateLockscreenFixCommand(Context context) {
+        return "cp " + FileUtils.getAssetsFile("DroidSansFallback.ttf", context)
+                .getAbsolutePath() + " " + FONT_INSTALL_DIR;
     }
 }

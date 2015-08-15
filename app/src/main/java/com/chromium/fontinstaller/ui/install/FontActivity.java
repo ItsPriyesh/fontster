@@ -190,8 +190,7 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
                 .flatMap(v -> FontInstaller.install(fontPackage, this))
                 .doOnCompleted(this::onInstallComplete)
                 .subscribe(
-                        next -> {
-                        }, error -> {
+                        next -> { }, error -> {
                             if (error instanceof FontDownloader.DownloadException)
                                 handleFailedDownload(error.getCause());
                             else if (error instanceof FontInstaller.InstallException)

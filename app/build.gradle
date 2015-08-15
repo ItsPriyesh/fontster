@@ -41,8 +41,8 @@ android {
 }
 
 retrolambda {
-    jdk '/opt/jdk1.8.0_51'
-    oldJdk '/opt/jdk1.6.0_45'
+    jdk '/Library/Java/JavaVirtualMachines/jdk1.8.0_31.jdk/Contents/Home'
+    oldJdk '/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Content/Home'
     javaVersion JavaVersion.VERSION_1_6
 }
 
