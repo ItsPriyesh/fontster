@@ -16,40 +16,9 @@
 
 package com.chromium.fontinstaller.util;
 
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.os.AsyncTask;
-
 import eu.chainfire.libsuperuser.Shell;
 
 public class RootUtils {
-    private static ProgressDialog progressDialog;
-
-    public static void runBackgroundCommand(String command, boolean showProgress, Context context) {
-        class Task extends AsyncTask<String, Void, Void> {
-            @Override
-            protected void onPreExecute() {
-                if (showProgress) {
-                    progressDialog = new ProgressDialog(context);
-                    progressDialog.setMessage("Loading");
-                }
-            }
-
-            @Override
-            protected Void doInBackground(String... commands) {
-                Shell.SU.run(commands);
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void v) {
-                if (showProgress) {
-                    progressDialog.dismiss();
-                }
-            }
-        }
-        new Task().execute(command);
-    }
 
     public static void requestAccess() {
         new Thread(() -> {

@@ -24,8 +24,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.chromium.fontinstaller.R;
+import com.chromium.fontinstaller.core.CommandRunner;
 
 import butterknife.ButterKnife;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class AlertUtils {
 
@@ -45,7 +48,10 @@ public class AlertUtils {
         content.setTypeface(robotoReg);
         reboot.setTypeface(robotoMed);
 
-        reboot.setOnClickListener(v -> RootUtils.runBackgroundCommand("reboot", false, context));
+        reboot.setOnClickListener(v -> CommandRunner.runCommand("reboot")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe());
 
         dialog.show();
     }
