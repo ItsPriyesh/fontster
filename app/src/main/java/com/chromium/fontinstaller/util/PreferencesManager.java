@@ -19,10 +19,8 @@ package com.chromium.fontinstaller.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-/**
- * Created by priyeshpatel on 15-03-11.
- */
 public class PreferencesManager {
+
     private static final String PREFS_NAME = "com.chromium.fontinstaller.PREFS";
 
     public static final String KEY_ENABLE_TRUEFONT = "1";

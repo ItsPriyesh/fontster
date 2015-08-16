@@ -31,11 +31,9 @@ import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 
-/**
- * Created by priyeshpatel on 15-02-18.
- */
 public class NavDrawerAdapter extends ArrayAdapter<NavDrawerItem> {
-    private ArrayList<NavDrawerItem> items;
+
+    private final ArrayList<NavDrawerItem> items;
 
     public NavDrawerAdapter(Context context, ArrayList<NavDrawerItem> items) {
         super(context, 0, items);

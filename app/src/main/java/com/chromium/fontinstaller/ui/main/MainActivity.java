@@ -93,9 +93,8 @@ public class MainActivity extends BaseActivity {
         String[] titles = getResources().getStringArray(R.array.nav_drawer_titles);
         String[] icons = getResources().getStringArray(R.array.nav_drawer_icons);
 
-        for (int i = 0; i < Math.min(titles.length, icons.length); i++) {
+        for (int i = 0; i < Math.min(titles.length, icons.length); i++)
             items.add(new NavDrawerItem(titles[i], getDrawableFromArray(i, icons)));
-        }
 
         return items;
     }
@@ -158,4 +157,5 @@ public class MainActivity extends BaseActivity {
         }
         super.onBackPressed();
     }
+
 }

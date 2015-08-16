@@ -70,14 +70,9 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
     @InjectView(R.id.error_container)
     ViewGroup errorContainer;
 
-    private String fontName;
     private boolean fragmentsInitialized = false;
     private int currentPage = 0;
     private FontPackage fontPackage;
-    private PreviewPagerAdapter pagerAdapter;
-    private PreviewFragment regularFragment;
-    private PreviewFragment boldFragment;
-    private PreviewFragment italicFragment;
     private PreviewFragment[] previewPages = new PreviewFragment[3];
     private final String[] tabTitles = {"Regular", "Bold", "Italic"};
 
@@ -91,7 +86,7 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
         disableToolbarElevation();
         showToolbarBackButton();
 
-        fontName = getIntent().getStringExtra(FONT_NAME);
+        final String fontName = getIntent().getStringExtra(FONT_NAME);
 
         fontPackage = new FontPackage(fontName);
         startDownload();
@@ -104,9 +99,9 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
     }
 
     private void initializeFragments() {
-        regularFragment = PreviewFragment.newInstance(fontPackage, Style.REGULAR);
-        boldFragment = PreviewFragment.newInstance(fontPackage, Style.BOLD);
-        italicFragment = PreviewFragment.newInstance(fontPackage, Style.ITALIC);
+        PreviewFragment regularFragment = PreviewFragment.newInstance(fontPackage, Style.REGULAR);
+        PreviewFragment boldFragment = PreviewFragment.newInstance(fontPackage, Style.BOLD);
+        PreviewFragment italicFragment = PreviewFragment.newInstance(fontPackage, Style.ITALIC);
 
         previewPages[0] = regularFragment;
         previewPages[1] = boldFragment;
@@ -153,7 +148,7 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
 
     private void setupPager() {
         initializeFragments();
-        pagerAdapter = new PreviewPagerAdapter(getSupportFragmentManager());
+        PreviewPagerAdapter pagerAdapter = new PreviewPagerAdapter(getSupportFragmentManager());
         previewPager.setOffscreenPageLimit(2);
         previewPager.setAdapter(pagerAdapter);
         slidingTabLayout.setOnPageChangeListener(this);
@@ -190,7 +185,8 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
                 .flatMap(v -> FontInstaller.install(fontPackage, this))
                 .doOnCompleted(this::onInstallComplete)
                 .subscribe(
-                        next -> { }, error -> {
+                        next -> {
+                        }, error -> {
                             if (error instanceof FontDownloader.DownloadException)
                                 handleFailedDownload(error.getCause());
                             else if (error instanceof FontInstaller.InstallException)

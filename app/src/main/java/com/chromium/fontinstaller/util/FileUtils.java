@@ -25,9 +25,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-/**
- * Created by priyeshpatel on 15-02-10.
- */
 public class FileUtils {
 
     public static int getMaxCacheSize(Context context) {

@@ -163,7 +163,6 @@ public class SettingsFragment extends PreferenceFragment implements
         return true;
     }
 
-    @SuppressWarnings("unused")
     public void onCacheCleared() {
         progressDialog.dismiss();
         Snackbar.with(getActivity())

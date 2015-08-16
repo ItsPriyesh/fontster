@@ -24,9 +24,6 @@ import de.psdev.licensesdialog.licenses.MITLicense;
 import de.psdev.licensesdialog.model.Notice;
 import de.psdev.licensesdialog.model.Notices;
 
-/**
- * Created by priyeshpatel on 15-03-10.
- */
 public class Licenses {
 
     private static Notices notices = new Notices();

@@ -27,9 +27,6 @@ import com.chromium.fontinstaller.R;
 
 import butterknife.ButterKnife;
 
-/**
- * Created by priyeshpatel on 15-02-10.
- */
 public class AlertUtils {
 
     public static void showRebootAlert(Context context) {

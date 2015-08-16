@@ -45,9 +45,7 @@ public class PreviewFragment extends Fragment {
     private static final String STATE_FONT_STYLE = "style";
     private static final String STATE_UPPER_CASE = "upperCase";
 
-    public PreviewFragment() {
-
-    }
+    public PreviewFragment() { }
 
     public static PreviewFragment newInstance(FontPackage fontPackage, Style style) {
         PreviewFragment fragment = new PreviewFragment();

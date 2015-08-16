@@ -22,9 +22,6 @@ import android.os.AsyncTask;
 
 import eu.chainfire.libsuperuser.Shell;
 
-/**
- * Created by priyeshpatel on 15-02-16.
- */
 public class RootUtils {
     private static ProgressDialog progressDialog;
 

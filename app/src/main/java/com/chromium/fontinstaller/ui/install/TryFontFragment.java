@@ -46,9 +46,7 @@ public class TryFontFragment extends DialogFragment {
     private Style style;
     private Action1<String> tryCallback;
 
-    public TryFontFragment() {
-        // Required empty public constructor
-    }
+    public TryFontFragment() { }
 
     public static TryFontFragment newInstance(FontPackage fontPackage, Style style, Action1<String> tryCallback) {
         TryFontFragment fragment = new TryFontFragment();

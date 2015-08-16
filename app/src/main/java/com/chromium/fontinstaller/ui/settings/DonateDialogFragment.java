@@ -38,12 +38,10 @@ public class DonateDialogFragment extends DialogFragment {
     private DonationClickListener listener;
 
     public interface DonationClickListener {
-        public void onDonationClick(String sku);
+        void onDonationClick(String sku);
     }
 
-    public DonateDialogFragment() {
-        // Required empty public constructor
-    }
+    public DonateDialogFragment() { }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -80,4 +78,5 @@ public class DonateDialogFragment extends DialogFragment {
         listener.onDonationClick(sku);
         dismiss();
     }
+
 }

@@ -24,6 +24,7 @@ import io.fabric.sdk.android.Fabric;
 import timber.log.Timber;
 
 public class FontsterApp extends Application {
+
     @Override
     public void onCreate() {
         super.onCreate();

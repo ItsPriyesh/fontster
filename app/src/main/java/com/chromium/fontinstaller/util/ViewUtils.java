@@ -32,9 +32,6 @@ import android.view.animation.AnimationUtils;
 
 import com.chromium.fontinstaller.R;
 
-/**
- * Created by priyeshpatel on 15-02-10.
- */
 public class ViewUtils {
 
     public static int dpToPixels(int dp, Context context) {

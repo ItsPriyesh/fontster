@@ -32,6 +32,7 @@ import eu.chainfire.libsuperuser.Shell;
 import rx.Observable;
 
 public class FontInstaller {
+
     private static final String MOUNT_SYSTEM = "mount -o rw,remount /system";
     private static final String FONT_INSTALL_DIR = "/system/fonts";
 
@@ -66,4 +67,5 @@ public class FontInstaller {
         return "cp " + FileUtils.getAssetsFile("DroidSansFallback.ttf", context)
                 .getAbsolutePath() + " " + FONT_INSTALL_DIR;
     }
+
 }
