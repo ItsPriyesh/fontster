@@ -30,9 +30,9 @@ public class Licenses {
 
     public static final List<Notice> NOTICE_LIST = Arrays.asList(
             new Notice(
-                    "Ion",
-                    "https://github.com/koush/ion",
-                    "Copyright 2013 Koushik Dutta (2013)",
+                    "OkHttp",
+                    "https://github.com/square/okhttp",
+                    "Copyright 2012 Square, Inc.",
                     new ApacheSoftwareLicense20()
             ),
             new Notice(
@@ -42,9 +42,9 @@ public class Licenses {
                     new ApacheSoftwareLicense20()
             ),
             new Notice(
-                    "Otto",
-                    "https://github.com/square/otto",
-                    "Copyright 2012 Square, Inc.",
+                    "RxJava",
+                    "https://github.com/Netflix/RxJava",
+                    "Copyright 2014 Netflix, Inc.",
                     new ApacheSoftwareLicense20()
             ),
             new Notice(
