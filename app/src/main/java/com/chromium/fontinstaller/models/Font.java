@@ -19,9 +19,6 @@ package com.chromium.fontinstaller.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-/**
- * Created by priyeshpatel on 15-02-07.
- */
 public class Font implements Parcelable {
     private Style style;
     private String url;
@@ -68,4 +65,5 @@ public class Font implements Parcelable {
             return new Font[size];
         }
     };
+
 }

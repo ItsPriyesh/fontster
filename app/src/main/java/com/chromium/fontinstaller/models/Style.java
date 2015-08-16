@@ -19,9 +19,6 @@ package com.chromium.fontinstaller.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-/**
- * Created by priyeshpatel on 15-02-23.
- */
 public enum Style implements Parcelable{
     BOLD,
     BOLD_ITALIC,
@@ -88,7 +85,7 @@ public enum Style implements Parcelable{
         }
     }
 
-    // New styles introduced in 5.0 do not exist in the font repository
+    // New styles introduced in Android 5.0 do not exist in the font repository
     // Instead we will reuse the older variants that are most similar
     public String getRemoteName() {
         switch (this) {

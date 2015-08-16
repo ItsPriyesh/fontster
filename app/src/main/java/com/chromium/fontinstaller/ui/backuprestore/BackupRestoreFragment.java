@@ -57,9 +57,7 @@ public class BackupRestoreFragment extends Fragment {
     private BackupManager backupManager;
     private PreferencesManager prefs;
 
-    public BackupRestoreFragment() {
-        // Required empty public constructor
-    }
+    public BackupRestoreFragment() { }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -128,8 +126,7 @@ public class BackupRestoreFragment extends Fragment {
                                     .subscribe();
                             break;
                     }
-                })
-                .create().show();
+                }).create().show();
     }
 
     @SuppressWarnings("unused")
@@ -149,7 +146,7 @@ public class BackupRestoreFragment extends Fragment {
 
     public void onBackupComplete(String name) {
         prefs.setString(PreferencesManager.KEY_BACKUP_NAME, name);
-        prefs.setString(PreferencesManager.KEY_BACKUP_DATE, BackupManager.dateFormat.format(new Date()));
+        prefs.setString(PreferencesManager.KEY_BACKUP_DATE, BackupManager.DATE_FORMAT.format(new Date()));
         checkForBackup();
     }
 

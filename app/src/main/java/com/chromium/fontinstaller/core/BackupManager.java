@@ -21,22 +21,16 @@ import android.content.Context;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import eu.chainfire.libsuperuser.Shell;
 import rx.Observable;
 
-/**
- * Created by priyeshpatel on 15-03-12.
- */
 public class BackupManager {
 
     private File backupDirectory;
 
-    public static final Date currentDate = Calendar.getInstance().getTime();
-    public static final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy");
+    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MMM dd, yyyy");
 
     private static final String SOURCE_DIR = "/system/fonts/";
     private String backupDir;

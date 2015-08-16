@@ -27,10 +27,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by priyeshpatel on 15-02-06.
- */
 public class FontPackage implements Parcelable {
+
     private String name;
     private String nameFormatted;
     private HashMap<Font, Style> fontStyleHashMap = new HashMap<>();
