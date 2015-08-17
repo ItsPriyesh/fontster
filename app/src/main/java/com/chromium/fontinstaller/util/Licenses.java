@@ -42,9 +42,9 @@ public class Licenses {
                     new ApacheSoftwareLicense20()
             ),
             new Notice(
-                    "RxJava",
-                    "https://github.com/Netflix/RxJava",
-                    "Copyright 2014 Netflix, Inc.",
+                    "RxAndroid",
+                    "https://github.com/ReactiveX/RxAndroid",
+                    "Copyright 2014 ReactiveX",
                     new ApacheSoftwareLicense20()
             ),
             new Notice(
