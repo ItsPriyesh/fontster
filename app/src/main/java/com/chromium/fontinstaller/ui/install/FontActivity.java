@@ -41,7 +41,7 @@ import com.chromium.fontinstaller.util.ViewUtils;
 import com.melnykov.fab.FloatingActionButton;
 import com.nispok.snackbar.Snackbar;
 
-import butterknife.InjectView;
+import butterknife.Bind;
 import butterknife.OnClick;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -49,25 +49,25 @@ import timber.log.Timber;
 
 public class FontActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
 
-    @InjectView(R.id.font_name)
+    @Bind(R.id.font_name)
     TextView fontTitle;
 
-    @InjectView(R.id.install_fab)
+    @Bind(R.id.install_fab)
     FloatingActionButton installButton;
 
-    @InjectView(R.id.download_progress)
+    @Bind(R.id.download_progress)
     ProgressBar downloadProgress;
 
-    @InjectView(R.id.install_progress)
+    @Bind(R.id.install_progress)
     ProgressBar installProgress;
 
-    @InjectView(R.id.preview_pager)
+    @Bind(R.id.preview_pager)
     ViewPager previewPager;
 
-    @InjectView(R.id.sliding_tabs)
+    @Bind(R.id.sliding_tabs)
     SlidingTabLayout slidingTabLayout;
 
-    @InjectView(R.id.error_container)
+    @Bind(R.id.error_container)
     ViewGroup errorContainer;
 
     private boolean fragmentsInitialized = false;

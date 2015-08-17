@@ -26,13 +26,13 @@ import android.widget.RadioGroup;
 
 import com.chromium.fontinstaller.R;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 
 public class DonateDialogFragment extends DialogFragment {
 
-    @InjectView(R.id.radio_group)
+    @Bind(R.id.radio_group)
     RadioGroup radioGroup;
 
     private DonationClickListener listener;
@@ -46,7 +46,7 @@ public class DonateDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_donate_dialog, container, false);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         getDialog().setTitle("Donation amount");
 

@@ -40,19 +40,19 @@ import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 
-import butterknife.InjectView;
+import butterknife.Bind;
 import butterknife.OnItemClick;
 
 
 public class MainActivity extends BaseActivity {
 
-    @InjectView(R.id.drawer_layout)
+    @Bind(R.id.drawer_layout)
     DrawerLayout drawerLayout;
 
-    @InjectView(R.id.drawer_list)
+    @Bind(R.id.drawer_list)
     ListView drawerList;
 
-    @InjectView(R.id.adView)
+    @Bind(R.id.adView)
     AdView adView;
 
     private ActionBarDrawerToggle drawerToggle;

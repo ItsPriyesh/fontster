@@ -27,20 +27,18 @@ import android.widget.EditText;
 import com.chromium.fontinstaller.R;
 import com.nispok.snackbar.Snackbar;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 
 public class BackupDialogFragment extends DialogFragment {
 
-    @InjectView(R.id.input)
+    @Bind(R.id.input)
     EditText input;
 
     private BackupDialogListener listener;
 
-    public BackupDialogFragment() {
-        // Required empty public constructor
-    }
+    public BackupDialogFragment() { }
 
     public interface BackupDialogListener {
         void onBackupButtonClicked(String backupName);
@@ -53,7 +51,7 @@ public class BackupDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_backup_dialog, container, false);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
 

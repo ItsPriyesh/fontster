@@ -29,12 +29,12 @@ import com.chromium.fontinstaller.models.Style;
 import com.chromium.fontinstaller.ui.common.AutoScaleTextView;
 import com.chromium.fontinstaller.util.ViewUtils;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public class PreviewFragment extends Fragment {
 
-    @InjectView(R.id.preview_text)
+    @Bind(R.id.preview_text)
     AutoScaleTextView previewText;
 
     private FontPackage fontPackage;
@@ -58,7 +58,7 @@ public class PreviewFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_preview, container, false);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         alphabetUpper = getString(R.string.alphabet_upper);
         alphabetLower = getString(R.string.alphabet_lower);

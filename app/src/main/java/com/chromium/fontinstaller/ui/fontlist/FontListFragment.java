@@ -45,8 +45,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -55,13 +55,13 @@ import timber.log.Timber;
 
 public class FontListFragment extends Fragment {
 
-    @InjectView(R.id.font_list_view)
+    @Bind(R.id.font_list_view)
     RecyclerView recyclerView;
 
-    @InjectView(R.id.download_progress)
+    @Bind(R.id.download_progress)
     ProgressBar downloadProgress;
 
-    @InjectView(R.id.error_container)
+    @Bind(R.id.error_container)
     ViewGroup errorContainer;
 
     private FontListAdapter listAdapter;
@@ -77,7 +77,7 @@ public class FontListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_font_list, container, false);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         activity = getActivity();
         ((MainActivity) activity).setToolbarTitle("Fontster");

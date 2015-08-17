@@ -29,17 +29,17 @@ import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.models.FontPackage;
 import com.chromium.fontinstaller.models.Style;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import rx.functions.Action1;
 
 public class TryFontFragment extends DialogFragment {
 
-    @InjectView(R.id.title)
+    @Bind(R.id.title)
     TextView title;
 
-    @InjectView(R.id.input)
+    @Bind(R.id.input)
     EditText input;
 
     private FontPackage fontPackage;
@@ -60,7 +60,7 @@ public class TryFontFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_try_font, container, false);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
 

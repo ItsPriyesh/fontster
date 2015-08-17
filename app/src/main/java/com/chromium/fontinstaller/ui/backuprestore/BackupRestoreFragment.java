@@ -34,24 +34,24 @@ import com.chromium.fontinstaller.util.ViewUtils;
 
 import java.util.Date;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class BackupRestoreFragment extends Fragment {
 
-    @InjectView(R.id.backup_unavailable_container)
+    @Bind(R.id.backup_unavailable_container)
     ViewGroup noBackupContainer;
 
-    @InjectView(R.id.backup_available_container)
+    @Bind(R.id.backup_available_container)
     ViewGroup backupContainer;
 
-    @InjectView(R.id.backup_name)
+    @Bind(R.id.backup_name)
     TextView backupName;
 
-    @InjectView(R.id.backup_date)
+    @Bind(R.id.backup_date)
     TextView backupDate;
 
     private BackupManager backupManager;
@@ -62,7 +62,7 @@ public class BackupRestoreFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_backup_restore, container, false);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         ((BaseActivity) getActivity()).setToolbarTitle("Backup & Restore");
 

@@ -31,13 +31,13 @@ import com.chromium.fontinstaller.util.billing.Inventory;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import timber.log.Timber;
 
 public class BaseActivity extends ActionBarActivity {
 
-    @InjectView(R.id.app_bar)
+    @Bind(R.id.app_bar)
     protected Toolbar toolbar;
 
     private ActionBar actionBar;
@@ -46,7 +46,7 @@ public class BaseActivity extends ActionBarActivity {
     @Override
     public void setContentView(int layoutResId) {
         super.setContentView(layoutResId);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         billingHelper = new IabHelper(this, SecretStuff.LICENSE_KEY);
 
