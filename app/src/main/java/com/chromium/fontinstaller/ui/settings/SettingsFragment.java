@@ -34,7 +34,6 @@ import com.chromium.fontinstaller.ui.main.MainActivity;
 import com.chromium.fontinstaller.util.Licenses;
 import com.chromium.fontinstaller.util.PreferencesManager;
 import com.chromium.fontinstaller.util.billing.IabHelper;
-import com.nispok.snackbar.Snackbar;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -43,6 +42,8 @@ import java.util.List;
 import de.psdev.licensesdialog.LicensesDialog;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+
+import static com.chromium.fontinstaller.util.ViewUtils.snackbar;
 
 public class SettingsFragment extends PreferenceFragment implements
         DonateDialogFragment.DonationClickListener {
@@ -92,6 +93,7 @@ public class SettingsFragment extends PreferenceFragment implements
         });
 
         donate.setOnPreferenceClickListener(pref -> showDonationDialog());
+
     }
 
     @Override
@@ -121,15 +123,8 @@ public class SettingsFragment extends PreferenceFragment implements
     private boolean makeDonation(String sku) {
         billingHelper.launchPurchaseFlow(getActivity(), sku, 1, purchaseListener, "");
         purchaseListener = (result, purchase) -> {
-            if (result.isFailure()) {
-                Snackbar.with(getActivity())
-                        .text("Failed to make donation")
-                        .show(getActivity());
-            } else if (purchase.getSku().equals(sku)) {
-                Snackbar.with(getActivity())
-                        .text("Donation complete, thanks :)")
-                        .show(getActivity());
-            }
+            if (result.isFailure()) snackbar("Failed to make donation", getView());
+            else if (purchase.getSku().equals(sku)) snackbar("Donation complete, thanks :)", getView());
         };
 
         return true;
@@ -147,9 +142,9 @@ public class SettingsFragment extends PreferenceFragment implements
         progressDialog.show();
 
         List<String> commands = new ArrayList<>();
-        File cacheDir = new File(getActivity().getExternalCacheDir() + File.separator);
+        File cache = new File(getActivity().getExternalCacheDir() + File.separator);
 
-        for (File f : cacheDir.listFiles())
+        for (File f : cache.listFiles())
             if (!f.getName().equals("Backup"))
                 commands.add("rm -rf " + f.getAbsolutePath());
 
@@ -165,9 +160,7 @@ public class SettingsFragment extends PreferenceFragment implements
 
     public void onCacheCleared() {
         progressDialog.dismiss();
-        Snackbar.with(getActivity())
-                .text("Cache has been cleared")
-                .show(getActivity());
+        snackbar("Cache has been cleared", getView());
     }
 
     private boolean viewSource() {

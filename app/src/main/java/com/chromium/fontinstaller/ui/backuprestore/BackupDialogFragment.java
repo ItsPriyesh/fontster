@@ -25,11 +25,12 @@ import android.view.Window;
 import android.widget.EditText;
 
 import com.chromium.fontinstaller.R;
-import com.nispok.snackbar.Snackbar;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.chromium.fontinstaller.util.ViewUtils.toast;
 
 public class BackupDialogFragment extends DialogFragment {
 
@@ -62,9 +63,7 @@ public class BackupDialogFragment extends DialogFragment {
     @OnClick(R.id.backup_button)
     public void backupButtonClicked() {
         if (input.getText().toString().equals("")) {
-            Snackbar.with(getActivity())
-                    .text("Please enter a name for the backup")
-                    .show(getActivity());
+            toast("Please enter a name for the backup", this);
         } else {
             listener.onBackupButtonClicked(input.getText().toString());
             dismiss();

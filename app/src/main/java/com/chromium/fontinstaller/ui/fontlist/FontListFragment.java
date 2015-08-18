@@ -65,14 +65,10 @@ public class FontListFragment extends Fragment {
     ViewGroup errorContainer;
 
     private FontListAdapter listAdapter;
-    private RecyclerView.LayoutManager listManager;
     private ArrayList<String> fontList = new ArrayList<>();
     private Activity activity;
-    private PreferencesManager prefs;
 
-    public FontListFragment() {
-
-    }
+    public FontListFragment() { }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -82,11 +78,11 @@ public class FontListFragment extends Fragment {
         activity = getActivity();
         ((MainActivity) activity).setToolbarTitle("Fontster");
 
-        prefs = PreferencesManager.getInstance(activity);
+        PreferencesManager prefs = PreferencesManager.getInstance(activity);
 
         populateFontList();
 
-        listManager = new LinearLayoutManager(activity);
+        RecyclerView.LayoutManager listManager = new LinearLayoutManager(activity);
         recyclerView.setLayoutManager(listManager);
 
         if (prefs.getBoolean(PreferencesManager.KEY_ENABLE_TRUEFONT)) downloadFontList();

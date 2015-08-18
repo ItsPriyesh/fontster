@@ -37,15 +37,20 @@ import com.chromium.fontinstaller.models.Style;
 import com.chromium.fontinstaller.ui.common.BaseActivity;
 import com.chromium.fontinstaller.ui.common.SlidingTabLayout;
 import com.chromium.fontinstaller.util.AlertUtils;
-import com.chromium.fontinstaller.util.ViewUtils;
 import com.melnykov.fab.FloatingActionButton;
-import com.nispok.snackbar.Snackbar;
 
 import butterknife.Bind;
 import butterknife.OnClick;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
+
+import static com.chromium.fontinstaller.util.ViewUtils.animGrowFromCenter;
+import static com.chromium.fontinstaller.util.ViewUtils.animShrinkToCenter;
+import static com.chromium.fontinstaller.util.ViewUtils.animSlideInBottom;
+import static com.chromium.fontinstaller.util.ViewUtils.animSlideUp;
+import static com.chromium.fontinstaller.util.ViewUtils.reveal;
+import static com.chromium.fontinstaller.util.ViewUtils.snackbar;
 
 public class FontActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
 
@@ -125,12 +130,12 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
 
     private void handleFailedDownload(Throwable error) {
         Timber.e("Download failed: " + error.getMessage());
-        ViewUtils.animSlideUp(downloadProgress, this);
+        animSlideUp(downloadProgress, this);
 
         new Handler().postDelayed(() -> {
             hideGone(downloadProgress);
 
-            ViewUtils.animSlideInBottom(errorContainer, this);
+            animSlideInBottom(errorContainer, this);
             show(errorContainer);
         }, 400);
     }
@@ -138,10 +143,10 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
     private void handleFailedInstall(Throwable error) {
         new Handler().postDelayed(() -> {
             Timber.e("Install failed: " + error.getMessage());
-            Snackbar.with(this).text("Install failed").show(this);
-            ViewUtils.animShrinkToCenter(installProgress, this);
+            snackbar("Install failed", findViewById(R.id.bottom_bar));
+            animShrinkToCenter(installProgress, this);
             hide(installProgress);
-            ViewUtils.animGrowFromCenter(installButton, this);
+            animGrowFromCenter(installButton, this);
             show(installButton);
         }, 500);
     }
@@ -158,24 +163,21 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
     }
 
     private void animateViews() {
-        ViewUtils.animSlideUp(downloadProgress, this);
+        animSlideUp(downloadProgress, this);
 
         new Handler().postDelayed(() -> {
             hideGone(downloadProgress);
-
-            ViewUtils.animSlideInBottom(slidingTabLayout, this);
+            animSlideInBottom(slidingTabLayout, this);
             show(slidingTabLayout);
-
-            ViewUtils.reveal(this, previewPager, installButton, R.color.primary_accent);
-
-            ViewUtils.animGrowFromCenter(installButton, this);
+            reveal(this, previewPager, installButton, R.color.primary_accent);
+            animGrowFromCenter(installButton, this);
             show(installButton);
 
         }, 400);
     }
 
     private void startInstall() {
-        ViewUtils.animGrowFromCenter(installProgress, this);
+        animGrowFromCenter(installProgress, this);
         show(installProgress);
 
         FontDownloader.downloadAllFonts(fontPackage, this)
@@ -185,8 +187,8 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
                 .flatMap(v -> FontInstaller.install(fontPackage, this))
                 .doOnCompleted(this::onInstallComplete)
                 .subscribe(
-                        next -> {
-                        }, error -> {
+                        next -> { },
+                        error -> {
                             if (error instanceof FontDownloader.DownloadException)
                                 handleFailedDownload(error.getCause());
                             else if (error instanceof FontInstaller.InstallException)
@@ -225,13 +227,13 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
 
     public void onInstallComplete() {
         new Handler().postDelayed(() -> {
-            ViewUtils.animShrinkToCenter(installProgress, this);
+            animShrinkToCenter(installProgress, this);
             hide(installProgress);
 
             installButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_done_white));
             installButton.setColorNormal(getResources().getColor(R.color.secondary_accent));
 
-            ViewUtils.animGrowFromCenter(installButton, this);
+            animGrowFromCenter(installButton, this);
             show(installButton);
 
             if (!this.isFinishing()) AlertUtils.showRebootAlert(this);
