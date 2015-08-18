@@ -19,6 +19,7 @@ package com.chromium.fontinstaller.ui.install;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -37,7 +38,6 @@ import com.chromium.fontinstaller.models.Style;
 import com.chromium.fontinstaller.ui.common.BaseActivity;
 import com.chromium.fontinstaller.ui.common.SlidingTabLayout;
 import com.chromium.fontinstaller.util.AlertUtils;
-import com.melnykov.fab.FloatingActionButton;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -233,12 +233,13 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
             hide(installProgress);
 
             installButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_done_white));
-            installButton.setColorNormal(getResources().getColor(R.color.secondary_accent));
 
             animGrowFromCenter(installButton, this);
             show(installButton);
 
-            delay(() -> { if (!this.isFinishing()) AlertUtils.showRebootAlert(this); }, 400);
+            delay(() -> {
+                if (!this.isFinishing()) AlertUtils.showRebootAlert(this);
+            }, 400);
         }, 2000);
     }
 

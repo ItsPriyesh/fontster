@@ -15,47 +15,47 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.chromium.fontinstaller.ui.backuprestore.BackupRestoreFragment">
 
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/backup_unavailable_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:orientation="vertical"
-        android:layout_centerInParent="true">
+        android:visibility="gone">
 
         <ImageView
-            android:src="@drawable/backup_unavailable"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:src="@drawable/backup_unavailable" />
 
         <TextView
-            android:layout_marginTop="4dp"
-            android:textSize="12dp"
-            android:fontFamily="sans-serif-light"
-            android:text="You do not currently have a backup"
-            android:gravity="center"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center"
+            android:text="You do not currently have a backup"
+            android:textSize="12dp" />
     </LinearLayout>
 
     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:layout_gravity="center"
-        card_view:cardCornerRadius="4dp"
         android:id="@+id/backup_available_container"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
         android:layout_marginLeft="48dp"
         android:layout_marginRight="48dp"
-        android:layout_centerInParent="true"
+        android:clickable="true"
         android:foreground="?android:attr/selectableItemBackground"
-        android:clickable="true">
+        android:visibility="gone"
+        card_view:cardCornerRadius="4dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -64,19 +64,19 @@
 
             <ImageView
                 android:id="@+id/backup_available_image"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
                 android:src="@drawable/backup_available" />
 
             <LinearLayout
-                android:layout_toRightOf="@id/backup_available_image"
-                android:layout_marginLeft="16dp"
-                android:layout_centerVertical="true"
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="16dp"
+                android:layout_toRightOf="@id/backup_available_image"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/backup_name"
@@ -87,26 +87,25 @@
 
                 <TextView
                     android:id="@+id/backup_date"
-                    android:textSize="16dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-thin" />
+                    android:fontFamily="sans-serif-thin"
+                    android:textSize="16dp" />
 
             </LinearLayout>
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 
-    <com.melnykov.fab.FloatingActionButton
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_margin="16dp"
+    <android.support.design.widget.FloatingActionButton
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/backup_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="8dp"
         android:src="@drawable/ic_add_white"
-        android:elevation="6dp"
-        app:fab_colorNormal="@color/primary_accent"
-        app:fab_colorPressed="@color/primary_accent"
-        app:fab_colorRipple="@color/white_30_opacity"
-        app:fab_shadow="true" />
+        app:borderWidth="0dp"
+        app:elevation="4dp" />
+
 </RelativeLayout>
