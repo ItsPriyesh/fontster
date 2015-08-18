@@ -75,10 +75,12 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
     @Bind(R.id.error_container)
     ViewGroup errorContainer;
 
-    private boolean fragmentsInitialized = false;
     private int currentPage = 0;
     private FontPackage fontPackage;
     private PreviewFragment[] previewPages = new PreviewFragment[3];
+    private boolean fragmentsInitialized = false;
+
+    private final Handler handler = new Handler();
     private final String[] tabTitles = {"Regular", "Bold", "Italic"};
 
     public static final String FONT_NAME = "fontName";
@@ -132,7 +134,7 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
         Timber.e("Download failed: " + error.getMessage());
         animSlideUp(downloadProgress, this);
 
-        new Handler().postDelayed(() -> {
+        delay(() -> {
             hideGone(downloadProgress);
 
             animSlideInBottom(errorContainer, this);
@@ -141,7 +143,7 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
     }
 
     private void handleFailedInstall(Throwable error) {
-        new Handler().postDelayed(() -> {
+        delay(() -> {
             Timber.e("Install failed: " + error.getMessage());
             snackbar("Install failed", findViewById(R.id.bottom_bar));
             animShrinkToCenter(installProgress, this);
@@ -165,7 +167,7 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
     private void animateViews() {
         animSlideUp(downloadProgress, this);
 
-        new Handler().postDelayed(() -> {
+        delay(() -> {
             hideGone(downloadProgress);
             animSlideInBottom(slidingTabLayout, this);
             show(slidingTabLayout);
@@ -226,7 +228,7 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
     }
 
     public void onInstallComplete() {
-        new Handler().postDelayed(() -> {
+        delay(() -> {
             animShrinkToCenter(installProgress, this);
             hide(installProgress);
 
@@ -236,7 +238,7 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
             animGrowFromCenter(installButton, this);
             show(installButton);
 
-            if (!this.isFinishing()) AlertUtils.showRebootAlert(this);
+            delay(() -> { if (!this.isFinishing()) AlertUtils.showRebootAlert(this); }, 400);
         }, 2000);
     }
 
@@ -292,6 +294,10 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
         if (fragmentsInitialized)
             for (PreviewFragment fragment : previewPages)
                 fragment.toggleCase();
+    }
+
+    private void delay(Runnable runnable, long delay) {
+        handler.postDelayed(runnable, delay);
     }
 
     private class PreviewPagerAdapter extends FragmentPagerAdapter {
