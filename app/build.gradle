@@ -17,8 +17,8 @@ repositories {
 apply plugin: 'retrolambda'
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "21.1.2"
+    compileSdkVersion 23
+    buildToolsVersion "22.0.1"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -28,7 +28,7 @@ android {
     defaultConfig {
         applicationId "com.chromium.fontinstaller"
         minSdkVersion 15
-        targetSdkVersion 21
+        targetSdkVersion 22
         versionCode 20
         versionName "2.5"
     }
@@ -59,14 +59,14 @@ dependencies {
 
     // Other
     compile 'eu.chainfire:libsuperuser:1.0.0.+'
-    compile 'com.google.android.gms:play-services:7.5.0'
+    compile 'com.google.android.gms:play-services:7.8.0'
     compile 'io.reactivex:rxandroid:1.0.1'
 
     // UI
-    compile 'com.android.support:design:22.2.0'
-    compile 'com.android.support:appcompat-v7:22.2.0'
-    compile 'com.android.support:recyclerview-v7:22.2.0'
-    compile 'com.android.support:cardview-v7:22.2.0'
+    compile 'com.android.support:design:23.0.0'
+    compile 'com.android.support:appcompat-v7:23.0.0'
+    compile 'com.android.support:recyclerview-v7:23.0.0'
+    compile 'com.android.support:cardview-v7:23.0.0'
     compile 'com.eowise:recyclerview-stickyheaders:0.5.2@aar'
     compile 'de.psdev.licensesdialog:licensesdialog:1.7.0'
 }
