@@ -62,7 +62,7 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
 
     @Bind(R.id.download_progress)
     ProgressBar downloadProgress;
-    
+
     @Bind(R.id.preview_pager)
     ViewPager previewPager;
 
