@@ -27,7 +27,7 @@ android {
 
     defaultConfig {
         applicationId "com.chromium.fontinstaller"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 22
         versionCode 20
         versionName "2.5"
