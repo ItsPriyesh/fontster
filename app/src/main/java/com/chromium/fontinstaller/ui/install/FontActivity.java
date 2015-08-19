@@ -17,6 +17,7 @@
 package com.chromium.fontinstaller.ui.install;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -46,7 +47,6 @@ import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 import static com.chromium.fontinstaller.util.ViewUtils.animGrowFromCenter;
-import static com.chromium.fontinstaller.util.ViewUtils.animShrinkToCenter;
 import static com.chromium.fontinstaller.util.ViewUtils.animSlideInBottom;
 import static com.chromium.fontinstaller.util.ViewUtils.animSlideUp;
 import static com.chromium.fontinstaller.util.ViewUtils.reveal;
@@ -62,10 +62,7 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
 
     @Bind(R.id.download_progress)
     ProgressBar downloadProgress;
-
-    @Bind(R.id.install_progress)
-    ProgressBar installProgress;
-
+    
     @Bind(R.id.preview_pager)
     ViewPager previewPager;
 
@@ -79,6 +76,7 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
     private FontPackage fontPackage;
     private PreviewFragment[] previewPages = new PreviewFragment[3];
     private boolean fragmentsInitialized = false;
+    private ProgressDialog progressDialog;
 
     private final Handler handler = new Handler();
     private final String[] tabTitles = {"Regular", "Bold", "Italic"};
@@ -146,8 +144,7 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
         delay(() -> {
             Timber.e("Install failed: " + error.getMessage());
             snackbar("Install failed", findViewById(R.id.bottom_bar));
-            animShrinkToCenter(installProgress, this);
-            hide(installProgress);
+            progressDialog.dismiss();
             animGrowFromCenter(installButton, this);
             show(installButton);
         }, 500);
@@ -174,13 +171,11 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
             reveal(this, previewPager, installButton, R.color.primary_accent);
             animGrowFromCenter(installButton, this);
             show(installButton);
-
         }, 400);
     }
 
     private void startInstall() {
-        animGrowFromCenter(installProgress, this);
-        show(installProgress);
+        progressDialog = ProgressDialog.show(this, null, "Installing fonts...", true, false);
 
         FontDownloader.downloadAllFonts(fontPackage, this)
                 .subscribeOn(Schedulers.io())
@@ -228,19 +223,15 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
     }
 
     public void onInstallComplete() {
+        progressDialog.dismiss();
         delay(() -> {
-            animShrinkToCenter(installProgress, this);
-            hide(installProgress);
-
             installButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_done_white));
 
             animGrowFromCenter(installButton, this);
             show(installButton);
 
-            delay(() -> {
-                if (!this.isFinishing()) AlertUtils.showRebootAlert(this);
-            }, 400);
-        }, 2000);
+            delay(() -> { if (!this.isFinishing()) AlertUtils.showRebootAlert(this); }, 400);
+        }, 400);
     }
 
     @Override
