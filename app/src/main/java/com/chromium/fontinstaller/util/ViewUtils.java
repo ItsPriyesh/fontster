@@ -64,6 +64,7 @@ public class ViewUtils {
     }
 
     public static void reveal(Activity activity, View view, View sourceView, int colorRes) {
+        if (activity == null || view == null || sourceView == null) return;
         if (isLollipop()) {
             final ViewGroupOverlay groupOverlay =
                     (ViewGroupOverlay) activity.getWindow().getDecorView().getOverlay();
