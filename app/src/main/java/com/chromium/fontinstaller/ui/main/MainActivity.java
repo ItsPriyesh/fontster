@@ -109,15 +109,16 @@ public class MainActivity extends BaseActivity {
         switch (position) {
             case 0:
                 swapFragment(fontListFragment);
+                drawerLayout.closeDrawers();
                 break;
             case 1:
                 swapFragment(backupRestoreFragment);
+                drawerLayout.closeDrawers();
                 break;
             case 2:
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
         }
-        drawerLayout.closeDrawers();
     }
 
     @Override
