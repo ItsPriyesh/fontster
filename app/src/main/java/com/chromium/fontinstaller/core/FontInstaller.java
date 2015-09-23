@@ -18,6 +18,7 @@ package com.chromium.fontinstaller.core;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 
 import com.chromium.fontinstaller.models.Font;
 import com.chromium.fontinstaller.models.FontPackage;
@@ -35,22 +36,24 @@ public class FontInstaller {
 
     private static final String MOUNT_SYSTEM = "mount -o rw,remount /system";
     private static final String FONT_INSTALL_DIR = "/system/fonts";
+    private static final String CACHE_DIR = "/sdcard/Android/data/com.chromium.fontinstaller/cache/";
 
     public static class InstallException extends Exception {
         public InstallException(Exception root) { super(root); }
     }
 
     public static Observable<Void> install(final FontPackage fontPackage, final Activity context) {
-        final String cache = context.getExternalCacheDir() + File.separator;
         List<String> copyCommands = new ArrayList<>();
         return Observable.create(subscriber -> {
             for (Font font : fontPackage.getFontList()) {
-                final String file = cache + fontPackage.getNameFormatted() + File.separator + font.getName();
+                final String file = CACHE_DIR + fontPackage.getNameFormatted() + File.separator + font.getName();
                 if (!new File(file).exists()) {
                     subscriber.onError(new InstallException(new IOException("File not found!")));
                     return;
                 }
-                copyCommands.add("cp " + file + " " + FONT_INSTALL_DIR);
+                final String installCommand = "cp " + file + " " + FONT_INSTALL_DIR;
+                Log.d("FontInstaller", "Adding command: " + installCommand);
+                copyCommands.add(installCommand);
             }
             copyCommands.add(generateLockscreenFixCommand(context));
             if (Shell.SU.available()) {
