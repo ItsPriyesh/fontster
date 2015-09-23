@@ -94,6 +94,7 @@ public class ViewUtils {
             final double y_2 = Math.pow(revealView.getTop() - revealCenterY, 2);
             final float revealRadius = (float) Math.max(Math.sqrt(x1_2 + y_2), Math.sqrt(x2_2 + y_2));
 
+            if (revealView == null) return;
             final Animator revealAnimator =
                     ViewAnimationUtils.createCircularReveal(revealView,
                             revealCenterX, revealCenterY, 0.0f, revealRadius);
