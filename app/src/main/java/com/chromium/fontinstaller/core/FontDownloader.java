@@ -36,6 +36,7 @@ import java.util.Map;
 import okio.BufferedSink;
 import okio.Okio;
 import rx.Observable;
+import timber.log.Timber;
 
 public class FontDownloader {
 
@@ -62,11 +63,13 @@ public class FontDownloader {
                 if (!subscriber.isUnsubscribed()) {
                     final File file = new File(path);
                     if (!file.exists()) {
+                        Timber.i("Downloading: " + file.getName());
                         final Response response = CLIENT.newCall(request).execute();
                         final BufferedSink sink = Okio.buffer(Okio.sink(file));
                         sink.writeAll(response.body().source());
                         sink.close();
-                    }
+                    } else Timber.i("From cache: " + file.getName());
+
                     subscriber.onNext(file);
                     subscriber.onCompleted();
                 }

@@ -41,9 +41,6 @@ public class PreviewFragment extends Fragment {
     private Style style;
     private boolean upperCase = true;
     private static String alphabetUpper, alphabetLower;
-    private static final String STATE_FONT_PACKAGE = "fontPackage";
-    private static final String STATE_FONT_STYLE = "style";
-    private static final String STATE_UPPER_CASE = "upperCase";
 
     public PreviewFragment() { }
 
@@ -63,12 +60,6 @@ public class PreviewFragment extends Fragment {
         alphabetUpper = getString(R.string.alphabet_upper);
         alphabetLower = getString(R.string.alphabet_lower);
 
-        if (savedInstanceState != null) {
-            fontPackage = savedInstanceState.getParcelable(STATE_FONT_PACKAGE);
-            style = savedInstanceState.getParcelable(STATE_FONT_STYLE);
-            upperCase = savedInstanceState.getBoolean(STATE_UPPER_CASE);
-        }
-
         previewText.setTypeface(fontPackage.getTypeface(style, getActivity()));
         previewText.setText(getAlphabet());
 
@@ -77,14 +68,6 @@ public class PreviewFragment extends Fragment {
 
     public void setPreviewText(String input) {
         this.previewText.setText(input);
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putParcelable(STATE_FONT_PACKAGE, fontPackage);
-        savedInstanceState.putParcelable(STATE_FONT_STYLE, style);
-        savedInstanceState.putBoolean(STATE_UPPER_CASE, upperCase);
     }
 
     private void setFontPackage(FontPackage fontPackage) {

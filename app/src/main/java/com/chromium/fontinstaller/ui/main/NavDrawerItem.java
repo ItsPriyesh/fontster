@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
-package com.chromium.fontinstaller.models;
+package com.chromium.fontinstaller.ui.main;
 
 import android.graphics.drawable.Drawable;
 
-/**
- * Created by priyeshpatel on 15-02-18.
- */
 public class NavDrawerItem {
+
     private String title;
     private Drawable icon;
 
@@ -37,4 +35,5 @@ public class NavDrawerItem {
     public Drawable getIcon() {
         return icon;
     }
+
 }

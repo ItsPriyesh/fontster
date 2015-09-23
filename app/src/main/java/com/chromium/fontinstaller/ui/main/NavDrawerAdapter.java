@@ -25,7 +25,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.chromium.fontinstaller.R;
-import com.chromium.fontinstaller.models.NavDrawerItem;
 
 import java.util.ArrayList;
 

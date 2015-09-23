@@ -18,16 +18,13 @@ package com.chromium.fontinstaller.models;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FontPackage implements Parcelable {
+public class FontPackage {
 
     private String name;
     private String nameFormatted;
@@ -68,11 +65,8 @@ public class FontPackage implements Parcelable {
                 nameFormatted + File.separator + style.getLocalName();
 
         if (new File(path).exists()) {
-            try {
-                return Typeface.createFromFile(path);
-            } catch (Exception e) {
-                return Typeface.DEFAULT;
-            }
+            try { return Typeface.createFromFile(path); }
+            catch (Exception e) { return Typeface.DEFAULT; }
         } else return Typeface.DEFAULT;
     }
 
@@ -84,39 +78,4 @@ public class FontPackage implements Parcelable {
         return null;
     }
 
-    protected FontPackage(Parcel in) {
-        name = in.readString();
-        nameFormatted = in.readString();
-
-        Bundle bundle = in.readBundle();
-        bundle.setClassLoader(ClassLoader.getSystemClassLoader());
-        fontStyleHashMap = (HashMap<Font, Style>) bundle.getSerializable("fontList");
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(name);
-        dest.writeString(nameFormatted);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("fontList", fontStyleHashMap);
-        dest.writeBundle(bundle);
-    }
-
-    @SuppressWarnings("unused")
-    public static final Parcelable.Creator<FontPackage> CREATOR = new Parcelable.Creator<FontPackage>() {
-        @Override
-        public FontPackage createFromParcel(Parcel in) {
-            return new FontPackage(in);
-        }
-
-        @Override
-        public FontPackage[] newArray(int size) {
-            return new FontPackage[size];
-        }
-    };
 }

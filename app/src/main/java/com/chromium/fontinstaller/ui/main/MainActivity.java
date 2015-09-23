@@ -30,7 +30,6 @@ import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.chromium.fontinstaller.R;
-import com.chromium.fontinstaller.models.NavDrawerItem;
 import com.chromium.fontinstaller.ui.backuprestore.BackupRestoreFragment;
 import com.chromium.fontinstaller.ui.common.BaseActivity;
 import com.chromium.fontinstaller.ui.fontlist.FontListFragment;
@@ -151,7 +150,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(Gravity.START | Gravity.LEFT)) {
+        if (drawerLayout.isDrawerOpen(Gravity.START)) {
             drawerLayout.closeDrawers();
             return;
         }

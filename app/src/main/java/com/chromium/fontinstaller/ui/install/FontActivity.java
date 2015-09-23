@@ -123,7 +123,7 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        font -> Timber.i("Font downloaded: " + font.getName()),
+                        font -> Timber.i("Got font: " + font.getName()),
                         this::handleFailedDownload,
                         this::setupPager);
     }
