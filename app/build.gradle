@@ -71,5 +71,5 @@ dependencies {
     // UI
     compile 'com.eowise:recyclerview-stickyheaders:0.5.2@aar'
     compile 'de.psdev.licensesdialog:licensesdialog:1.7.0'
-    compile project (':MaterialSearchView')
+    compile project (':MaterialSearchView:library')
 }
