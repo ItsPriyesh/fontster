@@ -3,8 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Fontster.iml" filepath="$PROJECT_DIR$/Fontster.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MaterialSearchView/MaterialSearchView.iml" filepath="$PROJECT_DIR$/MaterialSearchView/MaterialSearchView.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
 </project>
-

@@ -36,6 +36,7 @@ import com.chromium.fontinstaller.ui.fontlist.FontListFragment;
 import com.chromium.fontinstaller.ui.settings.SettingsActivity;
 import com.chromium.fontinstaller.util.RootUtils;
 import com.google.android.gms.ads.AdView;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
 
@@ -43,13 +44,16 @@ import butterknife.Bind;
 import butterknife.OnItemClick;
 
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements MaterialSearchView.OnQueryTextListener {
 
     @Bind(R.id.drawer_layout)
     DrawerLayout drawerLayout;
 
     @Bind(R.id.drawer_list)
     ListView drawerList;
+
+    @Bind(R.id.search_view)
+    MaterialSearchView searchView;
 
     @Bind(R.id.adView)
     AdView adView;
@@ -68,6 +72,8 @@ public class MainActivity extends BaseActivity {
         initializeAd(adView);
 
         RootUtils.requestAccess();
+
+        searchView.setOnQueryTextListener(this);
 
         drawerToggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
@@ -123,6 +129,10 @@ public class MainActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        final MenuItem searchItem = menu.findItem(R.id.action_search);
+        searchView.setMenuItem(searchItem);
+
         return true;
     }
 
@@ -158,4 +168,14 @@ public class MainActivity extends BaseActivity {
         super.onBackPressed();
     }
 
+    @Override
+    public boolean onQueryTextSubmit(String s) {
+
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String s) {
+        return false;
+    }
 }
