@@ -16,7 +16,7 @@
 
 package com.chromium.fontinstaller.core;
 
-import android.content.Context;
+import android.annotation.SuppressLint;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -33,21 +33,22 @@ public class BackupManager {
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MMM dd, yyyy");
 
     private static final String SOURCE_DIR = "/system/fonts/";
-    private String backupDir;
 
-    public BackupManager(Context context) {
-        backupDir = context.getExternalCacheDir() + File.separator + "Backup" + File.separator;
+    @SuppressLint("SdCardPath")
+    private static final String BACKUP_DIR = "/sdcard/Android/data/com.chromium.fontinstaller/Backup/";
+
+    public BackupManager() {
         createBackupDir();
     }
 
     private void createBackupDir() {
-        backupDirectory = new File(backupDir);
+        backupDirectory = new File(BACKUP_DIR);
         backupDirectory.mkdirs();
     }
 
     public Observable<Void> backup() {
         createBackupDir();
-        return CommandRunner.runCommand("cp -R " + SOURCE_DIR + ". " + backupDir);
+        return CommandRunner.runCommand("cp -R " + SOURCE_DIR + ". " + BACKUP_DIR);
     }
 
     public Observable<Void> restore() {
@@ -63,7 +64,7 @@ public class BackupManager {
     }
 
     public Observable<Void> deleteBackup() {
-        return CommandRunner.runCommand("rm -rf " + backupDir);
+        return CommandRunner.runCommand("rm -rf " + BACKUP_DIR);
     }
 
     public boolean backupExists() {

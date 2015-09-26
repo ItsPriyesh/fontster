@@ -258,6 +258,7 @@ public class FontActivity extends BaseActivity implements TabLayout.OnTabSelecte
     }
 
     private void tryFontCallback(String input) {
+        if (input.equals("") || input.isEmpty()) return;
         for (PreviewFragment fragment : previewPages) {
             fragment.setPreviewText(input);
         }

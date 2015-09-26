@@ -66,7 +66,7 @@ public class BackupRestoreFragment extends Fragment {
 
         ((BaseActivity) getActivity()).setToolbarTitle("Backup & Restore");
 
-        backupManager = new BackupManager(getActivity());
+        backupManager = new BackupManager();
         prefs = PreferencesManager.getInstance(getActivity());
 
         checkForBackup();

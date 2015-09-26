@@ -116,24 +116,16 @@
 
     </RelativeLayout>
 
-    <RelativeLayout
+    <android.support.design.widget.FloatingActionButton xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/install_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="64dp"
         android:layout_marginRight="24dp"
-        android:elevation="6dp">
-
-        <android.support.design.widget.FloatingActionButton xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/install_fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_margin="8dp"
-            android:src="@drawable/ic_file_download_white"
-            android:visibility="invisible"
-            app:borderWidth="0dp"
-            app:elevation="4dp" />
-    </RelativeLayout>
+        android:src="@drawable/ic_file_download_white"
+        android:visibility="invisible"
+        app:borderWidth="0dp"
+        app:elevation="4dp" />
 </RelativeLayout>
