@@ -16,6 +16,7 @@
 
 package com.chromium.fontinstaller.core;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
@@ -36,6 +37,8 @@ public class FontInstaller {
 
     private static final String MOUNT_SYSTEM = "mount -o rw,remount /system";
     private static final String FONT_INSTALL_DIR = "/system/fonts";
+
+    @SuppressLint("SdCardPath")
     private static final String CACHE_DIR = "/sdcard/Android/data/com.chromium.fontinstaller/cache/";
 
     public static class InstallException extends Exception {
