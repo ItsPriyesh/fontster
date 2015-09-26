@@ -21,6 +21,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -37,7 +38,6 @@ import com.chromium.fontinstaller.core.FontInstaller;
 import com.chromium.fontinstaller.models.FontPackage;
 import com.chromium.fontinstaller.models.Style;
 import com.chromium.fontinstaller.ui.common.BaseActivity;
-import com.chromium.fontinstaller.ui.common.SlidingTabLayout;
 import com.chromium.fontinstaller.util.AlertUtils;
 
 import butterknife.Bind;
@@ -52,7 +52,7 @@ import static com.chromium.fontinstaller.util.ViewUtils.animSlideUp;
 import static com.chromium.fontinstaller.util.ViewUtils.reveal;
 import static com.chromium.fontinstaller.util.ViewUtils.snackbar;
 
-public class FontActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
+public class FontActivity extends BaseActivity implements TabLayout.OnTabSelectedListener {
 
     @Bind(R.id.font_name)
     TextView fontTitle;
@@ -67,7 +67,7 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
     ViewPager previewPager;
 
     @Bind(R.id.sliding_tabs)
-    SlidingTabLayout slidingTabLayout;
+    TabLayout tabLayout;
 
     @Bind(R.id.error_container)
     ViewGroup errorContainer;
@@ -97,10 +97,6 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
         startDownload();
 
         fontTitle.setText(fontName);
-
-        slidingTabLayout.setCustomTabView(R.layout.tab_indicator, android.R.id.text1);
-        slidingTabLayout.setSelectedIndicatorColors(getResources().getColor(R.color.primary_accent));
-        slidingTabLayout.setDistributeEvenly(true);
     }
 
     private void initializeFragments() {
@@ -155,8 +151,8 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
         PreviewPagerAdapter pagerAdapter = new PreviewPagerAdapter(getSupportFragmentManager());
         previewPager.setOffscreenPageLimit(2);
         previewPager.setAdapter(pagerAdapter);
-        slidingTabLayout.setOnPageChangeListener(this);
-        slidingTabLayout.setViewPager(previewPager);
+        tabLayout.setOnTabSelectedListener(this);
+        tabLayout.setupWithViewPager(previewPager);
 
         animateViews();
     }
@@ -166,8 +162,8 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
 
         delay(() -> {
             hideGone(downloadProgress);
-            animSlideInBottom(slidingTabLayout, this);
-            show(slidingTabLayout);
+            animSlideInBottom(tabLayout, this);
+            show(tabLayout);
             reveal(this, previewPager, installButton, R.color.primary_accent);
             animGrowFromCenter(installButton, this);
             show(installButton);
@@ -235,21 +231,6 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
     }
 
     @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-    }
-
-    @Override
-    public void onPageSelected(int position) {
-        currentPage = position;
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int state) {
-
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_font, menu);
         return true;
@@ -291,6 +272,17 @@ public class FontActivity extends BaseActivity implements ViewPager.OnPageChange
     private void delay(Runnable runnable, long delay) {
         handler.postDelayed(runnable, delay);
     }
+
+    @Override
+    public void onTabSelected(TabLayout.Tab tab) {
+        currentPage = tab.getPosition();
+    }
+
+    @Override
+    public void onTabUnselected(TabLayout.Tab tab) { }
+
+    @Override
+    public void onTabReselected(TabLayout.Tab tab) { }
 
     private class PreviewPagerAdapter extends FragmentPagerAdapter {
         public PreviewPagerAdapter(FragmentManager fragmentManager) {
