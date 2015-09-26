@@ -80,7 +80,7 @@ public class FontListFragment extends Fragment {
 
         PreferencesManager prefs = PreferencesManager.getInstance(activity);
 
-        populateFontList();
+        if (fontList.isEmpty()) populateFontList();
 
         RecyclerView.LayoutManager listManager = new LinearLayoutManager(activity);
         recyclerView.setLayoutManager(listManager);
