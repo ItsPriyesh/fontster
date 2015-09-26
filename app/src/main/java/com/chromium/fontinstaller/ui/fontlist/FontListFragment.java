@@ -109,6 +109,8 @@ public class FontListFragment extends Fragment {
     private void downloadFontList() {
         progressDialog = new ProgressDialog(activity);
         progressDialog.setMessage("Downloading previews");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.setMax(fontList.size());
         progressDialog.show();
 
         if (errorContainer.getVisibility() == View.VISIBLE) errorContainer.setVisibility(View.GONE);
@@ -119,14 +121,14 @@ public class FontListFragment extends Fragment {
             FontPackage fontPackage = new FontPackage(fontName);
             fontPackages.add(fontPackage);
         }
+
         Observable
                 .from(fontPackages)
-                .flatMap(p -> FontDownloader.downloadStyledFonts(p, activity, Style.REGULAR))
+                .flatMap(fp -> FontDownloader.downloadStyledFonts(fp, activity, Style.REGULAR))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        font -> {
-                        },
+                        font -> progressDialog.incrementProgressBy(1),
                         this::handleDownloadFailure,
                         this::handleDownloadSuccess);
     }
