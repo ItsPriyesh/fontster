@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.chromium.fontinstaller.R;
+import com.chromium.fontinstaller.SecretStuff;
 import com.chromium.fontinstaller.ui.settings.SettingsFragment;
 import com.chromium.fontinstaller.util.ViewUtils;
 import com.chromium.fontinstaller.util.billing.IabHelper;
@@ -34,14 +35,11 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
-//import com.chromium.fontinstaller.SecretStuff;
-
 public class BaseActivity extends AppCompatActivity {
 
     @Bind(R.id.app_bar)
     protected Toolbar toolbar;
 
-    private ActionBar actionBar;
     private IabHelper billingHelper;
 
     @Override
@@ -49,10 +47,10 @@ public class BaseActivity extends AppCompatActivity {
         super.setContentView(layoutResId);
         ButterKnife.bind(this);
 
-        //billingHelper = new IabHelper(this, SecretStuff.LICENSE_KEY);
+        billingHelper = new IabHelper(this, SecretStuff.LICENSE_KEY);
 
         setSupportActionBar(toolbar);
-        actionBar = getSupportActionBar();
+        final ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(false);
 
         setSupportActionBar(toolbar);

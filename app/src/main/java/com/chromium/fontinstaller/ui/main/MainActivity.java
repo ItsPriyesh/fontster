@@ -18,7 +18,6 @@ package com.chromium.fontinstaller.ui.main;
 
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -29,7 +28,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.chromium.fontinstaller.BuildConfig;
@@ -50,10 +48,7 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.Sea
     @Bind(R.id.drawer_layout)
     DrawerLayout drawerLayout;
 
-    //@Bind(R.id.drawer_list)
-    //ListView drawerList;
-
-    @Bind(R.id.nvView)
+    @Bind(R.id.navigation_view)
     NavigationView nvDrawer;
 
     @Bind(R.id.search_view)
@@ -66,8 +61,6 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.Sea
     private FragmentManager fragmentManager;
     private FontListFragment fontListFragment;
     private BackupRestoreFragment backupRestoreFragment;
-    static final String STATE_SELECTED_POSITION = "currentFrag";
-    private int currentPosition = 0;
 
     private boolean shouldShowSearch = true;
 
@@ -80,11 +73,6 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.Sea
         if (!BuildConfig.DEBUG) initializeAd(adView);
 
         RootUtils.requestAccess();
-
-        if (savedInstanceState != null) {
-            currentPosition =
-                    savedInstanceState.getInt(STATE_SELECTED_POSITION);
-        }
 
         drawerToggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
@@ -113,36 +101,34 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.Sea
         return ((TextView) view.findViewById(R.id.suggestion_text)).getText().toString();
     }
 
-
-    private void setupDrawerContent(NavigationView navigationView){
+    private void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(menuItem -> {
             selectDrawerItem(menuItem);
             return true;
         });
     }
 
-    private void selectDrawerItem(MenuItem menuItem){
-        switch (menuItem.getItemId()){
+    private void selectDrawerItem(MenuItem menuItem) {
+        final int selectedId = menuItem.getItemId();
+        switch (selectedId) {
             case R.id.fonts:
                 swapFragment(fontListFragment);
                 menuItem.setChecked(true);
                 setTitle(menuItem.getTitle());
                 drawerLayout.closeDrawers();
-                currentPosition = 0;
                 break;
             case R.id.backup:
                 swapFragment(backupRestoreFragment);
                 menuItem.setChecked(true);
                 setTitle(menuItem.getTitle());
                 drawerLayout.closeDrawers();
-                currentPosition = 1;
                 break;
             case R.id.settings:
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
         }
 
-        shouldShowSearch = (currentPosition == 0);
+        shouldShowSearch = selectedId == R.id.fonts;
         invalidateOptionsMenu();
     }
 
@@ -163,24 +149,7 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.Sea
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(drawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt(STATE_SELECTED_POSITION, currentPosition);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        currentPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION, 0);
-        Menu menu = nvDrawer.getMenu();
-        selectDrawerItem(menu.getItem(currentPosition).setChecked(true));
+        return drawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
     @Override
