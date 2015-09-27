@@ -43,4 +43,6 @@
     <string name="condensed_bold">Condensed Bold</string>
     <string name="condensed_bold_italic">Condensed Bold Italic</string>
 
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
 </resources>
