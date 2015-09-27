@@ -28,7 +28,7 @@ import android.support.v4.app.ActivityCompat;
 
 import com.chromium.fontinstaller.BuildConfig;
 import com.chromium.fontinstaller.R;
-import com.chromium.fontinstaller.SecretStuff;
+//import com.chromium.fontinstaller.SecretStuff;
 import com.chromium.fontinstaller.core.CommandRunner;
 import com.chromium.fontinstaller.ui.main.MainActivity;
 import com.chromium.fontinstaller.util.Licenses;
@@ -65,7 +65,7 @@ public class SettingsFragment extends PreferenceFragment implements
 
         prefs = PreferencesManager.getInstance(getActivity());
 
-        billingHelper = new IabHelper(getActivity(), SecretStuff.LICENSE_KEY);
+        //billingHelper = new IabHelper(getActivity(), SecretStuff.LICENSE_KEY);
 
         CheckBoxPreference trueFont = (CheckBoxPreference) findPreference("trueFont");
         trueFont.setOnPreferenceChangeListener((pref, newValue) -> handleTrueFont(newValue));
@@ -84,13 +84,13 @@ public class SettingsFragment extends PreferenceFragment implements
 
         donate = findPreference("donate");
 
-        billingHelper.startSetup(result -> {
+        /*billingHelper.startSetup(result -> {
             if (result.isSuccess()) {
                 donate.setEnabled(true);
             } else {
                 donate.setSummary("A problem was encountered while setting up In-App Billing");
             }
-        });
+        });*/
 
         donate.setOnPreferenceClickListener(pref -> showDonationDialog());
 
