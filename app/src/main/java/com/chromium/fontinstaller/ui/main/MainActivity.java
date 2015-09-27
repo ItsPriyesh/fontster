@@ -18,8 +18,8 @@ package com.chromium.fontinstaller.ui.main;
 
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -28,9 +28,9 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.TextView;
 
+import com.chromium.fontinstaller.BuildConfig;
 import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.ui.backuprestore.BackupRestoreFragment;
 import com.chromium.fontinstaller.ui.common.BaseActivity;
@@ -38,27 +38,24 @@ import com.chromium.fontinstaller.ui.fontlist.FontListFragment;
 import com.chromium.fontinstaller.ui.install.FontActivity;
 import com.chromium.fontinstaller.ui.settings.SettingsActivity;
 import com.chromium.fontinstaller.util.RootUtils;
+import com.chromium.fontinstaller.util.ViewUtils;
 import com.google.android.gms.ads.AdView;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
-import java.util.ArrayList;
-
 import butterknife.Bind;
-import butterknife.OnItemClick;
-
 
 public class MainActivity extends BaseActivity implements MaterialSearchView.SearchViewListener {
 
     @Bind(R.id.drawer_layout)
     DrawerLayout drawerLayout;
 
-    @Bind(R.id.drawer_list)
-    ListView drawerList;
+    @Bind(R.id.navigation_view)
+    NavigationView nvDrawer;
 
     @Bind(R.id.search_view)
     MaterialSearchView searchView;
 
-    @Bind(R.id.adView)
+    @Bind(R.id.ad_view)
     AdView adView;
 
     private ActionBarDrawerToggle drawerToggle;
@@ -74,15 +71,15 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.Sea
         setContentView(R.layout.activity_main);
         setToolbarTitle("Fontster");
 
-        initializeAd(adView);
+        if (!BuildConfig.DEBUG) initializeAd(adView);
 
         RootUtils.requestAccess();
 
         drawerToggle = new ActionBarDrawerToggle(
-                this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
+                this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
 
+        setupDrawerContent(nvDrawer);
         drawerLayout.setDrawerListener(drawerToggle);
-        drawerList.setAdapter(new NavDrawerAdapter(this, generateNavItems()));
 
         fragmentManager = getSupportFragmentManager();
         fontListFragment = new FontListFragment();
@@ -94,6 +91,7 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.Sea
         searchView.setOnSearchViewListener(this);
         searchView.setSuggestionIcon(null);
         searchView.setSuggestions(fontList);
+        searchView.setPadding(0, ViewUtils.getStatusBarHeight(this), 0, 0);
         searchView.setOnItemClickListener((parent, view, position, id) -> {
             final String fontName = getFontNameFromListItem(view);
             final Intent intent = FontActivity.getLaunchIntent(this, fontName);
@@ -105,45 +103,39 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.Sea
         return ((TextView) view.findViewById(R.id.suggestion_text)).getText().toString();
     }
 
-    private Drawable getDrawableFromArray(int position, String... array) {
-        return getResources().getDrawable(
-                getResources().getIdentifier(array[position], "drawable", getPackageName()));
+    private void setupDrawerContent(NavigationView navigationView) {
+        navigationView.setNavigationItemSelectedListener(menuItem -> {
+            selectDrawerItem(menuItem);
+            return true;
+        });
     }
 
-    private ArrayList<NavDrawerItem> generateNavItems() {
-        ArrayList<NavDrawerItem> items = new ArrayList<>(3);
-        String[] titles = getResources().getStringArray(R.array.nav_drawer_titles);
-        String[] icons = getResources().getStringArray(R.array.nav_drawer_icons);
-
-        for (int i = 0; i < Math.min(titles.length, icons.length); i++)
-            items.add(new NavDrawerItem(titles[i], getDrawableFromArray(i, icons)));
-
-        return items;
-    }
-
-    private void swapFragment(Fragment fragment) {
-        fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
-    }
-
-    @SuppressWarnings("unused")
-    @OnItemClick(R.id.drawer_list)
-    public void onNavItemClicked(int position) {
-        switch (position) {
-            case 0:
+    private void selectDrawerItem(MenuItem menuItem) {
+        final int selectedId = menuItem.getItemId();
+        switch (selectedId) {
+            case R.id.fonts:
                 swapFragment(fontListFragment);
+                menuItem.setChecked(true);
+                setTitle(menuItem.getTitle());
                 drawerLayout.closeDrawers();
                 break;
-            case 1:
+            case R.id.backup:
                 swapFragment(backupRestoreFragment);
+                menuItem.setChecked(true);
+                setTitle(menuItem.getTitle());
                 drawerLayout.closeDrawers();
                 break;
-            case 2:
+            case R.id.settings:
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
         }
 
-        shouldShowSearch = (position == 0);
+        shouldShowSearch = selectedId == R.id.fonts;
         invalidateOptionsMenu();
+    }
+
+    private void swapFragment(Fragment fragment) {
+        fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
     }
 
     @Override
@@ -159,13 +151,7 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.Sea
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                startActivity(new Intent(this, SettingsActivity.class));
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+        return drawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
     @Override

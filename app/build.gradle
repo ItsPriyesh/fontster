@@ -38,12 +38,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-}
-
-retrolambda {
-    jdk '/Library/Java/JavaVirtualMachines/jdk1.8.0_31.jdk/Contents/Home'
-    oldJdk '/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Content/Home'
-    javaVersion JavaVersion.VERSION_1_6
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {

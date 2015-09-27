@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright 2015 Priyesh Patel
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,16 +15,17 @@
   ~ limitations under the License.
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".MainActivity">
-
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/action_search"
-        android:icon="@drawable/ic_search_white"
-        android:title="Search"
-        app:showAsAction="always" />
-
-
+        android:id="@+id/fonts"
+        android:title="Fonts"
+        android:icon="@drawable/ic_subject_grey"/>
+    <item
+        android:id="@+id/backup"
+        android:title="Backup &amp; restore"
+        android:icon="@drawable/ic_backup_restore_grey"/>
+    <item
+        android:id="@+id/settings"
+        android:icon="@drawable/ic_settings_grey"
+        android:title="Settings"/>
 </menu>
