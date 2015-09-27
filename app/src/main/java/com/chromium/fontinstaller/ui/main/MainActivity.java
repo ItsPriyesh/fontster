@@ -62,6 +62,8 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.OnQ
     private FragmentManager fragmentManager;
     private FontListFragment fontListFragment;
     private BackupRestoreFragment backupRestoreFragment;
+    static final String STATE_SELECTED_POSITION = "currentFrag";
+    private int currentPosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +76,11 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.OnQ
         RootUtils.requestAccess();
 
         searchView.setOnQueryTextListener(this);
+
+        if (savedInstanceState != null) {
+            currentPosition =
+                    savedInstanceState.getInt(STATE_SELECTED_POSITION);
+        }
 
         drawerToggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
@@ -106,12 +113,14 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.OnQ
                 menuItem.setChecked(true);
                 setTitle(menuItem.getTitle());
                 drawerLayout.closeDrawers();
+                currentPosition = 0;
                 break;
             case R.id.backup:
                 swapFragment(backupRestoreFragment);
                 menuItem.setChecked(true);
                 setTitle(menuItem.getTitle());
                 drawerLayout.closeDrawers();
+                currentPosition = 1;
                 break;
             case R.id.settings:
                 startActivity(new Intent(this, SettingsActivity.class));
@@ -139,6 +148,20 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.OnQ
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(STATE_SELECTED_POSITION, currentPosition);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        currentPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION, 0);
+        Menu menu = nvDrawer.getMenu();
+        selectDrawerItem(menu.getItem(currentPosition).setChecked(true));
     }
 
     @Override
