@@ -22,9 +22,9 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -62,6 +62,8 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.OnQ
     private FragmentManager fragmentManager;
     private FontListFragment fontListFragment;
     private BackupRestoreFragment backupRestoreFragment;
+
+    private boolean shouldShowSearch = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,6 +126,9 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.OnQ
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
         }
+
+        shouldShowSearch = (position == 0);
+        invalidateOptionsMenu();
     }
 
     @Override
@@ -131,6 +136,7 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.OnQ
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
         final MenuItem searchItem = menu.findItem(R.id.action_search);
+        searchItem.setVisible(shouldShowSearch);
         searchView.setMenuItem(searchItem);
 
         return true;
@@ -161,7 +167,7 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.OnQ
 
     @Override
     public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(Gravity.START)) {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawers();
             return;
         }
