@@ -17,13 +17,12 @@
 package com.chromium.fontinstaller.ui.common;
 
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.chromium.fontinstaller.R;
-import com.chromium.fontinstaller.SecretStuff;
 import com.chromium.fontinstaller.ui.settings.SettingsFragment;
 import com.chromium.fontinstaller.util.ViewUtils;
 import com.chromium.fontinstaller.util.billing.IabHelper;
@@ -35,7 +34,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
-public class BaseActivity extends ActionBarActivity {
+//import com.chromium.fontinstaller.SecretStuff;
+
+public class BaseActivity extends AppCompatActivity {
 
     @Bind(R.id.app_bar)
     protected Toolbar toolbar;
@@ -48,11 +49,15 @@ public class BaseActivity extends ActionBarActivity {
         super.setContentView(layoutResId);
         ButterKnife.bind(this);
 
-        billingHelper = new IabHelper(this, SecretStuff.LICENSE_KEY);
+        //billingHelper = new IabHelper(this, SecretStuff.LICENSE_KEY);
 
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(false);
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
     }
 
     @Override
@@ -104,7 +109,7 @@ public class BaseActivity extends ActionBarActivity {
     }
 
     protected void showToolbarBackButton() {
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     protected void show(View view) {
