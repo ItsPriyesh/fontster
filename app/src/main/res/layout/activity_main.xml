@@ -38,15 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/ad_container"
-            android:layout_marginTop="80dp">
-
-            <com.miguelcatalan.materialsearchview.MaterialSearchView
-                android:id="@+id/search_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:elevation="5dp" />
-
-        </FrameLayout>
+            android:layout_below="@id/app_bar" />
 
         <!-- Holds Ad stuff -->
         <RelativeLayout
@@ -66,13 +58,18 @@
                 android:textStyle="bold" />
 
             <com.google.android.gms.ads.AdView
-                android:id="@+id/adView"
+                android:id="@+id/ad_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 ads:adSize="BANNER"
                 ads:adUnitId="@string/banner_ad_unit_id" />
         </RelativeLayout>
 
+        <com.miguelcatalan.materialsearchview.MaterialSearchView
+            android:id="@+id/search_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="5dp" />
     </RelativeLayout>
 
     <android.support.design.widget.NavigationView

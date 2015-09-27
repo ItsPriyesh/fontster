@@ -38,6 +38,7 @@ import com.chromium.fontinstaller.ui.fontlist.FontListFragment;
 import com.chromium.fontinstaller.ui.install.FontActivity;
 import com.chromium.fontinstaller.ui.settings.SettingsActivity;
 import com.chromium.fontinstaller.util.RootUtils;
+import com.chromium.fontinstaller.util.ViewUtils;
 import com.google.android.gms.ads.AdView;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
@@ -54,7 +55,7 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.Sea
     @Bind(R.id.search_view)
     MaterialSearchView searchView;
 
-    @Bind(R.id.adView)
+    @Bind(R.id.ad_view)
     AdView adView;
 
     private ActionBarDrawerToggle drawerToggle;
@@ -90,6 +91,7 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.Sea
         searchView.setOnSearchViewListener(this);
         searchView.setSuggestionIcon(null);
         searchView.setSuggestions(fontList);
+        searchView.setPadding(0, ViewUtils.getStatusBarHeight(this), 0, 0);
         searchView.setOnItemClickListener((parent, view, position, id) -> {
             final String fontName = getFontNameFromListItem(view);
             final Intent intent = FontActivity.getLaunchIntent(this, fontName);
