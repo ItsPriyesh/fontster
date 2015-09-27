@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
@@ -49,8 +50,11 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.OnQ
     @Bind(R.id.drawer_layout)
     DrawerLayout drawerLayout;
 
-    @Bind(R.id.drawer_list)
-    ListView drawerList;
+    //@Bind(R.id.drawer_list)
+    //ListView drawerList;
+
+    @Bind(R.id.nvView)
+    NavigationView nvDrawer;
 
     @Bind(R.id.search_view)
     MaterialSearchView searchView;
@@ -69,7 +73,7 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.OnQ
         setContentView(R.layout.activity_main);
         setToolbarTitle("Fontster");
 
-        initializeAd(adView);
+        //initializeAd(adView);
 
         RootUtils.requestAccess();
 
@@ -78,8 +82,9 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.OnQ
         drawerToggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
 
+        setupDrawerContent(nvDrawer);
         drawerLayout.setDrawerListener(drawerToggle);
-        drawerList.setAdapter(new NavDrawerAdapter(this, generateNavItems()));
+        //drawerList.setAdapter(new NavDrawerAdapter(this, generateNavItems()));
 
         fragmentManager = getSupportFragmentManager();
         fontListFragment = new FontListFragment();
@@ -88,11 +93,43 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.OnQ
         swapFragment(fontListFragment);
     }
 
+    /*
     private Drawable getDrawableFromArray(int position, String... array) {
         return getResources().getDrawable(
                 getResources().getIdentifier(array[position], "drawable", getPackageName()));
+    }*/
+
+    private void setupDrawerContent(NavigationView navigationView){
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                selectDrawerItem(menuItem);
+                return true;
+            }
+        });
     }
 
+    private void selectDrawerItem(MenuItem menuItem){
+        switch (menuItem.getItemId()){
+            case R.id.fonts:
+                swapFragment(fontListFragment);
+                menuItem.setChecked(true);
+                setTitle(menuItem.getTitle());
+                drawerLayout.closeDrawers();
+                break;
+            case R.id.backup:
+                swapFragment(backupRestoreFragment);
+                menuItem.setChecked(true);
+                setTitle(menuItem.getTitle());
+                drawerLayout.closeDrawers();
+                break;
+            case R.id.settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                break;
+        }
+    }
+
+    /*
     private ArrayList<NavDrawerItem> generateNavItems() {
         ArrayList<NavDrawerItem> items = new ArrayList<>(3);
         String[] titles = getResources().getStringArray(R.array.nav_drawer_titles);
@@ -102,12 +139,13 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.OnQ
             items.add(new NavDrawerItem(titles[i], getDrawableFromArray(i, icons)));
 
         return items;
-    }
+    }*/
 
     private void swapFragment(Fragment fragment) {
         fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
     }
 
+    /*
     @SuppressWarnings("unused")
     @OnItemClick(R.id.drawer_list)
     public void onNavItemClicked(int position) {
@@ -124,7 +162,7 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.OnQ
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
         }
-    }
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
