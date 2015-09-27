@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2015 Priyesh Patel
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<resources>
+    <string-array name="font_list">
+        <item>Aaargh</item>
+        <item>Aileron</item>
+        <item>Alegreya</item>
+        <item>Aleo Bold</item>
+        <item>Aleo</item>
+        <item>Aleo Light</item>
+        <item>Alex</item>
+        <item>Aller</item>
+        <item>Aller Light</item>
+        <item>Antipasto Light</item>
+        <item>Antipasto Regular</item>
+        <item>Arch Rival</item>
+        <item>Archivo Narrow</item>
+        <item>Arimo</item>
+        <item>Arvo</item>
+        <item>Asap</item>
+        <item>Aubrey</item>
+        <item>Baron Neue</item>
+        <item>Biko</item>
+        <item>Brixton</item>
+        <item>Calugraphy</item>
+        <item>Cantarell</item>
+        <item>Cartoonist Hand</item>
+        <item>Cartoonist Hand All Caps</item>
+        <item>Caviar Dreams</item>
+        <item>Champagne And Limousines</item>
+        <item>China Cat</item>
+        <item>Chivo</item>
+        <item>Choco Cooky</item>
+        <item>Clear Sans</item>
+        <item>Continuum</item>
+        <item>Coolvetica</item>
+        <item>Corporate Rounded</item>
+        <item>Covington</item>
+        <item>Dolce Vita</item>
+        <item>Dosis</item>
+        <item>Economica</item>
+        <item>Engebrechtre</item>
+        <item>Essence Sans</item>
+        <item>Exo</item>
+        <item>Expletus Sans</item>
+        <item>Fira Sans</item>
+        <item>Florence Sans All Caps</item>
+        <item>Franklin Gothic</item>
+        <item>Geo Sans Light</item>
+        <item>Harry Potter</item>
+        <item>Homizio Nova</item>
+        <item>HTC M8</item>
+        <item>Imagine</item>
+        <item>Josefin Sans</item>
+        <item>Josefin Slab</item>
+        <item>Juice</item>
+        <item>Klinic Slab</item>
+        <item>Komika</item>
+        <item>Kontrapunkt</item>
+        <item>Lato</item>
+        <item>Liberation Sans</item>
+        <item>Lido STF</item>
+        <item>Marvel</item>
+        <item>Merriweather Sans</item>
+        <item>Minya Nouvelle</item>
+        <item>Monaco</item>
+        <item>Monako</item>
+        <item>Monofonto</item>
+        <item>Neuropol</item>
+        <item>Nokia Pure</item>
+        <item>Olney</item>
+        <item>Open Dyslexic</item>
+        <item>Open Sans</item>
+        <item>Open Sans Condensed Light</item>
+        <item>Open Sans Light</item>
+        <item>Opificio</item>
+        <item>Oswald</item>
+        <item>Plentiful</item>
+        <item>Poiret One</item>
+        <item>Prelude</item>
+        <item>Print Clearly</item>
+        <item>PT Sans</item>
+        <item>Quantico</item>
+        <item>Quicksand</item>
+        <item>Raleway</item>
+        <item>Roboto</item>
+        <item>Roboto Bold</item>
+        <item>Roboto Bold Italic</item>
+        <item>Roboto Condensed</item>
+        <item>Roboto Condensed Bold</item>
+        <item>Roboto Condensed Bold Italic</item>
+        <item>Roboto Condensed Italic</item>
+        <item>Roboto Condensed Light</item>
+        <item>Roboto Light</item>
+        <item>Roboto Slab</item>
+        <item>Roboto Thin</item>
+        <item>Rosario</item>
+        <item>Rosemary</item>
+        <item>Sansation</item>
+        <item>Signika</item>
+        <item>Sony Sketch</item>
+        <item>Sony Xperia</item>
+        <item>Source Sans Pro</item>
+        <item>Sovba</item>
+        <item>Square</item>
+        <item>Tertre</item>
+        <item>Titillium Web</item>
+        <item>Ubuntu</item>
+        <item>Ubuntu Light</item>
+        <item>Ubuntu Tall</item>
+        <item>Venera</item>
+        <item>Vinque</item>
+        <item>Wagnasty</item>
+        <item>Webly Sleek UI</item>
+        <item>Zekton</item>
+    </string-array>
+</resources>

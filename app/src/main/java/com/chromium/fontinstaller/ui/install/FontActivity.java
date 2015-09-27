@@ -18,6 +18,8 @@ package com.chromium.fontinstaller.ui.install;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -82,6 +84,12 @@ public class FontActivity extends BaseActivity implements TabLayout.OnTabSelecte
     private final String[] tabTitles = {"Regular", "Bold", "Italic"};
 
     public static final String FONT_NAME = "fontName";
+
+    public static Intent getLaunchIntent(final Context context, final String fontName) {
+        final Intent intent = new Intent(context, FontActivity.class);
+        intent.putExtra(FontActivity.FONT_NAME, fontName);
+        return intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

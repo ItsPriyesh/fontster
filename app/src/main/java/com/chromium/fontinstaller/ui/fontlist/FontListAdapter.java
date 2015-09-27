@@ -34,9 +34,6 @@ import com.chromium.fontinstaller.util.FileUtils;
 
 import java.util.ArrayList;
 
-/**
- * Created by priyeshpatel on 15-02-15.
- */
 public class FontListAdapter extends RecyclerView.Adapter<FontListAdapter.ViewHolder> {
 
     private boolean enableTrueFont;
@@ -96,9 +93,10 @@ public class FontListAdapter extends RecyclerView.Adapter<FontListAdapter.ViewHo
 
         @Override
         public void onClick(View view) {
-            Intent intent = new Intent(view.getContext(), FontActivity.class);
-            intent.putExtra(FontActivity.FONT_NAME, fontNames.get(getPosition()));
-            view.getContext().startActivity(intent);
+            final Context context = view.getContext();
+            final String fontName = fontNames.get(getLayoutPosition());
+            final Intent intent = FontActivity.getLaunchIntent(context, fontName);
+            context.startActivity(intent);
         }
     }
 }

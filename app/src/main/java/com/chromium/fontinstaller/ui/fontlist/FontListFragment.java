@@ -39,11 +39,9 @@ import com.chromium.fontinstaller.util.ViewUtils;
 import com.eowise.recyclerview.stickyheaders.StickyHeadersBuilder;
 import com.eowise.recyclerview.stickyheaders.StickyHeadersItemDecoration;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -65,8 +63,9 @@ public class FontListFragment extends Fragment {
     ViewGroup errorContainer;
 
     private FontListAdapter listAdapter;
-    private ArrayList<String> fontList = new ArrayList<>();
+    private List<String> fontList;
     private Activity activity;
+    private ProgressDialog progressDialog;
 
     public FontListFragment() { }
 
@@ -80,7 +79,7 @@ public class FontListFragment extends Fragment {
 
         PreferencesManager prefs = PreferencesManager.getInstance(activity);
 
-        if (fontList.isEmpty()) populateFontList();
+        fontList = Arrays.asList(getResources().getStringArray(R.array.font_list));
 
         RecyclerView.LayoutManager listManager = new LinearLayoutManager(activity);
         recyclerView.setLayoutManager(listManager);
@@ -94,13 +93,11 @@ public class FontListFragment extends Fragment {
     private void setupRecyclerViewAdapter(boolean enableTrueFont) {
         recyclerView.setVisibility(View.VISIBLE);
 
-        listAdapter = new FontListAdapter(activity, fontList, enableTrueFont);
+        listAdapter = new FontListAdapter(activity, new ArrayList<>(fontList), enableTrueFont);
 
         recyclerView.setAdapter(listAdapter);
         recyclerView.addItemDecoration(buildHeaderDecor());
     }
-
-    private ProgressDialog progressDialog;
 
     private void dismissProgressDialog() {
         if (progressDialog.isShowing()) progressDialog.dismiss();
@@ -166,24 +163,4 @@ public class FontListFragment extends Fragment {
                 .setStickyHeadersAdapter(new FontListHeaderAdapter(fontList), true)
                 .build();
     }
-
-    private void populateFontList() {
-        InputStream fontFile = null;
-        try {
-            fontFile = activity.getAssets().open("fonts");
-            Scanner scanner = new Scanner(fontFile);
-            while (scanner.hasNextLine()) {
-                fontList.add(scanner.nextLine());
-            }
-        } catch (IOException ignored) {
-        } finally {
-            if (fontFile != null) {
-                try {
-                    fontFile.close();
-                } catch (IOException ignored) {
-                }
-            }
-        }
-    }
-
 }

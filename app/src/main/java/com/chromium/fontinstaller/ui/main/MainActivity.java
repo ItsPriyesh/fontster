@@ -27,12 +27,15 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.ui.backuprestore.BackupRestoreFragment;
 import com.chromium.fontinstaller.ui.common.BaseActivity;
 import com.chromium.fontinstaller.ui.fontlist.FontListFragment;
+import com.chromium.fontinstaller.ui.install.FontActivity;
 import com.chromium.fontinstaller.ui.settings.SettingsActivity;
 import com.chromium.fontinstaller.util.RootUtils;
 import com.google.android.gms.ads.AdView;
@@ -44,7 +47,8 @@ import butterknife.Bind;
 import butterknife.OnItemClick;
 
 
-public class MainActivity extends BaseActivity implements MaterialSearchView.OnQueryTextListener {
+public class MainActivity extends BaseActivity implements
+        MaterialSearchView.OnQueryTextListener, MaterialSearchView.SearchViewListener {
 
     @Bind(R.id.drawer_layout)
     DrawerLayout drawerLayout;
@@ -75,8 +79,6 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.OnQ
 
         RootUtils.requestAccess();
 
-        searchView.setOnQueryTextListener(this);
-
         drawerToggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
 
@@ -88,6 +90,22 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.OnQ
         backupRestoreFragment = new BackupRestoreFragment();
 
         swapFragment(fontListFragment);
+
+        searchView.setOnQueryTextListener(this);
+        searchView.setOnSearchViewListener(this);
+
+        final String[] fontList = getResources().getStringArray(R.array.font_list);
+        searchView.setSuggestionIcon(null);
+        searchView.setSuggestions(fontList);
+        searchView.setOnItemClickListener((parent, view, position, id) -> {
+            final String fontName = getFontNameFromListItem(view);
+            final Intent intent = FontActivity.getLaunchIntent(this, fontName);
+            startActivity(intent);
+        });
+    }
+
+    private String getFontNameFromListItem(View view) {
+        return ((TextView) view.findViewById(R.id.suggestion_text)).getText().toString();
     }
 
     private Drawable getDrawableFromArray(int position, String... array) {
@@ -167,7 +185,7 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.OnQ
 
     @Override
     public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START) || searchView.isSearchOpen()) {
             drawerLayout.closeDrawers();
             return;
         }
@@ -183,5 +201,17 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.OnQ
     @Override
     public boolean onQueryTextChange(String s) {
         return false;
+    }
+
+    @Override
+    public void onSearchViewShown() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawers();
+        }
+    }
+
+    @Override
+    public void onSearchViewClosed() {
+
     }
 }
