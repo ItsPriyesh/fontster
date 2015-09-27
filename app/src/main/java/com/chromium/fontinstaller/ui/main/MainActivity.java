@@ -47,8 +47,7 @@ import butterknife.Bind;
 import butterknife.OnItemClick;
 
 
-public class MainActivity extends BaseActivity implements
-        MaterialSearchView.OnQueryTextListener, MaterialSearchView.SearchViewListener {
+public class MainActivity extends BaseActivity implements MaterialSearchView.SearchViewListener {
 
     @Bind(R.id.drawer_layout)
     DrawerLayout drawerLayout;
@@ -91,10 +90,8 @@ public class MainActivity extends BaseActivity implements
 
         swapFragment(fontListFragment);
 
-        searchView.setOnQueryTextListener(this);
-        searchView.setOnSearchViewListener(this);
-
         final String[] fontList = getResources().getStringArray(R.array.font_list);
+        searchView.setOnSearchViewListener(this);
         searchView.setSuggestionIcon(null);
         searchView.setSuggestions(fontList);
         searchView.setOnItemClickListener((parent, view, position, id) -> {
@@ -190,17 +187,6 @@ public class MainActivity extends BaseActivity implements
             return;
         }
         super.onBackPressed();
-    }
-
-    @Override
-    public boolean onQueryTextSubmit(String s) {
-
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String s) {
-        return false;
     }
 
     @Override
