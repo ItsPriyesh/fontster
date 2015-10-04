@@ -40,6 +40,8 @@ import butterknife.OnClick;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+import static com.chromium.fontinstaller.util.PreferencesManager.Keys;
+
 public class BackupRestoreFragment extends Fragment {
 
     @Bind(R.id.backup_unavailable_container)
@@ -55,7 +57,7 @@ public class BackupRestoreFragment extends Fragment {
     TextView backupDate;
 
     private BackupManager backupManager;
-    private PreferencesManager prefs;
+    private PreferencesManager preferences;
 
     public BackupRestoreFragment() { }
 
@@ -67,7 +69,7 @@ public class BackupRestoreFragment extends Fragment {
         ((BaseActivity) getActivity()).setToolbarTitle("Backup & Restore");
 
         backupManager = new BackupManager();
-        prefs = PreferencesManager.getInstance(getActivity());
+        preferences = PreferencesManager.getInstance(getActivity());
 
         checkForBackup();
 
@@ -99,8 +101,8 @@ public class BackupRestoreFragment extends Fragment {
     private void setupBackupContainer() {
         slideUpAndAdd(backupContainer);
 
-        backupName.setText(prefs.getString(PreferencesManager.KEY_BACKUP_NAME));
-        backupDate.setText(prefs.getString(PreferencesManager.KEY_BACKUP_DATE));
+        backupName.setText(preferences.getString(Keys.KEY_BACKUP_NAME));
+        backupDate.setText(preferences.getString(Keys.KEY_BACKUP_DATE));
     }
 
     @SuppressWarnings("unused")
@@ -110,16 +112,14 @@ public class BackupRestoreFragment extends Fragment {
                 .setItems(new String[]{"Restore", "Delete"}, (dialog, index) -> {
                     switch (index) {
                         case 0:
-                            backupManager
-                                    .restore()
+                            backupManager.restore()
                                     .subscribeOn(Schedulers.io())
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .doOnCompleted(this::onRestoreComplete)
                                     .subscribe();
                             break;
                         case 1:
-                            backupManager
-                                    .deleteBackup()
+                            backupManager.deleteBackup()
                                     .subscribeOn(Schedulers.io())
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .doOnCompleted(this::onBackupDeleted)
@@ -145,8 +145,8 @@ public class BackupRestoreFragment extends Fragment {
     }
 
     public void onBackupComplete(String name) {
-        prefs.setString(PreferencesManager.KEY_BACKUP_NAME, name);
-        prefs.setString(PreferencesManager.KEY_BACKUP_DATE, BackupManager.DATE_FORMAT.format(new Date()));
+        preferences.setString(Keys.KEY_BACKUP_NAME, name);
+        preferences.setString(Keys.KEY_BACKUP_DATE, BackupManager.DATE_FORMAT.format(new Date()));
         checkForBackup();
     }
 

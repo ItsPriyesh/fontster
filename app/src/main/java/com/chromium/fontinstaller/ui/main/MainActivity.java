@@ -50,7 +50,7 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.Sea
     DrawerLayout drawerLayout;
 
     @Bind(R.id.navigation_view)
-    NavigationView nvDrawer;
+    NavigationView navigationView;
 
     @Bind(R.id.search_view)
     MaterialSearchView searchView;
@@ -78,7 +78,7 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.Sea
         drawerToggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
 
-        setupDrawerContent(nvDrawer);
+        setupDrawerContent(navigationView);
         drawerLayout.setDrawerListener(drawerToggle);
 
         fragmentManager = getSupportFragmentManager();

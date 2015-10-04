@@ -51,6 +51,8 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
+import static com.chromium.fontinstaller.util.PreferencesManager.Keys;
+
 public class FontListFragment extends Fragment {
 
     @Bind(R.id.font_list_view)
@@ -66,6 +68,7 @@ public class FontListFragment extends Fragment {
     private List<String> fontList;
     private Activity activity;
     private ProgressDialog progressDialog;
+    private PreferencesManager preferences;
 
     public FontListFragment() { }
 
@@ -77,14 +80,14 @@ public class FontListFragment extends Fragment {
         activity = getActivity();
         ((MainActivity) activity).setToolbarTitle("Fontster");
 
-        PreferencesManager prefs = PreferencesManager.getInstance(activity);
+        preferences = PreferencesManager.getInstance(activity);
 
         fontList = Arrays.asList(getResources().getStringArray(R.array.font_list));
 
         RecyclerView.LayoutManager listManager = new LinearLayoutManager(activity);
         recyclerView.setLayoutManager(listManager);
 
-        if (prefs.getBoolean(PreferencesManager.KEY_ENABLE_TRUEFONT)) downloadFontList();
+        if (preferences.getBoolean(Keys.KEY_ENABLE_TRUEFONT)) downloadFontList();
         else setupRecyclerViewAdapter(false);
 
         return view;
@@ -100,27 +103,27 @@ public class FontListFragment extends Fragment {
     }
 
     private void dismissProgressDialog() {
-        if (progressDialog.isShowing()) progressDialog.dismiss();
+        if (progressDialog != null && progressDialog.isShowing()) progressDialog.dismiss();
     }
 
     private void downloadFontList() {
-        progressDialog = new ProgressDialog(activity);
-        progressDialog.setMessage("Downloading previews");
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progressDialog.setMax(fontList.size());
-        progressDialog.show();
+        final boolean previewsCached = preferences.getBoolean(Keys.KEY_TRUEFONTS_CACHED);
+
+        if (!previewsCached) {
+            progressDialog = new ProgressDialog(activity);
+            progressDialog.setMessage("Downloading previews");
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progressDialog.setMax(fontList.size());
+            progressDialog.show();
+        }
 
         if (errorContainer.getVisibility() == View.VISIBLE) errorContainer.setVisibility(View.GONE);
         downloadProgress.setVisibility(View.VISIBLE);
 
-        List<FontPackage> fontPackages = new ArrayList<>(fontList.size());
-        for (String fontName : fontList) {
-            FontPackage fontPackage = new FontPackage(fontName);
-            fontPackages.add(fontPackage);
-        }
+        final List<FontPackage> fontPackages = new ArrayList<>(fontList.size());
+        for (String fontName : fontList) fontPackages.add(new FontPackage(fontName));
 
-        Observable
-                .from(fontPackages)
+        Observable.from(fontPackages)
                 .flatMap(fp -> FontDownloader.downloadStyledFonts(fp, activity, Style.REGULAR))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -131,6 +134,8 @@ public class FontListFragment extends Fragment {
     }
 
     private void handleDownloadSuccess() {
+        preferences.setBoolean(Keys.KEY_TRUEFONTS_CACHED, true);
+
         dismissProgressDialog();
         ViewUtils.animSlideUp(downloadProgress, getActivity());
         new Handler().postDelayed(() -> {

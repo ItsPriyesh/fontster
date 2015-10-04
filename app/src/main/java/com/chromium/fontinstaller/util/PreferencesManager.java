@@ -23,9 +23,12 @@ public class PreferencesManager {
 
     private static final String PREFS_NAME = "com.chromium.fontinstaller.PREFS";
 
-    public static final String KEY_ENABLE_TRUEFONT = "1";
-    public static final String KEY_BACKUP_NAME = "2";
-    public static final String KEY_BACKUP_DATE = "3";
+    public static final class Keys {
+        public static final String KEY_ENABLE_TRUEFONT = "1";
+        public static final String KEY_BACKUP_NAME = "2";
+        public static final String KEY_BACKUP_DATE = "3";
+        public static final String KEY_TRUEFONTS_CACHED = "4";
+    }
 
     private static SharedPreferences sharedPreferences = null;
     private static PreferencesManager prefsManager = null;
@@ -42,7 +45,7 @@ public class PreferencesManager {
     }
 
     public void setString(String key, String value) {
-        sharedPreferences.edit().putString(key, value).commit();
+        sharedPreferences.edit().putString(key, value).apply();
     }
 
     public String getString(String key) {
@@ -50,7 +53,7 @@ public class PreferencesManager {
     }
 
     public void setBoolean(String key, boolean value) {
-        sharedPreferences.edit().putBoolean(key, value).commit();
+        sharedPreferences.edit().putBoolean(key, value).apply();
     }
 
     public boolean getBoolean(String key) {

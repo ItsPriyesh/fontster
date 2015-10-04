@@ -44,12 +44,13 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 import static com.chromium.fontinstaller.util.ViewUtils.snackbar;
+import static com.chromium.fontinstaller.util.PreferencesManager.Keys;
 
 public class SettingsFragment extends PreferenceFragment implements
         DonateDialogFragment.DonationClickListener {
 
     private IabHelper billingHelper;
-    private PreferencesManager prefs;
+    private PreferencesManager preferences;
     private IabHelper.OnIabPurchaseFinishedListener purchaseListener;
     private Preference donate;
     private ProgressDialog progressDialog;
@@ -63,7 +64,7 @@ public class SettingsFragment extends PreferenceFragment implements
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.settings);
 
-        prefs = PreferencesManager.getInstance(getActivity());
+        preferences = PreferencesManager.getInstance(getActivity());
 
         billingHelper = new IabHelper(getActivity(), SecretStuff.LICENSE_KEY);
 
@@ -131,7 +132,7 @@ public class SettingsFragment extends PreferenceFragment implements
     }
 
     private boolean handleTrueFont(Object newValue) {
-        prefs.setBoolean(PreferencesManager.KEY_ENABLE_TRUEFONT, (boolean) newValue);
+        preferences.setBoolean(Keys.KEY_ENABLE_TRUEFONT, (boolean) newValue);
         showRestartDialog();
         return true;
     }
@@ -148,8 +149,7 @@ public class SettingsFragment extends PreferenceFragment implements
             if (!f.getName().equals("Backup"))
                 commands.add("rm -rf " + f.getAbsolutePath());
 
-        CommandRunner
-                .runCommands(commands)
+        CommandRunner.runCommands(commands)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnCompleted(this::onCacheCleared)
@@ -159,6 +159,7 @@ public class SettingsFragment extends PreferenceFragment implements
     }
 
     public void onCacheCleared() {
+        preferences.setBoolean(Keys.KEY_TRUEFONTS_CACHED, false);
         progressDialog.dismiss();
         snackbar("Cache has been cleared", getView());
     }
