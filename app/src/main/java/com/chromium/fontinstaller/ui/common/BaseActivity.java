@@ -16,6 +16,7 @@
 
 package com.chromium.fontinstaller.ui.common;
 
+import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -41,6 +42,7 @@ public class BaseActivity extends AppCompatActivity {
     protected Toolbar toolbar;
 
     private IabHelper billingHelper;
+    private final Handler handler = new Handler();
 
     @Override
     public void setContentView(int layoutResId) {
@@ -92,6 +94,10 @@ public class BaseActivity extends AppCompatActivity {
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                 .build();
         adView.loadAd(adRequest);
+    }
+
+    protected void delay(Runnable runnable, long delay) {
+        handler.postDelayed(runnable, delay);
     }
 
     private void hideAd(AdView adView) {

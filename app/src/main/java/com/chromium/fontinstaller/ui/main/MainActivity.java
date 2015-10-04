@@ -105,6 +105,7 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.Sea
 
     private void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(menuItem -> {
+            drawerLayout.closeDrawers();
             selectDrawerItem(menuItem);
             return true;
         });
@@ -117,16 +118,15 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.Sea
                 swapFragment(fontListFragment);
                 menuItem.setChecked(true);
                 setTitle("Fontster");
-                drawerLayout.closeDrawers();
                 break;
             case R.id.backup:
                 swapFragment(backupRestoreFragment);
                 menuItem.setChecked(true);
                 setTitle(menuItem.getTitle());
-                drawerLayout.closeDrawers();
                 break;
             case R.id.settings:
-                startActivity(new Intent(this, SettingsActivity.class));
+                final Intent intent = new Intent(this, SettingsActivity.class);
+                delay(() -> startActivity(intent), 200);
                 break;
         }
 

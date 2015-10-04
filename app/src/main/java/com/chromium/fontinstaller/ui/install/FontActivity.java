@@ -21,7 +21,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -80,7 +79,6 @@ public class FontActivity extends BaseActivity implements TabLayout.OnTabSelecte
     private boolean fragmentsInitialized = false;
     private ProgressDialog progressDialog;
 
-    private final Handler handler = new Handler();
     private final String[] tabTitles = {"Regular", "Bold", "Italic"};
 
     public static final String FONT_NAME = "fontName";
@@ -275,10 +273,6 @@ public class FontActivity extends BaseActivity implements TabLayout.OnTabSelecte
         if (fragmentsInitialized)
             for (PreviewFragment fragment : previewPages)
                 fragment.toggleCase();
-    }
-
-    private void delay(Runnable runnable, long delay) {
-        handler.postDelayed(runnable, delay);
     }
 
     @Override
