@@ -113,16 +113,19 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.Sea
 
     private void selectDrawerItem(MenuItem menuItem) {
         final int selectedId = menuItem.getItemId();
+        shouldShowSearch = (selectedId == R.id.fonts);
         switch (selectedId) {
             case R.id.fonts:
                 swapFragment(fontListFragment);
                 menuItem.setChecked(true);
                 setTitle("Fontster");
+                invalidateOptionsMenu();
                 break;
             case R.id.backup:
                 swapFragment(backupRestoreFragment);
                 menuItem.setChecked(true);
                 setTitle(menuItem.getTitle());
+                invalidateOptionsMenu();
                 break;
             case R.id.settings:
                 final Intent intent = new Intent(this, SettingsActivity.class);
@@ -130,8 +133,6 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.Sea
                 break;
         }
 
-        shouldShowSearch = selectedId == R.id.fonts;
-        invalidateOptionsMenu();
     }
 
     private void swapFragment(Fragment fragment) {
