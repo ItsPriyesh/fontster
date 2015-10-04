@@ -116,7 +116,7 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.Sea
             case R.id.fonts:
                 swapFragment(fontListFragment);
                 menuItem.setChecked(true);
-                setTitle(menuItem.getTitle());
+                setTitle("Fontster");
                 drawerLayout.closeDrawers();
                 break;
             case R.id.backup:

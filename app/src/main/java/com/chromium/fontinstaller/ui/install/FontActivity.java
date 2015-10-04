@@ -94,7 +94,6 @@ public class FontActivity extends BaseActivity implements TabLayout.OnTabSelecte
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_font);
         disableToolbarElevation();
         showToolbarBackButton();
