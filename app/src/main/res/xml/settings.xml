@@ -16,30 +16,38 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory android:title="General">
         <CheckBoxPreference
-            android:title="TrueFont Display"
+            android:key="trueFont"
             android:summary="Show font names in their corresponding typeface"
-            android:key="trueFont" />
+            android:title="TrueFont Display" />
         <Preference
-            android:title="Clear cache"
+            android:key="clearCache"
             android:summary="Wipe stored fonts"
-            android:key="clearCache" />
+            android:title="Clear cache" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="developer_options"
+        android:title="Developer">
+        <Preference
+            android:key="install_from_disk"
+            android:summary="Select and load a local font pack"
+            android:title="Install custom font" />
     </PreferenceCategory>
     <PreferenceCategory android:title="About">
         <Preference
-            android:title="Source"
+            android:key="viewSource"
             android:summary="View this app's source code"
-            android:key="viewSource" />
+            android:title="Source" />
         <Preference
-            android:title="Open source licenses"
+            android:key="licenses"
             android:summary="Details for libraries used in this app"
-            android:key="licenses" />
+            android:title="Open source licenses" />
         <Preference
-            android:title="Donate"
             android:enabled="false"
+            android:key="donate"
             android:summary="This will remove advertisements"
-            android:key="donate" />
+            android:title="Donate" />
         <Preference
-            android:title="App version"
-            android:key="appVersion" />
+            android:key="appVersion"
+            android:title="App version" />
     </PreferenceCategory>
 </PreferenceScreen>

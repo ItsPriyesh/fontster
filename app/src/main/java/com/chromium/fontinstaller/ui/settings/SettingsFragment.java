@@ -23,8 +23,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceScreen;
 import android.support.v4.app.ActivityCompat;
+import android.view.View;
 import android.widget.Toast;
 
 import com.chromium.fontinstaller.BuildConfig;
@@ -78,6 +81,10 @@ public class SettingsFragment extends PreferenceFragment implements
         final boolean developerModeEnabled = preferences.getBoolean(Keys.ENABLE_DEVELOPER_MODE);
         devModeCountdown = developerModeEnabled ? -1 : TAPS_TO_ENABLE_DEVELOPER_MODE;
 
+        final PreferenceScreen preferenceScreen = getPreferenceScreen();
+        final PreferenceCategory developerOptions = (PreferenceCategory) findPreference("developer_options");
+        if (!developerModeEnabled) preferenceScreen.removePreference(developerOptions);
+
         final CheckBoxPreference trueFont = (CheckBoxPreference) findPreference("trueFont");
         trueFont.setOnPreferenceChangeListener((pref, newValue) -> handleTrueFont(newValue));
 
@@ -118,6 +125,7 @@ public class SettingsFragment extends PreferenceFragment implements
     }
 
     private void enableDeveloperMode() {
+        if (tapsLeftToast != null) tapsLeftToast.cancel();
         toast("Developer mode enabled!", getActivity());
         preferences.setBoolean(Keys.ENABLE_DEVELOPER_MODE, true);
     }
@@ -158,9 +166,9 @@ public class SettingsFragment extends PreferenceFragment implements
     private boolean makeDonation(String sku) {
         billingHelper.launchPurchaseFlow(getActivity(), sku, 1, purchaseListener, "");
         purchaseListener = (result, purchase) -> {
-            if (result.isFailure()) snackbar("Failed to make donation", getView());
-            else if (purchase.getSku().equals(sku))
-                snackbar("Donation complete, thanks :)", getView());
+            final View v = getView();
+            if (result.isFailure()) snackbar("Failed to make donation", v);
+            else if (purchase.getSku().equals(sku)) snackbar("Donation complete, thanks :)", v);
         };
 
         return true;
