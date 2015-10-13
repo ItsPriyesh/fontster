@@ -101,8 +101,8 @@ public class BackupRestoreFragment extends Fragment {
     private void setupBackupContainer() {
         slideUpAndAdd(backupContainer);
 
-        backupName.setText(preferences.getString(Keys.KEY_BACKUP_NAME));
-        backupDate.setText(preferences.getString(Keys.KEY_BACKUP_DATE));
+        backupName.setText(preferences.getString(Keys.BACKUP_NAME));
+        backupDate.setText(preferences.getString(Keys.BACKUP_DATE));
     }
 
     @SuppressWarnings("unused")
@@ -145,8 +145,8 @@ public class BackupRestoreFragment extends Fragment {
     }
 
     public void onBackupComplete(String name) {
-        preferences.setString(Keys.KEY_BACKUP_NAME, name);
-        preferences.setString(Keys.KEY_BACKUP_DATE, BackupManager.DATE_FORMAT.format(new Date()));
+        preferences.setString(Keys.BACKUP_NAME, name);
+        preferences.setString(Keys.BACKUP_DATE, BackupManager.DATE_FORMAT.format(new Date()));
         checkForBackup();
     }
 

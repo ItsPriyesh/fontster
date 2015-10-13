@@ -87,7 +87,7 @@ public class FontListFragment extends Fragment {
         RecyclerView.LayoutManager listManager = new LinearLayoutManager(activity);
         recyclerView.setLayoutManager(listManager);
 
-        if (preferences.getBoolean(Keys.KEY_ENABLE_TRUEFONT)) downloadFontList();
+        if (preferences.getBoolean(Keys.ENABLE_TRUEFONT)) downloadFontList();
         else setupRecyclerViewAdapter(false);
 
         return view;
@@ -107,7 +107,7 @@ public class FontListFragment extends Fragment {
     }
 
     private void downloadFontList() {
-        final boolean previewsCached = preferences.getBoolean(Keys.KEY_TRUEFONTS_CACHED);
+        final boolean previewsCached = preferences.getBoolean(Keys.TRUEFONTS_CACHED);
 
         if (!previewsCached) {
             progressDialog = new ProgressDialog(activity);
@@ -128,13 +128,15 @@ public class FontListFragment extends Fragment {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        font -> progressDialog.incrementProgressBy(1),
+                        font -> {
+                            if (progressDialog != null) progressDialog.incrementProgressBy(1);
+                        },
                         this::handleDownloadFailure,
                         this::handleDownloadSuccess);
     }
 
     private void handleDownloadSuccess() {
-        preferences.setBoolean(Keys.KEY_TRUEFONTS_CACHED, true);
+        preferences.setBoolean(Keys.TRUEFONTS_CACHED, true);
 
         dismissProgressDialog();
         ViewUtils.animSlideUp(downloadProgress, getActivity());

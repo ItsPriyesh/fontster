@@ -40,7 +40,6 @@
             android:key="donate" />
         <Preference
             android:title="App version"
-            android:enabled="false"
             android:key="appVersion" />
     </PreferenceCategory>
 </PreferenceScreen>

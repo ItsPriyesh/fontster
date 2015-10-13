@@ -24,10 +24,11 @@ public class PreferencesManager {
     private static final String PREFS_NAME = "com.chromium.fontinstaller.PREFS";
 
     public static final class Keys {
-        public static final String KEY_ENABLE_TRUEFONT = "1";
-        public static final String KEY_BACKUP_NAME = "2";
-        public static final String KEY_BACKUP_DATE = "3";
-        public static final String KEY_TRUEFONTS_CACHED = "4";
+        public static final String ENABLE_TRUEFONT = "1";
+        public static final String BACKUP_NAME = "2";
+        public static final String BACKUP_DATE = "3";
+        public static final String TRUEFONTS_CACHED = "4";
+        public static final String ENABLE_DEVELOPER_MODE = "5";
     }
 
     private static SharedPreferences sharedPreferences = null;
@@ -59,5 +60,4 @@ public class PreferencesManager {
     public boolean getBoolean(String key) {
         return sharedPreferences.getBoolean(key, false);
     }
-
 }

@@ -25,6 +25,7 @@ import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.v4.app.ActivityCompat;
+import android.widget.Toast;
 
 import com.chromium.fontinstaller.BuildConfig;
 import com.chromium.fontinstaller.R;
@@ -43,11 +44,18 @@ import de.psdev.licensesdialog.LicensesDialog;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-import static com.chromium.fontinstaller.util.ViewUtils.snackbar;
 import static com.chromium.fontinstaller.util.PreferencesManager.Keys;
+import static com.chromium.fontinstaller.util.ViewUtils.snackbar;
+import static com.chromium.fontinstaller.util.ViewUtils.toast;
 
 public class SettingsFragment extends PreferenceFragment implements
         DonateDialogFragment.DonationClickListener {
+
+    public static final String DONATE_SKU_SMALL = "com.chromium.fontster.donate";
+    public static final String DONATE_SKU_MED = "com.chromium.fontster.donate_med";
+    public static final String DONATE_SKU_LARGE = "com.chromium.fontster.donate_large";
+
+    private static final int TAPS_TO_ENABLE_DEVELOPER_MODE = 7;
 
     private IabHelper billingHelper;
     private PreferencesManager preferences;
@@ -55,9 +63,8 @@ public class SettingsFragment extends PreferenceFragment implements
     private Preference donate;
     private ProgressDialog progressDialog;
 
-    public static final String DONATE_SKU_SMALL = "com.chromium.fontster.donate";
-    public static final String DONATE_SKU_MED = "com.chromium.fontster.donate_med";
-    public static final String DONATE_SKU_LARGE = "com.chromium.fontster.donate_large";
+    private Toast tapsLeftToast;
+    private int devModeCountdown;
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
@@ -68,20 +75,33 @@ public class SettingsFragment extends PreferenceFragment implements
 
         billingHelper = new IabHelper(getActivity(), SecretStuff.LICENSE_KEY);
 
-        CheckBoxPreference trueFont = (CheckBoxPreference) findPreference("trueFont");
+        final boolean developerModeEnabled = preferences.getBoolean(Keys.ENABLE_DEVELOPER_MODE);
+        devModeCountdown = developerModeEnabled ? -1 : TAPS_TO_ENABLE_DEVELOPER_MODE;
+
+        final CheckBoxPreference trueFont = (CheckBoxPreference) findPreference("trueFont");
         trueFont.setOnPreferenceChangeListener((pref, newValue) -> handleTrueFont(newValue));
 
-        Preference clearCache = findPreference("clearCache");
+        final Preference clearCache = findPreference("clearCache");
         clearCache.setOnPreferenceClickListener(pref -> clearCache());
 
-        Preference source = findPreference("viewSource");
+        final Preference source = findPreference("viewSource");
         source.setOnPreferenceClickListener(pref -> viewSource());
 
-        Preference licenses = findPreference("licenses");
+        final Preference licenses = findPreference("licenses");
         licenses.setOnPreferenceClickListener(pref -> openLicensesDialog());
 
-        Preference appVersion = findPreference("appVersion");
+        final Preference appVersion = findPreference("appVersion");
         appVersion.setSummary(BuildConfig.VERSION_NAME + " - " + BuildConfig.BUILD_TYPE);
+        appVersion.setOnPreferenceClickListener(pref -> {
+            if (devModeCountdown < 0) {
+                toast("Developer mode already enabled", getActivity());
+            } else {
+                devModeCountdown--;
+                if (devModeCountdown == 0) enableDeveloperMode();
+                else if (devModeCountdown > 0 && devModeCountdown < 5) showTapsLeftToast();
+            }
+            return true;
+        });
 
         donate = findPreference("donate");
 
@@ -97,6 +117,20 @@ public class SettingsFragment extends PreferenceFragment implements
 
     }
 
+    private void enableDeveloperMode() {
+        toast("Developer mode enabled!", getActivity());
+        preferences.setBoolean(Keys.ENABLE_DEVELOPER_MODE, true);
+    }
+
+    private void showTapsLeftToast() {
+        final String s = (devModeCountdown == 1 ? "1 tap" : devModeCountdown + " taps")
+                + " away from enabling developer mode";
+
+        if (tapsLeftToast != null) tapsLeftToast.cancel();
+        tapsLeftToast = Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT);
+        tapsLeftToast.show();
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -109,7 +143,7 @@ public class SettingsFragment extends PreferenceFragment implements
     }
 
     private boolean showDonationDialog() {
-        DonateDialogFragment donateDialog = new DonateDialogFragment();
+        final DonateDialogFragment donateDialog = new DonateDialogFragment();
         donateDialog.show(((SettingsActivity) getActivity()).getSupportFragmentManager(),
                 "DonateDialogFragment");
         donateDialog.setDonationClickListener(this);
@@ -125,14 +159,15 @@ public class SettingsFragment extends PreferenceFragment implements
         billingHelper.launchPurchaseFlow(getActivity(), sku, 1, purchaseListener, "");
         purchaseListener = (result, purchase) -> {
             if (result.isFailure()) snackbar("Failed to make donation", getView());
-            else if (purchase.getSku().equals(sku)) snackbar("Donation complete, thanks :)", getView());
+            else if (purchase.getSku().equals(sku))
+                snackbar("Donation complete, thanks :)", getView());
         };
 
         return true;
     }
 
     private boolean handleTrueFont(Object newValue) {
-        preferences.setBoolean(Keys.KEY_ENABLE_TRUEFONT, (boolean) newValue);
+        preferences.setBoolean(Keys.ENABLE_TRUEFONT, (boolean) newValue);
         showRestartDialog();
         return true;
     }
@@ -142,8 +177,8 @@ public class SettingsFragment extends PreferenceFragment implements
         progressDialog.setMessage("Clearing cache...");
         progressDialog.show();
 
-        List<String> commands = new ArrayList<>();
-        File cache = new File(getActivity().getExternalCacheDir() + File.separator);
+        final List<String> commands = new ArrayList<>();
+        final File cache = new File(getActivity().getExternalCacheDir() + File.separator);
 
         for (File f : cache.listFiles())
             if (!f.getName().equals("Backup"))
@@ -159,13 +194,13 @@ public class SettingsFragment extends PreferenceFragment implements
     }
 
     public void onCacheCleared() {
-        preferences.setBoolean(Keys.KEY_TRUEFONTS_CACHED, false);
+        preferences.setBoolean(Keys.TRUEFONTS_CACHED, false);
         progressDialog.dismiss();
         snackbar("Cache has been cleared", getView());
     }
 
     private boolean viewSource() {
-        Intent intent = new Intent();
+        final Intent intent = new Intent();
         intent.setAction(Intent.ACTION_VIEW);
         intent.addCategory(Intent.CATEGORY_BROWSABLE);
         intent.setData(Uri.parse("https://github.com/ItsPriyesh/FontInstaller"));
