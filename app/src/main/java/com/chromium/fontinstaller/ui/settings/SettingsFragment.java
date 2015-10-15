@@ -83,7 +83,13 @@ public class SettingsFragment extends PreferenceFragment implements
 
         final PreferenceScreen preferenceScreen = getPreferenceScreen();
         final PreferenceCategory developerOptions = (PreferenceCategory) findPreference("developer_options");
-        if (!developerModeEnabled) preferenceScreen.removePreference(developerOptions);
+
+        if (developerModeEnabled) {
+            final Preference installCustomFont = findPreference("install_custom_font");
+            installCustomFont.setOnPreferenceClickListener(pref -> installCustomFont());
+        } else {
+            preferenceScreen.removePreference(developerOptions);
+        }
 
         final CheckBoxPreference trueFont = (CheckBoxPreference) findPreference("trueFont");
         trueFont.setOnPreferenceChangeListener((pref, newValue) -> handleTrueFont(newValue));
@@ -122,6 +128,13 @@ public class SettingsFragment extends PreferenceFragment implements
 
         donate.setOnPreferenceClickListener(pref -> showDonationDialog());
 
+    }
+
+    private boolean installCustomFont() {
+        new FontPackPickerDialog(getActivity(), fontPackage -> {
+
+        }).show();
+        return true;
     }
 
     private void enableDeveloperMode() {

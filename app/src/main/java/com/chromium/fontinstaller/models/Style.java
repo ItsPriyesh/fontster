@@ -16,6 +16,9 @@
 
 package com.chromium.fontinstaller.models;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public enum Style {
     BOLD,
     BOLD_ITALIC,
@@ -107,4 +110,7 @@ public enum Style {
         return this.toString();
     }
 
+    public static final Set<String> REMOTE_STYLE_NAMES = new HashSet<String>(){{
+        for (int i = 0; i < 11; i++) add(values()[i].getRemoteName());
+    }};
 }

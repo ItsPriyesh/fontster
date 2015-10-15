@@ -84,8 +84,9 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.google.android.gms/play-services-ads/8.1.0/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.google.android.gms/play-services-appindexing/8.1.0/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.google.android.gms/play-services-basement/8.1.0/jars" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.jakewharton.rxbinding/rxbinding/0.2.0/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/de.psdev.licensesdialog/licensesdialog/1.7.0/jars" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/eu.chainfire/libsuperuser/1.0.0.201504231659/jars" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/eu.chainfire/libsuperuser/1.0.0.201510071325/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/io.fabric.sdk.android/fabric/1.2.0/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/io.reactivex/rxandroid/1.0.1/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/incremental" />
@@ -107,6 +108,7 @@
     <orderEntry type="jdk" jdkName="Android API 23 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="butterknife-7.0.1" level="project" />
+    <orderEntry type="library" exported="" name="libsuperuser-1.0.0.201510071325" level="project" />
     <orderEntry type="library" exported="" name="licensesdialog-1.7.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-appindexing-8.1.0" level="project" />
     <orderEntry type="library" exported="" name="recyclerview-stickyheaders-0.5.2" level="project" />
@@ -119,11 +121,11 @@
     <orderEntry type="library" exported="" name="design-23.0.1" level="project" />
     <orderEntry type="library" exported="" name="crashlytics-2.2.2" level="project" />
     <orderEntry type="library" exported="" name="beta-1.1.2" level="project" />
-    <orderEntry type="library" exported="" name="libsuperuser-1.0.0.201504231659" level="project" />
     <orderEntry type="library" exported="" name="play-services-basement-8.1.0" level="project" />
     <orderEntry type="library" exported="" name="recyclerview-v7-23.0.1" level="project" />
     <orderEntry type="library" exported="" name="fabric-1.2.0" level="project" />
-    <orderEntry type="library" exported="" name="rxjava-1.0.13" level="project" />
+    <orderEntry type="library" exported="" name="rxjava-1.0.14" level="project" />
+    <orderEntry type="library" exported="" name="rxbinding-0.2.0" level="project" />
     <orderEntry type="library" exported="" name="support-v4-23.0.1" level="project" />
     <orderEntry type="library" exported="" name="okio-1.4.0" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-23.0.1" level="project" />

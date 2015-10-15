@@ -24,6 +24,7 @@
 
     <FrameLayout
         android:id="@+id/container"
+        android:background="@android:color/white"
         android:layout_below="@id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

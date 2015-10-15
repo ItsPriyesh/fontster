@@ -59,6 +59,7 @@ dependencies {
     compile 'eu.chainfire:libsuperuser:1.0.0.+'
     compile 'com.google.android.gms:play-services-ads:8.1.0'
     compile 'io.reactivex:rxandroid:1.0.1'
+    compile 'com.jakewharton.rxbinding:rxbinding:0.2.0'
 
     // Android Support
     compile 'com.android.support:design:23.0.1'

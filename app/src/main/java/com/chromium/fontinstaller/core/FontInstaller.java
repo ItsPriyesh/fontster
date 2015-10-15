@@ -35,6 +35,8 @@ import rx.Observable;
 
 public class FontInstaller {
 
+    private static final String TAG = FontInstaller.class.toString();
+
     private static final String MOUNT_SYSTEM = "mount -o rw,remount /system";
     private static final String FONT_INSTALL_DIR = "/system/fonts";
 
@@ -46,7 +48,7 @@ public class FontInstaller {
     }
 
     public static Observable<Void> install(final FontPackage fontPackage, final Activity context) {
-        List<String> copyCommands = new ArrayList<>();
+        final List<String> copyCommands = new ArrayList<>();
         return Observable.create(subscriber -> {
             for (Font font : fontPackage.getFontList()) {
                 final String file = CACHE_DIR + fontPackage.getNameFormatted() + File.separator + font.getName();
@@ -55,7 +57,7 @@ public class FontInstaller {
                     return;
                 }
                 final String installCommand = "cp " + file + " " + FONT_INSTALL_DIR;
-                Log.d("FontInstaller", "Adding command: " + installCommand);
+                Log.d(TAG, "Adding command: " + installCommand);
                 copyCommands.add(installCommand);
             }
             copyCommands.add(generateLockscreenFixCommand(context));
