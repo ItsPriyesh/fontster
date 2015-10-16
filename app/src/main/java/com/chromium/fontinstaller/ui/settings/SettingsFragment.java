@@ -34,7 +34,10 @@ import com.chromium.fontinstaller.BuildConfig;
 import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.SecretStuff;
 import com.chromium.fontinstaller.core.CommandRunner;
+import com.chromium.fontinstaller.core.FontInstaller;
+import com.chromium.fontinstaller.models.FontPackage;
 import com.chromium.fontinstaller.ui.main.MainActivity;
+import com.chromium.fontinstaller.util.AlertUtils;
 import com.chromium.fontinstaller.util.Licenses;
 import com.chromium.fontinstaller.util.PreferencesManager;
 import com.chromium.fontinstaller.util.billing.IabHelper;
@@ -46,6 +49,7 @@ import java.util.List;
 import de.psdev.licensesdialog.LicensesDialog;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+import timber.log.Timber;
 
 import static com.chromium.fontinstaller.util.PreferencesManager.Keys;
 import static com.chromium.fontinstaller.util.ViewUtils.snackbar;
@@ -86,7 +90,7 @@ public class SettingsFragment extends PreferenceFragment implements
 
         if (developerModeEnabled) {
             final Preference installCustomFont = findPreference("install_custom_font");
-            installCustomFont.setOnPreferenceClickListener(pref -> installCustomFont());
+            installCustomFont.setOnPreferenceClickListener(pref -> confirmCustomFontInstall());
         } else {
             preferenceScreen.removePreference(developerOptions);
         }
@@ -130,11 +134,33 @@ public class SettingsFragment extends PreferenceFragment implements
 
     }
 
-    private boolean installCustomFont() {
-        new FontPackPickerDialog(getActivity(), fontPackage -> {
-
-        }).show();
+    private boolean confirmCustomFontInstall() {
+        new AlertDialog.Builder(getActivity())
+                .setTitle("Are you sure?")
+                .setMessage("Installing an unverified font pack can potentially brick your phone. Only proceed if you are confident in what you are doing.")
+                .setNegativeButton("No Thanks", (dialog, which) -> dialog.dismiss())
+                .setPositiveButton("Yes", (dialog, which) ->
+                        new FontPackPickerDialog(getActivity(), this::installCustomFont).show())
+                .create().show();
         return true;
+    }
+
+    private void installCustomFont(FontPackage fontPackage) {
+        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Installing...");
+        progressDialog.show();
+
+        FontInstaller.install(fontPackage, getActivity())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(done -> {
+                    progressDialog.dismiss();
+                    AlertUtils.showRebootAlert(getActivity());
+                }, error -> {
+                    Timber.i(error.getMessage());
+                    progressDialog.dismiss();
+                    snackbar("Custom font installation failed", getView());
+                });
     }
 
     private void enableDeveloperMode() {

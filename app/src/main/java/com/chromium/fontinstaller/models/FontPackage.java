@@ -80,15 +80,15 @@ public class FontPackage {
     }
 
     private void initForLocalFontPack(File folder) {
-        final String[] fileNames = folder.list();
         final File[] files = folder.listFiles();
-
         final Map<String, File> namesToFiles = new HashMap<>();
-        for (int i = 0; i < fileNames.length; i++) {
-            namesToFiles.put(fileNames[i], files[i]);
+        for (File file : files) {
+            if (Style.REMOTE_STYLE_NAMES.contains(file.getName())) {
+                namesToFiles.put(file.getName(), file);
+            }
         }
 
-        for (Style style : Style.values()) {
+        for (Style style : Style.REMOTE_STYLES) {
             final Font font = new Font(style, null, namesToFiles.get(style.getLocalName()));
             fontsToStyles.put(font, style);
         }

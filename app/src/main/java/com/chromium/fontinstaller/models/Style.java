@@ -110,7 +110,11 @@ public enum Style {
         return this.toString();
     }
 
+    public static final Set<Style> REMOTE_STYLES = new HashSet<Style>() {{
+        for (int i = 0; i < 12; i++) add(values()[i]);
+    }};
+
     public static final Set<String> REMOTE_STYLE_NAMES = new HashSet<String>(){{
-        for (int i = 0; i < 11; i++) add(values()[i].getRemoteName());
+        for (int i = 0; i < 12; i++) add(values()[i].getRemoteName());
     }};
 }
