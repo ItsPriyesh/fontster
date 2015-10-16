@@ -40,6 +40,7 @@ import com.chromium.fontinstaller.models.FontPackage;
 import com.chromium.fontinstaller.models.Style;
 import com.chromium.fontinstaller.ui.common.BaseActivity;
 import com.chromium.fontinstaller.util.AlertUtils;
+import com.crashlytics.android.Crashlytics;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -130,6 +131,7 @@ public class FontActivity extends BaseActivity implements TabLayout.OnTabSelecte
     }
 
     private void handleFailedDownload(Throwable error) {
+        Crashlytics.logException(error);
         Timber.e("Download failed: " + error.getMessage());
         animSlideUp(downloadProgress, this);
 
@@ -142,6 +144,7 @@ public class FontActivity extends BaseActivity implements TabLayout.OnTabSelecte
     }
 
     private void handleFailedInstall(Throwable error) {
+        Crashlytics.logException(error);
         delay(() -> {
             Timber.e("Install failed: " + error.getMessage());
             snackbar("Install failed", findViewById(R.id.bottom_bar));
