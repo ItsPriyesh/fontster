@@ -65,7 +65,7 @@ public class TryFontFragment extends DialogFragment {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         title.setText(fontPackage.getName());
-        input.setTypeface(fontPackage.getTypeface(style, getActivity()));
+        input.setTypeface(fontPackage.getTypeface(style));
 
         return view;
     }

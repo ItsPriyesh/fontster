@@ -135,8 +135,7 @@ public class BackupRestoreFragment extends Fragment {
         BackupDialogFragment backupDialog = new BackupDialogFragment();
         backupDialog.show(getActivity().getSupportFragmentManager(), "BackupDialogFragment");
         backupDialog.setOnBackupClickedListener(name ->
-                        backupManager
-                                .backup()
+                        backupManager.backup()
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .doOnCompleted(() -> onBackupComplete(name))

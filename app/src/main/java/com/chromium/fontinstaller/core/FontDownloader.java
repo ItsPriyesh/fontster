@@ -16,7 +16,6 @@
 
 package com.chromium.fontinstaller.core;
 
-import android.content.Context;
 import android.util.Pair;
 
 import com.chromium.fontinstaller.models.Font;
@@ -46,14 +45,14 @@ public class FontDownloader {
         public DownloadException(Exception root) { super(root); }
     }
 
-    public static Observable<File> downloadAllFonts(FontPackage fontPackage, Context context) {
-        createCacheDirectory(fontPackage, context);
-        return downloadFonts(fontPackage, context, allFontFinder);
+    public static Observable<File> downloadAllFonts(FontPackage fontPackage) {
+        createCacheDirectory(fontPackage);
+        return downloadFonts(fontPackage, allFontFinder);
     }
 
-    public static Observable<File> downloadStyledFonts(FontPackage fontPackage, Context context, Style... styles) {
-        createCacheDirectory(fontPackage, context);
-        return downloadFonts(fontPackage, context, styledFontFinder(Arrays.asList(styles)));
+    public static Observable<File> downloadStyledFonts(FontPackage fontPackage, Style... styles) {
+        createCacheDirectory(fontPackage);
+        return downloadFonts(fontPackage, styledFontFinder(Arrays.asList(styles)));
     }
 
     private static Observable<File> downloadFile(final String url, final String path) {
@@ -83,12 +82,10 @@ public class FontDownloader {
         return Observable.from(files).flatMap(p -> downloadFile(p.first, p.second));
     }
 
-    private static Observable<File> downloadFonts(FontPackage fontPackage, Context context, FontFinder finder) {
+    private static Observable<File> downloadFonts(FontPackage fontPackage, FontFinder finder) {
         ArrayList<Pair<String, String>> urlsAndPaths = new ArrayList<>();
         for (Font font : finder.findFonts(fontPackage)) {
-            String path = context.getExternalCacheDir() + File.separator +
-                    fontPackage.getNameFormatted() + File.separator + font.getName();
-            urlsAndPaths.add(new Pair<>(font.getUrl(), path));
+            urlsAndPaths.add(new Pair<>(font.getUrl(), font.getFile().getAbsolutePath()));
         }
         return downloadFiles(urlsAndPaths);
     }
@@ -112,9 +109,8 @@ public class FontDownloader {
         };
     }
 
-    private static void createCacheDirectory(FontPackage fontPackage, Context context) {
-        File dir = new File(context.getExternalCacheDir() + File.separator + fontPackage.getNameFormatted());
-        dir.mkdirs();
+    private static void createCacheDirectory(FontPackage fontPackage) {
+        new File(fontPackage.getFontList().get(0).getFile().getAbsolutePath()).mkdirs();
     }
 
 }

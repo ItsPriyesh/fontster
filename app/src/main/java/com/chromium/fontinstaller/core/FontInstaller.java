@@ -41,7 +41,7 @@ public class FontInstaller {
     private static final String FONT_INSTALL_DIR = "/system/fonts";
 
     @SuppressLint("SdCardPath")
-    private static final String CACHE_DIR = "/sdcard/Android/data/com.chromium.fontinstaller/cache/";
+    public static final String CACHE_DIR = "/sdcard/Android/data/com.chromium.fontinstaller/cache/";
 
     public static class InstallException extends Exception {
         public InstallException(Exception root) { super(root); }
@@ -51,8 +51,8 @@ public class FontInstaller {
         final List<String> copyCommands = new ArrayList<>();
         return Observable.create(subscriber -> {
             for (Font font : fontPackage.getFontList()) {
-                final String file = CACHE_DIR + fontPackage.getNameFormatted() + File.separator + font.getName();
-                if (!new File(file).exists()) {
+                final File file = font.getFile();
+                if (!file.exists()) {
                     subscriber.onError(new InstallException(new IOException("File not found!")));
                     return;
                 }

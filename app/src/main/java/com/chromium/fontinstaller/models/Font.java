@@ -16,14 +16,18 @@
 
 package com.chromium.fontinstaller.models;
 
+import java.io.File;
+
 public class Font {
 
     private Style style;
     private String url;
+    private File file;
 
-    public Font(Style style, String url) {
+    public Font(Style style, String url, File file) {
         this.style = style;
         this.url = url;
+        this.file = file;
     }
 
     public String getName() {
@@ -34,4 +38,7 @@ public class Font {
         return url;
     }
 
+    public File getFile() {
+        return file;
+    }
 }

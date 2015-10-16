@@ -16,8 +16,9 @@
 
 package com.chromium.fontinstaller.models;
 
-import android.content.Context;
 import android.graphics.Typeface;
+
+import com.chromium.fontinstaller.core.FontInstaller;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -26,22 +27,21 @@ import java.util.Map;
 
 public class FontPackage {
 
-    private String name;
-    private String nameFormatted;
+    private final String name;
     private HashMap<Font, Style> fontStyleHashMap = new HashMap<>();
 
     private static final String BASE_URL = "https://raw.githubusercontent.com/ItsPriyesh/FontsterFontsRepo/master/";
 
     public FontPackage(String name) {
         this.name = name;
-        this.nameFormatted = name.replace(" ", "") + "FontPack";
-
         generateFonts();
     }
 
     private void generateFonts() {
         for (Style style : Style.values()) {
-            Font font = new Font(style, BASE_URL + nameFormatted + "/" + style.getRemoteName());
+            final String url = BASE_URL + name.replace(" ", "") + "FontPack/" + style.getRemoteName();
+            final File file = new File(FontInstaller.CACHE_DIR + name.replace(" ", "") + "FontPack/" + style.getLocalName());
+            final Font font = new Font(style, url, file);
             fontStyleHashMap.put(font, style);
         }
     }
@@ -56,18 +56,13 @@ public class FontPackage {
         return name;
     }
 
-    public String getNameFormatted() {
-        return nameFormatted;
-    }
-
-    public Typeface getTypeface(Style style, Context context) {
-        String path = context.getExternalCacheDir() + File.separator +
-                nameFormatted + File.separator + style.getLocalName();
-
-        if (new File(path).exists()) {
-            try { return Typeface.createFromFile(path); }
+    public Typeface getTypeface(Style style) {
+        final Font font = getFont(style);
+        if (!font.getFile().exists()) return Typeface.DEFAULT;
+        else {
+            try { return Typeface.createFromFile(font.getFile()); }
             catch (Exception e) { return Typeface.DEFAULT; }
-        } else return Typeface.DEFAULT;
+        }
     }
 
     public Font getFont(Style style) {

@@ -120,7 +120,7 @@ public class FontActivity extends BaseActivity implements TabLayout.OnTabSelecte
         if (isVisible(errorContainer)) hide(errorContainer);
         show(downloadProgress);
 
-        FontDownloader.downloadStyledFonts(fontPackage, this, Style.REGULAR, Style.BOLD, Style.ITALIC)
+        FontDownloader.downloadStyledFonts(fontPackage, Style.REGULAR, Style.BOLD, Style.ITALIC)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -178,7 +178,7 @@ public class FontActivity extends BaseActivity implements TabLayout.OnTabSelecte
     private void startInstall() {
         progressDialog = ProgressDialog.show(this, null, "Installing fonts...", true, false);
 
-        FontDownloader.downloadAllFonts(fontPackage, this)
+        FontDownloader.downloadAllFonts(fontPackage)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .last()

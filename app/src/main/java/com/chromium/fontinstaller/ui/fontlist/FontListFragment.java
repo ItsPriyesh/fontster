@@ -124,7 +124,7 @@ public class FontListFragment extends Fragment {
         for (String fontName : fontList) fontPackages.add(new FontPackage(fontName));
 
         Observable.from(fontPackages)
-                .flatMap(fp -> FontDownloader.downloadStyledFonts(fp, activity, Style.REGULAR))
+                .flatMap(fp -> FontDownloader.downloadStyledFonts(fp, Style.REGULAR))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
