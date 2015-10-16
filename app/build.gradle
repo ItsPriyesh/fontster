@@ -47,15 +47,13 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
-    // Development
-    compile 'com.jakewharton:butterknife:7.0.1'
-    compile 'com.jakewharton.timber:timber:2.5.1'
-    compile('com.crashlytics.sdk.android:crashlytics:2.2.2@aar') { transitive = true; }
-
     // Networking
     compile 'com.squareup.okhttp:okhttp:2.4.0'
 
     // Other
+    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.jakewharton.timber:timber:2.5.1'
+    compile('com.crashlytics.sdk.android:crashlytics:2.2.2@aar') { transitive = true; }
     compile 'eu.chainfire:libsuperuser:1.0.0.+'
     compile 'com.google.android.gms:play-services-ads:8.1.0'
     compile 'io.reactivex:rxandroid:1.0.1'
@@ -70,5 +68,5 @@ dependencies {
     // UI
     compile 'com.eowise:recyclerview-stickyheaders:0.5.2@aar'
     compile 'de.psdev.licensesdialog:licensesdialog:1.7.0'
-    compile project (':MaterialSearchView:library')
+    compile project(':MaterialSearchView:library')
 }

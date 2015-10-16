@@ -26,12 +26,8 @@ import android.widget.EditText;
 
 import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.models.FontPackage;
-import com.chromium.fontinstaller.models.Style;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.ButterKnife;
@@ -67,7 +63,7 @@ public class FontPackPickerDialog extends AlertDialog {
         final Subscription textChanges = textChanges(inputView)
                 .debounce(400, TimeUnit.MILLISECONDS)
                 .map(CharSequence::toString)
-                .map(FontPackPickerDialog::validFontPackFolder)
+                .map(FontPackage::validFontPackFolder)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(pathIsValid -> {
                     if (pathIsValid) enableOkButton();
@@ -77,7 +73,7 @@ public class FontPackPickerDialog extends AlertDialog {
         setButton(BUTTON_POSITIVE, "OK", (dialog, which) -> {
             if (!mPathIsValid) return;
             textChanges.unsubscribe();
-            mListener.onFontPackEntered(getSpecifiedFontPack(inputView));
+            mListener.onFontPackEntered(fontPackageFromEditText(inputView));
         });
 
         setButton(BUTTON_NEGATIVE, "Cancel", (dialog, which) -> {
@@ -91,6 +87,10 @@ public class FontPackPickerDialog extends AlertDialog {
         mPositiveButton.setEnabled(false);
     }
 
+    private static FontPackage fontPackageFromEditText(EditText editText) {
+        return FontPackage.fromFolder(new File(editText.getText().toString()));
+    }
+
     private void enableOkButton() {
         mPathIsValid = true;
         mPositiveButton.setEnabled(true);
@@ -101,18 +101,6 @@ public class FontPackPickerDialog extends AlertDialog {
         mPathIsValid = false;
         mPositiveButton.setEnabled(false);
         mInputLayout.setError("Invalid font package folder");
-    }
-
-    private static FontPackage getSpecifiedFontPack(EditText editText) {
-        final File folder = new File(editText.getText().toString());
-        return null;
-    }
-
-    private static boolean validFontPackFolder(String s) {
-        final File folder = new File(s);
-        if (!folder.exists() || !folder.isDirectory()) return false;
-        final Set<String> fileNameSet = new HashSet<>(Arrays.asList(folder.list()));
-        return fileNameSet.containsAll(Style.REMOTE_STYLE_NAMES);
     }
 
 }
