@@ -37,9 +37,14 @@ import okio.Okio;
 import rx.Observable;
 import timber.log.Timber;
 
-public class FontDownloader {
+public final class FontDownloader {
 
     private static final OkHttpClient CLIENT = new OkHttpClient();
+    private static final FontFinder ALL_FONT_FINDER = FontPackage::getFontList;
+
+    private interface FontFinder {
+        List<Font> findFonts(FontPackage fontPackage);
+    }
 
     public static class DownloadException extends Exception {
         public DownloadException(Exception root) { super(root); }
@@ -47,7 +52,7 @@ public class FontDownloader {
 
     public static Observable<File> downloadAllFonts(FontPackage fontPackage) {
         createCacheDirectory(fontPackage);
-        return downloadFonts(fontPackage, allFontFinder);
+        return downloadFonts(fontPackage, ALL_FONT_FINDER);
     }
 
     public static Observable<File> downloadStyledFonts(FontPackage fontPackage, Style... styles) {
@@ -90,12 +95,6 @@ public class FontDownloader {
         return downloadFiles(urlsAndPaths);
     }
 
-    private interface FontFinder {
-        List<Font> findFonts(FontPackage fontPackage);
-    }
-
-    private static FontFinder allFontFinder = FontPackage::getFontList;
-
     private static FontFinder styledFontFinder(List<Style> acceptedStyles) {
         return fontPackage -> {
             Map<Font, Style> fontStyleMap = fontPackage.getFontStyleMap();
@@ -110,7 +109,7 @@ public class FontDownloader {
     }
 
     private static void createCacheDirectory(FontPackage fontPackage) {
-        new File(fontPackage.getFontList().get(0).getFile().getAbsolutePath()).mkdirs();
+        new File(fontPackage.getFontList().get(0).getFile().getParentFile().getAbsolutePath()).mkdirs();
     }
 
 }
