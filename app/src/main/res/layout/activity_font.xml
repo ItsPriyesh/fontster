@@ -82,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-light"
                 android:gravity="center"
-                android:text="Fontster was unable to download this font"
+                android:text="@string/font_activity_download_failed"
                 android:textSize="12dp" />
 
             <Button
@@ -90,7 +90,7 @@
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Retry"
+                android:text="@string/retry"
                 android:textColor="@color/primary" />
         </LinearLayout>
     </RelativeLayout>

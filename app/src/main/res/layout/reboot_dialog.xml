@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/black_100_opacity"
-            android:text="Installation complete"
+            android:text="@string/reboot_dialog_title"
             android:textSize="20dp" />
 
         <Space
@@ -42,7 +42,7 @@
 
         <TextView
             android:id="@+id/content"
-            android:text="Please reboot your device for the changes to take effect."
+            android:text="@string/reboot_dialog_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="14dp" />
@@ -65,8 +65,8 @@
             android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="36dp"
-            android:text="Reboot"
-            style="@android:style/Widget.Material.Light.Button.Borderless.Colored" />
+            android:text="@string/reboot_dialog_button_text"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored" />
 
     </RelativeLayout>
 </LinearLayout>

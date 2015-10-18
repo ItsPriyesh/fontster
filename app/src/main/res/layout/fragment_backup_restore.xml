@@ -40,7 +40,7 @@
             android:layout_marginTop="4dp"
             android:fontFamily="sans-serif-light"
             android:gravity="center"
-            android:text="You do not currently have a backup"
+            android:text="@string/backup_restore_no_backups"
             android:textSize="12dp" />
     </LinearLayout>
 

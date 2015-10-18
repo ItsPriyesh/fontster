@@ -18,18 +18,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.chromium.fontinstaller.ui.install.FontActivity">
+
     <item
         android:id="@+id/toggle_case"
-        android:title="Toggle case"
-        android:orderInCategory="1"
         android:icon="@drawable/ic_toggle_case_white"
+        android:orderInCategory="1"
+        android:title="@string/font_menu_toggle_case"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/try_font"
-        android:title="Try"
-        android:orderInCategory="2"
         android:icon="@drawable/ic_edit_white"
+        android:orderInCategory="2"
+        android:title="@string/font_menu_try"
         app:showAsAction="always" />
-
 </menu>

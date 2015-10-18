@@ -15,26 +15,26 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="24dp"
-    android:paddingBottom="8dp">
+    android:orientation="vertical"
+    android:paddingBottom="8dp"
+    android:paddingTop="24dp">
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingLeft="24dp"
-        android:paddingRight="24dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:paddingRight="24dp">
 
         <TextView
             android:id="@+id/title"
-            android:textStyle="bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/black_100_opacity"
-            android:textSize="20dp" />
+            android:textSize="20dp"
+            android:textStyle="bold" />
 
         <Space
             android:layout_width="match_parent"
@@ -42,9 +42,9 @@
 
         <EditText
             android:id="@+id/input"
-            android:hint="Try it out!"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="@string/try_font_dialog_hint"
             android:textSize="16dp" />
 
         <Space
@@ -60,12 +60,12 @@
 
         <Button
             android:id="@+id/done_button"
-            android:padding="0dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="wrap_content"
             android:layout_height="36dp"
-            android:text="Done"
-            style="@android:style/Widget.Material.Light.Button.Borderless.Colored" />
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:padding="0dp"
+            android:text="@string/done" />
     </RelativeLayout>
 </LinearLayout>

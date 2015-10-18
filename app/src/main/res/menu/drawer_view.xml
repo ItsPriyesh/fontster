@@ -18,14 +18,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/fonts"
-        android:title="Fonts"
+        android:title="@string/drawer_item_font_list"
         android:icon="@drawable/ic_subject_grey"/>
     <item
         android:id="@+id/backup"
-        android:title="Backup &amp; restore"
+        android:title="@string/drawer_item_backup_restore"
         android:icon="@drawable/ic_backup_restore_grey"/>
     <item
         android:id="@+id/settings"
         android:icon="@drawable/ic_settings_grey"
-        android:title="Settings"/>
+        android:title="@string/drawer_item_settings"/>
 </menu>

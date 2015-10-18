@@ -15,17 +15,17 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingBottom="8dp">
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingLeft="24dp"
-        android:paddingRight="24dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:paddingRight="24dp">
 
         <RadioGroup
             android:id="@+id/radio_group"
@@ -34,25 +34,25 @@
             android:checkedButton="@+id/donate_medium">
 
             <RadioButton
-                android:padding="16dp"
+                android:id="@+id/donate_small"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Small"
-                android:id="@+id/donate_small" />
+                android:padding="16dp"
+                android:text="@string/donation_small" />
 
             <RadioButton
-                android:padding="16dp"
+                android:id="@+id/donate_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Medium"
-                android:id="@+id/donate_medium" />
+                android:padding="16dp"
+                android:text="@string/donation_medium" />
 
             <RadioButton
-                android:padding="16dp"
+                android:id="@+id/donate_large"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Large"
-                android:id="@+id/donate_large" />
+                android:padding="16dp"
+                android:text="@string/donation_large" />
         </RadioGroup>
     </LinearLayout>
 
@@ -63,11 +63,11 @@
 
         <Button
             android:id="@+id/done_button"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ok"
-            style="@android:style/Widget.Material.Light.Button.Borderless.Colored" />
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="@string/ok" />
     </RelativeLayout>
 </LinearLayout>

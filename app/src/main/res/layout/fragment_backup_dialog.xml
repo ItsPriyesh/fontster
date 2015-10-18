@@ -29,7 +29,7 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:text="Name your backup"
+            android:text="@string/backup_dialog_title"
             android:textStyle="bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -43,13 +43,13 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="This will overwrite your current backup"
+            android:text="@string/backup_dialog_message"
             android:fontFamily="sans-serif-light"
             android:layout_marginBottom="8dp"/>
 
         <EditText
             android:id="@+id/input"
-            android:hint="Name"
+            android:hint="@string/backup_dialog_hint"
             android:singleLine="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -73,8 +73,8 @@
             android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="36dp"
-            android:text="Backup"
-            style="@android:style/Widget.Material.Light.Button.Borderless.Colored" />
+            android:text="@string/backup_dialog_button_backup"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored" />
 
         <Button
             android:minHeight="36dp"
@@ -84,7 +84,7 @@
             android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="36dp"
-            android:text="Cancel"
-            style="@android:style/Widget.Material.Light.Button.Borderless.Colored" />
+            android:text="@string/backup_dialog_button_cancel"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored" />
     </RelativeLayout>
 </LinearLayout>

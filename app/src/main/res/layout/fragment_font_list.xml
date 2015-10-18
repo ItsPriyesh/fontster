@@ -57,14 +57,14 @@
         <TextView
             android:textSize="12dp"
             android:fontFamily="sans-serif-light"
-            android:text="Fontster was unable to download the fonts"
+            android:text="@string/font_list_download_failed"
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/retry"
-            android:text="Retry"
+            android:text="@string/retry"
             style="?android:attr/borderlessButtonStyle"
             android:textColor="@color/primary"
             android:layout_width="wrap_content"
