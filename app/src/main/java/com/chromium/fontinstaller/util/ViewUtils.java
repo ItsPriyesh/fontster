@@ -156,12 +156,24 @@ public class ViewUtils {
         view.startAnimation(AnimationUtils.loadAnimation(context, R.anim.abc_fade_in));
     }
 
+    public static void snackbar(int messageResId, View parent) {
+        Snackbar.make(parent, messageResId, Snackbar.LENGTH_SHORT).show();
+    }
+
     public static void snackbar(String message, View parent) {
         Snackbar.make(parent, message, Snackbar.LENGTH_SHORT).show();
     }
 
+    public static void toast(int messageResId, Context context) {
+        Toast.makeText(context, messageResId, Toast.LENGTH_SHORT).show();
+    }
+
     public static void toast(String message, Context context) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+    }
+
+    public static void toast(int messageResId, Fragment fragment) {
+        toast(messageResId, fragment.getActivity());
     }
 
     public static void toast(String message, Fragment fragment) {

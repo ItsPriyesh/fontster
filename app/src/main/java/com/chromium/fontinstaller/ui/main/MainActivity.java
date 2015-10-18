@@ -69,7 +69,7 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.Sea
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setToolbarTitle("Fontster");
+        setToolbarTitle(getString(R.string.app_name));
 
         if (!BuildConfig.DEBUG) initializeAd(adView);
 
@@ -118,7 +118,7 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.Sea
             case R.id.fonts:
                 swapFragment(fontListFragment);
                 menuItem.setChecked(true);
-                setTitle("Fontster");
+                setTitle(getString(R.string.app_name));
                 invalidateOptionsMenu();
                 break;
             case R.id.backup:
@@ -184,7 +184,5 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.Sea
     }
 
     @Override
-    public void onSearchViewClosed() {
-
-    }
+    public void onSearchViewClosed() { }
 }

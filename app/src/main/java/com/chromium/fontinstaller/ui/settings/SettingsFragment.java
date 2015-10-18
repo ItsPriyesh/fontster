@@ -111,7 +111,7 @@ public class SettingsFragment extends PreferenceFragment implements
         appVersion.setSummary(BuildConfig.VERSION_NAME + " - " + BuildConfig.BUILD_TYPE);
         appVersion.setOnPreferenceClickListener(pref -> {
             if (devModeCountdown < 0) {
-                toast("Developer mode already enabled", getActivity());
+                toast(R.string.settings_developer_mode_already_enabled, getActivity());
             } else {
                 devModeCountdown--;
                 if (devModeCountdown == 0) enableDeveloperMode();
@@ -126,7 +126,7 @@ public class SettingsFragment extends PreferenceFragment implements
             if (result.isSuccess()) {
                 donate.setEnabled(true);
             } else {
-                donate.setSummary("A problem was encountered while setting up In-App Billing");
+                donate.setSummary(R.string.settings_iab_setup_error);
             }
         });
 
@@ -136,10 +136,10 @@ public class SettingsFragment extends PreferenceFragment implements
 
     private boolean confirmCustomFontInstall() {
         new AlertDialog.Builder(getActivity())
-                .setTitle("Are you sure?")
-                .setMessage("Installing an unverified font pack can potentially brick your phone. Only proceed if you are confident in what you are doing.")
-                .setNegativeButton("No Thanks", (dialog, which) -> dialog.dismiss())
-                .setPositiveButton("Yes", (dialog, which) ->
+                .setTitle(R.string.settings_confirm_custom_font_install_title)
+                .setMessage(R.string.settings_confirm_custom_font_install_message)
+                .setNegativeButton(R.string.no, (dialog, which) -> dialog.dismiss())
+                .setPositiveButton(R.string.yes, (dialog, which) ->
                         new FontPackPickerDialog(getActivity(), this::installCustomFont).show())
                 .create().show();
         return true;
@@ -147,7 +147,7 @@ public class SettingsFragment extends PreferenceFragment implements
 
     private void installCustomFont(FontPackage fontPackage) {
         final ProgressDialog progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setMessage("Installing...");
+        progressDialog.setMessage(getString(R.string.settings_custom_font_install_progress));
         progressDialog.show();
 
         FontInstaller.install(fontPackage, getActivity())
@@ -159,19 +159,20 @@ public class SettingsFragment extends PreferenceFragment implements
                 }, error -> {
                     Timber.i(error.getMessage());
                     progressDialog.dismiss();
-                    snackbar("Custom font installation failed", getView());
+                    snackbar(R.string.settings_custom_font_install_failed, getView());
                 });
     }
 
     private void enableDeveloperMode() {
         if (tapsLeftToast != null) tapsLeftToast.cancel();
-        toast("Developer mode enabled!", getActivity());
+        toast(R.string.settings_developer_mode_enabled, getActivity());
         preferences.setBoolean(Keys.ENABLE_DEVELOPER_MODE, true);
     }
 
     private void showTapsLeftToast() {
-        final String s = (devModeCountdown == 1 ? "1 tap" : devModeCountdown + " taps")
-                + " away from enabling developer mode";
+        final String s = String.format(getString(R.string.settings_taps_left), devModeCountdown == 1
+                ? getString(R.string.settings_single_tap)
+                : devModeCountdown + getString(R.string.settings_multiple_taps));
 
         if (tapsLeftToast != null) tapsLeftToast.cancel();
         tapsLeftToast = Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT);
@@ -206,8 +207,8 @@ public class SettingsFragment extends PreferenceFragment implements
         billingHelper.launchPurchaseFlow(getActivity(), sku, 1, purchaseListener, "");
         purchaseListener = (result, purchase) -> {
             final View v = getView();
-            if (result.isFailure()) snackbar("Failed to make donation", v);
-            else if (purchase.getSku().equals(sku)) snackbar("Donation complete, thanks :)", v);
+            if (result.isFailure()) snackbar(R.string.settings_donation_failed, v);
+            else if (purchase.getSku().equals(sku)) snackbar(R.string.settings_donation_success, v);
         };
 
         return true;
@@ -221,7 +222,7 @@ public class SettingsFragment extends PreferenceFragment implements
 
     private boolean clearCache() {
         progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setMessage("Clearing cache...");
+        progressDialog.setMessage(getString(R.string.settings_clear_cache_progress));
         progressDialog.show();
 
         final List<String> commands = new ArrayList<>();
@@ -243,14 +244,14 @@ public class SettingsFragment extends PreferenceFragment implements
     public void onCacheCleared() {
         preferences.setBoolean(Keys.TRUEFONTS_CACHED, false);
         progressDialog.dismiss();
-        snackbar("Cache has been cleared", getView());
+        snackbar(R.string.settings_clear_cache_success, getView());
     }
 
     private boolean viewSource() {
         final Intent intent = new Intent();
         intent.setAction(Intent.ACTION_VIEW);
         intent.addCategory(Intent.CATEGORY_BROWSABLE);
-        intent.setData(Uri.parse("https://github.com/ItsPriyesh/FontInstaller"));
+        intent.setData(Uri.parse(getString(R.string.settings_link_github)));
         startActivity(intent);
         return true;
     }
@@ -264,8 +265,8 @@ public class SettingsFragment extends PreferenceFragment implements
 
     private void showRestartDialog() {
         new AlertDialog.Builder(getActivity())
-                .setMessage("Restart the app for the change to take effect.")
-                .setPositiveButton("Restart", (dialog, id) -> restartApp())
+                .setMessage(R.string.settings_restart_dialog_message)
+                .setPositiveButton(R.string.settings_restart_dialog_button, (dialog, id) -> restartApp())
                 .create().show();
     }
 

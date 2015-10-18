@@ -41,7 +41,7 @@ public class FontListAdapter extends RecyclerView.Adapter<FontListAdapter.ViewHo
     private static LruCache<String, Typeface> fontCache;
 
     public FontListAdapter(Context context, ArrayList<String> fontNames, boolean enableTrueFont) {
-        this.fontNames = fontNames;
+        FontListAdapter.fontNames = fontNames;
         this.enableTrueFont = enableTrueFont;
 
         setHasStableIds(true);

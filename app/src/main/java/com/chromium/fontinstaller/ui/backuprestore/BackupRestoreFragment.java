@@ -66,7 +66,7 @@ public class BackupRestoreFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_backup_restore, container, false);
         ButterKnife.bind(this, view);
 
-        ((BaseActivity) getActivity()).setToolbarTitle("Backup & Restore");
+        ((BaseActivity) getActivity()).setToolbarTitle(getString(R.string.drawer_item_backup_restore));
 
         backupManager = new BackupManager();
         preferences = PreferencesManager.getInstance(getActivity());
@@ -108,8 +108,13 @@ public class BackupRestoreFragment extends Fragment {
     @SuppressWarnings("unused")
     @OnClick(R.id.backup_available_container)
     public void backupContainerClicked() {
+        final String[] options = {
+                getString(R.string.backup_restore_option_restore),
+                getString(R.string.backup_restore_option_delete)
+        };
+
         new AlertDialog.Builder(getActivity())
-                .setItems(new String[]{"Restore", "Delete"}, (dialog, index) -> {
+                .setItems(options, (dialog, index) -> {
                     switch (index) {
                         case 0:
                             backupManager.restore()

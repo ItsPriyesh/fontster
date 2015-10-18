@@ -48,7 +48,7 @@ public class DonateDialogFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.fragment_donate_dialog, container, false);
         ButterKnife.bind(this, view);
 
-        getDialog().setTitle("Donation amount");
+        getDialog().setTitle(R.string.donate_dialog_title);
 
         return view;
     }

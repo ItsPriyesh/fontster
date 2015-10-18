@@ -54,7 +54,7 @@ public class FontPackPickerDialog extends AlertDialog {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTitle("Font Package");
+        setTitle(R.string.font_pack_picker_dialog_title);
         final View view = View.inflate(getContext(), R.layout.file_path_dialog, null);
         setView(view);
 
@@ -70,13 +70,13 @@ public class FontPackPickerDialog extends AlertDialog {
                     else showError();
                 });
 
-        setButton(BUTTON_POSITIVE, "OK", (dialog, which) -> {
+        setButton(BUTTON_POSITIVE, getContext().getString(R.string.ok), (dialog, which) -> {
             if (!mPathIsValid) return;
             textChanges.unsubscribe();
             mListener.onFontPackEntered(fontPackageFromEditText(inputView));
         });
 
-        setButton(BUTTON_NEGATIVE, "Cancel", (dialog, which) -> {
+        setButton(BUTTON_NEGATIVE, getContext().getString(R.string.cancel), (dialog, which) -> {
             textChanges.unsubscribe();
             dismiss();
         });
@@ -100,7 +100,7 @@ public class FontPackPickerDialog extends AlertDialog {
     private void showError() {
         mPathIsValid = false;
         mPositiveButton.setEnabled(false);
-        mInputLayout.setError("Invalid font package folder");
+        mInputLayout.setError(getContext().getString(R.string.font_pack_picker_dialog_invalid_path));
     }
 
 }

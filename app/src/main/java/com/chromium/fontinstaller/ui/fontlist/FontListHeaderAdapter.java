@@ -27,12 +27,9 @@ import com.eowise.recyclerview.stickyheaders.StickyHeadersAdapter;
 
 import java.util.List;
 
-/**
- * Created by priyeshpatel on 15-03-10.
- */
 public class FontListHeaderAdapter implements StickyHeadersAdapter<FontListHeaderAdapter.ViewHolder> {
 
-    private List<String> items;
+    private final List<String> items;
 
     public FontListHeaderAdapter(List<String> items) {
         this.items = items;

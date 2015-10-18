@@ -17,7 +17,12 @@
 
     <string name="app_name">Fontster</string>
     <string name="ok">OK</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
     <string name="done">Done</string>
+    <string name="cancel">Cancel</string>
+    <string name="retry">Retry</string>
+    <string name="ad_space">Ad Space</string>
 
     <string name="alphabet_upper">ABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
     <string name="alphabet_lower">abcdefghijklmnopqrstuvwxyz</string>
@@ -41,23 +46,53 @@
     <string name="reboot_dialog_message">Please reboot your device for the changes to take effect.</string>
     <string name="reboot_dialog_button_text">Reboot</string>
 
+    <string name="backup_restore_no_backups">You do not currently have a backup</string>
+    <string name="backup_restore_option_restore">Restore</string>
+    <string name="backup_restore_option_delete">Delete</string>
+
     <string name="backup_dialog_title">Name your backup</string>
     <string name="backup_dialog_message">This will overwrite your current backup</string>
     <string name="backup_dialog_hint">Name</string>
     <string name="backup_dialog_button_backup">Backup</string>
-    <string name="backup_dialog_button_cancel">Cancel</string>
 
-    <string name="donation_small">Small ($1)</string>
-    <string name="donation_medium">Medium ($3)</string>
-    <string name="donation_large">Large ($10)</string>
-
-    <string name="backup_restore_no_backups">You do not currently have a backup</string>
+    <string name="donate_dialog_title">Donation amount</string>
+    <string name="donate_dialog_donation_small">Small ($1)</string>
+    <string name="donate_dialog_donation_medium">Medium ($3)</string>
+    <string name="donate_dialog_donation_large">Large ($10)</string>
 
     <string name="try_font_dialog_hint">Try it out!</string>
-    <string name="retry">Retry</string>
-    <string name="font_activity_download_failed">Fontster was unable to download this font</string>
-    <string name="ad_space">Ad Space</string>
     <string name="font_pack_picker_dialog_hint">File path</string>
+
+    <string name="font_activity_download_failed">Fontster was unable to download this font</string>
+    <string name="font_activity_tab_regular">Regular</string>
+    <string name="font_activity_tab_bold">Bold</string>
+    <string name="font_activity_tab_italic">Italic</string>
+    <string name="font_activity_install_failed">Install failed</string>
+    <string name="font_activity_install_progress">Installing fonts…</string>
+    <string name="font_activity_confirm_install">Are you sure you want to install this font?</string>
+
+    <string name="font_list_download_progress">Downloading previews…</string>
     <string name="font_list_download_failed">Fontster was unable to download the fonts</string>
+
+    <string name="font_pack_picker_dialog_title">Font Package</string>
+    <string name="font_pack_picker_dialog_invalid_path">Invalid font package folder</string>
+
+    <string name="settings_developer_mode_already_enabled">Developer mode already enabled</string>
+    <string name="settings_developer_mode_enabled">Developer mode enabled!</string>
+    <string name="settings_iab_setup_error">A problem was encountered while setting up In-App Billing</string>
+    <string name="settings_confirm_custom_font_install_title">Are you sure?</string>
+    <string name="settings_confirm_custom_font_install_message">Installing an unverified font pack can potentially brick your phone. Only proceed if you are confident in what you are doing.</string>
+    <string name="settings_custom_font_install_progress">Installing…</string>
+    <string name="settings_custom_font_install_failed">Custom font installation failed</string>
+    <string name="settings_taps_left">%s away from enabling developer mode</string>
+    <string name="settings_single_tap">1 tap</string>
+    <string name="settings_multiple_taps">" taps"</string>
+    <string name="settings_donation_failed">Failed to make donation</string>
+    <string name="settings_donation_success">Donation complete, thanks :)</string>
+    <string name="settings_clear_cache_progress">Clearing cache…</string>
+    <string name="settings_clear_cache_success">Cache has been cleared</string>
+    <string name="settings_link_github">https://github.com/ItsPriyesh/FontInstaller</string>
+    <string name="settings_restart_dialog_message">Restart the app for the change to take effect.</string>
+    <string name="settings_restart_dialog_button">Restart</string>
 
 </resources>

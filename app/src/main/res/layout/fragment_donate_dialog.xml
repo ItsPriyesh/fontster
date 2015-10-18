@@ -38,21 +38,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
-                android:text="@string/donation_small" />
+                android:text="@string/donate_dialog_donation_small" />
 
             <RadioButton
                 android:id="@+id/donate_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
-                android:text="@string/donation_medium" />
+                android:text="@string/donate_dialog_donation_medium" />
 
             <RadioButton
                 android:id="@+id/donate_large"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
-                android:text="@string/donation_large" />
+                android:text="@string/donate_dialog_donation_large" />
         </RadioGroup>
     </LinearLayout>
 

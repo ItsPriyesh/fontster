@@ -78,7 +78,7 @@ public class FontListFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         activity = getActivity();
-        ((MainActivity) activity).setToolbarTitle("Fontster");
+        ((MainActivity) activity).setToolbarTitle(getString(R.string.app_name));
 
         preferences = PreferencesManager.getInstance(activity);
 
@@ -111,7 +111,7 @@ public class FontListFragment extends Fragment {
 
         if (!previewsCached) {
             progressDialog = new ProgressDialog(activity);
-            progressDialog.setMessage("Downloading previews");
+            progressDialog.setMessage(activity.getString(R.string.font_list_download_progress));
             progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             progressDialog.setMax(fontList.size());
             progressDialog.show();

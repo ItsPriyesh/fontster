@@ -80,9 +80,7 @@ public class FontActivity extends BaseActivity implements TabLayout.OnTabSelecte
     private boolean fragmentsInitialized = false;
     private ProgressDialog progressDialog;
 
-    private final String[] tabTitles = {"Regular", "Bold", "Italic"};
-
-    public static final String FONT_NAME = "fontName";
+    public static final String FONT_NAME = "font_name";
 
     public static Intent getLaunchIntent(final Context context, final String fontName) {
         final Intent intent = new Intent(context, FontActivity.class);
@@ -96,6 +94,7 @@ public class FontActivity extends BaseActivity implements TabLayout.OnTabSelecte
         setContentView(R.layout.activity_font);
         disableToolbarElevation();
         showToolbarBackButton();
+        setToolbarTitle("");
 
         final String fontName = getIntent().getStringExtra(FONT_NAME);
 
@@ -147,7 +146,7 @@ public class FontActivity extends BaseActivity implements TabLayout.OnTabSelecte
         Crashlytics.logException(error);
         delay(() -> {
             Timber.e("Install failed: " + error.getMessage());
-            snackbar("Install failed", findViewById(R.id.bottom_bar));
+            snackbar(R.string.font_activity_install_failed, findViewById(R.id.bottom_bar));
             progressDialog.dismiss();
             animGrowFromCenter(installButton, this);
             show(installButton);
@@ -179,7 +178,8 @@ public class FontActivity extends BaseActivity implements TabLayout.OnTabSelecte
     }
 
     private void startInstall() {
-        progressDialog = ProgressDialog.show(this, null, "Installing fonts...", true, false);
+        progressDialog = ProgressDialog
+                .show(this, null, getString(R.string.font_activity_install_progress), true, false);
 
         FontDownloader.downloadAllFonts(fontPackage)
                 .subscribeOn(Schedulers.io())
@@ -214,9 +214,9 @@ public class FontActivity extends BaseActivity implements TabLayout.OnTabSelecte
     @OnClick(R.id.install_fab)
     public void installButtonClicked() {
         new AlertDialog.Builder(this)
-                .setMessage("Are you sure you want to install this font?")
-                .setNegativeButton("No", (dialog, id) -> dialog.dismiss())
-                .setPositiveButton("Yes", (dialog, id) -> startInstall())
+                .setMessage(R.string.font_activity_confirm_install)
+                .setNegativeButton(R.string.no, (dialog, id) -> dialog.dismiss())
+                .setPositiveButton(R.string.yes, (dialog, id) -> startInstall())
                 .create().show();
     }
 
@@ -290,6 +290,13 @@ public class FontActivity extends BaseActivity implements TabLayout.OnTabSelecte
     public void onTabReselected(TabLayout.Tab tab) { }
 
     private class PreviewPagerAdapter extends FragmentPagerAdapter {
+
+        private final String[] tabTitles = {
+                getString(R.string.font_activity_tab_regular),
+                getString(R.string.font_activity_tab_bold),
+                getString(R.string.font_activity_tab_italic)
+        };
+
         public PreviewPagerAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);
         }
