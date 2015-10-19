@@ -41,7 +41,7 @@
         </activity>
         <activity
             android:name=".ui.settings.SettingsActivity"
-            android:label="@string/title_activity_settings"
+            android:label="@string/settings_title"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
@@ -55,7 +55,7 @@
 
         <activity
             android:name=".ui.settings.developer.DeveloperSettingsActivity"
-            android:label="@string/title_activity_developer_settings"
+            android:label="@string/settings_developer_title"
             android:theme="@style/AppTheme" >
         </activity>
     </application>
