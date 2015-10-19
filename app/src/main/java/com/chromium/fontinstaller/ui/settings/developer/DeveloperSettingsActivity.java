@@ -14,38 +14,24 @@
  * limitations under the License.
  */
 
-package com.chromium.fontinstaller.ui.settings;
+package com.chromium.fontinstaller.ui.settings.developer;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.ui.common.BaseActivity;
 
-public class SettingsActivity extends BaseActivity {
-
-    private SettingsFragment settingsFragment;
+public class DeveloperSettingsActivity extends BaseActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         showToolbarBackButton();
-        setToolbarTitle(getString(R.string.settings_title));
-
-        settingsFragment = new SettingsFragment();
+        setToolbarTitle(getString(R.string.settings_developer_title));
 
         getFragmentManager().beginTransaction()
-                .add(R.id.container, settingsFragment)
+                .add(R.id.container, new DeveloperSettingsFragment())
                 .commit();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (settingsFragment.getBillingHelper() == null) return;
-
-        if (!settingsFragment.getBillingHelper().handleActivityResult(requestCode, resultCode, data)) {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
     }
 }

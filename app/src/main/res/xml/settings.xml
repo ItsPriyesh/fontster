@@ -24,14 +24,6 @@
             android:summary="Wipe stored fonts"
             android:title="Clear cache" />
     </PreferenceCategory>
-    <PreferenceCategory
-        android:key="developer_options"
-        android:title="Developer">
-        <Preference
-            android:key="install_custom_font"
-            android:summary="Select and load a local font pack"
-            android:title="Install custom font" />
-    </PreferenceCategory>
     <PreferenceCategory android:title="About">
         <Preference
             android:key="viewSource"

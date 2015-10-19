@@ -77,16 +77,13 @@
     <string name="font_pack_picker_dialog_title">Font Package</string>
     <string name="font_pack_picker_dialog_invalid_path">Invalid font package folder</string>
 
-    <string name="settings_developer_mode_already_enabled">Developer mode already enabled</string>
-    <string name="settings_developer_mode_enabled">Developer mode enabled!</string>
+    <string name="settings_title">Settings</string>
+    <string name="settings_developer_title">Developer Settings</string>
     <string name="settings_iab_setup_error">A problem was encountered while setting up In-App Billing</string>
     <string name="settings_confirm_custom_font_install_title">Are you sure?</string>
     <string name="settings_confirm_custom_font_install_message">Installing an unverified font pack can potentially brick your phone. Only proceed if you are confident in what you are doing.</string>
     <string name="settings_custom_font_install_progress">Installing…</string>
     <string name="settings_custom_font_install_failed">Custom font installation failed</string>
-    <string name="settings_taps_left">%s away from enabling developer mode</string>
-    <string name="settings_single_tap">1 tap</string>
-    <string name="settings_multiple_taps">" taps"</string>
     <string name="settings_donation_failed">Failed to make donation</string>
     <string name="settings_donation_success">Donation complete, thanks :)</string>
     <string name="settings_clear_cache_progress">Clearing cache…</string>
@@ -94,5 +91,6 @@
     <string name="settings_link_github">https://github.com/ItsPriyesh/FontInstaller</string>
     <string name="settings_restart_dialog_message">Restart the app for the change to take effect.</string>
     <string name="settings_restart_dialog_button">Restart</string>
+    <string name="title_activity_developer_settings">DeveloperSettingsActivity</string>
 
 </resources>
