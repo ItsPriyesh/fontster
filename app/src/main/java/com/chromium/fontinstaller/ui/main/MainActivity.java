@@ -37,7 +37,6 @@ import com.chromium.fontinstaller.ui.common.BaseActivity;
 import com.chromium.fontinstaller.ui.fontlist.FontListFragment;
 import com.chromium.fontinstaller.ui.install.FontActivity;
 import com.chromium.fontinstaller.ui.settings.SettingsActivity;
-import com.chromium.fontinstaller.util.RootUtils;
 import com.chromium.fontinstaller.util.ViewUtils;
 import com.google.android.gms.ads.AdView;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
@@ -72,8 +71,6 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.Sea
         setToolbarTitle(getString(R.string.app_name));
 
         if (!BuildConfig.DEBUG) initializeAd(adView);
-
-        RootUtils.requestAccess();
 
         drawerToggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);

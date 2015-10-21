@@ -106,5 +106,7 @@
     <string name="pref_donate_summary">This will remove advertisements</string>
     <string name="pref_donate_title">Donate</string>
     <string name="pref_app_version_title">App version</string>
+    <string name="splash_no_root_dialog_title">Root Access Unavailable</string>
+    <string name="splash_no_root_dialog_message">In order to use Fontster your device must be rooted. If your device is rooted, please ensure that you have granted superuser access to Fontster.</string>
 
 </resources>
