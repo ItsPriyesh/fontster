@@ -66,6 +66,7 @@ dependencies {
     compile 'com.android.support:cardview-v7:23.1.0'
 
     // UI
+    compile 'com.victor:lib:1.0.1'
     compile 'com.eowise:recyclerview-stickyheaders:0.5.2'
     compile 'de.psdev.licensesdialog:licensesdialog:1.7.0'
     compile project(':MaterialSearchView:library')

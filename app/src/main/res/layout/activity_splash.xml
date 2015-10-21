@@ -14,13 +14,40 @@
   ~ limitations under the License.
   -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
+    android:layout_centerInParent="true"
     android:background="#009688"
+    android:fitsSystemWindows="true"
+    android:gravity="center"
+    android:orientation="vertical"
     tools:context="com.chromium.fontinstaller.ui.splash.SplashActivity">
 
+    <ImageView
+        android:id="@+id/splash_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo_splash"
+        android:visibility="invisible" />
 
-</RelativeLayout>
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="4dp"
+        android:alpha="0"
+        android:text="@string/app_name"
+        android:textColor="@android:color/white"
+        android:textSize="28dp" />
+
+    <ProgressBar
+        android:id="@+id/progress_circle"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:visibility="invisible" />
+
+</LinearLayout>

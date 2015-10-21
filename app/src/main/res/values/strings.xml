@@ -33,7 +33,7 @@
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
     <string name="drawer_item_font_list">Fonts</string>
-    <string name="drawer_item_backup_restore"><![CDATA[Backup & restore]]></string>
+    <string name="drawer_item_backup_restore"><![CDATA[Backup & Restore]]></string>
     <string name="drawer_item_settings">Settings</string>
 
     <string name="font_menu_toggle_case">Toggle case</string>
