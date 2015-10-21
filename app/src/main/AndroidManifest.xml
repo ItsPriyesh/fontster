@@ -58,6 +58,11 @@
             android:label="@string/settings_developer_title"
             android:theme="@style/AppTheme" >
         </activity>
+        <activity
+            android:name=".ui.splash.SplashActivity"
+            android:label="@string/title_activity_splash"
+            android:theme="@style/AppTheme" >
+        </activity>
     </application>
 
 </manifest>
