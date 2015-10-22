@@ -26,6 +26,7 @@ import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -76,6 +77,8 @@ public class SplashActivity extends AppCompatActivity {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread()));
 
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,11 +112,7 @@ public class SplashActivity extends AppCompatActivity {
                                 .alpha(1)
                                 .setDuration(200)
                                 .setInterpolator(INTERPOLATOR);
-                        mProgressCircle.animate()
-                                .scaleX(1)
-                                .scaleY(1)
-                                .setDuration(200)
-                                .setInterpolator(INTERPOLATOR);
+                        showSpinner(true);
                     }
                 }), 400);
 
@@ -124,9 +123,7 @@ public class SplashActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         if (requestCode == PERMISSION_REQUEST) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                hideSpinner();
-                startActivity(new Intent(this, MainActivity.class));
-                finish();
+                goToMain();
             } else {
                 showMissingPermissionDialog(
                         R.string.splash_no_storage_access_title,
@@ -136,10 +133,10 @@ public class SplashActivity extends AppCompatActivity {
         }
     }
 
-    private void hideSpinner() {
+    private void showSpinner(boolean show) {
         mProgressCircle.animate()
-                .scaleX(0)
-                .scaleY(0)
+                .scaleX(show ? 1 : 0)
+                .scaleY(show ? 1 : 0)
                 .setDuration(200)
                 .setInterpolator(INTERPOLATOR);
     }
@@ -159,15 +156,35 @@ public class SplashActivity extends AppCompatActivity {
     private void checkForRoot() {
         ROOT_CHECK.subscribe(available -> {
             if (available) {
-                requestStoragePermissions();
+                if (storagePermissionsGranted()) {
+                    goToMain();
+                } else requestStoragePermissions();
             } else {
-                hideSpinner();
+                showSpinner(false);
                 showMissingPermissionDialog(
                         R.string.splash_no_root_title,
                         R.string.splash_no_root_message,
                         this::checkForRoot);
             }
         });
+    }
+
+    private void goToMain() {
+        mHandler.postDelayed(() -> {
+            showSpinner(false);
+            final View doneIcon = findViewById(R.id.done_icon);
+            doneIcon.setScaleX(0);
+            doneIcon.setScaleY(0);
+            doneIcon.setVisibility(View.VISIBLE);
+            doneIcon.animate()
+                    .scaleX(1).scaleY(1)
+                    .setDuration(200)
+                    .setInterpolator(INTERPOLATOR);
+        }, SPLASH_DELAY / 2);
+        mHandler.postDelayed(() -> {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        }, SPLASH_DELAY);
     }
 
     private boolean storagePermissionsGranted() {
