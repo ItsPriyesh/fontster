@@ -16,13 +16,18 @@
 
 package com.chromium.fontinstaller.ui.splash;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -33,6 +38,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.chromium.fontinstaller.R;
+import com.chromium.fontinstaller.ui.main.MainActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -52,7 +58,16 @@ public class SplashActivity extends AppCompatActivity {
     @Bind(R.id.progress_circle)
     ProgressBar mProgressCircle;
 
+    @Bind(R.id.parent)
+    View mParent;
+
     private static final long SPLASH_DELAY = 2000L;
+
+    private static final int PERMISSION_REQUEST = 0xaf;
+    private static final String[] STORAGE_PERMISSIONS = {
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE
+    };
 
     private static final Interpolator INTERPOLATOR = new AccelerateDecelerateInterpolator();
 
@@ -67,8 +82,6 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
 
-        final View parent = findViewById(R.id.parent);
-
         mTitleView.setTypeface(Typeface.createFromAsset(getAssets(), "Quicksand-Regular.ttf"));
 
         mProgressCircle.setScaleX(0);
@@ -82,7 +95,7 @@ public class SplashActivity extends AppCompatActivity {
         mSplashLogo.setRotation(-1080);
         mSplashLogo.setVisibility(View.VISIBLE);
 
-        parent.postDelayed(() -> mSplashLogo.animate()
+        mParent.postDelayed(() -> mSplashLogo.animate()
                 .scaleX(1)
                 .scaleY(1)
                 .rotation(0)
@@ -107,6 +120,22 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(this::checkForRoot, SPLASH_DELAY);
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        if (requestCode == PERMISSION_REQUEST) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                hideSpinner();
+                startActivity(new Intent(this, MainActivity.class));
+                finish();
+            } else {
+                showMissingPermissionDialog(
+                        R.string.splash_no_storage_access_title,
+                        R.string.splash_no_storage_access_message,
+                        this::requestStoragePermissions);
+            }
+        }
+    }
+
     private void hideSpinner() {
         mProgressCircle.animate()
                 .scaleX(0)
@@ -115,23 +144,42 @@ public class SplashActivity extends AppCompatActivity {
                 .setInterpolator(INTERPOLATOR);
     }
 
-    private void showNoRootDialog() {
+    private interface RetryListener { void onRetry(); }
+
+    private void showMissingPermissionDialog(int titleResId, int messageResId, RetryListener l) {
         new AlertDialog.Builder(this)
-                .setTitle(R.string.splash_no_root_dialog_title)
-                .setMessage(R.string.splash_no_root_dialog_message)
+                .setTitle(titleResId)
+                .setMessage(messageResId)
                 .setCancelable(false)
-                .setPositiveButton(R.string.ok, (dialog, which) -> finish())
+                .setPositiveButton(R.string.retry, ((dialog, which) -> l.onRetry()))
+                .setNegativeButton(R.string.ok, (dialog, which) -> finish())
                 .create().show();
     }
 
     private void checkForRoot() {
         ROOT_CHECK.subscribe(available -> {
             if (available) {
-
+                requestStoragePermissions();
             } else {
                 hideSpinner();
-                showNoRootDialog();
+                showMissingPermissionDialog(
+                        R.string.splash_no_root_title,
+                        R.string.splash_no_root_message,
+                        this::checkForRoot);
             }
         });
+    }
+
+    private boolean storagePermissionsGranted() {
+        return ContextCompat.checkSelfPermission(this, STORAGE_PERMISSIONS[0])
+                != PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this, STORAGE_PERMISSIONS[1])
+                        != PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestStoragePermissions() {
+        if (storagePermissionsGranted()) {
+            ActivityCompat.requestPermissions(this, STORAGE_PERMISSIONS, PERMISSION_REQUEST);
+        }
     }
 }

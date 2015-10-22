@@ -32,7 +32,6 @@ android {
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
-    maven { url "http://dl.bintray.com/tbruyelle/tbruyelle" }
 }
 
 dependencies {
@@ -49,7 +48,6 @@ dependencies {
     compile 'com.google.android.gms:play-services-ads:8.1.0'
     compile 'io.reactivex:rxandroid:1.0.1'
     compile 'com.jakewharton.rxbinding:rxbinding:0.2.0'
-    compile 'com.tbruyelle.rxpermissions:rxpermissions:0.3.0@aar'
 
     // Android Support
     compile 'com.android.support:design:23.1.0'
