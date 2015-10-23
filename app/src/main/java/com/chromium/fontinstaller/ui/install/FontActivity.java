@@ -51,6 +51,7 @@ import timber.log.Timber;
 import static com.chromium.fontinstaller.util.ViewUtils.animGrowFromCenter;
 import static com.chromium.fontinstaller.util.ViewUtils.animSlideInBottom;
 import static com.chromium.fontinstaller.util.ViewUtils.animSlideUp;
+import static com.chromium.fontinstaller.util.ViewUtils.animShrinkToCenter;
 import static com.chromium.fontinstaller.util.ViewUtils.reveal;
 import static com.chromium.fontinstaller.util.ViewUtils.snackbar;
 
@@ -166,7 +167,7 @@ public class FontActivity extends BaseActivity implements TabLayout.OnTabSelecte
     }
 
     private void animateViews() {
-        animSlideUp(downloadProgress, this);
+        animShrinkToCenter(downloadProgress, this);
 
         delay(() -> {
             hideGone(downloadProgress);
@@ -189,7 +190,8 @@ public class FontActivity extends BaseActivity implements TabLayout.OnTabSelecte
                 .flatMap(v -> FontInstaller.install(fontPackage, this))
                 .doOnCompleted(this::onInstallComplete)
                 .subscribe(
-                        next -> { },
+                        next -> {
+                        },
                         error -> {
                             if (error instanceof FontDownloader.DownloadException)
                                 handleFailedDownload(error.getCause());
@@ -235,7 +237,9 @@ public class FontActivity extends BaseActivity implements TabLayout.OnTabSelecte
             animGrowFromCenter(installButton, this);
             show(installButton);
 
-            delay(() -> { if (!this.isFinishing()) AlertUtils.showRebootAlert(this); }, 400);
+            delay(() -> {
+                if (!this.isFinishing()) AlertUtils.showRebootAlert(this);
+            }, 400);
         }, 400);
     }
 
@@ -285,10 +289,12 @@ public class FontActivity extends BaseActivity implements TabLayout.OnTabSelecte
     }
 
     @Override
-    public void onTabUnselected(TabLayout.Tab tab) { }
+    public void onTabUnselected(TabLayout.Tab tab) {
+    }
 
     @Override
-    public void onTabReselected(TabLayout.Tab tab) { }
+    public void onTabReselected(TabLayout.Tab tab) {
+    }
 
     private class PreviewPagerAdapter extends FragmentPagerAdapter {
 
