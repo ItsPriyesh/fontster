@@ -21,7 +21,6 @@
     tools:context="com.chromium.fontinstaller.ui.fontlist.FontListFragment">
 
     <android.support.v7.widget.RecyclerView
-        android:background="@color/white_100_opacity"
         android:visibility="invisible"
         android:id="@+id/font_list_view"
         android:layout_below="@id/app_bar"

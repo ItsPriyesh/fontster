@@ -155,8 +155,10 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        mHandler.removeCallbacksAndMessages(null);
-        mHandler = null;
+        if (mHandler != null) {
+            mHandler.removeCallbacksAndMessages(null);
+            mHandler = null;
+        }
     }
 
     private void delay(Runnable runnable, long delay) {

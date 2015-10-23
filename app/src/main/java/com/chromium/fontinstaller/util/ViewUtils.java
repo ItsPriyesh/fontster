@@ -36,6 +36,8 @@ import android.widget.Toast;
 
 import com.chromium.fontinstaller.R;
 
+import timber.log.Timber;
+
 public class ViewUtils {
 
     public static int dpToPixels(int dp, Context context) {
@@ -101,36 +103,39 @@ public class ViewUtils {
             final double y_2 = Math.pow(revealView.getTop() - revealCenterY, 2);
             final float revealRadius = (float) Math.max(Math.sqrt(x1_2 + y_2), Math.sqrt(x2_2 + y_2));
 
-            if (revealView == null) return;
-            final Animator revealAnimator =
-                    ViewAnimationUtils.createCircularReveal(revealView,
-                            revealCenterX, revealCenterY, 0.0f, revealRadius);
-            revealAnimator.setDuration(
-                    activity.getResources().getInteger(android.R.integer.config_mediumAnimTime));
+            try {
+                final Animator revealAnimator =
+                        ViewAnimationUtils.createCircularReveal(revealView,
+                                revealCenterX, revealCenterY, 0.0f, revealRadius);
+                revealAnimator.setDuration(
+                        activity.getResources().getInteger(android.R.integer.config_mediumAnimTime));
 
-            final Animator alphaAnimator = ObjectAnimator.ofFloat(revealView, View.ALPHA, 0.0f);
-            alphaAnimator.setDuration(
-                    activity.getResources().getInteger(android.R.integer.config_shortAnimTime));
-            alphaAnimator.addListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    super.onAnimationEnd(animation);
-                    view.startAnimation(AnimationUtils.loadAnimation(activity, R.anim.abc_fade_in));
-                    view.setVisibility(View.VISIBLE);
-                }
-            });
+                final Animator alphaAnimator = ObjectAnimator.ofFloat(revealView, View.ALPHA, 0.0f);
+                alphaAnimator.setDuration(
+                        activity.getResources().getInteger(android.R.integer.config_shortAnimTime));
+                alphaAnimator.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        view.startAnimation(AnimationUtils.loadAnimation(activity, R.anim.abc_fade_in));
+                        view.setVisibility(View.VISIBLE);
+                    }
+                });
 
-            final AnimatorSet animatorSet = new AnimatorSet();
-            animatorSet.play(revealAnimator).before(alphaAnimator);
-            animatorSet.setInterpolator(new AccelerateDecelerateInterpolator());
-            animatorSet.addListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animator) {
-                    groupOverlay.remove(revealView);
-                }
-            });
+                final AnimatorSet animatorSet = new AnimatorSet();
+                animatorSet.play(revealAnimator).before(alphaAnimator);
+                animatorSet.setInterpolator(new AccelerateDecelerateInterpolator());
+                animatorSet.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animator) {
+                        groupOverlay.remove(revealView);
+                    }
+                });
 
-            animatorSet.start();
+                animatorSet.start();
+            } catch (IllegalStateException e) {
+                Timber.i("View is detached - not animating");
+            }
         } else {
             view.setVisibility(View.VISIBLE);
         }

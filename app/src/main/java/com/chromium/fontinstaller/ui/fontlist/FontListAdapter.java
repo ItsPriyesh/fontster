@@ -87,7 +87,7 @@ public class FontListAdapter extends RecyclerView.Adapter<FontListAdapter.ViewHo
         public ViewHolder(View view) {
             super(view);
             view.setOnClickListener(this);
-            fontName = (TextView) view;
+            fontName = (TextView) view.findViewById(R.id.font_name);
         }
 
         @Override

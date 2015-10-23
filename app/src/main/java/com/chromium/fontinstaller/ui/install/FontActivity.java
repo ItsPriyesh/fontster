@@ -160,6 +160,7 @@ public class FontActivity extends BaseActivity implements TabLayout.OnTabSelecte
         previewPager.setAdapter(pagerAdapter);
         tabLayout.setOnTabSelectedListener(this);
         tabLayout.setupWithViewPager(previewPager);
+        tabLayout.setSelectedTabIndicatorColor(getColor(android.R.color.white));
 
         animateViews();
     }
