@@ -45,22 +45,4 @@
         android:textColor="@android:color/white"
         android:textSize="28dp" />
 
-    <FrameLayout
-        android:layout_width="24dp"
-        android:layout_height="24dp">
-
-        <ProgressBar
-            android:id="@+id/progress_circle"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="invisible" />
-
-        <ImageView
-            android:id="@+id/done_icon"
-            android:src="@drawable/ic_check_circle_24dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="invisible"/>
-    </FrameLayout>
-
 </LinearLayout>

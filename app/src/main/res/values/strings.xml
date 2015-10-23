@@ -22,6 +22,7 @@
     <string name="done">Done</string>
     <string name="cancel">Cancel</string>
     <string name="retry">Retry</string>
+    <string name="exit">Exit</string>
     <string name="ad_space">Ad Space</string>
 
     <string name="alphabet_upper">ABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
