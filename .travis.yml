@@ -16,7 +16,6 @@ android:
     - sys-img-x86_64-android-$ANDROID_API_LEVEL
 
 before_install:
-  - find /home/ -type f -follow -print
   - echo no | android create avd --force -n test -t android-$ANDROID_API_LEVEL --abi $ANDROID_ABI
   - emulator -avd test -no-skin -no-audio -no-window
 
