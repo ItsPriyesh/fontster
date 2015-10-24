@@ -23,6 +23,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -49,9 +50,9 @@ import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 import static com.chromium.fontinstaller.util.ViewUtils.animGrowFromCenter;
+import static com.chromium.fontinstaller.util.ViewUtils.animShrinkToCenter;
 import static com.chromium.fontinstaller.util.ViewUtils.animSlideInBottom;
 import static com.chromium.fontinstaller.util.ViewUtils.animSlideUp;
-import static com.chromium.fontinstaller.util.ViewUtils.animShrinkToCenter;
 import static com.chromium.fontinstaller.util.ViewUtils.reveal;
 import static com.chromium.fontinstaller.util.ViewUtils.snackbar;
 
@@ -161,7 +162,7 @@ public class FontActivity extends BaseActivity implements TabLayout.OnTabSelecte
         previewPager.setAdapter(pagerAdapter);
         tabLayout.setOnTabSelectedListener(this);
         tabLayout.setupWithViewPager(previewPager);
-        tabLayout.setSelectedTabIndicatorColor(getColor(android.R.color.white));
+        tabLayout.setSelectedTabIndicatorColor(ActivityCompat.getColor(this, android.R.color.white));
 
         animateViews();
     }
@@ -190,8 +191,7 @@ public class FontActivity extends BaseActivity implements TabLayout.OnTabSelecte
                 .flatMap(v -> FontInstaller.install(fontPackage, this))
                 .doOnCompleted(this::onInstallComplete)
                 .subscribe(
-                        next -> {
-                        },
+                        next -> { },
                         error -> {
                             if (error instanceof FontDownloader.DownloadException)
                                 handleFailedDownload(error.getCause());
