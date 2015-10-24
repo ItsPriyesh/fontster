@@ -26,7 +26,7 @@ import java.util.List;
 import eu.chainfire.libsuperuser.Shell;
 import rx.Observable;
 
-import static com.chromium.fontinstaller.core.PathConstants.*;
+import static com.chromium.fontinstaller.core.SystemConstants.*;
 
 public class BackupManager {
 
@@ -52,6 +52,7 @@ public class BackupManager {
 
     public Observable<Void> restore() {
         if (Shell.SU.available()) {
+            Shell.SU.run(MOUNT_SYSTEM_COMMAND);
             List<String> restoreCommands = new ArrayList<>();
             for (File file : backupDirectory.listFiles()) {
                 restoreCommands.add("cp " + file.getAbsolutePath() + " " + SYSTEM_FONT_PATH);

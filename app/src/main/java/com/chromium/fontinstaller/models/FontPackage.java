@@ -26,7 +26,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static com.chromium.fontinstaller.core.PathConstants.*;
+import static com.chromium.fontinstaller.core.SystemConstants.*;
 
 public class FontPackage {
 

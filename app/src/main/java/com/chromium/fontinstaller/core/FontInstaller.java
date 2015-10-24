@@ -32,13 +32,11 @@ import java.util.List;
 import eu.chainfire.libsuperuser.Shell;
 import rx.Observable;
 
-import static com.chromium.fontinstaller.core.PathConstants.SYSTEM_FONT_PATH;
+import static com.chromium.fontinstaller.core.SystemConstants.*;
 
 public class FontInstaller {
 
     private static final String TAG = FontInstaller.class.toString();
-
-    private static final String MOUNT_SYSTEM = "mount -o rw,remount /system";
 
     public static class InstallException extends Exception {
         public InstallException(Exception root) { super(root); }
@@ -59,7 +57,7 @@ public class FontInstaller {
             }
             copyCommands.add(generateLockscreenFixCommand(context));
             if (Shell.SU.available()) {
-                Shell.SU.run(MOUNT_SYSTEM);
+                Shell.SU.run(MOUNT_SYSTEM_COMMAND);
                 Shell.SU.run(copyCommands);
                 subscriber.onNext(null);
                 subscriber.onCompleted();

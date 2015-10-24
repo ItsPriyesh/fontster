@@ -18,7 +18,7 @@ package com.chromium.fontinstaller.core;
 
 import android.annotation.SuppressLint;
 
-public final class PathConstants {
+public final class SystemConstants {
 
     @SuppressLint("SdCardPath")
     static final String BACKUP_PATH = "/sdcard/Android/data/com.chromium.fontinstaller/Backup/";
@@ -27,5 +27,7 @@ public final class PathConstants {
     public static final String CACHE_PATH = "/sdcard/Android/data/com.chromium.fontinstaller/cache/";
 
     static final String SYSTEM_FONT_PATH = "/system/fonts/";
+
+    static final String MOUNT_SYSTEM_COMMAND = "mount -o rw,remount /system";
 
 }
