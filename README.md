@@ -1,6 +1,8 @@
 Fontster
 ========
-Fontster is an open source, Material designed Android app that allows users with rooted devices to change the system wide fonts.
+[![Build Status](https://travis-ci.org/ItsPriyesh/Fontster.svg?branch=master)](https://travis-ci.org/ItsPriyesh/Fontster)
+
+Fontster is an Android app that allows users with rooted devices to change the system wide fonts.
 
 ![Screenshot](art/SS_FontActivity.png)
 
