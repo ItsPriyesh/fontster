@@ -18,8 +18,6 @@ package com.chromium.fontinstaller.models;
 
 import android.graphics.Typeface;
 
-import com.chromium.fontinstaller.core.FontInstaller;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,10 +26,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import static com.chromium.fontinstaller.core.PathConstants.*;
+
 public class FontPackage {
 
     private final String name;
-    private boolean downloadable;
     private HashMap<Font, Style> fontsToStyles = new HashMap<>();
 
     private static final String BASE_URL = "https://raw.githubusercontent.com/ItsPriyesh/FontsterFontsRepo/master/";
@@ -45,7 +44,6 @@ public class FontPackage {
      */
     public FontPackage(String name) {
         this.name = name;
-        downloadable = true;
         initForDownloadableFontPack();
     }
 
@@ -58,7 +56,6 @@ public class FontPackage {
      */
     private FontPackage(File folder) {
         this.name = folder.getName();
-        downloadable = false;
         initForLocalFontPack(folder);
     }
 
@@ -73,7 +70,7 @@ public class FontPackage {
     private void initForDownloadableFontPack() {
         for (Style style : Style.values()) {
             final String url = BASE_URL + name.replace(" ", "") + "FontPack/" + style.getRemoteName();
-            final File file = new File(FontInstaller.CACHE_DIR + name.replace(" ", "") + "FontPack/" + style.getLocalName());
+            final File file = new File(CACHE_PATH + name.replace(" ", "") + "FontPack/" + style.getLocalName());
             final Font font = new Font(style, url, file);
             fontsToStyles.put(font, style);
         }
@@ -124,10 +121,6 @@ public class FontPackage {
                 return font;
 
         return null;
-    }
-
-    public boolean isDownloadable() {
-        return downloadable;
     }
 
     public static boolean validFontPackFolder(String path) {

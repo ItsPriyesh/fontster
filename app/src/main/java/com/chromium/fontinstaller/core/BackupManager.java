@@ -26,36 +26,35 @@ import java.util.List;
 import eu.chainfire.libsuperuser.Shell;
 import rx.Observable;
 
+import static com.chromium.fontinstaller.core.PathConstants.*;
+
 public class BackupManager {
 
     private File backupDirectory;
 
+    @SuppressLint("SimpleDateFormat")
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MMM dd, yyyy");
-
-    private static final String SOURCE_DIR = "/system/fonts/";
-
-    @SuppressLint("SdCardPath")
-    private static final String BACKUP_DIR = "/sdcard/Android/data/com.chromium.fontinstaller/Backup/";
 
     public BackupManager() {
         createBackupDir();
     }
 
     private void createBackupDir() {
-        backupDirectory = new File(BACKUP_DIR);
+        backupDirectory = new File(BACKUP_PATH);
+        //noinspection ResultOfMethodCallIgnored
         backupDirectory.mkdirs();
     }
 
     public Observable<Void> backup() {
         createBackupDir();
-        return CommandRunner.runCommand("cp -R " + SOURCE_DIR + ". " + BACKUP_DIR);
+        return CommandRunner.runCommand("cp -R " + SYSTEM_FONT_PATH + ". " + BACKUP_PATH);
     }
 
     public Observable<Void> restore() {
         if (Shell.SU.available()) {
             List<String> restoreCommands = new ArrayList<>();
             for (File file : backupDirectory.listFiles()) {
-                restoreCommands.add("cp " + file.getAbsolutePath() + " " + SOURCE_DIR);
+                restoreCommands.add("cp " + file.getAbsolutePath() + " " + SYSTEM_FONT_PATH);
             }
             return CommandRunner.runCommands(restoreCommands);
         } else {
@@ -64,7 +63,7 @@ public class BackupManager {
     }
 
     public Observable<Void> deleteBackup() {
-        return CommandRunner.runCommand("rm -rf " + BACKUP_DIR);
+        return CommandRunner.runCommand("rm -rf " + BACKUP_PATH);
     }
 
     public boolean backupExists() {

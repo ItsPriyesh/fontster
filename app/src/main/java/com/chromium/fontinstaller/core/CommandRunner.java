@@ -16,7 +16,7 @@
 
 package com.chromium.fontinstaller.core;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import eu.chainfire.libsuperuser.Shell;
@@ -36,7 +36,7 @@ public class CommandRunner {
     }
 
     public static Observable<Void> runCommand(String command) {
-        return runCommands(Arrays.asList(command));
+        return runCommands(Collections.singletonList(command));
     }
 
 }

@@ -16,7 +16,6 @@
 
 package com.chromium.fontinstaller.core;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
@@ -33,15 +32,13 @@ import java.util.List;
 import eu.chainfire.libsuperuser.Shell;
 import rx.Observable;
 
+import static com.chromium.fontinstaller.core.PathConstants.SYSTEM_FONT_PATH;
+
 public class FontInstaller {
 
     private static final String TAG = FontInstaller.class.toString();
 
     private static final String MOUNT_SYSTEM = "mount -o rw,remount /system";
-    private static final String FONT_INSTALL_DIR = "/system/fonts";
-
-    @SuppressLint("SdCardPath")
-    public static final String CACHE_DIR = "/sdcard/Android/data/com.chromium.fontinstaller/cache/";
 
     public static class InstallException extends Exception {
         public InstallException(Exception root) { super(root); }
@@ -56,7 +53,7 @@ public class FontInstaller {
                     subscriber.onError(new InstallException(new IOException("File not found!")));
                     return;
                 }
-                final String installCommand = "cp " + file + " " + FONT_INSTALL_DIR;
+                final String installCommand = "cp " + file + " " + SYSTEM_FONT_PATH;
                 Log.d(TAG, "Adding command: " + installCommand);
                 copyCommands.add(installCommand);
             }
@@ -73,7 +70,7 @@ public class FontInstaller {
     // This font file is copied as a workaround/fix to the lockscreen colon bug
     private static String generateLockscreenFixCommand(Context context) {
         return "cp " + FileUtils.getAssetsFile("DroidSansFallback.ttf", context)
-                .getAbsolutePath() + " " + FONT_INSTALL_DIR;
+                .getAbsolutePath() + " " + SYSTEM_FONT_PATH;
     }
 
 }
