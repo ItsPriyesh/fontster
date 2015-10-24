@@ -15,8 +15,8 @@ android {
         applicationId "com.chromium.fontinstaller"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 25
-        versionName "2.8"
+        versionCode 24
+        versionName "2.8 beta"
     }
     buildTypes {
         release {
