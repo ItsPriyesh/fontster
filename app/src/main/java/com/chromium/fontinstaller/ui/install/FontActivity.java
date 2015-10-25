@@ -57,7 +57,7 @@ import static com.chromium.fontinstaller.util.ViewUtils.animSlideUp;
 import static com.chromium.fontinstaller.util.ViewUtils.reveal;
 import static com.chromium.fontinstaller.util.ViewUtils.snackbar;
 
-public class FontActivity extends BaseActivity implements TabLayout.OnTabSelectedListener {
+public final class FontActivity extends BaseActivity implements TabLayout.OnTabSelectedListener {
 
     @Bind(R.id.font_name)
     TextView mFontTitle;
@@ -300,7 +300,7 @@ public class FontActivity extends BaseActivity implements TabLayout.OnTabSelecte
     public void onTabReselected(TabLayout.Tab tab) {
     }
 
-    private class PreviewPagerAdapter extends FragmentPagerAdapter {
+    private final class PreviewPagerAdapter extends FragmentPagerAdapter {
 
         private final String[] tabTitles = {
                 getString(R.string.font_activity_tab_regular),

@@ -32,7 +32,7 @@ import com.chromium.fontinstaller.util.ViewUtils;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class PreviewFragment extends Fragment {
+public final class PreviewFragment extends Fragment {
 
     @Bind(R.id.preview_text)
     AutoScaleTextView mPreviewText;

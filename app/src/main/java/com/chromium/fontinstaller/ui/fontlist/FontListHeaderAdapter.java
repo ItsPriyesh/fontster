@@ -27,12 +27,12 @@ import com.eowise.recyclerview.stickyheaders.StickyHeadersAdapter;
 
 import java.util.List;
 
-public class FontListHeaderAdapter implements StickyHeadersAdapter<FontListHeaderAdapter.ViewHolder> {
+public final class FontListHeaderAdapter implements StickyHeadersAdapter<FontListHeaderAdapter.ViewHolder> {
 
-    private final List<String> items;
+    private final List<String> mItems;
 
     public FontListHeaderAdapter(List<String> items) {
-        this.items = items;
+        this.mItems = items;
     }
 
     @Override
@@ -45,16 +45,16 @@ public class FontListHeaderAdapter implements StickyHeadersAdapter<FontListHeade
 
     @Override
     public void onBindViewHolder(ViewHolder headerViewHolder, int position) {
-        headerViewHolder.letter.setText(items.get(position).subSequence(0, 1));
+        headerViewHolder.letter.setText(mItems.get(position).subSequence(0, 1));
     }
 
     @Override
     public long getHeaderId(int position) {
-        return items.get(position).charAt(0);
+        return mItems.get(position).charAt(0);
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView letter;
+    public final static class ViewHolder extends RecyclerView.ViewHolder {
+        final TextView letter;
 
         public ViewHolder(View itemView) {
             super(itemView);

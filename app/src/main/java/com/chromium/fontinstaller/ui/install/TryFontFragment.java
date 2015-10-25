@@ -34,17 +34,17 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.functions.Action1;
 
-public class TryFontFragment extends DialogFragment {
+public final class TryFontFragment extends DialogFragment {
 
     @Bind(R.id.title)
-    TextView title;
+    TextView mTitleView;
 
     @Bind(R.id.input)
-    EditText input;
+    EditText mInputView;
 
-    private FontPackage fontPackage;
-    private Style style;
-    private Action1<String> tryCallback;
+    private FontPackage mFontPackage;
+    private Style mStyle;
+    private Action1<String> mTryCallback;
 
     public TryFontFragment() { }
 
@@ -64,8 +64,8 @@ public class TryFontFragment extends DialogFragment {
 
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        title.setText(fontPackage.getName());
-        input.setTypeface(fontPackage.getTypeface(style));
+        mTitleView.setText(mFontPackage.getName());
+        mInputView.setTypeface(mFontPackage.getTypeface(mStyle));
 
         return view;
     }
@@ -73,20 +73,20 @@ public class TryFontFragment extends DialogFragment {
     @SuppressWarnings("unused")
     @OnClick(R.id.done_button)
     public void doneButtonClicked() {
-        tryCallback.call(input.getText().toString());
+        mTryCallback.call(mInputView.getText().toString());
         dismiss();
     }
 
     private void setTryCallback(Action1<String> callback) {
-        this.tryCallback = callback;
+        this.mTryCallback = callback;
     }
 
     private void setFontPackage(FontPackage fontPackage) {
-        this.fontPackage = fontPackage;
+        this.mFontPackage = fontPackage;
     }
 
     private void setFontStyle(Style style) {
-        this.style = style;
+        this.mStyle = style;
     }
 
 }

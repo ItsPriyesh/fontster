@@ -30,7 +30,7 @@ import static com.chromium.fontinstaller.core.SystemConstants.*;
 
 public class BackupManager {
 
-    private File backupDirectory;
+    private File mBackupDirectory;
 
     @SuppressLint("SimpleDateFormat")
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MMM dd, yyyy");
@@ -40,9 +40,9 @@ public class BackupManager {
     }
 
     private void createBackupDir() {
-        backupDirectory = new File(BACKUP_PATH);
+        mBackupDirectory = new File(BACKUP_PATH);
         //noinspection ResultOfMethodCallIgnored
-        backupDirectory.mkdirs();
+        mBackupDirectory.mkdirs();
     }
 
     public Observable<Void> backup() {
@@ -54,7 +54,7 @@ public class BackupManager {
         if (Shell.SU.available()) {
             Shell.SU.run(MOUNT_SYSTEM_COMMAND);
             List<String> restoreCommands = new ArrayList<>();
-            for (File file : backupDirectory.listFiles()) {
+            for (File file : mBackupDirectory.listFiles()) {
                 restoreCommands.add("cp " + file.getAbsolutePath() + " " + SYSTEM_FONT_PATH);
             }
             return CommandRunner.runCommands(restoreCommands);
@@ -68,6 +68,6 @@ public class BackupManager {
     }
 
     public boolean backupExists() {
-        return backupDirectory.listFiles() != null && backupDirectory.listFiles().length != 0;
+        return mBackupDirectory.listFiles() != null && mBackupDirectory.listFiles().length != 0;
     }
 }

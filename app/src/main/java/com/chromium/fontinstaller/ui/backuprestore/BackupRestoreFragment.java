@@ -45,19 +45,19 @@ import static com.chromium.fontinstaller.util.PreferencesManager.Keys;
 public class BackupRestoreFragment extends Fragment {
 
     @Bind(R.id.backup_unavailable_container)
-    ViewGroup noBackupContainer;
+    ViewGroup mNoBackupContainer;
 
     @Bind(R.id.backup_available_container)
-    ViewGroup backupContainer;
+    ViewGroup mBackupContainer;
 
     @Bind(R.id.backup_name)
-    TextView backupName;
+    TextView mBackupNameView;
 
     @Bind(R.id.backup_date)
-    TextView backupDate;
+    TextView mBackupDateView;
 
-    private BackupManager backupManager;
-    private PreferencesManager preferences;
+    private BackupManager mBackupManager;
+    private PreferencesManager mPreferences;
 
     public BackupRestoreFragment() { }
 
@@ -68,8 +68,8 @@ public class BackupRestoreFragment extends Fragment {
 
         ((BaseActivity) getActivity()).setToolbarTitle(getString(R.string.drawer_item_backup_restore));
 
-        backupManager = new BackupManager();
-        preferences = PreferencesManager.getInstance(getActivity());
+        mBackupManager = new BackupManager();
+        mPreferences = PreferencesManager.getInstance(getActivity());
 
         checkForBackup();
 
@@ -77,14 +77,14 @@ public class BackupRestoreFragment extends Fragment {
     }
 
     private void checkForBackup() {
-        if (backupManager.backupExists()) {
-            if (noBackupContainer.getVisibility() == View.VISIBLE)
-                slideUpAndRemove(noBackupContainer);
+        if (mBackupManager.backupExists()) {
+            if (mNoBackupContainer.getVisibility() == View.VISIBLE)
+                slideUpAndRemove(mNoBackupContainer);
 
             setupBackupContainer();
         } else {
-            slideUpAndRemove(backupContainer);
-            slideUpAndAdd(noBackupContainer);
+            slideUpAndRemove(mBackupContainer);
+            slideUpAndAdd(mNoBackupContainer);
         }
     }
 
@@ -99,10 +99,10 @@ public class BackupRestoreFragment extends Fragment {
     }
 
     private void setupBackupContainer() {
-        slideUpAndAdd(backupContainer);
+        slideUpAndAdd(mBackupContainer);
 
-        backupName.setText(preferences.getString(Keys.BACKUP_NAME));
-        backupDate.setText(preferences.getString(Keys.BACKUP_DATE));
+        mBackupNameView.setText(mPreferences.getString(Keys.BACKUP_NAME));
+        mBackupDateView.setText(mPreferences.getString(Keys.BACKUP_DATE));
     }
 
     @SuppressWarnings("unused")
@@ -117,14 +117,14 @@ public class BackupRestoreFragment extends Fragment {
                 .setItems(options, (dialog, index) -> {
                     switch (index) {
                         case 0:
-                            backupManager.restore()
+                            mBackupManager.restore()
                                     .subscribeOn(Schedulers.io())
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .doOnCompleted(this::onRestoreComplete)
                                     .subscribe();
                             break;
                         case 1:
-                            backupManager.deleteBackup()
+                            mBackupManager.deleteBackup()
                                     .subscribeOn(Schedulers.io())
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .doOnCompleted(this::onBackupDeleted)
@@ -140,7 +140,7 @@ public class BackupRestoreFragment extends Fragment {
         BackupDialogFragment backupDialog = new BackupDialogFragment();
         backupDialog.show(getActivity().getSupportFragmentManager(), "BackupDialogFragment");
         backupDialog.setOnBackupClickedListener(name ->
-                        backupManager.backup()
+                        mBackupManager.backup()
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .doOnCompleted(() -> onBackupComplete(name))
@@ -149,8 +149,8 @@ public class BackupRestoreFragment extends Fragment {
     }
 
     public void onBackupComplete(String name) {
-        preferences.setString(Keys.BACKUP_NAME, name);
-        preferences.setString(Keys.BACKUP_DATE, BackupManager.DATE_FORMAT.format(new Date()));
+        mPreferences.setString(Keys.BACKUP_NAME, name);
+        mPreferences.setString(Keys.BACKUP_DATE, BackupManager.DATE_FORMAT.format(new Date()));
         checkForBackup();
     }
 

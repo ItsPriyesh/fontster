@@ -53,25 +53,25 @@ public class SettingsFragment extends PreferenceFragment implements
 
     private static final int TAPS_TO_ENTER_DEV_SETTINGS = 8;
 
-    public static final String DONATE_SKU_SMALL = "com.chromium.fontster.donate";
+    public static final String DONATE_SKU_SMALL = "com.chromium.fontster.mDonate";
     public static final String DONATE_SKU_MED = "com.chromium.fontster.donate_med";
     public static final String DONATE_SKU_LARGE = "com.chromium.fontster.donate_large";
 
-    private IabHelper billingHelper;
-    private PreferencesManager preferences;
-    private IabHelper.OnIabPurchaseFinishedListener purchaseListener;
-    private Preference donate;
-    private ProgressDialog progressDialog;
-    private int versionTaps = 0;
+    private IabHelper mBillingHelper;
+    private PreferencesManager mPreferences;
+    private IabHelper.OnIabPurchaseFinishedListener mPurchaseListener;
+    private Preference mDonate;
+    private ProgressDialog mProgressDialog;
+    private int mVersionTaps = 0;
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.settings);
 
-        preferences = PreferencesManager.getInstance(getActivity());
+        mPreferences = PreferencesManager.getInstance(getActivity());
 
-        billingHelper = new IabHelper(getActivity(), SecretStuff.LICENSE_KEY);
+        mBillingHelper = new IabHelper(getActivity(), SecretStuff.LICENSE_KEY);
 
         final CheckBoxPreference trueFont = (CheckBoxPreference) findPreference("trueFont");
         trueFont.setOnPreferenceChangeListener((pref, newValue) -> handleTrueFont(newValue));
@@ -88,36 +88,36 @@ public class SettingsFragment extends PreferenceFragment implements
         final Preference appVersion = findPreference("appVersion");
         appVersion.setSummary(BuildConfig.VERSION_NAME + " - " + BuildConfig.BUILD_TYPE);
         appVersion.setOnPreferenceClickListener(pref -> {
-            if (++versionTaps == TAPS_TO_ENTER_DEV_SETTINGS) {
-                versionTaps = 0;
+            if (++mVersionTaps == TAPS_TO_ENTER_DEV_SETTINGS) {
+                mVersionTaps = 0;
                 startActivity(new Intent(getActivity(), DeveloperSettingsActivity.class));
             }
             return true;
         });
 
-        donate = findPreference("donate");
+        mDonate = findPreference("donate");
 
-        billingHelper.startSetup(result -> {
+        mBillingHelper.startSetup(result -> {
             if (result.isSuccess()) {
-                donate.setEnabled(true);
+                mDonate.setEnabled(true);
             } else {
-                donate.setSummary(R.string.settings_iab_setup_error);
+                mDonate.setSummary(R.string.settings_iab_setup_error);
             }
         });
 
-        donate.setOnPreferenceClickListener(pref -> showDonationDialog());
+        mDonate.setOnPreferenceClickListener(pref -> showDonationDialog());
 
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (billingHelper != null) billingHelper.dispose();
-        billingHelper = null;
+        if (mBillingHelper != null) mBillingHelper.dispose();
+        mBillingHelper = null;
     }
 
     public IabHelper getBillingHelper() {
-        return billingHelper;
+        return mBillingHelper;
     }
 
     private boolean showDonationDialog() {
@@ -134,8 +134,8 @@ public class SettingsFragment extends PreferenceFragment implements
     }
 
     private boolean makeDonation(String sku) {
-        billingHelper.launchPurchaseFlow(getActivity(), sku, 1, purchaseListener, "");
-        purchaseListener = (result, purchase) -> {
+        mBillingHelper.launchPurchaseFlow(getActivity(), sku, 1, mPurchaseListener, "");
+        mPurchaseListener = (result, purchase) -> {
             final View v = getView();
             if (result.isFailure()) snackbar(R.string.settings_donation_failed, v);
             else if (purchase.getSku().equals(sku)) snackbar(R.string.settings_donation_success, v);
@@ -145,15 +145,15 @@ public class SettingsFragment extends PreferenceFragment implements
     }
 
     private boolean handleTrueFont(Object newValue) {
-        preferences.setBoolean(Keys.ENABLE_TRUEFONT, (boolean) newValue);
+        mPreferences.setBoolean(Keys.ENABLE_TRUEFONT, (boolean) newValue);
         showRestartDialog();
         return true;
     }
 
     private boolean clearCache() {
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setMessage(getString(R.string.settings_clear_cache_progress));
-        progressDialog.show();
+        mProgressDialog = new ProgressDialog(getActivity());
+        mProgressDialog.setMessage(getString(R.string.settings_clear_cache_progress));
+        mProgressDialog.show();
 
         final List<String> commands = new ArrayList<>();
         final File cache = new File(getActivity().getExternalCacheDir() + File.separator);
@@ -172,8 +172,8 @@ public class SettingsFragment extends PreferenceFragment implements
     }
 
     public void onCacheCleared() {
-        preferences.setBoolean(Keys.TRUEFONTS_CACHED, false);
-        progressDialog.dismiss();
+        mPreferences.setBoolean(Keys.TRUEFONTS_CACHED, false);
+        mProgressDialog.dismiss();
         snackbar(R.string.settings_clear_cache_success, getView());
     }
 

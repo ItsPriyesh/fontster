@@ -39,19 +39,19 @@ import timber.log.Timber;
 public class BaseActivity extends AppCompatActivity {
 
     @Bind(R.id.app_bar)
-    protected Toolbar toolbar;
+    protected Toolbar mToolbar;
 
-    private IabHelper billingHelper;
-    private final Handler handler = new Handler();
+    private IabHelper mBillingHelper;
+    private final Handler mHandler = new Handler();
 
     @Override
     public void setContentView(int layoutResId) {
         super.setContentView(layoutResId);
         ButterKnife.bind(this);
 
-        billingHelper = new IabHelper(this, SecretStuff.LICENSE_KEY);
+        mBillingHelper = new IabHelper(this, SecretStuff.LICENSE_KEY);
 
-        setSupportActionBar(toolbar);
+        setSupportActionBar(mToolbar);
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(false);
 
@@ -69,10 +69,10 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     protected void initializeAd(AdView adView) {
-        billingHelper.startSetup(result -> {
+        mBillingHelper.startSetup(result -> {
             if (result.isSuccess()) {
                 Timber.i("Billing setup");
-                billingHelper.queryInventoryAsync((queriedResult, inventory) -> {
+                mBillingHelper.queryInventoryAsync((queriedResult, inventory) -> {
                     Timber.i("User Donated: " + userDonated(inventory));
                     if (userDonated(inventory)) hideAd(adView);
                     else displayAd(adView);
@@ -96,7 +96,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     protected void delay(Runnable runnable, long delay) {
-        handler.postDelayed(runnable, delay);
+        mHandler.postDelayed(runnable, delay);
     }
 
     private void hideAd(AdView adView) {
@@ -104,11 +104,11 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void setToolbarTitle(String title) {
-        toolbar.setTitle(title);
+        mToolbar.setTitle(title);
     }
 
     protected void disableToolbarElevation() {
-        if (ViewUtils.isLollipop()) toolbar.setElevation(0);
+        if (ViewUtils.isLollipop()) mToolbar.setElevation(0);
     }
 
     protected void showToolbarBackButton() {

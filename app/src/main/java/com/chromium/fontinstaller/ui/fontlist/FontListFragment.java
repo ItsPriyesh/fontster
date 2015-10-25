@@ -56,72 +56,72 @@ import static com.chromium.fontinstaller.util.PreferencesManager.Keys;
 public class FontListFragment extends Fragment {
 
     @Bind(R.id.font_list_view)
-    RecyclerView recyclerView;
+    RecyclerView mRecyclerView;
 
     @Bind(R.id.download_progress)
-    ProgressBar downloadProgress;
+    ProgressBar mDownloadProgress;
 
     @Bind(R.id.error_container)
-    ViewGroup errorContainer;
+    ViewGroup mErrorContainer;
 
-    private FontListAdapter listAdapter;
-    private List<String> fontList;
-    private Activity activity;
-    private ProgressDialog progressDialog;
-    private PreferencesManager preferences;
+    private FontListAdapter mListAdapter;
+    private List<String> mFontList;
+    private Activity mActivity;
+    private ProgressDialog mProgressDialog;
+    private PreferencesManager mPreferences;
 
     public FontListFragment() { }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_font_list, container, false);
+        final View view = inflater.inflate(R.layout.fragment_font_list, container, false);
         ButterKnife.bind(this, view);
 
-        activity = getActivity();
-        ((MainActivity) activity).setToolbarTitle(getString(R.string.app_name));
+        mActivity = getActivity();
+        ((MainActivity) mActivity).setToolbarTitle(getString(R.string.app_name));
 
-        preferences = PreferencesManager.getInstance(activity);
+        mPreferences = PreferencesManager.getInstance(mActivity);
 
-        fontList = Arrays.asList(getResources().getStringArray(R.array.font_list));
+        mFontList = Arrays.asList(getResources().getStringArray(R.array.font_list));
 
-        RecyclerView.LayoutManager listManager = new LinearLayoutManager(activity);
-        recyclerView.setLayoutManager(listManager);
+        RecyclerView.LayoutManager listManager = new LinearLayoutManager(mActivity);
+        mRecyclerView.setLayoutManager(listManager);
 
-        if (preferences.getBoolean(Keys.ENABLE_TRUEFONT)) downloadFontList();
+        if (mPreferences.getBoolean(Keys.ENABLE_TRUEFONT)) downloadFontList();
         else setupRecyclerViewAdapter(false);
 
         return view;
     }
 
     private void setupRecyclerViewAdapter(boolean enableTrueFont) {
-        recyclerView.setVisibility(View.VISIBLE);
+        mRecyclerView.setVisibility(View.VISIBLE);
 
-        listAdapter = new FontListAdapter(activity, new ArrayList<>(fontList), enableTrueFont);
+        mListAdapter = new FontListAdapter(mActivity, new ArrayList<>(mFontList), enableTrueFont);
 
-        recyclerView.setAdapter(listAdapter);
-        recyclerView.addItemDecoration(buildHeaderDecor());
+        mRecyclerView.setAdapter(mListAdapter);
+        mRecyclerView.addItemDecoration(buildHeaderDecor());
     }
 
     private void dismissProgressDialog() {
-        if (progressDialog != null && progressDialog.isShowing()) progressDialog.dismiss();
+        if (mProgressDialog != null && mProgressDialog.isShowing()) mProgressDialog.dismiss();
     }
 
     private void downloadFontList() {
-        final boolean previewsCached = preferences.getBoolean(Keys.TRUEFONTS_CACHED);
+        final boolean previewsCached = mPreferences.getBoolean(Keys.TRUEFONTS_CACHED);
 
         if (!previewsCached) {
-            progressDialog = new ProgressDialog(activity);
-            progressDialog.setMessage(activity.getString(R.string.font_list_download_progress));
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            progressDialog.setMax(fontList.size());
-            progressDialog.show();
+            mProgressDialog = new ProgressDialog(mActivity);
+            mProgressDialog.setMessage(mActivity.getString(R.string.font_list_download_progress));
+            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            mProgressDialog.setMax(mFontList.size());
+            mProgressDialog.show();
         }
 
-        if (errorContainer.getVisibility() == View.VISIBLE) errorContainer.setVisibility(View.GONE);
-        downloadProgress.setVisibility(View.VISIBLE);
+        if (mErrorContainer.getVisibility() == View.VISIBLE) mErrorContainer.setVisibility(View.GONE);
+        mDownloadProgress.setVisibility(View.VISIBLE);
 
-        final List<FontPackage> fontPackages = new ArrayList<>(fontList.size());
-        for (String fontName : fontList) fontPackages.add(new FontPackage(fontName));
+        final List<FontPackage> fontPackages = new ArrayList<>(mFontList.size());
+        for (String fontName : mFontList) fontPackages.add(new FontPackage(fontName));
 
         Observable.from(fontPackages)
                 .flatMap(fp -> FontDownloader.downloadStyledFonts(fp, Style.REGULAR))
@@ -129,19 +129,19 @@ public class FontListFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         font -> {
-                            if (progressDialog != null) progressDialog.incrementProgressBy(1);
+                            if (mProgressDialog != null) mProgressDialog.incrementProgressBy(1);
                         },
                         this::handleDownloadFailure,
                         this::handleDownloadSuccess);
     }
 
     private void handleDownloadSuccess() {
-        preferences.setBoolean(Keys.TRUEFONTS_CACHED, true);
+        mPreferences.setBoolean(Keys.TRUEFONTS_CACHED, true);
 
         dismissProgressDialog();
-        ViewUtils.animSlideUp(downloadProgress, getActivity());
+        ViewUtils.animSlideUp(mDownloadProgress, getActivity());
         new Handler().postDelayed(() -> {
-            downloadProgress.setVisibility(View.INVISIBLE);
+            mDownloadProgress.setVisibility(View.INVISIBLE);
             setupRecyclerViewAdapter(true);
         }, 400);
     }
@@ -149,11 +149,11 @@ public class FontListFragment extends Fragment {
     private void handleDownloadFailure(Throwable error) {
         dismissProgressDialog();
         Timber.e("Download failed: " + error.getMessage());
-        ViewUtils.animSlideUp(downloadProgress, getActivity());
+        ViewUtils.animSlideUp(mDownloadProgress, getActivity());
         new Handler().postDelayed(() -> {
-            downloadProgress.setVisibility(View.INVISIBLE);
-            ViewUtils.animSlideInBottom(errorContainer, getActivity());
-            errorContainer.setVisibility(View.VISIBLE);
+            mDownloadProgress.setVisibility(View.INVISIBLE);
+            ViewUtils.animSlideInBottom(mErrorContainer, getActivity());
+            mErrorContainer.setVisibility(View.VISIBLE);
         }, 400);
     }
 
@@ -165,9 +165,9 @@ public class FontListFragment extends Fragment {
 
     private StickyHeadersItemDecoration buildHeaderDecor() {
         return new StickyHeadersBuilder()
-                .setAdapter(listAdapter)
-                .setRecyclerView(recyclerView)
-                .setStickyHeadersAdapter(new FontListHeaderAdapter(fontList), true)
+                .setAdapter(mListAdapter)
+                .setRecyclerView(mRecyclerView)
+                .setStickyHeadersAdapter(new FontListHeaderAdapter(mFontList), true)
                 .build();
     }
 }

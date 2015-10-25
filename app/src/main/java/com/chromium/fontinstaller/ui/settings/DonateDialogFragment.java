@@ -33,7 +33,7 @@ import butterknife.OnClick;
 public class DonateDialogFragment extends DialogFragment {
 
     @Bind(R.id.radio_group)
-    RadioGroup radioGroup;
+    RadioGroup mRadioGroup;
 
     private DonationClickListener listener;
 
@@ -61,7 +61,7 @@ public class DonateDialogFragment extends DialogFragment {
     @OnClick(R.id.done_button)
     public void dispatchDonationClick() {
         String sku;
-        switch (radioGroup.getCheckedRadioButtonId()) {
+        switch (mRadioGroup.getCheckedRadioButtonId()) {
             case R.id.donate_small:
                 sku = SettingsFragment.DONATE_SKU_SMALL;
                 break;

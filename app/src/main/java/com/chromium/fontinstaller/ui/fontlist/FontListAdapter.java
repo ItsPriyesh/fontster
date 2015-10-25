@@ -34,19 +34,18 @@ import com.chromium.fontinstaller.util.FileUtils;
 
 import java.util.ArrayList;
 
-public class FontListAdapter extends RecyclerView.Adapter<FontListAdapter.ViewHolder> {
+public final class FontListAdapter extends RecyclerView.Adapter<FontListAdapter.ViewHolder> {
 
-    private boolean enableTrueFont;
-    private static ArrayList<String> fontNames;
-    private static LruCache<String, Typeface> fontCache;
+    private boolean mEnableTrueFont;
+    private static ArrayList<String> sFontNames;
+    private static LruCache<String, Typeface> sFontCache;
 
     public FontListAdapter(Context context, ArrayList<String> fontNames, boolean enableTrueFont) {
-        FontListAdapter.fontNames = fontNames;
-        this.enableTrueFont = enableTrueFont;
+        FontListAdapter.sFontNames = fontNames;
+        this.mEnableTrueFont = enableTrueFont;
+        sFontCache = new LruCache<>(FileUtils.getMaxCacheSize(context));
 
         setHasStableIds(true);
-
-        fontCache = new LruCache<>(FileUtils.getMaxCacheSize(context));
     }
 
     @Override
@@ -57,15 +56,15 @@ public class FontListAdapter extends RecyclerView.Adapter<FontListAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        String currentFontName = fontNames.get(position);
+        final String currentFontName = sFontNames.get(position);
 
         holder.fontName.setText(currentFontName);
 
-        if (enableTrueFont) {
-            Typeface currentFont = fontCache.get(currentFontName);
+        if (mEnableTrueFont) {
+            Typeface currentFont = sFontCache.get(currentFontName);
             if (currentFont == null) {
                 currentFont = new FontPackage(currentFontName).getTypeface(Style.REGULAR);
-                fontCache.put(currentFontName, currentFont);
+                sFontCache.put(currentFontName, currentFont);
             }
             holder.fontName.setTypeface(currentFont);
         }
@@ -73,16 +72,16 @@ public class FontListAdapter extends RecyclerView.Adapter<FontListAdapter.ViewHo
 
     @Override
     public long getItemId(int position) {
-        return fontNames.get(position).hashCode();
+        return sFontNames.get(position).hashCode();
     }
 
     @Override
     public int getItemCount() {
-        return fontNames.size();
+        return sFontNames.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public TextView fontName;
+    public final static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        final TextView fontName;
 
         public ViewHolder(View view) {
             super(view);
@@ -93,7 +92,7 @@ public class FontListAdapter extends RecyclerView.Adapter<FontListAdapter.ViewHo
         @Override
         public void onClick(View view) {
             final Context context = view.getContext();
-            final String fontName = fontNames.get(getLayoutPosition());
+            final String fontName = sFontNames.get(getLayoutPosition());
             final Intent intent = FontActivity.getLaunchIntent(context, fontName);
             context.startActivity(intent);
         }

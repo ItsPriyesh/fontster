@@ -46,23 +46,23 @@ import butterknife.Bind;
 public class MainActivity extends BaseActivity implements MaterialSearchView.SearchViewListener {
 
     @Bind(R.id.drawer_layout)
-    DrawerLayout drawerLayout;
+    DrawerLayout mDrawerLayout;
 
     @Bind(R.id.navigation_view)
-    NavigationView navigationView;
+    NavigationView mNavigationView;
 
     @Bind(R.id.search_view)
-    MaterialSearchView searchView;
+    MaterialSearchView mSearchView;
 
     @Bind(R.id.ad_view)
-    AdView adView;
+    AdView mAdView;
 
-    private ActionBarDrawerToggle drawerToggle;
-    private FragmentManager fragmentManager;
-    private FontListFragment fontListFragment;
-    private BackupRestoreFragment backupRestoreFragment;
+    private ActionBarDrawerToggle mDrawerToggle;
+    private FragmentManager mFragmentManager;
+    private FontListFragment mFontListFragment;
+    private BackupRestoreFragment mBackupRestoreFragment;
 
-    private boolean shouldShowSearch = true;
+    private boolean mShouldShowSearch = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,26 +70,26 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.Sea
         setContentView(R.layout.activity_main);
         setToolbarTitle(getString(R.string.app_name));
 
-        if (!BuildConfig.DEBUG) initializeAd(adView);
+        if (!BuildConfig.DEBUG) initializeAd(mAdView);
 
-        drawerToggle = new ActionBarDrawerToggle(
-                this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
+        mDrawerToggle = new ActionBarDrawerToggle(
+                this, mDrawerLayout, mToolbar, R.string.drawer_open, R.string.drawer_close);
 
-        setupDrawerContent(navigationView);
-        drawerLayout.setDrawerListener(drawerToggle);
+        setupDrawerContent(mNavigationView);
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-        fragmentManager = getSupportFragmentManager();
-        fontListFragment = new FontListFragment();
-        backupRestoreFragment = new BackupRestoreFragment();
+        mFragmentManager = getSupportFragmentManager();
+        mFontListFragment = new FontListFragment();
+        mBackupRestoreFragment = new BackupRestoreFragment();
 
-        swapFragment(fontListFragment);
+        swapFragment(mFontListFragment);
 
         final String[] fontList = getResources().getStringArray(R.array.font_list);
-        searchView.setOnSearchViewListener(this);
-        searchView.setSuggestionIcon(null);
-        searchView.setSuggestions(fontList);
-        searchView.setPadding(0, ViewUtils.getStatusBarHeight(this), 0, 0);
-        searchView.setOnItemClickListener((parent, view, position, id) -> {
+        mSearchView.setOnSearchViewListener(this);
+        mSearchView.setSuggestionIcon(null);
+        mSearchView.setSuggestions(fontList);
+        mSearchView.setPadding(0, ViewUtils.getStatusBarHeight(this), 0, 0);
+        mSearchView.setOnItemClickListener((parent, view, position, id) -> {
             final String fontName = getFontNameFromListItem(view);
             final Intent intent = FontActivity.getLaunchIntent(this, fontName);
             startActivity(intent);
@@ -102,7 +102,7 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.Sea
 
     private void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(menuItem -> {
-            drawerLayout.closeDrawers();
+            mDrawerLayout.closeDrawers();
             selectDrawerItem(menuItem);
             return true;
         });
@@ -110,16 +110,16 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.Sea
 
     private void selectDrawerItem(MenuItem menuItem) {
         final int selectedId = menuItem.getItemId();
-        shouldShowSearch = (selectedId == R.id.fonts);
+        mShouldShowSearch = (selectedId == R.id.fonts);
         switch (selectedId) {
             case R.id.fonts:
-                swapFragment(fontListFragment);
+                swapFragment(mFontListFragment);
                 menuItem.setChecked(true);
                 setTitle(getString(R.string.app_name));
                 invalidateOptionsMenu();
                 break;
             case R.id.backup:
-                swapFragment(backupRestoreFragment);
+                swapFragment(mBackupRestoreFragment);
                 menuItem.setChecked(true);
                 setTitle(menuItem.getTitle());
                 invalidateOptionsMenu();
@@ -133,7 +133,7 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.Sea
     }
 
     private void swapFragment(Fragment fragment) {
-        fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+        mFragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
     }
 
     @Override
@@ -141,33 +141,33 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.Sea
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
         final MenuItem searchItem = menu.findItem(R.id.action_search);
-        searchItem.setVisible(shouldShowSearch);
-        searchView.setMenuItem(searchItem);
+        searchItem.setVisible(mShouldShowSearch);
+        mSearchView.setMenuItem(searchItem);
 
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return drawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+        return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        drawerToggle.syncState();
+        mDrawerToggle.syncState();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        drawerToggle.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override
     public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START) || searchView.isSearchOpen()) {
-            drawerLayout.closeDrawers();
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START) || mSearchView.isSearchOpen()) {
+            mDrawerLayout.closeDrawers();
             return;
         }
         super.onBackPressed();
@@ -175,8 +175,8 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.Sea
 
     @Override
     public void onSearchViewShown() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawers();
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            mDrawerLayout.closeDrawers();
         }
     }
 

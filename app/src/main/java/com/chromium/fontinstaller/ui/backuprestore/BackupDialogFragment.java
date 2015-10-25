@@ -35,9 +35,9 @@ import static com.chromium.fontinstaller.util.ViewUtils.toast;
 public class BackupDialogFragment extends DialogFragment {
 
     @Bind(R.id.input)
-    EditText input;
+    EditText mInputView;
 
-    private BackupDialogListener listener;
+    private BackupDialogListener mListener;
 
     public BackupDialogFragment() { }
 
@@ -46,7 +46,7 @@ public class BackupDialogFragment extends DialogFragment {
     }
 
     public void setOnBackupClickedListener(BackupDialogListener listener){
-        this.listener = listener;
+        mListener = listener;
     }
 
     @Override
@@ -62,10 +62,10 @@ public class BackupDialogFragment extends DialogFragment {
     @SuppressWarnings("unused")
     @OnClick(R.id.backup_button)
     public void backupButtonClicked() {
-        if (input.getText().toString().equals("")) {
+        if (mInputView.getText().toString().equals("")) {
             toast("Please enter a name for the backup", this);
         } else {
-            listener.onBackupButtonClicked(input.getText().toString());
+            mListener.onBackupButtonClicked(mInputView.getText().toString());
             dismiss();
         }
     }

@@ -20,9 +20,9 @@ import java.io.File;
 
 public class Font {
 
-    private Style style;
-    private String url;
-    private File file;
+    private final Style style;
+    private final String url;
+    private final File file;
 
     public Font(Style style, String url, File file) {
         this.style = style;
