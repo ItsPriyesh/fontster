@@ -142,23 +142,23 @@ public class ViewUtils {
     }
 
     public static void animGrowFromCenter(View view, Context context) {
+        if (context == null || view == null) return;
         view.startAnimation(AnimationUtils.loadAnimation(context, R.anim.grow_from_center));
     }
 
     public static void animShrinkToCenter(View view, Context context) {
+        if (context == null || view == null) return;
         view.startAnimation(AnimationUtils.loadAnimation(context, R.anim.shrink_to_center));
     }
 
     public static void animSlideInBottom(View view, Context context) {
+        if (context == null || view == null) return;
         view.startAnimation(AnimationUtils.loadAnimation(context, R.anim.abc_slide_in_bottom));
     }
 
     public static void animSlideUp(View view, Context context) {
+        if (context == null || view == null) return;
         view.startAnimation(AnimationUtils.loadAnimation(context, R.anim.abc_slide_out_top));
-    }
-
-    public static void animFadeIn(View view, Context context) {
-        view.startAnimation(AnimationUtils.loadAnimation(context, R.anim.abc_fade_in));
     }
 
     public static void snackbar(int messageResId, View parent) {
