@@ -30,8 +30,8 @@ import static com.chromium.fontinstaller.core.SystemConstants.*;
 
 public class FontPackage {
 
-    private final String name;
-    private HashMap<Font, Style> fontsToStyles = new HashMap<>();
+    private final String mName;
+    private HashMap<Font, Style> mFontsToStyles = new HashMap<>();
 
     private static final String BASE_URL = "https://raw.githubusercontent.com/ItsPriyesh/FontsterFontsRepo/master/";
 
@@ -40,10 +40,10 @@ public class FontPackage {
      * that exist in the FontsterFontsRepo. These packs are verified,
      * and can be used with FontDownloader.
      *
-     * @param name The font package name from FontsterFontsRepo
+     * @param name The font package mName from FontsterFontsRepo
      */
     public FontPackage(String name) {
-        this.name = name;
+        mName = name;
         initForDownloadableFontPack();
     }
 
@@ -55,7 +55,7 @@ public class FontPackage {
      * @param folder The local folder containing the fonts
      */
     private FontPackage(File folder) {
-        this.name = folder.getName();
+        mName = folder.getName();
         initForLocalFontPack(folder);
     }
 
@@ -69,10 +69,10 @@ public class FontPackage {
 
     private void initForDownloadableFontPack() {
         for (Style style : Style.values()) {
-            final String url = BASE_URL + name.replace(" ", "") + "FontPack/" + style.getRemoteName();
-            final File file = new File(CACHE_PATH + name.replace(" ", "") + "FontPack/" + style.getLocalName());
+            final String url = BASE_URL + mName.replace(" ", "") + "FontPack/" + style.getRemoteName();
+            final File file = new File(CACHE_PATH + mName.replace(" ", "") + "FontPack/" + style.getLocalName());
             final Font font = new Font(style, url, file);
-            fontsToStyles.put(font, style);
+            mFontsToStyles.put(font, style);
         }
     }
 
@@ -87,20 +87,20 @@ public class FontPackage {
 
         for (Style style : Style.REMOTE_STYLES) {
             final Font font = new Font(style, null, namesToFiles.get(style.getLocalName()));
-            fontsToStyles.put(font, style);
+            mFontsToStyles.put(font, style);
         }
     }
 
     public ArrayList<Font> getFontList() {
-        return new ArrayList<>(fontsToStyles.keySet());
+        return new ArrayList<>(mFontsToStyles.keySet());
     }
 
     public Map<Font, Style> getFontStyleMap() {
-        return fontsToStyles;
+        return mFontsToStyles;
     }
 
     public String getName() {
-        return name;
+        return mName;
     }
 
     public Typeface getTypeface(Style style) {
@@ -116,8 +116,8 @@ public class FontPackage {
     }
 
     public Font getFont(Style style) {
-        for (Font font : fontsToStyles.keySet())
-            if (fontsToStyles.get(font).equals(style))
+        for (Font font : mFontsToStyles.keySet())
+            if (mFontsToStyles.get(font).equals(style))
                 return font;
 
         return null;

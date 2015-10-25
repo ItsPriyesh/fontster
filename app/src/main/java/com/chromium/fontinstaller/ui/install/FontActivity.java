@@ -28,6 +28,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
@@ -59,34 +60,40 @@ import static com.chromium.fontinstaller.util.ViewUtils.snackbar;
 public class FontActivity extends BaseActivity implements TabLayout.OnTabSelectedListener {
 
     @Bind(R.id.font_name)
-    TextView fontTitle;
+    TextView mFontTitle;
 
     @Bind(R.id.install_fab)
-    FloatingActionButton installButton;
+    FloatingActionButton mInstallButton;
 
     @Bind(R.id.download_progress)
-    ProgressBar downloadProgress;
+    ProgressBar mDownloadProgress;
 
     @Bind(R.id.preview_pager)
-    ViewPager previewPager;
+    ViewPager mPreviewPager;
 
     @Bind(R.id.sliding_tabs)
-    TabLayout tabLayout;
+    TabLayout mTabLayout;
 
     @Bind(R.id.error_container)
-    ViewGroup errorContainer;
+    ViewGroup mErrorContainer;
 
-    private int currentPage = 0;
-    private FontPackage fontPackage;
-    private PreviewFragment[] previewPages = new PreviewFragment[3];
-    private boolean fragmentsInitialized = false;
-    private ProgressDialog progressDialog;
+    private int mCurrentPage = 0;
+    private FontPackage mFontPackage;
+    private PreviewFragment[] mPreviewPages = new PreviewFragment[3];
+    private boolean mFragmentsInitialized = false;
+    private ProgressDialog mProgressDialog;
 
-    public static final String FONT_NAME = "font_name";
+    static final SparseArray<Style> PREVIEW_STYLES = new SparseArray<Style>() {{
+        put(0, Style.REGULAR);
+        put(1, Style.BOLD);
+        put(2, Style.ITALIC);
+    }};
+
+    public static final String FONT_NAME_KEY = "font_name";
 
     public static Intent getLaunchIntent(final Context context, final String fontName) {
         final Intent intent = new Intent(context, FontActivity.class);
-        intent.putExtra(FontActivity.FONT_NAME, fontName);
+        intent.putExtra(FontActivity.FONT_NAME_KEY, fontName);
         return intent;
     }
 
@@ -98,31 +105,28 @@ public class FontActivity extends BaseActivity implements TabLayout.OnTabSelecte
         showToolbarBackButton();
         setToolbarTitle("");
 
-        final String fontName = getIntent().getStringExtra(FONT_NAME);
+        final String fontName = getIntent().getStringExtra(FONT_NAME_KEY);
 
-        fontPackage = new FontPackage(fontName);
+        mFontPackage = new FontPackage(fontName);
         startDownload();
 
-        fontTitle.setText(fontName);
+        mFontTitle.setText(fontName);
     }
 
     private void initializeFragments() {
-        PreviewFragment regularFragment = PreviewFragment.newInstance(fontPackage, Style.REGULAR);
-        PreviewFragment boldFragment = PreviewFragment.newInstance(fontPackage, Style.BOLD);
-        PreviewFragment italicFragment = PreviewFragment.newInstance(fontPackage, Style.ITALIC);
+        for (int i = 0; i < mPreviewPages.length; i++) {
+            mPreviewPages[i] = PreviewFragment
+                    .newInstance(mFontPackage, PREVIEW_STYLES.get(i));
+        }
 
-        previewPages[0] = regularFragment;
-        previewPages[1] = boldFragment;
-        previewPages[2] = italicFragment;
-
-        fragmentsInitialized = true;
+        mFragmentsInitialized = true;
     }
 
     private void startDownload() {
-        if (isVisible(errorContainer)) hide(errorContainer);
-        show(downloadProgress);
+        if (isVisible(mErrorContainer)) hide(mErrorContainer);
+        show(mDownloadProgress);
 
-        FontDownloader.downloadStyledFonts(fontPackage, Style.REGULAR, Style.BOLD, Style.ITALIC)
+        FontDownloader.downloadStyledFonts(mFontPackage, Style.REGULAR, Style.BOLD, Style.ITALIC)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -134,13 +138,13 @@ public class FontActivity extends BaseActivity implements TabLayout.OnTabSelecte
     private void handleFailedDownload(Throwable error) {
         Crashlytics.logException(error);
         Timber.e("Download failed: " + error.getMessage());
-        animSlideUp(downloadProgress, this);
+        animSlideUp(mDownloadProgress, this);
 
         delay(() -> {
-            hideGone(downloadProgress);
+            hideGone(mDownloadProgress);
 
-            animSlideInBottom(errorContainer, this);
-            show(errorContainer);
+            animSlideInBottom(mErrorContainer, this);
+            show(mErrorContainer);
         }, 400);
     }
 
@@ -149,46 +153,46 @@ public class FontActivity extends BaseActivity implements TabLayout.OnTabSelecte
         delay(() -> {
             Timber.e("Install failed: " + error.getMessage());
             snackbar(R.string.font_activity_install_failed, findViewById(R.id.bottom_bar));
-            progressDialog.dismiss();
-            animGrowFromCenter(installButton, this);
-            show(installButton);
+            mProgressDialog.dismiss();
+            animGrowFromCenter(mInstallButton, this);
+            show(mInstallButton);
         }, 500);
     }
 
     private void setupPager() {
         initializeFragments();
         PreviewPagerAdapter pagerAdapter = new PreviewPagerAdapter(getSupportFragmentManager());
-        previewPager.setOffscreenPageLimit(2);
-        previewPager.setAdapter(pagerAdapter);
-        tabLayout.setOnTabSelectedListener(this);
-        tabLayout.setupWithViewPager(previewPager);
-        tabLayout.setSelectedTabIndicatorColor(ActivityCompat.getColor(this, android.R.color.white));
+        mPreviewPager.setOffscreenPageLimit(2);
+        mPreviewPager.setAdapter(pagerAdapter);
+        mTabLayout.setOnTabSelectedListener(this);
+        mTabLayout.setupWithViewPager(mPreviewPager);
+        mTabLayout.setSelectedTabIndicatorColor(ActivityCompat.getColor(this, android.R.color.white));
 
         animateViews();
     }
 
     private void animateViews() {
-        animShrinkToCenter(downloadProgress, this);
+        animShrinkToCenter(mDownloadProgress, this);
 
         delay(() -> {
-            hideGone(downloadProgress);
-            animSlideInBottom(tabLayout, this);
-            show(tabLayout);
-            reveal(this, previewPager, installButton, R.color.primary_accent);
-            animGrowFromCenter(installButton, this);
-            show(installButton);
+            hideGone(mDownloadProgress);
+            animSlideInBottom(mTabLayout, this);
+            show(mTabLayout);
+            reveal(this, mPreviewPager, mInstallButton, R.color.primary_accent);
+            animGrowFromCenter(mInstallButton, this);
+            show(mInstallButton);
         }, 400);
     }
 
     private void startInstall() {
-        progressDialog = ProgressDialog
+        mProgressDialog = ProgressDialog
                 .show(this, null, getString(R.string.font_activity_install_progress), true, false);
 
-        FontDownloader.downloadAllFonts(fontPackage)
+        FontDownloader.downloadAllFonts(mFontPackage)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .last()
-                .flatMap(v -> FontInstaller.install(fontPackage, this))
+                .flatMap(v -> FontInstaller.install(mFontPackage, this))
                 .doOnCompleted(this::onInstallComplete)
                 .subscribe(
                         next -> { },
@@ -201,7 +205,7 @@ public class FontActivity extends BaseActivity implements TabLayout.OnTabSelecte
     }
 
     private Style getCurrentPageStyle() {
-        switch (currentPage) {
+        switch (mCurrentPage) {
             case 0:
                 return Style.REGULAR;
             case 1:
@@ -230,12 +234,12 @@ public class FontActivity extends BaseActivity implements TabLayout.OnTabSelecte
     }
 
     public void onInstallComplete() {
-        progressDialog.dismiss();
+        mProgressDialog.dismiss();
         delay(() -> {
-            installButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_done_white));
+            mInstallButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_done_white));
 
-            animGrowFromCenter(installButton, this);
-            show(installButton);
+            animGrowFromCenter(mInstallButton, this);
+            show(mInstallButton);
 
             delay(() -> {
                 if (!this.isFinishing()) AlertUtils.showRebootAlert(this);
@@ -264,28 +268,28 @@ public class FontActivity extends BaseActivity implements TabLayout.OnTabSelecte
     }
 
     private void showTryFontDialog() {
-        if (fragmentsInitialized) {
-            TryFontFragment dialog = TryFontFragment.newInstance(fontPackage, getCurrentPageStyle(), this::tryFontCallback);
+        if (mFragmentsInitialized) {
+            TryFontFragment dialog = TryFontFragment.newInstance(mFontPackage, getCurrentPageStyle(), this::tryFontCallback);
             dialog.show(getSupportFragmentManager(), "TryFontFragment");
         }
     }
 
     private void tryFontCallback(String input) {
         if (input.equals("") || input.isEmpty()) return;
-        for (PreviewFragment fragment : previewPages) {
+        for (PreviewFragment fragment : mPreviewPages) {
             fragment.setPreviewText(input);
         }
     }
 
     private void toggleCase() {
-        if (fragmentsInitialized)
-            for (PreviewFragment fragment : previewPages)
+        if (mFragmentsInitialized)
+            for (PreviewFragment fragment : mPreviewPages)
                 fragment.toggleCase();
     }
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
-        currentPage = tab.getPosition();
+        mCurrentPage = tab.getPosition();
     }
 
     @Override
@@ -311,13 +315,13 @@ public class FontActivity extends BaseActivity implements TabLayout.OnTabSelecte
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             PreviewFragment fragment = (PreviewFragment) super.instantiateItem(container, position);
-            previewPages[position] = fragment;
+            mPreviewPages[position] = fragment;
             return fragment;
         }
 
         @Override
         public Fragment getItem(int position) {
-            return previewPages[position];
+            return mPreviewPages[position];
         }
 
         @Override
@@ -327,7 +331,7 @@ public class FontActivity extends BaseActivity implements TabLayout.OnTabSelecte
 
         @Override
         public int getCount() {
-            return previewPages.length;
+            return mPreviewPages.length;
         }
     }
 }

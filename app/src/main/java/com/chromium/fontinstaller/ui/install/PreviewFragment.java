@@ -19,7 +19,6 @@ package com.chromium.fontinstaller.ui.install;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,12 +45,6 @@ public class PreviewFragment extends Fragment {
     private static final String FONT_NAME_KEY = "font_name_key";
     private static final String FONT_STYLE_KEY = "font_style_key";
 
-    private static final SparseArray<Style> PREVIEW_STYLES = new SparseArray<Style>() {{
-        put(0, Style.REGULAR);
-        put(1, Style.BOLD);
-        put(2, Style.ITALIC);
-    }};
-
     public PreviewFragment() { }
 
     public static PreviewFragment newInstance(FontPackage fontPackage, Style style) {
@@ -72,7 +65,7 @@ public class PreviewFragment extends Fragment {
 
         if (savedInstanceState != null) {
             mFontPackage = new FontPackage(savedInstanceState.getString(FONT_NAME_KEY));
-            mStyle = PREVIEW_STYLES.get(savedInstanceState.getInt(FONT_STYLE_KEY));
+            mStyle = FontActivity.PREVIEW_STYLES.get(savedInstanceState.getInt(FONT_STYLE_KEY));
         }
 
         mPreviewText.setTypeface(mFontPackage.getTypeface(mStyle));
@@ -85,7 +78,7 @@ public class PreviewFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(FONT_NAME_KEY, mFontPackage.getName());
-        outState.putInt(FONT_STYLE_KEY, PREVIEW_STYLES.indexOfValue(mStyle));
+        outState.putInt(FONT_STYLE_KEY, FontActivity.PREVIEW_STYLES.indexOfValue(mStyle));
     }
 
     public void setPreviewText(String input) {
