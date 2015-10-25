@@ -182,6 +182,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void showMissingPermissionDialog(int titleResId, int messageResId, Runnable retry) {
+        if (isFinishing()) return;
         new AlertDialog.Builder(this)
                 .setTitle(titleResId)
                 .setMessage(messageResId)
