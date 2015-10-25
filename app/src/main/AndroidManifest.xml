@@ -28,7 +28,6 @@
         <activity
             android:name=".ui.install.FontActivity"
             android:parentActivityName=".ui.main.MainActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FontActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

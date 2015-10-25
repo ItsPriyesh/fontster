@@ -19,6 +19,7 @@ package com.chromium.fontinstaller.ui.install;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,17 +36,26 @@ import butterknife.ButterKnife;
 public class PreviewFragment extends Fragment {
 
     @Bind(R.id.preview_text)
-    AutoScaleTextView previewText;
+    AutoScaleTextView mPreviewText;
 
-    private FontPackage fontPackage;
-    private Style style;
-    private boolean upperCase = true;
-    private static String alphabetUpper, alphabetLower;
+    private FontPackage mFontPackage;
+    private Style mStyle;
+    private boolean mUpperCase = true;
+    private String mAlphabetUpper, mAlphabetLower;
+
+    private static final String FONT_NAME_KEY = "font_name_key";
+    private static final String FONT_STYLE_KEY = "font_style_key";
+
+    private static final SparseArray<Style> PREVIEW_STYLES = new SparseArray<Style>() {{
+        put(0, Style.REGULAR);
+        put(1, Style.BOLD);
+        put(2, Style.ITALIC);
+    }};
 
     public PreviewFragment() { }
 
     public static PreviewFragment newInstance(FontPackage fontPackage, Style style) {
-        PreviewFragment fragment = new PreviewFragment();
+        final PreviewFragment fragment = new PreviewFragment();
         fragment.setFontPackage(fontPackage);
         fragment.setStyle(style);
 
@@ -57,40 +67,51 @@ public class PreviewFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_preview, container, false);
         ButterKnife.bind(this, view);
 
-        alphabetUpper = getString(R.string.alphabet_upper);
-        alphabetLower = getString(R.string.alphabet_lower);
+        mAlphabetUpper = getString(R.string.alphabet_upper);
+        mAlphabetLower = getString(R.string.alphabet_lower);
 
-        previewText.setTypeface(fontPackage.getTypeface(style));
-        previewText.setText(getAlphabet());
+        if (savedInstanceState != null) {
+            mFontPackage = new FontPackage(savedInstanceState.getString(FONT_NAME_KEY));
+            mStyle = PREVIEW_STYLES.get(savedInstanceState.getInt(FONT_STYLE_KEY));
+        }
+
+        mPreviewText.setTypeface(mFontPackage.getTypeface(mStyle));
+        mPreviewText.setText(getAlphabet());
 
         return view;
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(FONT_NAME_KEY, mFontPackage.getName());
+        outState.putInt(FONT_STYLE_KEY, PREVIEW_STYLES.indexOfValue(mStyle));
+    }
+
     public void setPreviewText(String input) {
-        this.previewText.setText(input);
+        this.mPreviewText.setText(input);
     }
 
     private void setFontPackage(FontPackage fontPackage) {
-        this.fontPackage = fontPackage;
+        this.mFontPackage = fontPackage;
     }
 
     private void setStyle(Style style) {
-        this.style = style;
+        this.mStyle = style;
     }
 
     private String getAlphabet() {
-        if (upperCase) return alphabetUpper;
-        else return alphabetLower;
+        return mUpperCase ? mAlphabetUpper : mAlphabetLower;
     }
 
     public void toggleCase() {
-        if (upperCase) {
-            previewText.setText(alphabetLower);
-            upperCase = false;
+        if (mUpperCase) {
+            mPreviewText.setText(mAlphabetLower);
+            mUpperCase = false;
         } else {
-            previewText.setText(alphabetUpper);
-            upperCase = true;
+            mPreviewText.setText(mAlphabetUpper);
+            mUpperCase = true;
         }
-        ViewUtils.animSlideInBottom(previewText, getActivity());
+        ViewUtils.animSlideInBottom(mPreviewText, getActivity());
     }
 }
