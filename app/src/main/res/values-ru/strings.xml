@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2015 Priyesh Patel
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+
+    <string name="app_name">Fontster</string>
+    <string name="ok">OK</string>
+    <string name="no">Нет</string>
+    <string name="yes">Да</string>
+    <string name="done">Готово</string>
+    <string name="cancel">Отмена</string>
+    <string name="retry">Повторить</string>
+    <string name="ad_space">Место для рекламы</string>
+
+    <string name="alphabet_upper">АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ</string>
+    <string name="alphabet_lower">абвгдеёжзийклмнопрстуфхцчшщъыьэюя</string>
+
+    <string name="banner_ad_unit_id">ca-app-pub-8798644144122718/6263923171</string>
+    <string name="nexus_5_device_id">AAADAC4EC821D354F2BEF1C833EE7EFB</string>
+
+    <string name="drawer_open">Открыть</string>
+    <string name="drawer_close">Закрыть</string>
+    <string name="drawer_item_font_list">Шрифты</string>
+    <string name="drawer_item_backup_restore"><![CDATA[Резервное копирование и восстановление]]></string>
+    <string name="drawer_item_settings">Настройки</string>
+
+    <string name="font_menu_toggle_case">Переключить регистр</string>
+    <string name="font_menu_try">Попробовать</string>
+
+    <string name="main_menu_search">Поиск</string>
+
+    <string name="reboot_dialog_title">Установка завершена</string>
+    <string name="reboot_dialog_message">Пожалуйста, перезагрузите Ваше устройство, чтобы изменения вступили в силу.</string>
+    <string name="reboot_dialog_button_text">Перезагрузка</string>
+
+    <string name="backup_restore_no_backups">Резервная копия отсутствует в данный момент</string>
+    <string name="backup_restore_option_restore">Восстановить</string>
+    <string name="backup_restore_option_delete">Удалить</string>
+
+    <string name="backup_dialog_title">Присвойте название резервной копии</string>
+    <string name="backup_dialog_message">Ваша текущая резервная копия будет заменена</string>
+    <string name="backup_dialog_hint">Название</string>
+    <string name="backup_dialog_button_backup">Резервная копия</string>
+
+    <string name="donate_dialog_title">Сумма материальной поддержки</string>
+    <string name="donate_dialog_donation_small">Маленькая ($1)</string>
+    <string name="donate_dialog_donation_medium">Средняя ($3)</string>
+    <string name="donate_dialog_donation_large">Большая ($10)</string>
+
+    <string name="try_font_dialog_hint">Попробуйте этот шрифт!</string>
+    <string name="font_pack_picker_dialog_hint">Путь к файлу</string>
+
+    <string name="font_activity_download_failed">Не удалось скачать этот шрифт</string>
+    <string name="font_activity_tab_regular">Обычный</string>
+    <string name="font_activity_tab_bold">Жирный</string>
+    <string name="font_activity_tab_italic">Курсив</string>
+    <string name="font_activity_install_failed">Не удалось установить</string>
+    <string name="font_activity_install_progress">Устанавливаю шрифтывЂ¦</string>
+    <string name="font_activity_confirm_install">Вы уверены, что хотите установить этот шрифт?</string>
+
+    <string name="font_list_download_progress">Скачиваю образцывЂ¦</string>
+    <string name="font_list_download_failed">Не удалось скачать шрифты</string>
+
+    <string name="font_pack_picker_dialog_title">Пакет шрифтов</string>
+    <string name="font_pack_picker_dialog_invalid_path">Неверная папка пакета шрифтов</string>
+
+    <string name="settings_title">Настройки</string>
+    <string name="settings_developer_title">Настройки для разработчиков</string>
+    <string name="settings_iab_setup_error">Возникла проблема при проведении внутреннего платежа.</string>
+    <string name="settings_confirm_custom_font_install_title">Вы уверены?</string>
+    <string name="settings_confirm_custom_font_install_message">Установка непроверенных пакетов может привести к необратимой поломке вашего устройства. Продолжайте только в том случае, если вы точно знаете, что делаете.</string>
+    <string name="settings_custom_font_install_progress">УстановкавЂ¦</string>
+    <string name="settings_custom_font_install_failed">Ошибка установки собственного шрифта</string>
+    <string name="settings_donation_failed">Не удалось внести деньги</string>
+    <string name="settings_donation_success">Помощь успешно оказана, спасибо! :)</string>
+    <string name="settings_clear_cache_progress">Очищаю кэшвЂ¦</string>
+    <string name="settings_clear_cache_success">Кэш очищен</string>
+    <string name="settings_link_github">https://github.com/ItsPriyesh/FontInstaller</string>
+    <string name="settings_restart_dialog_message">Перезапустите устройство, чтобы изменения вступили в силу.</string>
+    <string name="settings_restart_dialog_button">Перезапустить</string>
+
+    <string name="pref_install_custom_font_summary">Выбрать и загрузить пакет шрифтов с устройства</string>
+    <string name="pref_install_custom_font_title">Установить собственный шрифт</string>
+    <string name="pref_category_general">Общее</string>
+    <string name="pref_enable_truefont_summary">Отобразить названия с использованием соответствующих шрифтов</string>
+    <string name="pref_enable_truefont_title">Отображение TrueFont</string>
+    <string name="pref_clear_cache_summary">Удалить сохраненные шрифты</string>
+    <string name="pref_clear_cache_title">Очистить кэш</string>
+    <string name="pref_category_about">О программе</string>
+    <string name="pref_view_source_summary">Просмотреть исходный код программы</string>
+    <string name="pref_view_source_title">Источник</string>
+    <string name="pref_licenses_summary">Информация о библиотеках, используемых в этом приложении</string>
+    <string name="pref_licenses_title">Лицензия на открытое программное обеспечение</string>
+    <string name="pref_donate_summary">Это уберет рекламу из приложения</string>
+    <string name="pref_donate_title">Поддержать автора</string>
+    <string name="pref_app_version_title">Версия приложения</string>
+
+    <string name="splash_no_root_title">Root-доступ отсутствует</string>
+    <string name="splash_no_root_message">Чтобы пользоваться приложением Fontster, необходим root-доступ. Если он имеется, убедитесь, что у Fontster есть права суперпользователя.</string>
+    <string name="splash_no_storage_access_title">Отсутствует доступ к внутренней памяти</string>
+    <string name="splash_no_storage_access_message">Fontster необходим доступ к чтению и записи внутреннего хранилища устройства, для того чтобы скачивать и работать со шрифтами.</string>
+
+</resources>
