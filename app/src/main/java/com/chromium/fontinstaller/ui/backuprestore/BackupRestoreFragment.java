@@ -159,7 +159,9 @@ public class BackupRestoreFragment extends Fragment {
     }
 
     public void onRestoreComplete() {
-        AlertUtils.showRebootAlert(getActivity());
+        if (getActivity() == null || getActivity().isFinishing()) {
+            AlertUtils.showRebootAlert(getActivity());
+        }
     }
 
 }
