@@ -162,10 +162,12 @@ public class ViewUtils {
     }
 
     public static void snackbar(int messageResId, View parent) {
+        if (parent == null) return;
         Snackbar.make(parent, messageResId, Snackbar.LENGTH_SHORT).show();
     }
 
     public static void snackbar(String message, View parent) {
+        if (parent == null) return;
         Snackbar.make(parent, message, Snackbar.LENGTH_SHORT).show();
     }
 
