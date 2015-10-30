@@ -38,13 +38,15 @@ public final class TryFontFragment extends DialogFragment {
 
     @Bind(R.id.title)
     TextView mTitleView;
-
     @Bind(R.id.input)
     EditText mInputView;
 
     private FontPackage mFontPackage;
+
     private Style mStyle;
     private Action1<String> mTryCallback;
+
+    private static final String FONT_NAME_KEY = "font_name";
 
     public TryFontFragment() { }
 
@@ -58,9 +60,19 @@ public final class TryFontFragment extends DialogFragment {
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(FONT_NAME_KEY, mFontPackage.getName());
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_try_font, container, false);
         ButterKnife.bind(this, view);
+
+        if (savedInstanceState != null) {
+            mFontPackage = new FontPackage(savedInstanceState.getString(FONT_NAME_KEY));
+        }
 
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
 
