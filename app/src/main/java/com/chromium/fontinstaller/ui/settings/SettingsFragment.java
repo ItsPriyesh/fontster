@@ -158,15 +158,19 @@ public class SettingsFragment extends PreferenceFragment implements
         final List<String> commands = new ArrayList<>();
         final File cache = new File(getActivity().getExternalCacheDir() + File.separator);
 
-        for (File f : cache.listFiles())
-            if (!f.getName().equals("Backup"))
-                commands.add("rm -rf " + f.getAbsolutePath());
+        if (cache.listFiles() != null) {
+            for (File f : cache.listFiles())
+                if (!f.getName().equals("Backup"))
+                    commands.add("rm -rf " + f.getAbsolutePath());
 
-        CommandRunner.runCommands(commands)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnCompleted(this::onCacheCleared)
-                .subscribe();
+            CommandRunner.runCommands(commands)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnCompleted(this::onCacheCleared)
+                    .subscribe();
+        } else {
+            snackbar("Unable to clear cache", getView());
+        }
 
         return true;
     }
