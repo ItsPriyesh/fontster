@@ -138,7 +138,6 @@ public class BackupRestoreFragment extends Fragment {
     @OnClick(R.id.backup_fab)
     public void backupFabClicked() {
         BackupDialogFragment backupDialog = new BackupDialogFragment();
-        backupDialog.show(getActivity().getSupportFragmentManager(), "BackupDialogFragment");
         backupDialog.setOnBackupClickedListener(name ->
                         mBackupManager.backup()
                                 .subscribeOn(Schedulers.io())
@@ -146,6 +145,7 @@ public class BackupRestoreFragment extends Fragment {
                                 .doOnCompleted(() -> onBackupComplete(name))
                                 .subscribe()
         );
+        backupDialog.show(getActivity().getSupportFragmentManager(), "BackupDialogFragment");
     }
 
     public void onBackupComplete(String name) {
