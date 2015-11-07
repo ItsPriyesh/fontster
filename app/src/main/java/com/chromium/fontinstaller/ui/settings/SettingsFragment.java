@@ -21,10 +21,10 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 
 import com.chromium.fontinstaller.BuildConfig;
@@ -60,7 +60,6 @@ public class SettingsFragment extends PreferenceFragment implements
     private IabHelper mBillingHelper;
     private PreferencesManager mPreferences;
     private IabHelper.OnIabPurchaseFinishedListener mPurchaseListener;
-    private Preference mDonate;
     private ProgressDialog mProgressDialog;
     private int mVersionTaps = 0;
 
@@ -71,21 +70,19 @@ public class SettingsFragment extends PreferenceFragment implements
 
         mPreferences = PreferencesManager.getInstance(getActivity());
 
-        mBillingHelper = new IabHelper(getActivity(), SecretStuff.LICENSE_KEY);
+        findPreferenceById(R.string.pref_key_true_font)
+                .setOnPreferenceChangeListener((pref, newValue) -> handleTrueFont(newValue));
 
-        final CheckBoxPreference trueFont = (CheckBoxPreference) findPreference("trueFont");
-        trueFont.setOnPreferenceChangeListener((pref, newValue) -> handleTrueFont(newValue));
+        findPreferenceById(R.string.pref_key_clear_cache)
+                .setOnPreferenceClickListener(pref -> clearCache());
 
-        final Preference clearCache = findPreference("clearCache");
-        clearCache.setOnPreferenceClickListener(pref -> clearCache());
+        findPreferenceById(R.string.pref_key_view_source)
+                .setOnPreferenceClickListener(pref -> viewSource());
 
-        final Preference source = findPreference("viewSource");
-        source.setOnPreferenceClickListener(pref -> viewSource());
+        findPreferenceById(R.string.pref_key_licenses)
+                .setOnPreferenceClickListener(pref -> openLicensesDialog());
 
-        final Preference licenses = findPreference("licenses");
-        licenses.setOnPreferenceClickListener(pref -> openLicensesDialog());
-
-        final Preference appVersion = findPreference("appVersion");
+        final Preference appVersion = findPreferenceById(R.string.pref_key_app_version);
         appVersion.setSummary(BuildConfig.VERSION_NAME + " - " + BuildConfig.BUILD_TYPE);
         appVersion.setOnPreferenceClickListener(pref -> {
             if (++mVersionTaps == TAPS_TO_ENTER_DEV_SETTINGS) {
@@ -95,18 +92,22 @@ public class SettingsFragment extends PreferenceFragment implements
             return true;
         });
 
-        mDonate = findPreference("donate");
+        final Preference donate = findPreferenceById(R.string.pref_key_donate);
+        donate.setOnPreferenceClickListener(pref -> showDonationDialog());
 
+        mBillingHelper = new IabHelper(getActivity(), SecretStuff.LICENSE_KEY);
         mBillingHelper.startSetup(result -> {
             if (result.isSuccess()) {
-                mDonate.setEnabled(true);
+                donate.setEnabled(true);
             } else {
-                mDonate.setSummary(R.string.settings_iab_setup_error);
+                donate.setSummary(R.string.settings_iab_setup_error);
             }
         });
 
-        mDonate.setOnPreferenceClickListener(pref -> showDonationDialog());
+    }
 
+    private Preference findPreferenceById(int key) {
+        return findPreference(getString(key));
     }
 
     @Override
@@ -122,8 +123,8 @@ public class SettingsFragment extends PreferenceFragment implements
 
     private boolean showDonationDialog() {
         final DonateDialogFragment donateDialog = new DonateDialogFragment();
-        donateDialog.show(((SettingsActivity) getActivity()).getSupportFragmentManager(),
-                "DonateDialogFragment");
+        final FragmentManager fm = ((SettingsActivity) getActivity()).getSupportFragmentManager();
+        donateDialog.show(fm, "DonateDialogFragment");
         donateDialog.setDonationClickListener(this);
         return true;
     }
@@ -200,7 +201,7 @@ public class SettingsFragment extends PreferenceFragment implements
     private void showRestartDialog() {
         new AlertDialog.Builder(getActivity())
                 .setMessage(R.string.settings_restart_dialog_message)
-                .setPositiveButton(R.string.settings_restart_dialog_button, (dialog, id) -> restartApp())
+                .setPositiveButton(R.string.settings_restart_dialog_button, (d, i) -> restartApp())
                 .create().show();
     }
 

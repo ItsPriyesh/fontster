@@ -133,4 +133,13 @@
         <item>Webly Sleek UI</item>
         <item>Zekton</item>
     </string-array>
+
+    <!-- Preference Keys -->
+    <string name="pref_key_true_font">trueFont</string>
+    <string name="pref_key_clear_cache">clearCache</string>
+    <string name="pref_key_view_source">viewSource</string>
+    <string name="pref_key_licenses">licenses</string>
+    <string name="pref_key_donate">donate</string>
+    <string name="pref_key_app_version">appVersion</string>
+
 </resources>
