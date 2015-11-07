@@ -24,7 +24,7 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentManager;
+import android.util.SparseArray;
 import android.view.View;
 
 import com.chromium.fontinstaller.BuildConfig;
@@ -48,14 +48,19 @@ import rx.schedulers.Schedulers;
 import static com.chromium.fontinstaller.util.PreferencesManager.Keys;
 import static com.chromium.fontinstaller.util.ViewUtils.snackbar;
 
-public class SettingsFragment extends PreferenceFragment implements
-        DonateDialogFragment.DonationClickListener {
+public class SettingsFragment extends PreferenceFragment {
 
     private static final int TAPS_TO_ENTER_DEV_SETTINGS = 8;
 
     public static final String DONATE_SKU_SMALL = "com.chromium.fontster.mDonate";
     public static final String DONATE_SKU_MED = "com.chromium.fontster.donate_med";
     public static final String DONATE_SKU_LARGE = "com.chromium.fontster.donate_large";
+
+    private static final SparseArray<String> DONATION_SKUS = new SparseArray<String>() {{
+        put(0, DONATE_SKU_SMALL);
+        put(1, DONATE_SKU_MED);
+        put(2, DONATE_SKU_LARGE);
+    }};
 
     private IabHelper mBillingHelper;
     private PreferencesManager mPreferences;
@@ -121,16 +126,14 @@ public class SettingsFragment extends PreferenceFragment implements
     }
 
     private boolean showDonationDialog() {
-        final DonateDialogFragment donateDialog = new DonateDialogFragment();
-        final FragmentManager fm = ((SettingsActivity) getActivity()).getSupportFragmentManager();
-        donateDialog.show(fm, "DonateDialogFragment");
-        donateDialog.setDonationClickListener(this);
+        new AlertDialog.Builder(getActivity())
+                .setTitle(R.string.donate_dialog_title)
+                .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss())
+                .setSingleChoiceItems(R.array.donation_amounts, -1, (dialog, which) -> {
+                    dialog.dismiss();
+                    makeDonation(DONATION_SKUS.get(which));
+                }).create().show();
         return true;
-    }
-
-    @Override
-    public void onDonationClick(String sku) {
-        makeDonation(sku);
     }
 
     private boolean makeDonation(String sku) {
