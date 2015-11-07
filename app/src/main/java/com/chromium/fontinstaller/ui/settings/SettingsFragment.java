@@ -169,7 +169,7 @@ public class SettingsFragment extends PreferenceFragment implements
                     .doOnCompleted(this::onCacheCleared)
                     .subscribe();
         } else {
-            snackbar("Unable to clear cache", getView());
+            snackbar(getString(R.string.settings_clear_cache_failed), getView());
         }
 
         return true;

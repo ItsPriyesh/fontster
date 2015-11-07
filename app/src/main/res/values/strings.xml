@@ -88,6 +88,7 @@
     <string name="settings_donation_success">Donation complete, thanks :)</string>
     <string name="settings_clear_cache_progress">Clearing cache…</string>
     <string name="settings_clear_cache_success">Cache has been cleared</string>
+    <string name="settings_clear_cache_failed">Unable to clear cache</string>
     <string name="settings_link_github">https://github.com/ItsPriyesh/FontInstaller</string>
     <string name="settings_restart_dialog_message">Restart the app for the change to take effect.</string>
     <string name="settings_restart_dialog_button">Restart</string>
