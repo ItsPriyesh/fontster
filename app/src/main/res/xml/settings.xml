@@ -16,30 +16,30 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory android:title="@string/pref_category_general">
         <CheckBoxPreference
-            android:key="trueFont"
+            android:key="@string/pref_key_true_font"
             android:summary="@string/pref_enable_truefont_summary"
             android:title="@string/pref_enable_truefont_title" />
         <Preference
-            android:key="clearCache"
+            android:key="@string/pref_key_clear_cache"
             android:summary="@string/pref_clear_cache_summary"
             android:title="@string/pref_clear_cache_title" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_category_about">
         <Preference
-            android:key="viewSource"
+            android:key="@string/pref_key_view_source"
             android:summary="@string/pref_view_source_summary"
             android:title="@string/pref_view_source_title" />
         <Preference
-            android:key="licenses"
+            android:key="@string/pref_key_licenses"
             android:summary="@string/pref_licenses_summary"
             android:title="@string/pref_licenses_title" />
         <Preference
             android:enabled="false"
-            android:key="donate"
+            android:key="@string/pref_key_donate"
             android:summary="@string/pref_donate_summary"
             android:title="@string/pref_donate_title" />
         <Preference
-            android:key="appVersion"
+            android:key="@string/pref_key_app_version"
             android:title="@string/pref_app_version_title" />
     </PreferenceCategory>
 </PreferenceScreen>
