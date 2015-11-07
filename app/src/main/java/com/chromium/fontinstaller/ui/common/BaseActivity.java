@@ -29,6 +29,8 @@ import com.chromium.fontinstaller.ui.settings.SettingsFragment;
 import com.chromium.fontinstaller.util.ViewUtils;
 import com.chromium.fontinstaller.util.billing.IabHelper;
 import com.chromium.fontinstaller.util.billing.Inventory;
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
@@ -129,5 +131,9 @@ public class BaseActivity extends AppCompatActivity {
 
     protected boolean isVisible(View view) {
         return view.getVisibility() == View.VISIBLE;
+    }
+
+    protected void logEvent(String message) {
+        Answers.getInstance().logContentView(new ContentViewEvent().putContentName(message));
     }
 }

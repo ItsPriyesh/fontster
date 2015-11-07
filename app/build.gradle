@@ -43,7 +43,7 @@ dependencies {
     // Other
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.jakewharton.timber:timber:2.5.1'
-    compile('com.crashlytics.sdk.android:crashlytics:2.2.2') { transitive = true; }
+    compile('com.crashlytics.sdk.android:crashlytics:2.5.2') { transitive = true; }
     compile 'eu.chainfire:libsuperuser:1.0.0.+'
     compile 'com.google.android.gms:play-services-ads:8.1.0'
     compile 'io.reactivex:rxandroid:1.0.1'

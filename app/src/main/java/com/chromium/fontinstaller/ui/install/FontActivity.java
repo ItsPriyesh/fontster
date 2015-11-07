@@ -106,6 +106,7 @@ public final class FontActivity extends BaseActivity implements TabLayout.OnTabS
         setToolbarTitle("");
 
         final String fontName = getIntent().getStringExtra(FONT_NAME_KEY);
+        logEvent("Viewing " + fontName);
 
         mFontPackage = new FontPackage(fontName);
         startDownload();
@@ -185,6 +186,7 @@ public final class FontActivity extends BaseActivity implements TabLayout.OnTabS
     }
 
     private void startInstall() {
+        logEvent("Started install of " + mFontPackage.getName());
         mProgressDialog = ProgressDialog
                 .show(this, null, getString(R.string.font_activity_install_progress), true, false);
 
@@ -193,14 +195,18 @@ public final class FontActivity extends BaseActivity implements TabLayout.OnTabS
                 .observeOn(AndroidSchedulers.mainThread())
                 .last()
                 .flatMap(v -> FontInstaller.install(mFontPackage, this))
-                .doOnCompleted(this::onInstallComplete)
                 .subscribe(
-                        next -> { },
+                        next -> {},
                         error -> {
+                            logEvent("Install of " + mFontPackage.getName() + " failed");
                             if (error instanceof FontDownloader.DownloadException)
                                 handleFailedDownload(error.getCause());
                             else if (error instanceof FontInstaller.InstallException)
                                 handleFailedInstall(error);
+                        },
+                        () -> {
+                            logEvent("Install of " + mFontPackage.getName() + " succeeded");
+                            onInstallComplete();
                         });
     }
 
