@@ -37,6 +37,8 @@ repositories {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
+    testCompile fileTree(dir: "${rootDir}/Fontster/build/intermediates/exploded-aar/com.android.support/support-v4/", include: "**/*.jar")
+
     // Networking
     compile 'com.squareup.okhttp:okhttp:2.4.0'
 
@@ -54,7 +56,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.1.0'
     compile 'com.android.support:recyclerview-v7:23.1.0'
     compile 'com.android.support:cardview-v7:23.1.0'
-    compile 'com.android.support:internal_impl:23.1.0'
 
     // UI
     compile 'com.eowise:recyclerview-stickyheaders:0.5.2'
