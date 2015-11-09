@@ -116,8 +116,7 @@ public final class FontActivity extends BaseActivity implements TabLayout.OnTabS
 
     private void initializeFragments() {
         for (int i = 0; i < mPreviewPages.length; i++) {
-            mPreviewPages[i] = PreviewFragment
-                    .newInstance(mFontPackage, PREVIEW_STYLES.get(i));
+            mPreviewPages[i] = PreviewFragment.newInstance(mFontPackage, PREVIEW_STYLES.get(i));
         }
 
         mFragmentsInitialized = true;
@@ -211,16 +210,7 @@ public final class FontActivity extends BaseActivity implements TabLayout.OnTabS
     }
 
     private Style getCurrentPageStyle() {
-        switch (mCurrentPage) {
-            case 0:
-                return Style.REGULAR;
-            case 1:
-                return Style.BOLD;
-            case 2:
-                return Style.ITALIC;
-            default:
-                return Style.REGULAR;
-        }
+        return PREVIEW_STYLES.get(mCurrentPage);
     }
 
     @SuppressWarnings("unused")
