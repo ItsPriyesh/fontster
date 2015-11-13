@@ -6,11 +6,6 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
     defaultConfig {
         applicationId "com.chromium.fontinstaller"
         minSdkVersion 16
@@ -36,8 +31,6 @@ repositories {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-
-    testCompile fileTree(dir: "${rootDir}/Fontster/build/intermediates/exploded-aar/com.android.support/support-v4/", include: "**/*.jar")
 
     // Networking
     compile 'com.squareup.okhttp:okhttp:2.4.0'
