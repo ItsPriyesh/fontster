@@ -1,7 +1,13 @@
 language: android
+cache: false
+
 jdk:
   - oraclejdk8
-  
+
+env:
+  global:
+    - GRADLE_OPTS="-Xmx512m -XX:MaxPermSize=512m"
+
 android:
   components:
     - build-tools-23.0.1
