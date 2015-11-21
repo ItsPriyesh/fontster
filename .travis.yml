@@ -11,6 +11,8 @@ env:
   global:
     - GRADLE_OPTS="-Xmx512m -XX:MaxPermSize=512m"
 
+script: ./gradlew assembleDebug
+
 android:
   components:
     - build-tools-23.0.1
