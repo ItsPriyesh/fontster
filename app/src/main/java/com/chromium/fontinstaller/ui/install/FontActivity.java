@@ -27,6 +27,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.util.SparseArray;
 import android.view.Menu;
@@ -232,7 +233,7 @@ public final class FontActivity extends BaseActivity implements TabLayout.OnTabS
     public void onInstallComplete() {
         mProgressDialog.dismiss();
         delay(() -> {
-            mInstallButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_done_white));
+            mInstallButton.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_done_white));
 
             animGrowFromCenter(mInstallButton, this);
             show(mInstallButton);

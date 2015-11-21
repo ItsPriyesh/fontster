@@ -27,6 +27,7 @@ import android.graphics.Rect;
 import android.os.Build;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroupOverlay;
@@ -55,23 +56,6 @@ public class ViewUtils {
         return resourceId > 0 ? resources.getDimensionPixelSize(resourceId) : 0;
     }
 
-    public static void animCenterRevealIn(View view) {
-        if (isLollipop()) {
-            int cx = (view.getLeft() + view.getRight()) / 2;
-            int cy = (view.getTop() + view.getBottom()) / 2;
-
-            int finalRadius = Math.max(view.getWidth(), view.getHeight());
-
-            Animator anim = ViewAnimationUtils.createCircularReveal(view, cx, cy, 0, finalRadius);
-
-            view.setVisibility(View.VISIBLE);
-            anim.setDuration(400);
-            anim.start();
-        } else {
-            view.setVisibility(View.VISIBLE);
-        }
-    }
-
     public static void reveal(Activity activity, View view, View sourceView, int colorRes) {
         if (activity == null || view == null || sourceView == null) return;
         if (isLollipop()) {
@@ -87,7 +71,7 @@ public class ViewUtils {
             revealView.setBottom(displayRect.bottom);
             revealView.setLeft(displayRect.left);
             revealView.setRight(displayRect.right);
-            revealView.setBackgroundColor(activity.getResources().getColor(colorRes));
+            revealView.setBackgroundColor(ContextCompat.getColor(activity, colorRes));
             groupOverlay.add(revealView);
 
             final int[] clearLocation = new int[2];
