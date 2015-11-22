@@ -60,7 +60,7 @@ public final class FontDownloader {
         return downloadFonts(fontPackage, styledFontFinder(Arrays.asList(styles)));
     }
 
-    private static Observable<File> downloadFile(final String url, final String path) {
+    /* package */ static Observable<File> downloadFile(final String url, final String path) {
         return Observable.create(subscriber -> {
             final Request request = new Request.Builder().url(url).build();
             try {

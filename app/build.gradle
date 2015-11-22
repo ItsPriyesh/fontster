@@ -57,4 +57,8 @@ dependencies {
     compile 'com.eowise:recyclerview-stickyheaders:0.5.2'
     compile 'de.psdev.licensesdialog:licensesdialog:1.7.0'
     compile project(':MaterialSearchView:library')
+
+    // Testing
+    testCompile 'junit:junit:4.12'
+
 }
