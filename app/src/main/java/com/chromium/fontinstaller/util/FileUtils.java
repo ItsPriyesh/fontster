@@ -51,4 +51,21 @@ public class FileUtils {
         }
         return file;
     }
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    public static void deleteDirectory(File directory) {
+        if (directory.exists()) {
+            final File[] files = directory.listFiles();
+            if (files != null) {
+                for (File file : files) {
+                    if (file.isDirectory()) {
+                        deleteDirectory(file);
+                    } else {
+                        file.delete();
+                    }
+                }
+            }
+        }
+        directory.delete();
+    }
 }
