@@ -11,7 +11,9 @@ env:
   global:
     - GRADLE_OPTS="-Xmx512m -XX:MaxPermSize=512m"
 
-script: ./gradlew assembleDebug
+script:
+    - ./gradlew assembleDebug
+    - ./gradlew test
 
 android:
   components:

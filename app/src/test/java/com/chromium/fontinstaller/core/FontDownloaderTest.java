@@ -35,7 +35,7 @@ public class FontDownloaderTest {
 
     @Test
     public void testDownloadFile() throws Exception {
-        TestSubscriber<File> testSubscriber = new TestSubscriber<>();
+        final TestSubscriber<File> testSubscriber = new TestSubscriber<>();
         FontDownloader.downloadFile(FONT_URL, DOWNLOAD_PATH).subscribe(testSubscriber);
         testSubscriber.assertNoErrors();
         testSubscriber.assertReceivedOnNext(Collections.singletonList(EXPECTED_FILE));
