@@ -29,6 +29,7 @@ before_script:
   - adb shell input keyevent 82 &
 
   # Emulator doesn't have internet, so push an already downloaded font pack directly to the cache
+  - adb remount
   - adb shell mkdir -p /sdcard/Android/data/com.chromium.fontinstaller/cache/AleoFontPack/
   - adb push travis/AleoFontPack /sdcard/Android/data/com.chromium.fontinstaller/cache/AleoFontPack
 
