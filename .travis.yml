@@ -26,6 +26,7 @@ before_script:
   - emulator -avd test -no-skin -no-audio -no-window &
   - android-wait-for-emulator
   - adb shell input keyevent 82 &
+  - adb shell ping google.com
 
 after_failure:
   - cat /home/travis/build/ItsPriyesh/Fontster/app/build/reports/androidTests/connected/com.chromium.fontinstaller.*.html
