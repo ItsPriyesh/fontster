@@ -30,6 +30,7 @@ before_script:
 
   # Emulator doesn't have internet, so push an already downloaded font pack directly to the cache
   - adb remount
+  - adb shell chmod 777 /sdcard
   - adb shell mkdir -p /sdcard/Android/data/com.chromium.fontinstaller/cache/AleoFontPack/
   - adb push travis/AleoFontPack /sdcard/Android/data/com.chromium.fontinstaller/cache/AleoFontPack
 
