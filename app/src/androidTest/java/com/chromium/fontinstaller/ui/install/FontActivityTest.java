@@ -58,8 +58,12 @@ public class FontActivityTest {
     @Test
     public void testInitialViewStates() {
         onView(withId(R.id.font_name)).check(matches(withText(FONT_NAME)));
-        onView(withText(R.string.font_activity_tab_regular)).check(matches(isSelected()));
-        onView(allOf(withId(R.id.preview_text), isDisplayed())).check(matches(withText(R.string.alphabet_upper)));
+
+        onView(allOf(withId(R.id.preview_text), isDisplayed()))
+                .check(matches(withText(R.string.alphabet_upper)));
+
+        onView(allOf(withId(android.R.id.text1), withText(R.string.font_activity_tab_regular)))
+                .check(matches(isSelected()));
     }
 
 }

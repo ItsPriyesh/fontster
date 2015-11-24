@@ -29,7 +29,7 @@ before_script:
 
 after_failure:
   - cat /home/travis/build/ItsPriyesh/Fontster/app/build/reports/androidTests/connected/com.chromium.fontinstaller.*.html
-    
+
 android:
   components:
     - build-tools-23.0.1
