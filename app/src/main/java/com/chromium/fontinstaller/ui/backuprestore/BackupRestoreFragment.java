@@ -137,15 +137,11 @@ public class BackupRestoreFragment extends Fragment {
     @SuppressWarnings("unused")
     @OnClick(R.id.backup_fab)
     public void backupFabClicked() {
-        BackupDialogFragment backupDialog = new BackupDialogFragment();
-        backupDialog.setOnBackupClickedListener(name ->
-                        mBackupManager.backup()
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .doOnCompleted(() -> onBackupComplete(name))
-                                .subscribe()
-        );
-        backupDialog.show(getActivity().getSupportFragmentManager(), "BackupDialogFragment");
+        new BackupDialog(getActivity(), backupName -> mBackupManager.backup()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnCompleted(() -> onBackupComplete(backupName))
+                .subscribe()).show();
     }
 
     public void onBackupComplete(String name) {

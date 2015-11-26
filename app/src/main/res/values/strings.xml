@@ -54,6 +54,7 @@
     <string name="backup_dialog_message">This will overwrite your current backup</string>
     <string name="backup_dialog_hint">Name</string>
     <string name="backup_dialog_button_backup">Backup</string>
+    <string name="backup_dialog_invalid_name">Please enter a name for the backup</string>
 
     <string name="donate_dialog_title">Donation amount</string>
     <string name="donate_dialog_donation_small">Small ($1)</string>

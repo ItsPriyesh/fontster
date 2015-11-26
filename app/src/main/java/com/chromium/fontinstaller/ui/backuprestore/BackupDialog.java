@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.chromium.fontinstaller.ui.settings;
+package com.chromium.fontinstaller.ui.backuprestore;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -25,58 +25,62 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.chromium.fontinstaller.R;
-import com.chromium.fontinstaller.models.FontPackage;
 
-import java.io.File;
 import java.util.concurrent.TimeUnit;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
 import static com.jakewharton.rxbinding.widget.RxTextView.textChanges;
 
-public class FontPackPickerDialog extends AlertDialog {
+public class BackupDialog extends AlertDialog {
 
-    public interface InputListener {
-        void onFontPackEntered(FontPackage fontPackage);
+    @Bind(R.id.input_layout)
+    TextInputLayout mInputLayout;
+
+    private Button mPositiveButton;
+    private volatile boolean mNameIsValid;
+    private final BackupDialogListener mListener;
+
+    public interface BackupDialogListener {
+        void onBackupButtonClicked(String backupName);
     }
 
-    private TextInputLayout mInputLayout;
-    private Button mPositiveButton;
-    private final InputListener mListener;
-    private volatile boolean mPathIsValid = false;
-
-    public FontPackPickerDialog(Context context, InputListener listener) {
+    protected BackupDialog(Context context, BackupDialogListener listener) {
         super(context);
         mListener = listener;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTitle(R.string.font_pack_picker_dialog_title);
+        setTitle(R.string.backup_dialog_title);
+
         final View view = View.inflate(getContext(), R.layout.file_path_dialog, null);
+        ButterKnife.bind(this, view);
         setView(view);
 
-        mInputLayout = ButterKnife.findById(view, R.id.input_layout);
-        final EditText inputView = ButterKnife.findById(view, R.id.file_path_input);
+        final EditText inputView = (EditText) view.findViewById(R.id.input);
         final Subscription textChanges = textChanges(inputView)
                 .debounce(400, TimeUnit.MILLISECONDS)
                 .map(CharSequence::toString)
-                .map(FontPackage::validFontPackFolder)
+                .map(this::nameIsValid)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(pathIsValid -> {
-                    if (pathIsValid) enableOkButton();
+                .subscribe(nameIsValid -> {
+                    if (nameIsValid) enableOkButton();
                     else showError();
                 });
 
-        setButton(BUTTON_POSITIVE, getContext().getString(R.string.ok), (dialog, which) -> {
-            if (!mPathIsValid) return;
+        final String buttonTextPos = getContext().getString(R.string.backup_dialog_button_backup);
+        setButton(BUTTON_POSITIVE, buttonTextPos, (dialog, which) -> {
+            if (!mNameIsValid) return;
             textChanges.unsubscribe();
-            mListener.onFontPackEntered(fontPackageFromEditText(inputView));
+            mListener.onBackupButtonClicked(inputView.getText().toString());
         });
 
-        setButton(BUTTON_NEGATIVE, getContext().getString(R.string.cancel), (dialog, which) -> {
+        final String buttonTextNeg = getContext().getString(R.string.cancel);
+        setButton(BUTTON_NEGATIVE, buttonTextNeg, (dialog, which) -> {
             textChanges.unsubscribe();
             dismiss();
         });
@@ -87,20 +91,20 @@ public class FontPackPickerDialog extends AlertDialog {
         mPositiveButton.setEnabled(false);
     }
 
-    private static FontPackage fontPackageFromEditText(EditText editText) {
-        return FontPackage.fromFolder(new File(editText.getText().toString()));
+    private boolean nameIsValid(String name) {
+        return name.equals("");
     }
 
     private void enableOkButton() {
-        mPathIsValid = true;
+        mNameIsValid = true;
         mPositiveButton.setEnabled(true);
         mInputLayout.setError(null);
     }
 
     private void showError() {
-        mPathIsValid = false;
+        mNameIsValid = false;
         mPositiveButton.setEnabled(false);
-        mInputLayout.setError(getContext().getString(R.string.font_pack_picker_dialog_invalid_path));
+        mInputLayout.setError(getContext().getString(R.string.backup_dialog_invalid_name));
     }
 
 }

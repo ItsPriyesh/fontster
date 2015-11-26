@@ -24,7 +24,6 @@ import android.preference.PreferenceFragment;
 import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.core.FontInstaller;
 import com.chromium.fontinstaller.models.FontPackage;
-import com.chromium.fontinstaller.ui.settings.FontPackPickerDialog;
 import com.chromium.fontinstaller.util.AlertUtils;
 
 import rx.android.schedulers.AndroidSchedulers;
