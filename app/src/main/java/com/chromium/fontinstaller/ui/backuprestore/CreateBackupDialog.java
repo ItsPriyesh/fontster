@@ -33,25 +33,22 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 
 import static com.jakewharton.rxbinding.widget.RxTextView.textChanges;
 
-public class BackupDialog extends AlertDialog {
+public class CreateBackupDialog extends AlertDialog {
 
     @Bind(R.id.input_layout)
     TextInputLayout mInputLayout;
 
     private Button mPositiveButton;
     private volatile boolean mNameIsValid;
-    private final BackupDialogListener mListener;
+    private final Action1<String> mCallback;
 
-    public interface BackupDialogListener {
-        void onBackupButtonClicked(String backupName);
-    }
-
-    protected BackupDialog(Context context, BackupDialogListener listener) {
+    protected CreateBackupDialog(Context context, Action1<String> callback) {
         super(context);
-        mListener = listener;
+        mCallback = callback;
     }
 
     @Override
@@ -76,7 +73,7 @@ public class BackupDialog extends AlertDialog {
         setButton(BUTTON_POSITIVE, buttonTextPos, (dialog, which) -> {
             if (!mNameIsValid) return;
             textChanges.unsubscribe();
-            mListener.onBackupButtonClicked(inputView.getText().toString());
+            mCallback.call(inputView.getText().toString());
         });
 
         final String buttonTextNeg = getContext().getString(R.string.cancel);

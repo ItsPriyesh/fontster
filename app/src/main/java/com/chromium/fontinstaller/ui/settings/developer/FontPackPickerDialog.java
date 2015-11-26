@@ -33,23 +33,20 @@ import java.util.concurrent.TimeUnit;
 import butterknife.ButterKnife;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 
 import static com.jakewharton.rxbinding.widget.RxTextView.textChanges;
 
 public class FontPackPickerDialog extends AlertDialog {
 
-    public interface InputListener {
-        void onFontPackEntered(FontPackage fontPackage);
-    }
-
     private TextInputLayout mInputLayout;
     private Button mPositiveButton;
-    private final InputListener mListener;
+    private final Action1<FontPackage> mCallback;
     private volatile boolean mPathIsValid = false;
 
-    public FontPackPickerDialog(Context context, InputListener listener) {
+    public FontPackPickerDialog(Context context, Action1<FontPackage> callback) {
         super(context);
-        mListener = listener;
+        mCallback = callback;
     }
 
     @Override
@@ -73,7 +70,7 @@ public class FontPackPickerDialog extends AlertDialog {
         setButton(BUTTON_POSITIVE, getContext().getString(R.string.ok), (dialog, which) -> {
             if (!mPathIsValid) return;
             textChanges.unsubscribe();
-            mListener.onFontPackEntered(fontPackageFromEditText(inputView));
+            mCallback.call(fontPackageFromEditText(inputView));
         });
 
         setButton(BUTTON_NEGATIVE, getContext().getString(R.string.cancel), (dialog, which) -> {

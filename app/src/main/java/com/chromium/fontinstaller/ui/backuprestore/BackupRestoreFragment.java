@@ -137,7 +137,7 @@ public class BackupRestoreFragment extends Fragment {
     @SuppressWarnings("unused")
     @OnClick(R.id.backup_fab)
     public void backupFabClicked() {
-        new BackupDialog(getActivity(), backupName -> mBackupManager.backup()
+        new CreateBackupDialog(getActivity(), backupName -> mBackupManager.backup()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnCompleted(() -> onBackupComplete(backupName))
