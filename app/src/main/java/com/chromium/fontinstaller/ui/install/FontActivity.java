@@ -266,8 +266,8 @@ public final class FontActivity extends BaseActivity implements TabLayout.OnTabS
 
     private void showTryFontDialog() {
         if (mFragmentsInitialized) {
-            TryFontFragment dialog = TryFontFragment.newInstance(mFontPackage, getCurrentPageStyle(), this::tryFontCallback);
-            dialog.show(getSupportFragmentManager(), "TryFontFragment");
+            new TryFontDialog(mFontPackage, getCurrentPageStyle(),
+                    this::tryFontCallback, this).show();
         }
     }
 
