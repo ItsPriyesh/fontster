@@ -20,6 +20,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -57,15 +58,14 @@ public class BackupDialog extends AlertDialog {
     protected void onCreate(Bundle savedInstanceState) {
         setTitle(R.string.backup_dialog_title);
 
-        final View view = View.inflate(getContext(), R.layout.file_path_dialog, null);
+        final View view = View.inflate(getContext(), R.layout.backup_dialog, null);
         ButterKnife.bind(this, view);
         setView(view);
 
         final EditText inputView = (EditText) view.findViewById(R.id.input);
         final Subscription textChanges = textChanges(inputView)
                 .debounce(400, TimeUnit.MILLISECONDS)
-                .map(CharSequence::toString)
-                .map(this::nameIsValid)
+                .map(s -> !TextUtils.isEmpty(s))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(nameIsValid -> {
                     if (nameIsValid) enableOkButton();
@@ -89,10 +89,6 @@ public class BackupDialog extends AlertDialog {
 
         mPositiveButton = getButton(AlertDialog.BUTTON_POSITIVE);
         mPositiveButton.setEnabled(false);
-    }
-
-    private boolean nameIsValid(String name) {
-        return name.equals("");
     }
 
     private void enableOkButton() {

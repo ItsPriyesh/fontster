@@ -36,6 +36,7 @@ import android.view.animation.Interpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.chromium.fontinstaller.BuildConfig;
 import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.ui.main.MainActivity;
 
@@ -120,15 +121,13 @@ public class SplashActivity extends AppCompatActivity {
 
     private final Runnable mCheckForRoot = () -> Observable.defer(() ->
             Observable.just(Shell.SU.available()))
+            .map(s -> s || BuildConfig.DEBUG)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(available -> {
                 if (available) {
-                    if (storagePermissionsGranted()) {
-                        delay(mGoToMain, INBETWEEN_ANIMATION_DURATION);
-                    } else {
-                        delay(mRequestStorageAccess, INBETWEEN_ANIMATION_DURATION);
-                    }
+                    delay(storagePermissionsGranted() ? mGoToMain : mRequestStorageAccess,
+                            INBETWEEN_ANIMATION_DURATION);
                 } else {
                     showMissingPermissionDialog(
                             R.string.splash_no_root_title,
