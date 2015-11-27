@@ -26,7 +26,7 @@ import de.psdev.licensesdialog.model.Notices;
 
 public class Licenses {
 
-    private static Notices notices = new Notices();
+    private static Notices mNotices = new Notices();
 
     public static final List<Notice> NOTICE_LIST = Arrays.asList(
             new Notice(
@@ -98,7 +98,11 @@ public class Licenses {
     );
 
     public static Notices getNotices() {
-        for (Notice notice : NOTICE_LIST) notices.addNotice(notice);
-        return notices;
+        if (mNotices.getNotices().isEmpty()) {
+            for (Notice notice : NOTICE_LIST) {
+                mNotices.addNotice(notice);
+            }
+        }
+        return mNotices;
     }
 }
