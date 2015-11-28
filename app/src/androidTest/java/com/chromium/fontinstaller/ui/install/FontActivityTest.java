@@ -31,6 +31,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isSelected;
@@ -43,6 +45,7 @@ import static org.hamcrest.Matchers.allOf;
 public class FontActivityTest {
 
     private static final String FONT_NAME = "Aleo";
+    private static final String TEST_INPUT = "This is a test";
 
     @Rule
     public ActivityTestRule<FontActivity> mActivityRule =
@@ -62,4 +65,19 @@ public class FontActivityTest {
         onView(allOf(withId(R.id.preview_text), isDisplayed())).check(matches(withText(R.string.alphabet_upper)));
     }
 
+    @Test
+    public void testToggleCase() {
+        onView(withId(R.id.toggle_case)).perform(click());
+        onView(allOf(withId(R.id.preview_text), isDisplayed())).check(matches(withText(R.string.alphabet_lower)));
+        onView(withId(R.id.toggle_case)).perform(click());
+        onView(allOf(withId(R.id.preview_text), isDisplayed())).check(matches(withText(R.string.alphabet_upper)));
+    }
+
+    @Test
+    public void testTryFontDialog() {
+        onView(withId(R.id.try_font)).perform(click());
+        onView(withId(R.id.input)).perform(typeText(TEST_INPUT));
+        onView(withText(R.string.done)).perform(click());
+        onView(allOf(withId(R.id.preview_text), isDisplayed())).check(matches(withText(TEST_INPUT)));
+    }
 }
