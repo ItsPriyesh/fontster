@@ -17,6 +17,7 @@
 package com.chromium.fontinstaller.ui.backuprestore;
 
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -28,8 +29,8 @@ import android.widget.TextView;
 import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.core.BackupManager;
 import com.chromium.fontinstaller.ui.common.BaseActivity;
-import com.chromium.fontinstaller.util.AlertUtils;
 import com.chromium.fontinstaller.util.PreferencesManager;
+import com.chromium.fontinstaller.util.RebootDialog;
 import com.chromium.fontinstaller.util.ViewUtils;
 
 import java.util.Date;
@@ -155,8 +156,9 @@ public class BackupRestoreFragment extends Fragment {
     }
 
     public void onRestoreComplete() {
-        if (getActivity() == null || getActivity().isFinishing()) {
-            AlertUtils.showRebootAlert(getActivity());
+        final Activity activity = getActivity();
+        if (activity== null || activity.isFinishing()) {
+            new RebootDialog(activity);
         }
     }
 

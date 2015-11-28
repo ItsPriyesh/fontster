@@ -42,7 +42,7 @@ import com.chromium.fontinstaller.core.FontInstaller;
 import com.chromium.fontinstaller.models.FontPackage;
 import com.chromium.fontinstaller.models.Style;
 import com.chromium.fontinstaller.ui.common.BaseActivity;
-import com.chromium.fontinstaller.util.AlertUtils;
+import com.chromium.fontinstaller.util.RebootDialog;
 import com.crashlytics.android.Crashlytics;
 
 import butterknife.Bind;
@@ -239,7 +239,7 @@ public final class FontActivity extends BaseActivity implements TabLayout.OnTabS
             show(mInstallButton);
 
             delay(() -> {
-                if (!this.isFinishing()) AlertUtils.showRebootAlert(this);
+                if (!this.isFinishing()) new RebootDialog(this);
             }, 400);
         }, 400);
     }

@@ -24,7 +24,7 @@ import android.preference.PreferenceFragment;
 import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.core.FontInstaller;
 import com.chromium.fontinstaller.models.FontPackage;
-import com.chromium.fontinstaller.util.AlertUtils;
+import com.chromium.fontinstaller.util.RebootDialog;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -66,7 +66,7 @@ public class DeveloperSettingsFragment extends PreferenceFragment {
                 .subscribeOn(Schedulers.io())
                 .subscribe(done -> {
                     progressDialog.dismiss();
-                    AlertUtils.showRebootAlert(getActivity());
+                    new RebootDialog(getActivity());
                 }, error -> {
                     Timber.i(error.getMessage());
                     progressDialog.dismiss();
