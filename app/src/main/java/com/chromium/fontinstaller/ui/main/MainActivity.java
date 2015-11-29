@@ -121,7 +121,7 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.Sea
             case R.id.backup:
                 swapFragment(mBackupRestoreFragment);
                 menuItem.setChecked(true);
-                setTitle(menuItem.getTitle());
+                setTitle(getString(R.string.drawer_item_backup_restore));
                 invalidateOptionsMenu();
                 break;
             case R.id.settings:
@@ -129,7 +129,6 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.Sea
                 delay(() -> startActivity(intent), 200);
                 break;
         }
-
     }
 
     private void swapFragment(Fragment fragment) {

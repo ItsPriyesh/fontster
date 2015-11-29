@@ -59,14 +59,14 @@ public class FontActivityTest {
     }
 
     @Test
-    public void testInitialViewStates() {
+    public void testInitialViewStates() throws Exception {
         onView(withId(R.id.font_name)).check(matches(withText(FONT_NAME)));
         onView(withText(R.string.font_activity_tab_regular)).check(matches(isSelected()));
         onView(allOf(withId(R.id.preview_text), isDisplayed())).check(matches(withText(R.string.alphabet_upper)));
     }
 
     @Test
-    public void testToggleCase() {
+    public void testToggleCase() throws Exception {
         onView(withId(R.id.toggle_case)).perform(click());
         onView(allOf(withId(R.id.preview_text), isDisplayed())).check(matches(withText(R.string.alphabet_lower)));
         onView(withId(R.id.toggle_case)).perform(click());
@@ -74,7 +74,7 @@ public class FontActivityTest {
     }
 
     @Test
-    public void testTryFontDialog() {
+    public void testTryFontDialog() throws Exception {
         onView(withId(R.id.try_font)).perform(click());
         onView(withId(R.id.input)).perform(typeText(TEST_INPUT));
         onView(withText(R.string.done)).perform(click());

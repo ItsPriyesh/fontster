@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2015 Priyesh Patel
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,16 +15,22 @@
   -->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/fonts"
-        android:title="@string/drawer_item_font_list"
-        android:icon="@drawable/ic_subject_grey"/>
-    <item
-        android:id="@+id/backup"
-        android:title="@string/drawer_item_backup_restore"
-        android:icon="@drawable/ic_backup_restore_grey"/>
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/fonts"
+            android:checked="true"
+            android:icon="@drawable/ic_subject_grey"
+            android:title="@string/drawer_item_font_list" />
+        <item
+            android:id="@+id/backup"
+            android:icon="@drawable/ic_backup_restore_grey"
+            android:title="@string/drawer_item_backup_restore" />
+    </group>
+
     <item
         android:id="@+id/settings"
         android:icon="@drawable/ic_settings_grey"
-        android:title="@string/drawer_item_settings"/>
+        android:title="@string/drawer_item_settings" />
+
 </menu>
