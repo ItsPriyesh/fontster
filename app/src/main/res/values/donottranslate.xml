@@ -15,6 +15,7 @@
   -->
 
 <resources>
+    <!-- Preserve Alphabetical Order -->
     <string-array name="font_list">
         <item>Aaargh</item>
         <item>Aileron</item>
