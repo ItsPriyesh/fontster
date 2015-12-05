@@ -45,140 +45,140 @@ import butterknife.Bind;
 
 public class MainActivity extends BaseActivity implements MaterialSearchView.SearchViewListener {
 
-    @Bind(R.id.drawer_layout)
-    DrawerLayout mDrawerLayout;
+  @Bind(R.id.drawer_layout)
+  DrawerLayout mDrawerLayout;
 
-    @Bind(R.id.navigation_view)
-    NavigationView mNavigationView;
+  @Bind(R.id.navigation_view)
+  NavigationView mNavigationView;
 
-    @Bind(R.id.search_view)
-    MaterialSearchView mSearchView;
+  @Bind(R.id.search_view)
+  MaterialSearchView mSearchView;
 
-    @Bind(R.id.ad_view)
-    AdView mAdView;
+  @Bind(R.id.ad_view)
+  AdView mAdView;
 
-    private ActionBarDrawerToggle mDrawerToggle;
-    private FragmentManager mFragmentManager;
-    private FontListFragment mFontListFragment;
-    private BackupRestoreFragment mBackupRestoreFragment;
+  private ActionBarDrawerToggle mDrawerToggle;
+  private FragmentManager mFragmentManager;
+  private FontListFragment mFontListFragment;
+  private BackupRestoreFragment mBackupRestoreFragment;
 
-    private boolean mShouldShowSearch = true;
+  private boolean mShouldShowSearch = true;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        setToolbarTitle(getString(R.string.app_name));
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+    setToolbarTitle(getString(R.string.app_name));
 
-        if (!BuildConfig.DEBUG) initializeAd(mAdView);
+    if (!BuildConfig.DEBUG) initializeAd(mAdView);
 
-        mDrawerToggle = new ActionBarDrawerToggle(
-                this, mDrawerLayout, mToolbar, R.string.drawer_open, R.string.drawer_close);
+    mDrawerToggle = new ActionBarDrawerToggle(
+        this, mDrawerLayout, mToolbar, R.string.drawer_open, R.string.drawer_close);
 
-        setupDrawerContent(mNavigationView);
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+    setupDrawerContent(mNavigationView);
+    mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-        mFragmentManager = getSupportFragmentManager();
-        mFontListFragment = new FontListFragment();
-        mBackupRestoreFragment = new BackupRestoreFragment();
+    mFragmentManager = getSupportFragmentManager();
+    mFontListFragment = new FontListFragment();
+    mBackupRestoreFragment = new BackupRestoreFragment();
 
+    swapFragment(mFontListFragment);
+
+    final String[] fontList = getResources().getStringArray(R.array.font_list);
+    mSearchView.setOnSearchViewListener(this);
+    mSearchView.setSuggestionIcon(null);
+    mSearchView.setSuggestions(fontList);
+    mSearchView.setPadding(0, ViewUtils.getStatusBarHeight(this), 0, 0);
+    mSearchView.setOnItemClickListener((parent, view, position, id) -> {
+      final String fontName = getFontNameFromListItem(view);
+      final Intent intent = FontActivity.getLaunchIntent(this, fontName);
+      startActivity(intent);
+    });
+  }
+
+  private String getFontNameFromListItem(View view) {
+    return ((TextView) view.findViewById(R.id.suggestion_text)).getText().toString();
+  }
+
+  private void setupDrawerContent(NavigationView navigationView) {
+    navigationView.setNavigationItemSelectedListener(menuItem -> {
+      mDrawerLayout.closeDrawers();
+      selectDrawerItem(menuItem);
+      return true;
+    });
+  }
+
+  private void selectDrawerItem(MenuItem menuItem) {
+    final int selectedId = menuItem.getItemId();
+    mShouldShowSearch = (selectedId == R.id.fonts);
+    switch (selectedId) {
+      case R.id.fonts:
         swapFragment(mFontListFragment);
-
-        final String[] fontList = getResources().getStringArray(R.array.font_list);
-        mSearchView.setOnSearchViewListener(this);
-        mSearchView.setSuggestionIcon(null);
-        mSearchView.setSuggestions(fontList);
-        mSearchView.setPadding(0, ViewUtils.getStatusBarHeight(this), 0, 0);
-        mSearchView.setOnItemClickListener((parent, view, position, id) -> {
-            final String fontName = getFontNameFromListItem(view);
-            final Intent intent = FontActivity.getLaunchIntent(this, fontName);
-            startActivity(intent);
-        });
+        menuItem.setChecked(true);
+        setTitle(getString(R.string.app_name));
+        invalidateOptionsMenu();
+        break;
+      case R.id.backup:
+        swapFragment(mBackupRestoreFragment);
+        menuItem.setChecked(true);
+        setTitle(getString(R.string.drawer_item_backup_restore));
+        invalidateOptionsMenu();
+        break;
+      case R.id.settings:
+        final Intent intent = new Intent(this, SettingsActivity.class);
+        delay(() -> startActivity(intent), 200);
+        break;
     }
+  }
 
-    private String getFontNameFromListItem(View view) {
-        return ((TextView) view.findViewById(R.id.suggestion_text)).getText().toString();
+  private void swapFragment(Fragment fragment) {
+    mFragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+  }
+
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    getMenuInflater().inflate(R.menu.menu_main, menu);
+
+    final MenuItem searchItem = menu.findItem(R.id.action_search);
+    searchItem.setVisible(mShouldShowSearch);
+    mSearchView.setMenuItem(searchItem);
+
+    return true;
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+  }
+
+  @Override
+  protected void onPostCreate(Bundle savedInstanceState) {
+    super.onPostCreate(savedInstanceState);
+    mDrawerToggle.syncState();
+  }
+
+  @Override
+  public void onConfigurationChanged(Configuration newConfig) {
+    super.onConfigurationChanged(newConfig);
+    mDrawerToggle.onConfigurationChanged(newConfig);
+  }
+
+  @Override
+  public void onBackPressed() {
+    if (mDrawerLayout.isDrawerOpen(GravityCompat.START) || mSearchView.isSearchOpen()) {
+      mDrawerLayout.closeDrawers();
+      return;
     }
+    super.onBackPressed();
+  }
 
-    private void setupDrawerContent(NavigationView navigationView) {
-        navigationView.setNavigationItemSelectedListener(menuItem -> {
-            mDrawerLayout.closeDrawers();
-            selectDrawerItem(menuItem);
-            return true;
-        });
+  @Override
+  public void onSearchViewShown() {
+    if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+      mDrawerLayout.closeDrawers();
     }
+  }
 
-    private void selectDrawerItem(MenuItem menuItem) {
-        final int selectedId = menuItem.getItemId();
-        mShouldShowSearch = (selectedId == R.id.fonts);
-        switch (selectedId) {
-            case R.id.fonts:
-                swapFragment(mFontListFragment);
-                menuItem.setChecked(true);
-                setTitle(getString(R.string.app_name));
-                invalidateOptionsMenu();
-                break;
-            case R.id.backup:
-                swapFragment(mBackupRestoreFragment);
-                menuItem.setChecked(true);
-                setTitle(getString(R.string.drawer_item_backup_restore));
-                invalidateOptionsMenu();
-                break;
-            case R.id.settings:
-                final Intent intent = new Intent(this, SettingsActivity.class);
-                delay(() -> startActivity(intent), 200);
-                break;
-        }
-    }
-
-    private void swapFragment(Fragment fragment) {
-        mFragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-
-        final MenuItem searchItem = menu.findItem(R.id.action_search);
-        searchItem.setVisible(mShouldShowSearch);
-        mSearchView.setMenuItem(searchItem);
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        mDrawerToggle.syncState();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        mDrawerToggle.onConfigurationChanged(newConfig);
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (mDrawerLayout.isDrawerOpen(GravityCompat.START) || mSearchView.isSearchOpen()) {
-            mDrawerLayout.closeDrawers();
-            return;
-        }
-        super.onBackPressed();
-    }
-
-    @Override
-    public void onSearchViewShown() {
-        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-            mDrawerLayout.closeDrawers();
-        }
-    }
-
-    @Override
-    public void onSearchViewClosed() { }
+  @Override
+  public void onSearchViewClosed() { }
 }

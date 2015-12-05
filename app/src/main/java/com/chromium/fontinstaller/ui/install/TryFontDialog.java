@@ -32,37 +32,37 @@ import rx.functions.Action1;
 
 public final class TryFontDialog extends AlertDialog {
 
-    @Bind(R.id.input)
-    EditText mInputView;
+  @Bind(R.id.input)
+  EditText mInputView;
 
-    private final FontPackage mFontPackage;
-    private final Style mStyle;
-    private final Action1<String> mCallback;
+  private final FontPackage mFontPackage;
+  private final Style mStyle;
+  private final Action1<String> mCallback;
 
-    protected TryFontDialog(FontPackage fontPackage, Style style, Action1<String> callback, Context context) {
-        super(context);
-        mFontPackage = fontPackage;
-        mStyle = style;
-        mCallback = callback;
-    }
+  protected TryFontDialog(FontPackage fontPackage, Style style, Action1<String> callback, Context context) {
+    super(context);
+    mFontPackage = fontPackage;
+    mStyle = style;
+    mCallback = callback;
+  }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        setTitle(mFontPackage.getName());
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    setTitle(mFontPackage.getName());
 
-        final View view = View.inflate(getContext(), R.layout.try_font_dialog, null);
-        ButterKnife.bind(this, view);
-        setView(view);
+    final View view = View.inflate(getContext(), R.layout.try_font_dialog, null);
+    ButterKnife.bind(this, view);
+    setView(view);
 
-        mInputView.setTypeface(mFontPackage.getTypeface(mStyle));
+    mInputView.setTypeface(mFontPackage.getTypeface(mStyle));
 
-        final String buttonText = view.getContext().getString(R.string.done);
-        setButton(BUTTON_POSITIVE, buttonText, (dialog, which) -> {
-            dialog.dismiss();
-            mCallback.call(mInputView.getText().toString());
-        });
+    final String buttonText = view.getContext().getString(R.string.done);
+    setButton(BUTTON_POSITIVE, buttonText, (dialog, which) -> {
+      dialog.dismiss();
+      mCallback.call(mInputView.getText().toString());
+    });
 
-        super.onCreate(savedInstanceState);
-    }
+    super.onCreate(savedInstanceState);
+  }
 
 }

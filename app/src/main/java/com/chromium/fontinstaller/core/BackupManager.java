@@ -30,44 +30,44 @@ import static com.chromium.fontinstaller.core.SystemConstants.*;
 
 public class BackupManager {
 
-    private File mBackupDirectory;
+  private File mBackupDirectory;
 
-    @SuppressLint("SimpleDateFormat")
-    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MMM dd, yyyy");
+  @SuppressLint("SimpleDateFormat")
+  public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MMM dd, yyyy");
 
-    public BackupManager() {
-        createBackupDir();
+  public BackupManager() {
+    createBackupDir();
+  }
+
+  private void createBackupDir() {
+    mBackupDirectory = new File(BACKUP_PATH);
+    //noinspection ResultOfMethodCallIgnored
+    mBackupDirectory.mkdirs();
+  }
+
+  public Observable<Void> backup() {
+    createBackupDir();
+    return CommandRunner.runCommand("cp -R " + SYSTEM_FONT_PATH + ". " + BACKUP_PATH);
+  }
+
+  public Observable<Void> restore() {
+    if (Shell.SU.available()) {
+      Shell.SU.run(MOUNT_SYSTEM_COMMAND);
+      List<String> restoreCommands = new ArrayList<>();
+      for (File file : mBackupDirectory.listFiles()) {
+        restoreCommands.add("cp " + file.getAbsolutePath() + " " + SYSTEM_FONT_PATH);
+      }
+      return CommandRunner.runCommands(restoreCommands);
+    } else {
+      return Observable.empty();
     }
+  }
 
-    private void createBackupDir() {
-        mBackupDirectory = new File(BACKUP_PATH);
-        //noinspection ResultOfMethodCallIgnored
-        mBackupDirectory.mkdirs();
-    }
+  public Observable<Void> deleteBackup() {
+    return CommandRunner.runCommand("rm -rf " + BACKUP_PATH);
+  }
 
-    public Observable<Void> backup() {
-        createBackupDir();
-        return CommandRunner.runCommand("cp -R " + SYSTEM_FONT_PATH + ". " + BACKUP_PATH);
-    }
-
-    public Observable<Void> restore() {
-        if (Shell.SU.available()) {
-            Shell.SU.run(MOUNT_SYSTEM_COMMAND);
-            List<String> restoreCommands = new ArrayList<>();
-            for (File file : mBackupDirectory.listFiles()) {
-                restoreCommands.add("cp " + file.getAbsolutePath() + " " + SYSTEM_FONT_PATH);
-            }
-            return CommandRunner.runCommands(restoreCommands);
-        } else {
-            return Observable.empty();
-        }
-    }
-
-    public Observable<Void> deleteBackup() {
-        return CommandRunner.runCommand("rm -rf " + BACKUP_PATH);
-    }
-
-    public boolean backupExists() {
-        return mBackupDirectory.listFiles() != null && mBackupDirectory.listFiles().length != 0;
-    }
+  public boolean backupExists() {
+    return mBackupDirectory.listFiles() != null && mBackupDirectory.listFiles().length != 0;
+  }
 }

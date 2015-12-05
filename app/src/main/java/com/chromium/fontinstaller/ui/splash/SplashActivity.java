@@ -49,155 +49,155 @@ import rx.schedulers.Schedulers;
 
 public class SplashActivity extends AppCompatActivity {
 
-    @Bind(R.id.splash_logo)
-    ImageView mSplashLogo;
+  @Bind(R.id.splash_logo)
+  ImageView mSplashLogo;
 
-    @Bind(R.id.title)
-    TextView mTitleView;
+  @Bind(R.id.title)
+  TextView mTitleView;
 
-    @Bind(R.id.parent)
-    View mParent;
+  @Bind(R.id.parent)
+  View mParent;
 
-    private static final long INTRO_ANIMATION_DURATION = 950L;
-    private static final long OUTRO_ANIMATION_DURATION = 500L;
-    private static final long INBETWEEN_ANIMATION_DURATION = 200L;
+  private static final long INTRO_ANIMATION_DURATION = 950L;
+  private static final long OUTRO_ANIMATION_DURATION = 500L;
+  private static final long INBETWEEN_ANIMATION_DURATION = 200L;
 
-    private static final int PERMISSION_REQUEST = 0xaf;
+  private static final int PERMISSION_REQUEST = 0xcafe;
 
-    private static final String[] STORAGE_PERMISSIONS = {
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.READ_EXTERNAL_STORAGE
-    };
+  private static final String[] STORAGE_PERMISSIONS = {
+      Manifest.permission.WRITE_EXTERNAL_STORAGE,
+      Manifest.permission.READ_EXTERNAL_STORAGE
+  };
 
-    private static final Interpolator INTERPOLATOR = new AccelerateDecelerateInterpolator();
+  private static final Interpolator INTERPOLATOR = new AccelerateDecelerateInterpolator();
 
-    private Handler mHandler = new Handler(Looper.getMainLooper());
+  private Handler mHandler = new Handler(Looper.getMainLooper());
 
-    private final Runnable mIntroAnimation = () ->
-            mSplashLogo.animate()
-                    .scaleX(1)
-                    .scaleY(1)
-                    .rotation(0)
-                    .setDuration((long) (INTRO_ANIMATION_DURATION * 0.8))
-                    .setInterpolator(INTERPOLATOR)
-                    .setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            super.onAnimationEnd(animation);
-                            mTitleView.animate()
-                                    .alpha(1)
-                                    .setDuration((long) (INTRO_ANIMATION_DURATION * 0.2))
-                                    .setInterpolator(INTERPOLATOR);
-                            delay(mCheckForRoot, INBETWEEN_ANIMATION_DURATION);
-                        }
-                    });
-
-    private final Runnable mOutroAnimation = () -> {
-        mSplashLogo.animate()
-                .translationY(mParent.getBottom() + mSplashLogo.getHeight())
-                .setDuration(OUTRO_ANIMATION_DURATION)
-                .setInterpolator(INTERPOLATOR);
-
-        mTitleView.animate()
-                .alpha(0)
-                .setDuration(OUTRO_ANIMATION_DURATION)
-                .setInterpolator(INTERPOLATOR);
-    };
-
-    private final Runnable mGoToMain = () -> {
-        delay(mOutroAnimation, INBETWEEN_ANIMATION_DURATION);
-        delay(() -> {
-            final Intent intent = new Intent(this, MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-        }, INBETWEEN_ANIMATION_DURATION + OUTRO_ANIMATION_DURATION);
-    };
-
-    private final Runnable mRequestStorageAccess = () -> {
-        if (!storagePermissionsGranted()) {
-            ActivityCompat.requestPermissions(this, STORAGE_PERMISSIONS, PERMISSION_REQUEST);
-        }
-    };
-
-    private final Runnable mCheckForRoot = () -> Observable.defer(() ->
-            Observable.just(Shell.SU.available()))
-            .map(s -> s || BuildConfig.DEBUG)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(available -> {
-                if (available) {
-                    delay(storagePermissionsGranted() ? mGoToMain : mRequestStorageAccess,
-                            INBETWEEN_ANIMATION_DURATION);
-                } else {
-                    showMissingPermissionDialog(
-                            R.string.splash_no_root_title,
-                            R.string.splash_no_root_message,
-                            this.mCheckForRoot);
-                }
-            });
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
-        ButterKnife.bind(this);
-
-        mTitleView.setTypeface(Typeface.createFromAsset(getAssets(), "Quicksand-Regular.ttf"));
-
-        mSplashLogo.setScaleX(0);
-        mSplashLogo.setScaleY(0);
-        mSplashLogo.setRotation(-1080);
-        mSplashLogo.setVisibility(View.VISIBLE);
-
-        mHandler.postDelayed(mIntroAnimation, INBETWEEN_ANIMATION_DURATION);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (mHandler != null) {
-            mHandler.removeCallbacksAndMessages(null);
-            mHandler = null;
-        }
-    }
-
-    private void delay(Runnable runnable, long delay) {
-        if (mHandler != null) {
-            mHandler.postDelayed(runnable, delay);
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
-                                           @NonNull int[] grantResults) {
-        if (requestCode == PERMISSION_REQUEST) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                delay(mGoToMain, INBETWEEN_ANIMATION_DURATION);
-            } else {
-                showMissingPermissionDialog(
-                        R.string.splash_no_storage_access_title,
-                        R.string.splash_no_storage_access_message,
-                        mRequestStorageAccess);
+  private final Runnable mIntroAnimation = () ->
+      mSplashLogo.animate()
+          .scaleX(1)
+          .scaleY(1)
+          .rotation(0)
+          .setDuration((long) (INTRO_ANIMATION_DURATION * 0.8))
+          .setInterpolator(INTERPOLATOR)
+          .setListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+              super.onAnimationEnd(animation);
+              mTitleView.animate()
+                  .alpha(1)
+                  .setDuration((long) (INTRO_ANIMATION_DURATION * 0.2))
+                  .setInterpolator(INTERPOLATOR);
+              delay(mCheckForRoot, INBETWEEN_ANIMATION_DURATION);
             }
+          });
+
+  private final Runnable mOutroAnimation = () -> {
+    mSplashLogo.animate()
+        .translationY(mParent.getBottom() + mSplashLogo.getHeight())
+        .setDuration(OUTRO_ANIMATION_DURATION)
+        .setInterpolator(INTERPOLATOR);
+
+    mTitleView.animate()
+        .alpha(0)
+        .setDuration(OUTRO_ANIMATION_DURATION)
+        .setInterpolator(INTERPOLATOR);
+  };
+
+  private final Runnable mGoToMain = () -> {
+    delay(mOutroAnimation, INBETWEEN_ANIMATION_DURATION);
+    delay(() -> {
+      final Intent intent = new Intent(this, MainActivity.class);
+      intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+      startActivity(intent);
+    }, INBETWEEN_ANIMATION_DURATION + OUTRO_ANIMATION_DURATION);
+  };
+
+  private final Runnable mRequestStorageAccess = () -> {
+    if (!storagePermissionsGranted()) {
+      ActivityCompat.requestPermissions(this, STORAGE_PERMISSIONS, PERMISSION_REQUEST);
+    }
+  };
+
+  private final Runnable mCheckForRoot = () -> Observable.defer(() ->
+      Observable.just(Shell.SU.available()))
+      .map(s -> s || BuildConfig.DEBUG)
+      .subscribeOn(Schedulers.io())
+      .observeOn(AndroidSchedulers.mainThread())
+      .subscribe(available -> {
+        if (available) {
+          delay(storagePermissionsGranted() ? mGoToMain : mRequestStorageAccess,
+              INBETWEEN_ANIMATION_DURATION);
+        } else {
+          showMissingPermissionDialog(
+              R.string.splash_no_root_title,
+              R.string.splash_no_root_message,
+              this.mCheckForRoot);
         }
-    }
+      });
 
-    private void showMissingPermissionDialog(int titleResId, int messageResId, Runnable retry) {
-        if (isFinishing()) return;
-        new AlertDialog.Builder(this)
-                .setTitle(titleResId)
-                .setMessage(messageResId)
-                .setCancelable(false)
-                .setPositiveButton(R.string.retry, ((dialog, which) -> retry.run()))
-                .setNegativeButton(R.string.exit, (dialog, which) -> finish())
-                .create().show();
-    }
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_splash);
+    ButterKnife.bind(this);
 
-    private boolean storagePermissionsGranted() {
-        return ContextCompat.checkSelfPermission(this, STORAGE_PERMISSIONS[0])
-                == PackageManager.PERMISSION_GRANTED
-                && ContextCompat.checkSelfPermission(this, STORAGE_PERMISSIONS[1])
-                == PackageManager.PERMISSION_GRANTED;
+    mTitleView.setTypeface(Typeface.createFromAsset(getAssets(), "Quicksand-Regular.ttf"));
+
+    mSplashLogo.setScaleX(0);
+    mSplashLogo.setScaleY(0);
+    mSplashLogo.setRotation(-1080);
+    mSplashLogo.setVisibility(View.VISIBLE);
+
+    mHandler.postDelayed(mIntroAnimation, INBETWEEN_ANIMATION_DURATION);
+  }
+
+  @Override
+  protected void onStop() {
+    super.onStop();
+    if (mHandler != null) {
+      mHandler.removeCallbacksAndMessages(null);
+      mHandler = null;
     }
+  }
+
+  private void delay(Runnable runnable, long delay) {
+    if (mHandler != null) {
+      mHandler.postDelayed(runnable, delay);
+    }
+  }
+
+  @Override
+  public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
+                                         @NonNull int[] grantResults) {
+    if (requestCode == PERMISSION_REQUEST) {
+      if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        delay(mGoToMain, INBETWEEN_ANIMATION_DURATION);
+      } else {
+        showMissingPermissionDialog(
+            R.string.splash_no_storage_access_title,
+            R.string.splash_no_storage_access_message,
+            mRequestStorageAccess);
+      }
+    }
+  }
+
+  private void showMissingPermissionDialog(int titleResId, int messageResId, Runnable retry) {
+    if (isFinishing()) return;
+    new AlertDialog.Builder(this)
+        .setTitle(titleResId)
+        .setMessage(messageResId)
+        .setCancelable(false)
+        .setPositiveButton(R.string.retry, ((dialog, which) -> retry.run()))
+        .setNegativeButton(R.string.exit, (dialog, which) -> finish())
+        .create().show();
+  }
+
+  private boolean storagePermissionsGranted() {
+    return ContextCompat.checkSelfPermission(this, STORAGE_PERMISSIONS[0])
+        == PackageManager.PERMISSION_GRANTED
+        && ContextCompat.checkSelfPermission(this, STORAGE_PERMISSIONS[1])
+        == PackageManager.PERMISSION_GRANTED;
+  }
 
 }

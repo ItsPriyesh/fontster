@@ -55,119 +55,119 @@ import static com.chromium.fontinstaller.util.PreferencesManager.Keys;
 
 public class FontListFragment extends Fragment {
 
-    @Bind(R.id.font_list_view)
-    RecyclerView mRecyclerView;
+  @Bind(R.id.font_list_view)
+  RecyclerView mRecyclerView;
 
-    @Bind(R.id.download_progress)
-    ProgressBar mDownloadProgress;
+  @Bind(R.id.download_progress)
+  ProgressBar mDownloadProgress;
 
-    @Bind(R.id.error_container)
-    ViewGroup mErrorContainer;
+  @Bind(R.id.error_container)
+  ViewGroup mErrorContainer;
 
-    private FontListAdapter mListAdapter;
-    private List<String> mFontList;
-    private Activity mActivity;
-    private ProgressDialog mProgressDialog;
-    private PreferencesManager mPreferences;
+  private FontListAdapter mListAdapter;
+  private List<String> mFontList;
+  private Activity mActivity;
+  private ProgressDialog mProgressDialog;
+  private PreferencesManager mPreferences;
 
-    public FontListFragment() { }
+  public FontListFragment() { }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_font_list, container, false);
-        ButterKnife.bind(this, view);
+  @Override
+  public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    final View view = inflater.inflate(R.layout.fragment_font_list, container, false);
+    ButterKnife.bind(this, view);
 
-        mActivity = getActivity();
-        ((MainActivity) mActivity).setToolbarTitle(getString(R.string.app_name));
+    mActivity = getActivity();
+    ((MainActivity) mActivity).setToolbarTitle(getString(R.string.app_name));
 
-        mPreferences = PreferencesManager.getInstance(mActivity);
+    mPreferences = PreferencesManager.getInstance(mActivity);
 
-        mFontList = Arrays.asList(getResources().getStringArray(R.array.font_list));
+    mFontList = Arrays.asList(getResources().getStringArray(R.array.font_list));
 
-        RecyclerView.LayoutManager listManager = new LinearLayoutManager(mActivity);
-        mRecyclerView.setLayoutManager(listManager);
+    RecyclerView.LayoutManager listManager = new LinearLayoutManager(mActivity);
+    mRecyclerView.setLayoutManager(listManager);
 
-        if (mPreferences.getBoolean(Keys.ENABLE_TRUEFONT)) downloadFontList();
-        else setupRecyclerViewAdapter(false);
+    if (mPreferences.getBoolean(Keys.ENABLE_TRUEFONT)) downloadFontList();
+    else setupRecyclerViewAdapter(false);
 
-        return view;
+    return view;
+  }
+
+  private void setupRecyclerViewAdapter(boolean enableTrueFont) {
+    mRecyclerView.setVisibility(View.VISIBLE);
+
+    mListAdapter = new FontListAdapter(mActivity, new ArrayList<>(mFontList), enableTrueFont);
+
+    mRecyclerView.setAdapter(mListAdapter);
+    mRecyclerView.addItemDecoration(buildHeaderDecor());
+  }
+
+  private void dismissProgressDialog() {
+    if (mProgressDialog != null && mProgressDialog.isShowing()) mProgressDialog.dismiss();
+  }
+
+  private void downloadFontList() {
+    final boolean previewsCached = mPreferences.getBoolean(Keys.TRUEFONTS_CACHED);
+
+    if (!previewsCached) {
+      mProgressDialog = new ProgressDialog(mActivity);
+      mProgressDialog.setMessage(mActivity.getString(R.string.font_list_download_progress));
+      mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+      mProgressDialog.setMax(mFontList.size());
+      mProgressDialog.show();
     }
 
-    private void setupRecyclerViewAdapter(boolean enableTrueFont) {
-        mRecyclerView.setVisibility(View.VISIBLE);
+    if (mErrorContainer.getVisibility() == View.VISIBLE) mErrorContainer.setVisibility(View.GONE);
+    mDownloadProgress.setVisibility(View.VISIBLE);
 
-        mListAdapter = new FontListAdapter(mActivity, new ArrayList<>(mFontList), enableTrueFont);
+    final List<FontPackage> fontPackages = new ArrayList<>(mFontList.size());
+    for (String fontName : mFontList) fontPackages.add(new FontPackage(fontName));
 
-        mRecyclerView.setAdapter(mListAdapter);
-        mRecyclerView.addItemDecoration(buildHeaderDecor());
-    }
+    Observable.from(fontPackages)
+        .flatMap(fp -> FontDownloader.downloadStyledFonts(fp, Style.REGULAR))
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(
+            font -> {
+              if (mProgressDialog != null) mProgressDialog.incrementProgressBy(1);
+            },
+            this::handleDownloadFailure,
+            this::handleDownloadSuccess);
+  }
 
-    private void dismissProgressDialog() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) mProgressDialog.dismiss();
-    }
+  private void handleDownloadSuccess() {
+    mPreferences.setBoolean(Keys.TRUEFONTS_CACHED, true);
 
-    private void downloadFontList() {
-        final boolean previewsCached = mPreferences.getBoolean(Keys.TRUEFONTS_CACHED);
+    dismissProgressDialog();
+    ViewUtils.animSlideUp(mDownloadProgress, getActivity());
+    new Handler().postDelayed(() -> {
+      mDownloadProgress.setVisibility(View.INVISIBLE);
+      setupRecyclerViewAdapter(true);
+    }, 400);
+  }
 
-        if (!previewsCached) {
-            mProgressDialog = new ProgressDialog(mActivity);
-            mProgressDialog.setMessage(mActivity.getString(R.string.font_list_download_progress));
-            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            mProgressDialog.setMax(mFontList.size());
-            mProgressDialog.show();
-        }
+  private void handleDownloadFailure(Throwable error) {
+    dismissProgressDialog();
+    Timber.e("Download failed: " + error.getMessage());
+    ViewUtils.animSlideUp(mDownloadProgress, getActivity());
+    new Handler().postDelayed(() -> {
+      mDownloadProgress.setVisibility(View.INVISIBLE);
+      ViewUtils.animSlideInBottom(mErrorContainer, getActivity());
+      mErrorContainer.setVisibility(View.VISIBLE);
+    }, 400);
+  }
 
-        if (mErrorContainer.getVisibility() == View.VISIBLE) mErrorContainer.setVisibility(View.GONE);
-        mDownloadProgress.setVisibility(View.VISIBLE);
+  @SuppressWarnings("unused")
+  @OnClick(R.id.retry)
+  public void retryButtonClicked() {
+    downloadFontList();
+  }
 
-        final List<FontPackage> fontPackages = new ArrayList<>(mFontList.size());
-        for (String fontName : mFontList) fontPackages.add(new FontPackage(fontName));
-
-        Observable.from(fontPackages)
-                .flatMap(fp -> FontDownloader.downloadStyledFonts(fp, Style.REGULAR))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        font -> {
-                            if (mProgressDialog != null) mProgressDialog.incrementProgressBy(1);
-                        },
-                        this::handleDownloadFailure,
-                        this::handleDownloadSuccess);
-    }
-
-    private void handleDownloadSuccess() {
-        mPreferences.setBoolean(Keys.TRUEFONTS_CACHED, true);
-
-        dismissProgressDialog();
-        ViewUtils.animSlideUp(mDownloadProgress, getActivity());
-        new Handler().postDelayed(() -> {
-            mDownloadProgress.setVisibility(View.INVISIBLE);
-            setupRecyclerViewAdapter(true);
-        }, 400);
-    }
-
-    private void handleDownloadFailure(Throwable error) {
-        dismissProgressDialog();
-        Timber.e("Download failed: " + error.getMessage());
-        ViewUtils.animSlideUp(mDownloadProgress, getActivity());
-        new Handler().postDelayed(() -> {
-            mDownloadProgress.setVisibility(View.INVISIBLE);
-            ViewUtils.animSlideInBottom(mErrorContainer, getActivity());
-            mErrorContainer.setVisibility(View.VISIBLE);
-        }, 400);
-    }
-
-    @SuppressWarnings("unused")
-    @OnClick(R.id.retry)
-    public void retryButtonClicked() {
-        downloadFontList();
-    }
-
-    private StickyHeadersItemDecoration buildHeaderDecor() {
-        return new StickyHeadersBuilder()
-                .setAdapter(mListAdapter)
-                .setRecyclerView(mRecyclerView)
-                .setStickyHeadersAdapter(new FontListHeaderAdapter(mFontList), true)
-                .build();
-    }
+  private StickyHeadersItemDecoration buildHeaderDecor() {
+    return new StickyHeadersBuilder()
+        .setAdapter(mListAdapter)
+        .setRecyclerView(mRecyclerView)
+        .setStickyHeadersAdapter(new FontListHeaderAdapter(mFontList), true)
+        .build();
+  }
 }

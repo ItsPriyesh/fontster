@@ -44,40 +44,36 @@ import static org.hamcrest.Matchers.allOf;
 @LargeTest
 public class FontActivityTest {
 
-    private static final String FONT_NAME = "Aleo";
-    private static final String TEST_INPUT = "This is a test";
+  private static final String FONT_NAME = "Aleo";
+  private static final String TEST_INPUT = "This is a test";
 
-    @Rule
-    public ActivityTestRule<FontActivity> mActivityRule =
-            new ActivityTestRule<>(FontActivity.class, true, false);
+  @Rule
+  public ActivityTestRule<FontActivity> mActivityRule =
+      new ActivityTestRule<>(FontActivity.class, true, false);
 
-    @Before
-    public void startActivity() {
-        final Context context = InstrumentationRegistry.getTargetContext();
-        final Intent launchIntent = FontActivity.getLaunchIntent(context, FONT_NAME);
-        mActivityRule.launchActivity(launchIntent);
-    }
+  @Before public void startActivity() {
+    final Context context = InstrumentationRegistry.getTargetContext();
+    final Intent launchIntent = FontActivity.getLaunchIntent(context, FONT_NAME);
+    mActivityRule.launchActivity(launchIntent);
+  }
 
-    @Test
-    public void testInitialViewStates() throws Exception {
-        onView(withId(R.id.font_name)).check(matches(withText(FONT_NAME)));
-        onView(withText(R.string.font_activity_tab_regular)).check(matches(isSelected()));
-        onView(allOf(withId(R.id.preview_text), isDisplayed())).check(matches(withText(R.string.alphabet_upper)));
-    }
+  @Test public void testInitialViewStates() throws Exception {
+    onView(withId(R.id.font_name)).check(matches(withText(FONT_NAME)));
+    onView(withText(R.string.font_activity_tab_regular)).check(matches(isSelected()));
+    onView(allOf(withId(R.id.preview_text), isDisplayed())).check(matches(withText(R.string.alphabet_upper)));
+  }
 
-    @Test
-    public void testToggleCase() throws Exception {
-        onView(withId(R.id.toggle_case)).perform(click());
-        onView(allOf(withId(R.id.preview_text), isDisplayed())).check(matches(withText(R.string.alphabet_lower)));
-        onView(withId(R.id.toggle_case)).perform(click());
-        onView(allOf(withId(R.id.preview_text), isDisplayed())).check(matches(withText(R.string.alphabet_upper)));
-    }
+  @Test public void testToggleCase() throws Exception {
+    onView(withId(R.id.toggle_case)).perform(click());
+    onView(allOf(withId(R.id.preview_text), isDisplayed())).check(matches(withText(R.string.alphabet_lower)));
+    onView(withId(R.id.toggle_case)).perform(click());
+    onView(allOf(withId(R.id.preview_text), isDisplayed())).check(matches(withText(R.string.alphabet_upper)));
+  }
 
-    @Test
-    public void testTryFontDialog() throws Exception {
-        onView(withId(R.id.try_font)).perform(click());
-        onView(withId(R.id.input)).perform(typeText(TEST_INPUT));
-        onView(withText(R.string.done)).perform(click());
-        onView(allOf(withId(R.id.preview_text), isDisplayed())).check(matches(withText(TEST_INPUT)));
-    }
+  @Test public void testTryFontDialog() throws Exception {
+    onView(withId(R.id.try_font)).perform(click());
+    onView(withId(R.id.input)).perform(typeText(TEST_INPUT));
+    onView(withText(R.string.done)).perform(click());
+    onView(allOf(withId(R.id.preview_text), isDisplayed())).check(matches(withText(TEST_INPUT)));
+  }
 }

@@ -30,104 +30,104 @@ import static com.chromium.fontinstaller.core.SystemConstants.*;
 
 public class FontPackage {
 
-    private final String mName;
-    private HashMap<Font, Style> mFontsToStyles = new HashMap<>();
+  private final String mName;
+  private HashMap<Font, Style> mFontsToStyles = new HashMap<>();
 
-    private static final String BASE_URL = "https://raw.githubusercontent.com/ItsPriyesh/FontsterFontsRepo/master/";
+  private static final String BASE_URL = "https://raw.githubusercontent.com/ItsPriyesh/FontsterFontsRepo/master/";
 
-    /**
-     * Use this constructor to create font packages representing those
-     * that exist in the FontsterFontsRepo. These packs are verified,
-     * and can be used with FontDownloader.
-     *
-     * @param name The font package mName from FontsterFontsRepo
-     */
-    public FontPackage(String name) {
-        mName = name;
-        initForDownloadableFontPack();
+  /**
+   * Use this constructor to create font packages representing those
+   * that exist in the FontsterFontsRepo. These packs are verified,
+   * and can be used with FontDownloader.
+   *
+   * @param name The font package mName from FontsterFontsRepo
+   */
+  public FontPackage(String name) {
+    mName = name;
+    initForDownloadableFontPack();
+  }
+
+  /**
+   * Use this constructor to create font packages representing a user
+   * specified local folder. These packs are unverified, and cannot be
+   * used with FontDownloader. They can only be installed.
+   *
+   * @param folder The local folder containing the fonts
+   */
+  private FontPackage(File folder) {
+    mName = folder.getName();
+    initForLocalFontPack(folder);
+  }
+
+  public static FontPackage fromFolder(File folder) {
+    if (!folder.isDirectory()) {
+      throw new IllegalArgumentException("The specified file must be a directory");
     }
 
-    /**
-     * Use this constructor to create font packages representing a user
-     * specified local folder. These packs are unverified, and cannot be
-     * used with FontDownloader. They can only be installed.
-     *
-     * @param folder The local folder containing the fonts
-     */
-    private FontPackage(File folder) {
-        mName = folder.getName();
-        initForLocalFontPack(folder);
+    return new FontPackage(folder);
+  }
+
+  private void initForDownloadableFontPack() {
+    for (Style style : Style.values()) {
+      final String url = BASE_URL + mName.replace(" ", "") + "FontPack/" + style.getRemoteName();
+      final File file = new File(CACHE_PATH + mName.replace(" ", "") + "FontPack/" + style.getLocalName());
+      final Font font = new Font(style, url, file);
+      mFontsToStyles.put(font, style);
+    }
+  }
+
+  private void initForLocalFontPack(File folder) {
+    final File[] files = folder.listFiles();
+    final Map<String, File> namesToFiles = new HashMap<>();
+    for (File file : files) {
+      if (Style.REMOTE_STYLE_NAMES.contains(file.getName())) {
+        namesToFiles.put(file.getName(), file);
+      }
     }
 
-    public static FontPackage fromFolder(File folder) {
-        if (!folder.isDirectory()) {
-            throw new IllegalArgumentException("The specified file must be a directory");
-        }
-
-        return new FontPackage(folder);
+    for (Style style : Style.REMOTE_STYLES) {
+      final Font font = new Font(style, null, namesToFiles.get(style.getLocalName()));
+      mFontsToStyles.put(font, style);
     }
+  }
 
-    private void initForDownloadableFontPack() {
-        for (Style style : Style.values()) {
-            final String url = BASE_URL + mName.replace(" ", "") + "FontPack/" + style.getRemoteName();
-            final File file = new File(CACHE_PATH + mName.replace(" ", "") + "FontPack/" + style.getLocalName());
-            final Font font = new Font(style, url, file);
-            mFontsToStyles.put(font, style);
-        }
+  public ArrayList<Font> getFontList() {
+    return new ArrayList<>(mFontsToStyles.keySet());
+  }
+
+  public Map<Font, Style> getFontStyleMap() {
+    return mFontsToStyles;
+  }
+
+  public String getName() {
+    return mName;
+  }
+
+  public Typeface getTypeface(Style style) {
+    final Font font = getFont(style);
+    if (!font.getFile().exists()) return Typeface.DEFAULT;
+    else {
+      try {
+        return Typeface.createFromFile(font.getFile());
+      } catch (Exception e) {
+        return Typeface.DEFAULT;
+      }
     }
+  }
 
-    private void initForLocalFontPack(File folder) {
-        final File[] files = folder.listFiles();
-        final Map<String, File> namesToFiles = new HashMap<>();
-        for (File file : files) {
-            if (Style.REMOTE_STYLE_NAMES.contains(file.getName())) {
-                namesToFiles.put(file.getName(), file);
-            }
-        }
+  public Font getFont(Style style) {
+    for (Font font : mFontsToStyles.keySet())
+      if (mFontsToStyles.get(font).equals(style))
+        return font;
 
-        for (Style style : Style.REMOTE_STYLES) {
-            final Font font = new Font(style, null, namesToFiles.get(style.getLocalName()));
-            mFontsToStyles.put(font, style);
-        }
-    }
+    return null;
+  }
 
-    public ArrayList<Font> getFontList() {
-        return new ArrayList<>(mFontsToStyles.keySet());
-    }
-
-    public Map<Font, Style> getFontStyleMap() {
-        return mFontsToStyles;
-    }
-
-    public String getName() {
-        return mName;
-    }
-
-    public Typeface getTypeface(Style style) {
-        final Font font = getFont(style);
-        if (!font.getFile().exists()) return Typeface.DEFAULT;
-        else {
-            try {
-                return Typeface.createFromFile(font.getFile());
-            } catch (Exception e) {
-                return Typeface.DEFAULT;
-            }
-        }
-    }
-
-    public Font getFont(Style style) {
-        for (Font font : mFontsToStyles.keySet())
-            if (mFontsToStyles.get(font).equals(style))
-                return font;
-
-        return null;
-    }
-
-    public static boolean validFontPackFolder(String path) {
-        final File folder = new File(path);
-        if (!folder.exists() || !folder.isDirectory()) return false;
-        final Set<String> fileNameSet = new HashSet<>(Arrays.asList(folder.list()));
-        return fileNameSet.containsAll(Style.REMOTE_STYLE_NAMES);
-    }
+  public static boolean validFontPackFolder(String path) {
+    final File folder = new File(path);
+    if (!folder.exists() || !folder.isDirectory()) return false;
+    final Set<String> fileNameSet = new HashSet<>(Arrays.asList(folder.list()));
+    return fileNameSet.containsAll(Style.REMOTE_STYLE_NAMES);
+  }
 
 }

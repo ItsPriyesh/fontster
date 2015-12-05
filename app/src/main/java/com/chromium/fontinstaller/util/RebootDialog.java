@@ -34,41 +34,41 @@ import rx.schedulers.Schedulers;
 
 public final class RebootDialog extends AlertDialog {
 
-    private static final String REGULAR_FONT = "Roboto-Regular.ttf";
-    private static final String BOLD_FONT = "Roboto-Bold.ttf";
+  private static final String REGULAR_FONT = "Roboto-Regular.ttf";
+  private static final String BOLD_FONT = "Roboto-Bold.ttf";
 
-    public RebootDialog(Context context) {
-        super(context);
-    }
+  public RebootDialog(Context context) {
+    super(context);
+  }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        setTitle(R.string.reboot_dialog_title);
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    setTitle(R.string.reboot_dialog_title);
 
-        final View view = View.inflate(getContext(), R.layout.reboot_dialog, null);
-        ButterKnife.bind(this, view);
-        setView(view);
+    final View view = View.inflate(getContext(), R.layout.reboot_dialog, null);
+    ButterKnife.bind(this, view);
+    setView(view);
 
-        final AssetManager assets = view.getContext().getAssets();
-        final Typeface regular = Typeface.createFromAsset(assets, REGULAR_FONT);
-        final Typeface bold = Typeface.createFromAsset(assets, BOLD_FONT);
+    final AssetManager assets = view.getContext().getAssets();
+    final Typeface regular = Typeface.createFromAsset(assets, REGULAR_FONT);
+    final Typeface bold = Typeface.createFromAsset(assets, BOLD_FONT);
 
-        final TextView rebootMessage = (TextView) view.findViewById(R.id.reboot_message);
-        rebootMessage.setTypeface(regular);
+    final TextView rebootMessage = (TextView) view.findViewById(R.id.reboot_message);
+    rebootMessage.setTypeface(regular);
 
-        final String buttonText = view.getContext().getString(R.string.reboot_dialog_button_text);
-        setButton(BUTTON_POSITIVE, buttonText, (dialog, which) -> {
-            dialog.dismiss();
-            CommandRunner.runCommand("reboot")
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe();
-        });
+    final String buttonText = view.getContext().getString(R.string.reboot_dialog_button_text);
+    setButton(BUTTON_POSITIVE, buttonText, (dialog, which) -> {
+      dialog.dismiss();
+      CommandRunner.runCommand("reboot")
+          .subscribeOn(Schedulers.io())
+          .observeOn(AndroidSchedulers.mainThread())
+          .subscribe();
+    });
 
-        super.onCreate(savedInstanceState);
+    super.onCreate(savedInstanceState);
 
-        final Button button = getButton(AlertDialog.BUTTON_POSITIVE);
-        button.setTypeface(bold);
-    }
+    final Button button = getButton(AlertDialog.BUTTON_POSITIVE);
+    button.setTypeface(bold);
+  }
 
 }

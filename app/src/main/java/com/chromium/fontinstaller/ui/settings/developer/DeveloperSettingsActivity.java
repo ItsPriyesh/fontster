@@ -23,15 +23,15 @@ import com.chromium.fontinstaller.ui.common.BaseActivity;
 
 public class DeveloperSettingsActivity extends BaseActivity {
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
-        showToolbarBackButton();
-        setToolbarTitle(getString(R.string.settings_developer_title));
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_settings);
+    showToolbarBackButton();
+    setToolbarTitle(getString(R.string.settings_developer_title));
 
-        getFragmentManager().beginTransaction()
-                .add(R.id.container, new DeveloperSettingsFragment())
-                .commit();
-    }
+    getFragmentManager().beginTransaction()
+        .add(R.id.container, new DeveloperSettingsFragment())
+        .commit();
+  }
 }

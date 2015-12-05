@@ -34,43 +34,43 @@ import static com.chromium.fontinstaller.util.ViewUtils.snackbar;
 
 public class DeveloperSettingsFragment extends PreferenceFragment {
 
-    @Override
-    public void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.developer_settings);
+  @Override
+  public void onCreate(final Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    addPreferencesFromResource(R.xml.developer_settings);
 
-        findPreference("install_custom_font").setOnPreferenceClickListener(p -> {
-            confirmCustomFontInstall();
-            return true;
+    findPreference("install_custom_font").setOnPreferenceClickListener(p -> {
+      confirmCustomFontInstall();
+      return true;
+    });
+  }
+
+  private boolean confirmCustomFontInstall() {
+    new AlertDialog.Builder(getActivity())
+        .setTitle(R.string.settings_confirm_custom_font_install_title)
+        .setMessage(R.string.settings_confirm_custom_font_install_message)
+        .setNegativeButton(R.string.no, (dialog, which) -> dialog.dismiss())
+        .setPositiveButton(R.string.yes, (dialog, which) ->
+            new FontPackPickerDialog(getActivity(), this::installCustomFont).show())
+        .create().show();
+    return true;
+  }
+
+  private void installCustomFont(FontPackage fontPackage) {
+    final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+    progressDialog.setMessage(getString(R.string.settings_custom_font_install_progress));
+    progressDialog.show();
+
+    FontInstaller.install(fontPackage, getActivity())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribeOn(Schedulers.io())
+        .subscribe(done -> {
+          progressDialog.dismiss();
+          new RebootDialog(getActivity());
+        }, error -> {
+          Timber.i(error.getMessage());
+          progressDialog.dismiss();
+          snackbar(R.string.settings_custom_font_install_failed, getView());
         });
-    }
-
-    private boolean confirmCustomFontInstall() {
-        new AlertDialog.Builder(getActivity())
-                .setTitle(R.string.settings_confirm_custom_font_install_title)
-                .setMessage(R.string.settings_confirm_custom_font_install_message)
-                .setNegativeButton(R.string.no, (dialog, which) -> dialog.dismiss())
-                .setPositiveButton(R.string.yes, (dialog, which) ->
-                        new FontPackPickerDialog(getActivity(), this::installCustomFont).show())
-                .create().show();
-        return true;
-    }
-
-    private void installCustomFont(FontPackage fontPackage) {
-        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setMessage(getString(R.string.settings_custom_font_install_progress));
-        progressDialog.show();
-
-        FontInstaller.install(fontPackage, getActivity())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(done -> {
-                    progressDialog.dismiss();
-                    new RebootDialog(getActivity());
-                }, error -> {
-                    Timber.i(error.getMessage());
-                    progressDialog.dismiss();
-                    snackbar(R.string.settings_custom_font_install_failed, getView());
-                });
-    }
+  }
 }

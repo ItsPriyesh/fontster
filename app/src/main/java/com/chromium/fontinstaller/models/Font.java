@@ -20,25 +20,25 @@ import java.io.File;
 
 public class Font {
 
-    private final Style style;
-    private final String url;
-    private final File file;
+  private final Style style;
+  private final String url;
+  private final File file;
 
-    public Font(Style style, String url, File file) {
-        this.style = style;
-        this.url = url;
-        this.file = file;
-    }
+  public Font(Style style, String url, File file) {
+    this.style = style;
+    this.url = url;
+    this.file = file;
+  }
 
-    public String getName() {
-        return style.getLocalName();
-    }
+  public String getName() {
+    return style.getLocalName();
+  }
 
-    public String getUrl() {
-        return url;
-    }
+  public String getUrl() {
+    return url;
+  }
 
-    public File getFile() {
-        return file;
-    }
+  public File getFile() {
+    return file;
+  }
 }

@@ -36,65 +36,65 @@ import java.util.ArrayList;
 
 public final class FontListAdapter extends RecyclerView.Adapter<FontListAdapter.ViewHolder> {
 
-    private boolean mEnableTrueFont;
-    private ArrayList<String> mFontNames;
-    private LruCache<String, Typeface> mFontCache;
+  private boolean mEnableTrueFont;
+  private ArrayList<String> mFontNames;
+  private LruCache<String, Typeface> mFontCache;
 
-    public FontListAdapter(Context context, ArrayList<String> fontNames, boolean enableTrueFont) {
-        mFontNames = fontNames;
-        mFontCache = new LruCache<>(FileUtils.getMaxCacheSize(context));
-        mEnableTrueFont = enableTrueFont;
+  public FontListAdapter(Context context, ArrayList<String> fontNames, boolean enableTrueFont) {
+    mFontNames = fontNames;
+    mFontCache = new LruCache<>(FileUtils.getMaxCacheSize(context));
+    mEnableTrueFont = enableTrueFont;
 
-        setHasStableIds(true);
+    setHasStableIds(true);
+  }
+
+  @Override
+  public FontListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.font_list_item, parent, false);
+    return new ViewHolder(view);
+  }
+
+  @Override
+  public void onBindViewHolder(ViewHolder holder, int position) {
+    final String currentFontName = mFontNames.get(position);
+
+    holder.fontName.setText(currentFontName);
+
+    if (mEnableTrueFont) {
+      Typeface currentFont = mFontCache.get(currentFontName);
+      if (currentFont == null) {
+        currentFont = new FontPackage(currentFontName).getTypeface(Style.REGULAR);
+        mFontCache.put(currentFontName, currentFont);
+      }
+      holder.fontName.setTypeface(currentFont);
+    }
+  }
+
+  @Override
+  public long getItemId(int position) {
+    return mFontNames.get(position).hashCode();
+  }
+
+  @Override
+  public int getItemCount() {
+    return mFontNames.size();
+  }
+
+  public final class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    final TextView fontName;
+
+    public ViewHolder(View view) {
+      super(view);
+      view.setOnClickListener(this);
+      fontName = (TextView) view.findViewById(R.id.font_name);
     }
 
     @Override
-    public FontListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.font_list_item, parent, false);
-        return new ViewHolder(view);
+    public void onClick(View view) {
+      final Context context = view.getContext();
+      final String fontName = mFontNames.get(getLayoutPosition());
+      final Intent intent = FontActivity.getLaunchIntent(context, fontName);
+      context.startActivity(intent);
     }
-
-    @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        final String currentFontName = mFontNames.get(position);
-
-        holder.fontName.setText(currentFontName);
-
-        if (mEnableTrueFont) {
-            Typeface currentFont = mFontCache.get(currentFontName);
-            if (currentFont == null) {
-                currentFont = new FontPackage(currentFontName).getTypeface(Style.REGULAR);
-                mFontCache.put(currentFontName, currentFont);
-            }
-            holder.fontName.setTypeface(currentFont);
-        }
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return mFontNames.get(position).hashCode();
-    }
-
-    @Override
-    public int getItemCount() {
-        return mFontNames.size();
-    }
-
-    public final class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        final TextView fontName;
-
-        public ViewHolder(View view) {
-            super(view);
-            view.setOnClickListener(this);
-            fontName = (TextView) view.findViewById(R.id.font_name);
-        }
-
-        @Override
-        public void onClick(View view) {
-            final Context context = view.getContext();
-            final String fontName = mFontNames.get(getLayoutPosition());
-            final Intent intent = FontActivity.getLaunchIntent(context, fontName);
-            context.startActivity(intent);
-        }
-    }
+  }
 }

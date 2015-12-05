@@ -27,45 +27,45 @@ import java.io.OutputStream;
 
 public class FileUtils {
 
-    public static int getMaxCacheSize(Context context) {
-        int memClass = ((ActivityManager)
-                context.getSystemService(Context.ACTIVITY_SERVICE)).getMemoryClass();
+  public static int getMaxCacheSize(Context context) {
+    int memClass = ((ActivityManager)
+        context.getSystemService(Context.ACTIVITY_SERVICE)).getMemoryClass();
 
-        return 1024 * 1024 * memClass / 8;
+    return 1024 * 1024 * memClass / 8;
+  }
+
+  public static File getAssetsFile(String fileName, Context context) {
+    File file = new File(context.getExternalCacheDir() + File.separator + fileName);
+    if (!file.exists()) {
+      try {
+        InputStream in = context.getAssets().open(fileName);
+        OutputStream out = new FileOutputStream(file);
+        byte[] buffer = new byte[1024];
+        int read;
+        while ((read = in.read(buffer)) != -1) out.write(buffer, 0, read);
+        in.close();
+        out.close();
+      } catch (IOException e) {
+        file = null;
+      }
     }
+    return file;
+  }
 
-    public static File getAssetsFile(String fileName, Context context) {
-        File file = new File(context.getExternalCacheDir() + File.separator + fileName);
-        if (!file.exists()) {
-            try {
-                InputStream in = context.getAssets().open(fileName);
-                OutputStream out = new FileOutputStream(file);
-                byte[] buffer = new byte[1024];
-                int read;
-                while ((read = in.read(buffer)) != -1) out.write(buffer, 0, read);
-                in.close();
-                out.close();
-            } catch (IOException e) {
-                file = null;
-            }
+  @SuppressWarnings("ResultOfMethodCallIgnored")
+  public static void deleteDirectory(File directory) {
+    if (directory.exists()) {
+      final File[] files = directory.listFiles();
+      if (files != null) {
+        for (File file : files) {
+          if (file.isDirectory()) {
+            deleteDirectory(file);
+          } else {
+            file.delete();
+          }
         }
-        return file;
+      }
     }
-
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    public static void deleteDirectory(File directory) {
-        if (directory.exists()) {
-            final File[] files = directory.listFiles();
-            if (files != null) {
-                for (File file : files) {
-                    if (file.isDirectory()) {
-                        deleteDirectory(file);
-                    } else {
-                        file.delete();
-                    }
-                }
-            }
-        }
-        directory.delete();
-    }
+    directory.delete();
+  }
 }

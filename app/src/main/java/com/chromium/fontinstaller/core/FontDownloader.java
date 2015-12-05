@@ -39,77 +39,78 @@ import timber.log.Timber;
 
 public final class FontDownloader {
 
-    private static final OkHttpClient CLIENT = new OkHttpClient();
-    private static final FontFinder ALL_FONT_FINDER = FontPackage::getFontList;
+  private static final OkHttpClient CLIENT = new OkHttpClient();
+  private static final FontFinder ALL_FONT_FINDER = FontPackage::getFontList;
 
-    private interface FontFinder {
-        List<Font> findFonts(FontPackage fontPackage);
-    }
+  private interface FontFinder {
+    List<Font> findFonts(FontPackage fontPackage);
+  }
 
-    public static class DownloadException extends Exception {
-        public DownloadException(Exception root) { super(root); }
-    }
+  public static class DownloadException extends Exception {
+    public DownloadException(Exception root) { super(root); }
+  }
 
-    public static Observable<File> downloadAllFonts(FontPackage fontPackage) {
-        createCacheDirectory(fontPackage);
-        return downloadFonts(fontPackage, ALL_FONT_FINDER);
-    }
+  public static Observable<File> downloadAllFonts(FontPackage fontPackage) {
+    createCacheDirectory(fontPackage);
+    return downloadFonts(fontPackage, ALL_FONT_FINDER);
+  }
 
-    public static Observable<File> downloadStyledFonts(FontPackage fontPackage, Style... styles) {
-        createCacheDirectory(fontPackage);
-        return downloadFonts(fontPackage, styledFontFinder(Arrays.asList(styles)));
-    }
+  public static Observable<File> downloadStyledFonts(FontPackage fontPackage, Style... styles) {
+    createCacheDirectory(fontPackage);
+    return downloadFonts(fontPackage, styledFontFinder(Arrays.asList(styles)));
+  }
 
-    /* package */ static Observable<File> downloadFile(final String url, final String path) {
-        return Observable.create(subscriber -> {
-            final Request request = new Request.Builder().url(url).build();
-            try {
-                if (!subscriber.isUnsubscribed()) {
-                    final File file = new File(path);
-                    if (!file.exists()) {
-                        Timber.i("Downloading: " + file.getName());
-                        final Response response = CLIENT.newCall(request).execute();
-                        final BufferedSink sink = Okio.buffer(Okio.sink(file));
-                        sink.writeAll(response.body().source());
-                        sink.close();
-                    } else Timber.i("From cache: " + file.getName());
+  /* package */ static Observable<File> downloadFile(final String url, final String path) {
+    return Observable.create(subscriber -> {
+      final Request request = new Request.Builder().url(url).build();
+      try {
+        if (!subscriber.isUnsubscribed()) {
+          final File file = new File(path);
+          if (!file.exists()) {
+            Timber.i("Downloading: " + file.getName());
+            final Response response = CLIENT.newCall(request).execute();
+            final BufferedSink sink = Okio.buffer(Okio.sink(file));
+            sink.writeAll(response.body().source());
+            sink.close();
+          } else Timber.i("From cache: " + file.getName());
 
-                    subscriber.onNext(file);
-                    subscriber.onCompleted();
-                }
-            } catch (IOException e) {
-                subscriber.onError(new DownloadException(e));
-            }
-        });
-    }
-
-    private static Observable<File> downloadFiles(ArrayList<Pair<String, String>> files) {
-        return Observable.from(files).flatMap(p -> downloadFile(p.first, p.second));
-    }
-
-    private static Observable<File> downloadFonts(FontPackage fontPackage, FontFinder finder) {
-        ArrayList<Pair<String, String>> urlsAndPaths = new ArrayList<>();
-        for (Font font : finder.findFonts(fontPackage)) {
-            urlsAndPaths.add(new Pair<>(font.getUrl(), font.getFile().getAbsolutePath()));
+          subscriber.onNext(file);
+          subscriber.onCompleted();
         }
-        return downloadFiles(urlsAndPaths);
-    }
+      } catch (IOException e) {
+        subscriber.onError(new DownloadException(e));
+      }
+    });
+  }
 
-    private static FontFinder styledFontFinder(List<Style> acceptedStyles) {
-        return fontPackage -> {
-            Map<Font, Style> fontStyleMap = fontPackage.getFontStyleMap();
-            ArrayList<Font> rightFonts = new ArrayList<>();
-            for (Map.Entry<Font, Style> f : fontStyleMap.entrySet()) {
-                if (acceptedStyles.contains(f.getValue())) {
-                    rightFonts.add(f.getKey());
-                }
-            }
-            return rightFonts;
-        };
-    }
+  private static Observable<File> downloadFiles(ArrayList<Pair<String, String>> files) {
+    return Observable.from(files).flatMap(p -> downloadFile(p.first, p.second));
+  }
 
-    private static void createCacheDirectory(FontPackage fontPackage) {
-        new File(fontPackage.getFontList().get(0).getFile().getParentFile().getAbsolutePath()).mkdirs();
+  private static Observable<File> downloadFonts(FontPackage fontPackage, FontFinder finder) {
+    ArrayList<Pair<String, String>> urlsAndPaths = new ArrayList<>();
+    for (Font font : finder.findFonts(fontPackage)) {
+      urlsAndPaths.add(new Pair<>(font.getUrl(), font.getFile().getAbsolutePath()));
     }
+    return downloadFiles(urlsAndPaths);
+  }
+
+  private static FontFinder styledFontFinder(List<Style> acceptedStyles) {
+    return fontPackage -> {
+      Map<Font, Style> fontStyleMap = fontPackage.getFontStyleMap();
+      ArrayList<Font> rightFonts = new ArrayList<>();
+      for (Map.Entry<Font, Style> f : fontStyleMap.entrySet()) {
+        if (acceptedStyles.contains(f.getValue())) {
+          rightFonts.add(f.getKey());
+        }
+      }
+      return rightFonts;
+    };
+  }
+
+  private static void createCacheDirectory(FontPackage fontPackage) {
+    //noinspection ResultOfMethodCallIgnored
+    new File(fontPackage.getFontList().get(0).getFile().getParentFile().getAbsolutePath()).mkdirs();
+  }
 
 }

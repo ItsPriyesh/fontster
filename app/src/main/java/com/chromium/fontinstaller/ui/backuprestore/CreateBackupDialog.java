@@ -39,65 +39,65 @@ import static com.jakewharton.rxbinding.widget.RxTextView.textChanges;
 
 public class CreateBackupDialog extends AlertDialog {
 
-    @Bind(R.id.input_layout)
-    TextInputLayout mInputLayout;
+  @Bind(R.id.input_layout)
+  TextInputLayout mInputLayout;
 
-    private Button mPositiveButton;
-    private volatile boolean mNameIsValid;
-    private final Action1<String> mCallback;
+  private Button mPositiveButton;
+  private volatile boolean mNameIsValid;
+  private final Action1<String> mCallback;
 
-    protected CreateBackupDialog(Context context, Action1<String> callback) {
-        super(context);
-        mCallback = callback;
-    }
+  protected CreateBackupDialog(Context context, Action1<String> callback) {
+    super(context);
+    mCallback = callback;
+  }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        setTitle(R.string.backup_dialog_title);
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    setTitle(R.string.backup_dialog_title);
 
-        final View view = View.inflate(getContext(), R.layout.backup_dialog, null);
-        ButterKnife.bind(this, view);
-        setView(view);
+    final View view = View.inflate(getContext(), R.layout.backup_dialog, null);
+    ButterKnife.bind(this, view);
+    setView(view);
 
-        final EditText inputView = (EditText) view.findViewById(R.id.input);
-        final Subscription textChanges = textChanges(inputView)
-                .debounce(400, TimeUnit.MILLISECONDS)
-                .map(s -> !TextUtils.isEmpty(s))
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(nameIsValid -> {
-                    if (nameIsValid) enableOkButton();
-                    else showError();
-                });
-
-        final String buttonTextPos = getContext().getString(R.string.backup_dialog_button_backup);
-        setButton(BUTTON_POSITIVE, buttonTextPos, (dialog, which) -> {
-            if (!mNameIsValid) return;
-            textChanges.unsubscribe();
-            mCallback.call(inputView.getText().toString());
+    final EditText inputView = (EditText) view.findViewById(R.id.input);
+    final Subscription textChanges = textChanges(inputView)
+        .debounce(400, TimeUnit.MILLISECONDS)
+        .map(s -> !TextUtils.isEmpty(s))
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(nameIsValid -> {
+          if (nameIsValid) enableOkButton();
+          else showError();
         });
 
-        final String buttonTextNeg = getContext().getString(R.string.cancel);
-        setButton(BUTTON_NEGATIVE, buttonTextNeg, (dialog, which) -> {
-            textChanges.unsubscribe();
-            dismiss();
-        });
+    final String buttonTextPos = getContext().getString(R.string.backup_dialog_button_backup);
+    setButton(BUTTON_POSITIVE, buttonTextPos, (dialog, which) -> {
+      if (!mNameIsValid) return;
+      textChanges.unsubscribe();
+      mCallback.call(inputView.getText().toString());
+    });
 
-        super.onCreate(savedInstanceState);
+    final String buttonTextNeg = getContext().getString(R.string.cancel);
+    setButton(BUTTON_NEGATIVE, buttonTextNeg, (dialog, which) -> {
+      textChanges.unsubscribe();
+      dismiss();
+    });
 
-        mPositiveButton = getButton(AlertDialog.BUTTON_POSITIVE);
-        mPositiveButton.setEnabled(false);
-    }
+    super.onCreate(savedInstanceState);
 
-    private void enableOkButton() {
-        mNameIsValid = true;
-        mPositiveButton.setEnabled(true);
-        mInputLayout.setError(null);
-    }
+    mPositiveButton = getButton(AlertDialog.BUTTON_POSITIVE);
+    mPositiveButton.setEnabled(false);
+  }
 
-    private void showError() {
-        mNameIsValid = false;
-        mPositiveButton.setEnabled(false);
-        mInputLayout.setError(getContext().getString(R.string.backup_dialog_invalid_name));
-    }
+  private void enableOkButton() {
+    mNameIsValid = true;
+    mPositiveButton.setEnabled(true);
+    mInputLayout.setError(null);
+  }
+
+  private void showError() {
+    mNameIsValid = false;
+    mPositiveButton.setEnabled(false);
+    mInputLayout.setError(getContext().getString(R.string.backup_dialog_invalid_name));
+  }
 
 }

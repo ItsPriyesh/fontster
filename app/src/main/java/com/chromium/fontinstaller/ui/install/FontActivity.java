@@ -32,6 +32,7 @@ import android.support.v4.view.ViewPager;
 import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -46,7 +47,6 @@ import com.chromium.fontinstaller.util.RebootDialog;
 import com.crashlytics.android.Crashlytics;
 
 import butterknife.Bind;
-import butterknife.OnClick;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
@@ -60,275 +60,252 @@ import static com.chromium.fontinstaller.util.ViewUtils.snackbar;
 
 public final class FontActivity extends BaseActivity implements TabLayout.OnTabSelectedListener {
 
-    @Bind(R.id.font_name)
-    TextView mFontTitle;
+  @Bind(R.id.font_name) TextView mFontTitle;
 
-    @Bind(R.id.install_fab)
-    FloatingActionButton mInstallButton;
+  @Bind(R.id.install_fab) FloatingActionButton mInstallButton;
 
-    @Bind(R.id.download_progress)
-    ProgressBar mDownloadProgress;
+  @Bind(R.id.download_progress) ProgressBar mDownloadProgress;
 
-    @Bind(R.id.preview_pager)
-    ViewPager mPreviewPager;
+  @Bind(R.id.preview_pager) ViewPager mPreviewPager;
 
-    @Bind(R.id.sliding_tabs)
-    TabLayout mTabLayout;
+  @Bind(R.id.sliding_tabs) TabLayout mTabLayout;
 
-    @Bind(R.id.error_container)
-    ViewGroup mErrorContainer;
+  @Bind(R.id.error_container) ViewGroup mErrorContainer;
 
-    private int mCurrentPage = 0;
-    private FontPackage mFontPackage;
-    private PreviewFragment[] mPreviewPages = new PreviewFragment[3];
-    private boolean mFragmentsInitialized = false;
-    private ProgressDialog mProgressDialog;
+  private int mCurrentPage = 0;
+  private FontPackage mFontPackage;
+  private PreviewFragment[] mPreviewPages = new PreviewFragment[3];
+  private boolean mFragmentsInitialized = false;
+  private ProgressDialog mProgressDialog;
 
-    static final SparseArray<Style> PREVIEW_STYLES = new SparseArray<Style>() {{
-        put(0, Style.REGULAR);
-        put(1, Style.BOLD);
-        put(2, Style.ITALIC);
-    }};
+  static final SparseArray<Style> PREVIEW_STYLES = new SparseArray<Style>() {{
+    put(0, Style.REGULAR);
+    put(1, Style.BOLD);
+    put(2, Style.ITALIC);
+  }};
 
-    public static final String FONT_NAME_KEY = "font_name";
+  public static final String FONT_NAME_KEY = "font_name";
 
-    public static Intent getLaunchIntent(final Context context, final String fontName) {
-        final Intent intent = new Intent(context, FontActivity.class);
-        intent.putExtra(FontActivity.FONT_NAME_KEY, fontName);
-        return intent;
+  public static Intent getLaunchIntent(final Context context, final String fontName) {
+    final Intent intent = new Intent(context, FontActivity.class);
+    intent.putExtra(FontActivity.FONT_NAME_KEY, fontName);
+    return intent;
+  }
+
+  @Override protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_font);
+    disableToolbarElevation();
+    showToolbarBackButton();
+    setToolbarTitle("");
+
+    final String fontName = getIntent().getStringExtra(FONT_NAME_KEY);
+    logEvent("Viewing " + fontName);
+
+    mFontPackage = new FontPackage(fontName);
+    startDownload();
+
+    mFontTitle.setText(fontName);
+  }
+
+  private void initializeFragments() {
+    for (int i = 0; i < mPreviewPages.length; i++) {
+      mPreviewPages[i] = PreviewFragment.newInstance(mFontPackage, PREVIEW_STYLES.get(i));
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_font);
-        disableToolbarElevation();
-        showToolbarBackButton();
-        setToolbarTitle("");
+    mFragmentsInitialized = true;
+  }
 
-        final String fontName = getIntent().getStringExtra(FONT_NAME_KEY);
-        logEvent("Viewing " + fontName);
+  private void startDownload() {
+    if (isVisible(mErrorContainer)) hide(mErrorContainer);
+    show(mDownloadProgress);
 
-        mFontPackage = new FontPackage(fontName);
-        startDownload();
+    FontDownloader.downloadStyledFonts(mFontPackage, Style.REGULAR, Style.BOLD, Style.ITALIC)
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(
+            font -> Timber.i("Got font: " + font.getName()),
+            this::handleFailedDownload,
+            this::setupPager);
+  }
 
-        mFontTitle.setText(fontName);
-    }
+  private void handleFailedDownload(Throwable error) {
+    Crashlytics.logException(error);
+    Timber.e("Download failed: " + error.getMessage());
+    animSlideUp(mDownloadProgress, this);
 
-    private void initializeFragments() {
-        for (int i = 0; i < mPreviewPages.length; i++) {
-            mPreviewPages[i] = PreviewFragment.newInstance(mFontPackage, PREVIEW_STYLES.get(i));
-        }
+    delay(() -> {
+      hideGone(mDownloadProgress);
 
-        mFragmentsInitialized = true;
-    }
+      animSlideInBottom(mErrorContainer, this);
+      show(mErrorContainer);
+    }, 400);
+  }
 
-    private void startDownload() {
-        if (isVisible(mErrorContainer)) hide(mErrorContainer);
-        show(mDownloadProgress);
+  private void handleFailedInstall(Throwable error) {
+    Crashlytics.logException(error);
+    delay(() -> {
+      Timber.e("Install failed: " + error.getMessage());
+      snackbar(R.string.font_activity_install_failed, findViewById(R.id.bottom_bar));
+      mProgressDialog.dismiss();
+      animGrowFromCenter(mInstallButton, this);
+      show(mInstallButton);
+    }, 500);
+  }
 
-        FontDownloader.downloadStyledFonts(mFontPackage, Style.REGULAR, Style.BOLD, Style.ITALIC)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        font -> Timber.i("Got font: " + font.getName()),
-                        this::handleFailedDownload,
-                        this::setupPager);
-    }
+  private void setupPager() {
+    initializeFragments();
+    PreviewPagerAdapter pagerAdapter = new PreviewPagerAdapter(getSupportFragmentManager());
+    mPreviewPager.setOffscreenPageLimit(2);
+    mPreviewPager.setAdapter(pagerAdapter);
+    mTabLayout.setOnTabSelectedListener(this);
+    mTabLayout.setupWithViewPager(mPreviewPager);
+    mTabLayout.setSelectedTabIndicatorColor(ActivityCompat.getColor(this, android.R.color.white));
 
-    private void handleFailedDownload(Throwable error) {
-        Crashlytics.logException(error);
-        Timber.e("Download failed: " + error.getMessage());
-        animSlideUp(mDownloadProgress, this);
+    animateViews();
+  }
 
-        delay(() -> {
-            hideGone(mDownloadProgress);
+  private void animateViews() {
+    animShrinkToCenter(mDownloadProgress, this);
 
-            animSlideInBottom(mErrorContainer, this);
-            show(mErrorContainer);
-        }, 400);
-    }
+    delay(() -> {
+      hideGone(mDownloadProgress);
+      animSlideInBottom(mTabLayout, this);
+      show(mTabLayout);
+      reveal(this, mPreviewPager, mInstallButton, R.color.primary_accent);
+      animGrowFromCenter(mInstallButton, this);
+      show(mInstallButton);
+    }, 400);
+  }
 
-    private void handleFailedInstall(Throwable error) {
-        Crashlytics.logException(error);
-        delay(() -> {
-            Timber.e("Install failed: " + error.getMessage());
-            snackbar(R.string.font_activity_install_failed, findViewById(R.id.bottom_bar));
-            mProgressDialog.dismiss();
-            animGrowFromCenter(mInstallButton, this);
-            show(mInstallButton);
-        }, 500);
-    }
+  private void startInstall() {
+    logEvent("Started install of " + mFontPackage.getName());
+    mProgressDialog = ProgressDialog
+        .show(this, null, getString(R.string.font_activity_install_progress), true, false);
 
-    private void setupPager() {
-        initializeFragments();
-        PreviewPagerAdapter pagerAdapter = new PreviewPagerAdapter(getSupportFragmentManager());
-        mPreviewPager.setOffscreenPageLimit(2);
-        mPreviewPager.setAdapter(pagerAdapter);
-        mTabLayout.setOnTabSelectedListener(this);
-        mTabLayout.setupWithViewPager(mPreviewPager);
-        mTabLayout.setSelectedTabIndicatorColor(ActivityCompat.getColor(this, android.R.color.white));
+    FontDownloader.downloadAllFonts(mFontPackage)
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .last()
+        .flatMap(v -> FontInstaller.install(mFontPackage, this))
+        .subscribe(
+            next -> { },
+            error -> {
+              logEvent("Install of " + mFontPackage.getName() + " failed");
+              if (error instanceof FontDownloader.DownloadException)
+                handleFailedDownload(error.getCause());
+              else if (error instanceof FontInstaller.InstallException)
+                handleFailedInstall(error);
+            },
+            () -> {
+              logEvent("Install of " + mFontPackage.getName() + " succeeded");
+              onInstallComplete();
+            });
+  }
 
-        animateViews();
-    }
+  private Style getCurrentPageStyle() {
+    return PREVIEW_STYLES.get(mCurrentPage);
+  }
 
-    private void animateViews() {
-        animShrinkToCenter(mDownloadProgress, this);
+  public void onInstallFabClicked(View view) {
+    new AlertDialog.Builder(this)
+        .setMessage(R.string.font_activity_confirm_install)
+        .setNegativeButton(R.string.no, (dialog, id) -> dialog.dismiss())
+        .setPositiveButton(R.string.yes, (dialog, id) -> startInstall())
+        .create().show();
+  }
 
-        delay(() -> {
-            hideGone(mDownloadProgress);
-            animSlideInBottom(mTabLayout, this);
-            show(mTabLayout);
-            reveal(this, mPreviewPager, mInstallButton, R.color.primary_accent);
-            animGrowFromCenter(mInstallButton, this);
-            show(mInstallButton);
-        }, 400);
-    }
+  public void onRetryButtonClicked(View view) {
+    startDownload();
+  }
 
-    private void startInstall() {
-        logEvent("Started install of " + mFontPackage.getName());
-        mProgressDialog = ProgressDialog
-                .show(this, null, getString(R.string.font_activity_install_progress), true, false);
+  public void onInstallComplete() {
+    mProgressDialog.dismiss();
+    delay(() -> {
+      mInstallButton.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_done_white));
 
-        FontDownloader.downloadAllFonts(mFontPackage)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .last()
-                .flatMap(v -> FontInstaller.install(mFontPackage, this))
-                .subscribe(
-                        next -> {},
-                        error -> {
-                            logEvent("Install of " + mFontPackage.getName() + " failed");
-                            if (error instanceof FontDownloader.DownloadException)
-                                handleFailedDownload(error.getCause());
-                            else if (error instanceof FontInstaller.InstallException)
-                                handleFailedInstall(error);
-                        },
-                        () -> {
-                            logEvent("Install of " + mFontPackage.getName() + " succeeded");
-                            onInstallComplete();
-                        });
-    }
+      animGrowFromCenter(mInstallButton, this);
+      show(mInstallButton);
 
-    private Style getCurrentPageStyle() {
-        return PREVIEW_STYLES.get(mCurrentPage);
-    }
+      delay(() -> {
+        if (!this.isFinishing()) new RebootDialog(this);
+      }, 400);
+    }, 400);
+  }
 
-    @SuppressWarnings("unused")
-    @OnClick(R.id.install_fab)
-    public void installButtonClicked() {
-        new AlertDialog.Builder(this)
-                .setMessage(R.string.font_activity_confirm_install)
-                .setNegativeButton(R.string.no, (dialog, id) -> dialog.dismiss())
-                .setPositiveButton(R.string.yes, (dialog, id) -> startInstall())
-                .create().show();
-    }
+  @Override public boolean onCreateOptionsMenu(Menu menu) {
+    getMenuInflater().inflate(R.menu.menu_font, menu);
+    return true;
+  }
 
-    @SuppressWarnings("unused")
-    @OnClick(R.id.retry)
-    public void retryButtonClicked() {
-        startDownload();
-    }
-
-    public void onInstallComplete() {
-        mProgressDialog.dismiss();
-        delay(() -> {
-            mInstallButton.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_done_white));
-
-            animGrowFromCenter(mInstallButton, this);
-            show(mInstallButton);
-
-            delay(() -> {
-                if (!this.isFinishing()) new RebootDialog(this);
-            }, 400);
-        }, 400);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_font, menu);
+  @Override public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case R.id.toggle_case:
+        toggleCase();
+        return true;
+      case R.id.try_font:
+        showTryFontDialog();
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.toggle_case:
-                toggleCase();
-                return true;
-            case R.id.try_font:
-                showTryFontDialog();
-                return true;
-        }
+    return super.onOptionsItemSelected(item);
+  }
 
-        return super.onOptionsItemSelected(item);
+  private void showTryFontDialog() {
+    if (mFragmentsInitialized) {
+      new TryFontDialog(mFontPackage, getCurrentPageStyle(), this::tryFontCallback, this).show();
+    }
+  }
+
+  private void tryFontCallback(String input) {
+    if (input.equals("") || input.isEmpty()) return;
+    for (PreviewFragment fragment : mPreviewPages) {
+      fragment.setPreviewText(input);
+    }
+  }
+
+  private void toggleCase() {
+    if (mFragmentsInitialized) {
+      for (PreviewFragment fragment : mPreviewPages) {
+        fragment.toggleCase();
+      }
+    }
+  }
+
+  @Override public void onTabSelected(TabLayout.Tab tab) {
+    mCurrentPage = tab.getPosition();
+  }
+
+  @Override public void onTabUnselected(TabLayout.Tab tab) { }
+
+  @Override public void onTabReselected(TabLayout.Tab tab) { }
+
+  private final class PreviewPagerAdapter extends FragmentPagerAdapter {
+
+    private final String[] tabTitles = {
+        getString(R.string.font_activity_tab_regular),
+        getString(R.string.font_activity_tab_bold),
+        getString(R.string.font_activity_tab_italic)
+    };
+
+    public PreviewPagerAdapter(FragmentManager fragmentManager) { super(fragmentManager); }
+
+    @Override public Object instantiateItem(ViewGroup container, int position) {
+      PreviewFragment fragment = (PreviewFragment) super.instantiateItem(container, position);
+      mPreviewPages[position] = fragment;
+      return fragment;
     }
 
-    private void showTryFontDialog() {
-        if (mFragmentsInitialized) {
-            new TryFontDialog(mFontPackage, getCurrentPageStyle(),
-                    this::tryFontCallback, this).show();
-        }
+    @Override public Fragment getItem(int position) {
+      return mPreviewPages[position];
     }
 
-    private void tryFontCallback(String input) {
-        if (input.equals("") || input.isEmpty()) return;
-        for (PreviewFragment fragment : mPreviewPages) {
-            fragment.setPreviewText(input);
-        }
+    @Override public CharSequence getPageTitle(int position) {
+      return tabTitles[position];
     }
 
-    private void toggleCase() {
-        if (mFragmentsInitialized)
-            for (PreviewFragment fragment : mPreviewPages)
-                fragment.toggleCase();
+    @Override public int getCount() {
+      return mPreviewPages.length;
     }
-
-    @Override
-    public void onTabSelected(TabLayout.Tab tab) {
-        mCurrentPage = tab.getPosition();
-    }
-
-    @Override
-    public void onTabUnselected(TabLayout.Tab tab) {
-    }
-
-    @Override
-    public void onTabReselected(TabLayout.Tab tab) {
-    }
-
-    private final class PreviewPagerAdapter extends FragmentPagerAdapter {
-
-        private final String[] tabTitles = {
-                getString(R.string.font_activity_tab_regular),
-                getString(R.string.font_activity_tab_bold),
-                getString(R.string.font_activity_tab_italic)
-        };
-
-        public PreviewPagerAdapter(FragmentManager fragmentManager) {
-            super(fragmentManager);
-        }
-
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            PreviewFragment fragment = (PreviewFragment) super.instantiateItem(container, position);
-            mPreviewPages[position] = fragment;
-            return fragment;
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mPreviewPages[position];
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return tabTitles[position];
-        }
-
-        @Override
-        public int getCount() {
-            return mPreviewPages.length;
-        }
-    }
+  }
 }

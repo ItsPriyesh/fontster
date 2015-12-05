@@ -24,28 +24,28 @@ import com.chromium.fontinstaller.ui.common.BaseActivity;
 
 public class SettingsActivity extends BaseActivity {
 
-    private SettingsFragment mSettingsFragment;
+  private SettingsFragment mSettingsFragment;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
-        showToolbarBackButton();
-        setToolbarTitle(getString(R.string.settings_title));
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_settings);
+    showToolbarBackButton();
+    setToolbarTitle(getString(R.string.settings_title));
 
-        mSettingsFragment = new SettingsFragment();
+    mSettingsFragment = new SettingsFragment();
 
-        getFragmentManager().beginTransaction()
-                .add(R.id.container, mSettingsFragment)
-                .commit();
+    getFragmentManager().beginTransaction()
+        .add(R.id.container, mSettingsFragment)
+        .commit();
+  }
+
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    if (mSettingsFragment.getBillingHelper() == null) return;
+
+    if (!mSettingsFragment.getBillingHelper().handleActivityResult(requestCode, resultCode, data)) {
+      super.onActivityResult(requestCode, resultCode, data);
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (mSettingsFragment.getBillingHelper() == null) return;
-
-        if (!mSettingsFragment.getBillingHelper().handleActivityResult(requestCode, resultCode, data)) {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
-    }
+  }
 }

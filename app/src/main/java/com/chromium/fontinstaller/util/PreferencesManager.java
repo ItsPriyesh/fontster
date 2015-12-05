@@ -21,43 +21,42 @@ import android.content.SharedPreferences;
 
 public class PreferencesManager {
 
-    private static final String PREFS_NAME = "com.chromium.fontinstaller.PREFS";
+  private static final String PREFS_NAME = "com.chromium.fontinstaller.PREFS";
 
-    public static final class Keys {
-        public static final String ENABLE_TRUEFONT = "1";
-        public static final String BACKUP_NAME = "2";
-        public static final String BACKUP_DATE = "3";
-        public static final String TRUEFONTS_CACHED = "4";
-        public static final String ENABLE_DEVELOPER_MODE = "5";
+  public static final class Keys {
+    public static final String ENABLE_TRUEFONT = "1";
+    public static final String BACKUP_NAME = "2";
+    public static final String BACKUP_DATE = "3";
+    public static final String TRUEFONTS_CACHED = "4";
+  }
+
+  private static SharedPreferences sSharedPreferences = null;
+  private static PreferencesManager sPreferencesManager = null;
+
+  private PreferencesManager(Context context) {
+    sSharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+  }
+
+  public static synchronized PreferencesManager getInstance(Context context) {
+    if (sPreferencesManager == null) {
+      sPreferencesManager = new PreferencesManager(context);
     }
+    return sPreferencesManager;
+  }
 
-    private static SharedPreferences sharedPreferences = null;
-    private static PreferencesManager prefsManager = null;
+  public void setString(String key, String value) {
+    sSharedPreferences.edit().putString(key, value).apply();
+  }
 
-    private PreferencesManager(Context context) {
-        sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-    }
+  public String getString(String key) {
+    return sSharedPreferences.getString(key, null);
+  }
 
-    public static synchronized PreferencesManager getInstance(Context context) {
-        if (prefsManager == null) {
-            prefsManager = new PreferencesManager(context);
-        }
-        return prefsManager;
-    }
+  public void setBoolean(String key, boolean value) {
+    sSharedPreferences.edit().putBoolean(key, value).apply();
+  }
 
-    public void setString(String key, String value) {
-        sharedPreferences.edit().putString(key, value).apply();
-    }
-
-    public String getString(String key) {
-        return sharedPreferences.getString(key, null);
-    }
-
-    public void setBoolean(String key, boolean value) {
-        sharedPreferences.edit().putBoolean(key, value).apply();
-    }
-
-    public boolean getBoolean(String key) {
-        return sharedPreferences.getBoolean(key, false);
-    }
+  public boolean getBoolean(String key) {
+    return sSharedPreferences.getBoolean(key, false);
+  }
 }

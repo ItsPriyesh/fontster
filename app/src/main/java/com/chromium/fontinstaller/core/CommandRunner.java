@@ -24,19 +24,18 @@ import rx.Observable;
 
 public class CommandRunner {
 
-    public static Observable<Void> runCommands(List<String> commands) {
-        return Observable
-                .create(subscriber -> {
-                    if (Shell.SU.available()) {
-                        Shell.SU.run(commands);
-                    }
-                    subscriber.onNext(null);
-                    subscriber.onCompleted();
-                });
-    }
+  public static Observable<Void> runCommands(List<String> commands) {
+    return Observable.create(subscriber -> {
+          if (Shell.SU.available()) {
+            Shell.SU.run(commands);
+          }
+          subscriber.onNext(null);
+          subscriber.onCompleted();
+        });
+  }
 
-    public static Observable<Void> runCommand(String command) {
-        return runCommands(Collections.singletonList(command));
-    }
+  public static Observable<Void> runCommand(String command) {
+    return runCommands(Collections.singletonList(command));
+  }
 
 }

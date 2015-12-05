@@ -50,165 +50,165 @@ import static com.chromium.fontinstaller.util.ViewUtils.snackbar;
 
 public class SettingsFragment extends PreferenceFragment {
 
-    private static final int TAPS_TO_ENTER_DEV_SETTINGS = 8;
+  private static final int TAPS_TO_ENTER_DEV_SETTINGS = 8;
 
-    public static final String DONATE_SKU_SMALL = "com.chromium.fontster.mDonate";
-    public static final String DONATE_SKU_MED = "com.chromium.fontster.donate_med";
-    public static final String DONATE_SKU_LARGE = "com.chromium.fontster.donate_large";
+  public static final String DONATE_SKU_SMALL = "com.chromium.fontster.mDonate";
+  public static final String DONATE_SKU_MED = "com.chromium.fontster.donate_med";
+  public static final String DONATE_SKU_LARGE = "com.chromium.fontster.donate_large";
 
-    private static final SparseArray<String> DONATION_SKUS = new SparseArray<String>() {{
-        put(0, DONATE_SKU_SMALL);
-        put(1, DONATE_SKU_MED);
-        put(2, DONATE_SKU_LARGE);
-    }};
+  private static final SparseArray<String> DONATION_SKUS = new SparseArray<String>() {{
+    put(0, DONATE_SKU_SMALL);
+    put(1, DONATE_SKU_MED);
+    put(2, DONATE_SKU_LARGE);
+  }};
 
-    private IabHelper mBillingHelper;
-    private PreferencesManager mPreferences;
-    private IabHelper.OnIabPurchaseFinishedListener mPurchaseListener;
-    private ProgressDialog mProgressDialog;
-    private int mVersionTaps = 0;
+  private IabHelper mBillingHelper;
+  private PreferencesManager mPreferences;
+  private IabHelper.OnIabPurchaseFinishedListener mPurchaseListener;
+  private ProgressDialog mProgressDialog;
+  private int mVersionTaps = 0;
 
-    @Override
-    public void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.settings);
+  @Override
+  public void onCreate(final Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    addPreferencesFromResource(R.xml.settings);
 
-        mPreferences = PreferencesManager.getInstance(getActivity());
+    mPreferences = PreferencesManager.getInstance(getActivity());
 
-        findPreferenceById(R.string.pref_key_true_font)
-                .setOnPreferenceChangeListener((pref, newValue) -> handleTrueFont(newValue));
+    findPreferenceById(R.string.pref_key_true_font)
+        .setOnPreferenceChangeListener((pref, newValue) -> handleTrueFont(newValue));
 
-        findPreferenceById(R.string.pref_key_clear_cache)
-                .setOnPreferenceClickListener(pref -> clearCache());
+    findPreferenceById(R.string.pref_key_clear_cache)
+        .setOnPreferenceClickListener(pref -> clearCache());
 
-        findPreferenceById(R.string.pref_key_view_source)
-                .setOnPreferenceClickListener(pref -> viewSource());
+    findPreferenceById(R.string.pref_key_view_source)
+        .setOnPreferenceClickListener(pref -> viewSource());
 
-        findPreferenceById(R.string.pref_key_licenses)
-                .setOnPreferenceClickListener(pref -> openLicensesDialog());
+    findPreferenceById(R.string.pref_key_licenses)
+        .setOnPreferenceClickListener(pref -> openLicensesDialog());
 
-        final Preference appVersion = findPreferenceById(R.string.pref_key_app_version);
-        appVersion.setSummary(BuildConfig.VERSION_NAME + " - " + BuildConfig.BUILD_TYPE);
-        appVersion.setOnPreferenceClickListener(pref -> {
-            if (++mVersionTaps == TAPS_TO_ENTER_DEV_SETTINGS) {
-                mVersionTaps = 0;
-                startActivity(new Intent(getActivity(), DeveloperSettingsActivity.class));
-            }
-            return true;
-        });
+    final Preference appVersion = findPreferenceById(R.string.pref_key_app_version);
+    appVersion.setSummary(BuildConfig.VERSION_NAME + " - " + BuildConfig.BUILD_TYPE);
+    appVersion.setOnPreferenceClickListener(pref -> {
+      if (++mVersionTaps == TAPS_TO_ENTER_DEV_SETTINGS) {
+        mVersionTaps = 0;
+        startActivity(new Intent(getActivity(), DeveloperSettingsActivity.class));
+      }
+      return true;
+    });
 
-        final Preference donate = findPreferenceById(R.string.pref_key_donate);
-        donate.setOnPreferenceClickListener(pref -> showDonationDialog());
+    final Preference donate = findPreferenceById(R.string.pref_key_donate);
+    donate.setOnPreferenceClickListener(pref -> showDonationDialog());
 
-        mBillingHelper = new IabHelper(getActivity(), SecretStuff.LICENSE_KEY);
-        mBillingHelper.startSetup(result -> {
-            if (result.isSuccess()) {
-                donate.setEnabled(true);
-            } else {
-                donate.setSummary(R.string.settings_iab_setup_error);
-            }
-        });
+    mBillingHelper = new IabHelper(getActivity(), SecretStuff.LICENSE_KEY);
+    mBillingHelper.startSetup(result -> {
+      if (result.isSuccess()) {
+        donate.setEnabled(true);
+      } else {
+        donate.setSummary(R.string.settings_iab_setup_error);
+      }
+    });
+  }
+
+  private Preference findPreferenceById(int key) {
+    return findPreference(getString(key));
+  }
+
+  @Override
+  public void onDestroy() {
+    super.onDestroy();
+    if (mBillingHelper != null) mBillingHelper.dispose();
+    mBillingHelper = null;
+  }
+
+  public IabHelper getBillingHelper() {
+    return mBillingHelper;
+  }
+
+  private boolean showDonationDialog() {
+    new AlertDialog.Builder(getActivity())
+        .setTitle(R.string.donate_dialog_title)
+        .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss())
+        .setSingleChoiceItems(R.array.donation_amounts, -1, (dialog, which) -> {
+          dialog.dismiss();
+          makeDonation(DONATION_SKUS.get(which));
+        }).create().show();
+    return true;
+  }
+
+  private boolean makeDonation(String sku) {
+    mBillingHelper.launchPurchaseFlow(getActivity(), sku, 1, mPurchaseListener, "");
+    mPurchaseListener = (result, purchase) -> {
+      final View v = getView();
+      if (result.isFailure()) snackbar(R.string.settings_donation_failed, v);
+      else if (purchase.getSku().equals(sku)) snackbar(R.string.settings_donation_success, v);
+    };
+
+    return true;
+  }
+
+  private boolean handleTrueFont(Object newValue) {
+    mPreferences.setBoolean(Keys.ENABLE_TRUEFONT, (boolean) newValue);
+    showRestartDialog();
+    return true;
+  }
+
+  private boolean clearCache() {
+    mProgressDialog = new ProgressDialog(getActivity());
+    mProgressDialog.setMessage(getString(R.string.settings_clear_cache_progress));
+    mProgressDialog.show();
+
+    final List<String> commands = new ArrayList<>();
+    final File cache = new File(getActivity().getExternalCacheDir() + File.separator);
+
+    if (cache.listFiles() != null) {
+      for (File f : cache.listFiles())
+        if (!f.getName().equals("Backup"))
+          commands.add("rm -rf " + f.getAbsolutePath());
+
+      CommandRunner.runCommands(commands)
+          .subscribeOn(Schedulers.io())
+          .observeOn(AndroidSchedulers.mainThread())
+          .doOnCompleted(this::onCacheCleared)
+          .subscribe();
+    } else {
+      snackbar(getString(R.string.settings_clear_cache_failed), getView());
     }
 
-    private Preference findPreferenceById(int key) {
-        return findPreference(getString(key));
-    }
+    return true;
+  }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (mBillingHelper != null) mBillingHelper.dispose();
-        mBillingHelper = null;
-    }
+  public void onCacheCleared() {
+    mPreferences.setBoolean(Keys.TRUEFONTS_CACHED, false);
+    mProgressDialog.dismiss();
+    snackbar(R.string.settings_clear_cache_success, getView());
+  }
 
-    public IabHelper getBillingHelper() {
-        return mBillingHelper;
-    }
+  private boolean viewSource() {
+    final Intent intent = new Intent();
+    intent.setAction(Intent.ACTION_VIEW);
+    intent.addCategory(Intent.CATEGORY_BROWSABLE);
+    intent.setData(Uri.parse(getString(R.string.settings_link_github)));
+    startActivity(intent);
+    return true;
+  }
 
-    private boolean showDonationDialog() {
-        new AlertDialog.Builder(getActivity())
-                .setTitle(R.string.donate_dialog_title)
-                .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss())
-                .setSingleChoiceItems(R.array.donation_amounts, -1, (dialog, which) -> {
-                    dialog.dismiss();
-                    makeDonation(DONATION_SKUS.get(which));
-                }).create().show();
-        return true;
-    }
+  private boolean openLicensesDialog() {
+    new LicensesDialog.Builder(getActivity())
+        .setNotices(Licenses.getNotices())
+        .build().show();
+    return true;
+  }
 
-    private boolean makeDonation(String sku) {
-        mBillingHelper.launchPurchaseFlow(getActivity(), sku, 1, mPurchaseListener, "");
-        mPurchaseListener = (result, purchase) -> {
-            final View v = getView();
-            if (result.isFailure()) snackbar(R.string.settings_donation_failed, v);
-            else if (purchase.getSku().equals(sku)) snackbar(R.string.settings_donation_success, v);
-        };
+  private void showRestartDialog() {
+    new AlertDialog.Builder(getActivity())
+        .setMessage(R.string.settings_restart_dialog_message)
+        .setPositiveButton(R.string.settings_restart_dialog_button, (d, i) -> restartApp())
+        .create().show();
+  }
 
-        return true;
-    }
-
-    private boolean handleTrueFont(Object newValue) {
-        mPreferences.setBoolean(Keys.ENABLE_TRUEFONT, (boolean) newValue);
-        showRestartDialog();
-        return true;
-    }
-
-    private boolean clearCache() {
-        mProgressDialog = new ProgressDialog(getActivity());
-        mProgressDialog.setMessage(getString(R.string.settings_clear_cache_progress));
-        mProgressDialog.show();
-
-        final List<String> commands = new ArrayList<>();
-        final File cache = new File(getActivity().getExternalCacheDir() + File.separator);
-
-        if (cache.listFiles() != null) {
-            for (File f : cache.listFiles())
-                if (!f.getName().equals("Backup"))
-                    commands.add("rm -rf " + f.getAbsolutePath());
-
-            CommandRunner.runCommands(commands)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .doOnCompleted(this::onCacheCleared)
-                    .subscribe();
-        } else {
-            snackbar(getString(R.string.settings_clear_cache_failed), getView());
-        }
-
-        return true;
-    }
-
-    public void onCacheCleared() {
-        mPreferences.setBoolean(Keys.TRUEFONTS_CACHED, false);
-        mProgressDialog.dismiss();
-        snackbar(R.string.settings_clear_cache_success, getView());
-    }
-
-    private boolean viewSource() {
-        final Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_VIEW);
-        intent.addCategory(Intent.CATEGORY_BROWSABLE);
-        intent.setData(Uri.parse(getString(R.string.settings_link_github)));
-        startActivity(intent);
-        return true;
-    }
-
-    private boolean openLicensesDialog() {
-        new LicensesDialog.Builder(getActivity())
-                .setNotices(Licenses.getNotices())
-                .build().show();
-        return true;
-    }
-
-    private void showRestartDialog() {
-        new AlertDialog.Builder(getActivity())
-                .setMessage(R.string.settings_restart_dialog_message)
-                .setPositiveButton(R.string.settings_restart_dialog_button, (d, i) -> restartApp())
-                .create().show();
-    }
-
-    private void restartApp() {
-        ActivityCompat.finishAffinity(getActivity());
-        startActivity(new Intent(getActivity(), MainActivity.class));
-    }
+  private void restartApp() {
+    ActivityCompat.finishAffinity(getActivity());
+    startActivity(new Intent(getActivity(), MainActivity.class));
+  }
 }
