@@ -54,7 +54,6 @@
         android:layout_marginRight="48dp"
         android:clickable="true"
         android:foreground="?android:attr/selectableItemBackground"
-        android:onClick="onBackupContainerClicked"
         android:visibility="gone"
         card_view:cardCornerRadius="4dp">
 

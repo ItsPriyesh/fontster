@@ -41,8 +41,7 @@ public enum Style {
   CONDENSED_LIGHT,
   CONDENSED_LIGHT_ITALIC;
 
-  @Override
-  public String toString() {
+  @Override public String toString() {
     switch (this) {
       case BOLD:
         return "Roboto-Bold.ttf";

@@ -37,19 +37,16 @@ public class FontDownloaderTest {
     private static final File FILE = new File(TEST_FOLDER, "Roboto-Regular.ttf");
     private static final long EXPECTED_FILE_SIZE = 62816;
 
-    @Before
-    public void setup() {
+    @Before public void setup() {
         //noinspection ResultOfMethodCallIgnored
         TEST_FOLDER.mkdirs();
     }
 
-    @After
-    public void tearDown() {
+    @After public void tearDown() {
         FileUtils.deleteDirectory(TEST_FOLDER);
     }
 
-    @Test
-    public void testDownloadFile() throws Exception {
+    @Test public void testDownloadFile() throws Exception {
         final TestSubscriber<File> testSubscriber = new TestSubscriber<>();
         FontDownloader.downloadFile(FONT_URL, FILE.getPath()).subscribe(testSubscriber);
         testSubscriber.assertNoErrors();

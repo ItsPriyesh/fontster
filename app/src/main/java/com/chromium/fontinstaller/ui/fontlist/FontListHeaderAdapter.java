@@ -35,21 +35,18 @@ public final class FontListHeaderAdapter implements StickyHeadersAdapter<FontLis
     this.mItems = items;
   }
 
-  @Override
-  public ViewHolder onCreateViewHolder(ViewGroup parent) {
+  @Override public ViewHolder onCreateViewHolder(ViewGroup parent) {
     View itemView = LayoutInflater.from(
         parent.getContext()).inflate(R.layout.font_list_header_item, parent, false);
 
     return new ViewHolder(itemView);
   }
 
-  @Override
-  public void onBindViewHolder(ViewHolder headerViewHolder, int position) {
+  @Override public void onBindViewHolder(ViewHolder headerViewHolder, int position) {
     headerViewHolder.letter.setText(mItems.get(position).subSequence(0, 1));
   }
 
-  @Override
-  public long getHeaderId(int position) {
+  @Override public long getHeaderId(int position) {
     return mItems.get(position).charAt(0);
   }
 

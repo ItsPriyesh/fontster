@@ -46,13 +46,12 @@ public class CreateBackupDialog extends AlertDialog {
   private volatile boolean mNameIsValid;
   private final Action1<String> mCallback;
 
-  protected CreateBackupDialog(Context context, Action1<String> callback) {
+  /* package */ CreateBackupDialog(Context context, Action1<String> callback) {
     super(context);
     mCallback = callback;
   }
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
+  @Override protected void onCreate(Bundle savedInstanceState) {
     setTitle(R.string.backup_dialog_title);
 
     final View view = View.inflate(getContext(), R.layout.backup_dialog, null);

@@ -34,8 +34,7 @@ import static com.chromium.fontinstaller.util.ViewUtils.snackbar;
 
 public class DeveloperSettingsFragment extends PreferenceFragment {
 
-  @Override
-  public void onCreate(final Bundle savedInstanceState) {
+  @Override public void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     addPreferencesFromResource(R.xml.developer_settings);
 

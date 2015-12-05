@@ -20,6 +20,7 @@ package com.chromium.fontinstaller.ui.backuprestore;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,7 +38,6 @@ import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -57,6 +57,9 @@ public class BackupRestoreFragment extends Fragment {
   @Bind(R.id.backup_date)
   TextView mBackupDateView;
 
+  @Bind(R.id.backup_fab)
+  FloatingActionButton mBackupFab;
+
   private BackupManager mBackupManager;
   private PreferencesManager mPreferences;
 
@@ -70,6 +73,9 @@ public class BackupRestoreFragment extends Fragment {
 
     mBackupManager = new BackupManager();
     mPreferences = PreferencesManager.getInstance(getActivity());
+
+    mBackupContainer.setOnClickListener(v -> onBackupContainerClicked());
+    mBackupFab.setOnClickListener(v -> onBackupFabClicked());
 
     checkForBackup();
 
@@ -105,7 +111,7 @@ public class BackupRestoreFragment extends Fragment {
     mBackupDateView.setText(mPreferences.getString(Keys.BACKUP_DATE));
   }
 
-  public void onBackupContainerClicked(View view) {
+  private void onBackupContainerClicked() {
     final String[] options = {
         getString(R.string.backup_restore_option_restore),
         getString(R.string.backup_restore_option_delete)
@@ -132,9 +138,7 @@ public class BackupRestoreFragment extends Fragment {
         }).create().show();
   }
 
-  @SuppressWarnings("unused")
-  @OnClick(R.id.backup_fab)
-  public void backupFabClicked() {
+  private void onBackupFabClicked() {
     new CreateBackupDialog(getActivity(), backupName -> mBackupManager.backup()
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
@@ -142,17 +146,17 @@ public class BackupRestoreFragment extends Fragment {
         .subscribe()).show();
   }
 
-  public void onBackupComplete(String name) {
+  private void onBackupComplete(String name) {
     mPreferences.setString(Keys.BACKUP_NAME, name);
     mPreferences.setString(Keys.BACKUP_DATE, BackupManager.DATE_FORMAT.format(new Date()));
     checkForBackup();
   }
 
-  public void onBackupDeleted() {
+  private void onBackupDeleted() {
     checkForBackup();
   }
 
-  public void onRestoreComplete() {
+  private void onRestoreComplete() {
     final Activity activity = getActivity();
     if (activity == null || activity.isFinishing()) {
       new RebootDialog(activity);

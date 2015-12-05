@@ -27,6 +27,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 
 import com.chromium.fontinstaller.R;
@@ -45,7 +46,6 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -64,6 +64,9 @@ public class FontListFragment extends Fragment {
   @Bind(R.id.error_container)
   ViewGroup mErrorContainer;
 
+  @Bind(R.id.retry)
+  Button mRetryButton;
+
   private FontListAdapter mListAdapter;
   private List<String> mFontList;
   private Activity mActivity;
@@ -72,8 +75,7 @@ public class FontListFragment extends Fragment {
 
   public FontListFragment() { }
 
-  @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+  @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     final View view = inflater.inflate(R.layout.fragment_font_list, container, false);
     ButterKnife.bind(this, view);
 
@@ -86,6 +88,8 @@ public class FontListFragment extends Fragment {
 
     RecyclerView.LayoutManager listManager = new LinearLayoutManager(mActivity);
     mRecyclerView.setLayoutManager(listManager);
+
+    mRetryButton.setOnClickListener(v -> downloadFontList());
 
     if (mPreferences.getBoolean(Keys.ENABLE_TRUEFONT)) downloadFontList();
     else setupRecyclerViewAdapter(false);
@@ -155,12 +159,6 @@ public class FontListFragment extends Fragment {
       ViewUtils.animSlideInBottom(mErrorContainer, getActivity());
       mErrorContainer.setVisibility(View.VISIBLE);
     }, 400);
-  }
-
-  @SuppressWarnings("unused")
-  @OnClick(R.id.retry)
-  public void retryButtonClicked() {
-    downloadFontList();
   }
 
   private StickyHeadersItemDecoration buildHeaderDecor() {

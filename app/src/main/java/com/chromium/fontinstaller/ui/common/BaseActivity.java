@@ -40,7 +40,8 @@ import timber.log.Timber;
 
 public class BaseActivity extends AppCompatActivity {
 
-  @Bind(R.id.app_bar) protected Toolbar mToolbar;
+  @Bind(R.id.app_bar)
+  protected Toolbar mToolbar;
 
   private IabHelper mBillingHelper;
   private final Handler mHandler = new Handler();

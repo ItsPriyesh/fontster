@@ -64,8 +64,7 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.Sea
 
   private boolean mShouldShowSearch = true;
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
+  @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     setToolbarTitle(getString(R.string.app_name));
@@ -135,8 +134,7 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.Sea
     mFragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
   }
 
-  @Override
-  public boolean onCreateOptionsMenu(Menu menu) {
+  @Override public boolean onCreateOptionsMenu(Menu menu) {
     getMenuInflater().inflate(R.menu.menu_main, menu);
 
     final MenuItem searchItem = menu.findItem(R.id.action_search);
@@ -146,25 +144,21 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.Sea
     return true;
   }
 
-  @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
+  @Override public boolean onOptionsItemSelected(MenuItem item) {
     return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
   }
 
-  @Override
-  protected void onPostCreate(Bundle savedInstanceState) {
+  @Override protected void onPostCreate(Bundle savedInstanceState) {
     super.onPostCreate(savedInstanceState);
     mDrawerToggle.syncState();
   }
 
-  @Override
-  public void onConfigurationChanged(Configuration newConfig) {
+  @Override public void onConfigurationChanged(Configuration newConfig) {
     super.onConfigurationChanged(newConfig);
     mDrawerToggle.onConfigurationChanged(newConfig);
   }
 
-  @Override
-  public void onBackPressed() {
+  @Override public void onBackPressed() {
     if (mDrawerLayout.isDrawerOpen(GravityCompat.START) || mSearchView.isSearchOpen()) {
       mDrawerLayout.closeDrawers();
       return;
@@ -172,13 +166,11 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.Sea
     super.onBackPressed();
   }
 
-  @Override
-  public void onSearchViewShown() {
+  @Override public void onSearchViewShown() {
     if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
       mDrawerLayout.closeDrawers();
     }
   }
 
-  @Override
-  public void onSearchViewClosed() { }
+  @Override public void onSearchViewClosed() { }
 }

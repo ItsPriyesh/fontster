@@ -25,8 +25,7 @@ import timber.log.Timber;
 
 public class FontsterApp extends Application {
 
-  @Override
-  public void onCreate() {
+  @Override public void onCreate() {
     super.onCreate();
 
     Fabric.with(this, new Crashlytics());

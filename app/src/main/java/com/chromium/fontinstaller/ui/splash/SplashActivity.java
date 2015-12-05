@@ -81,8 +81,7 @@ public class SplashActivity extends AppCompatActivity {
           .setDuration((long) (INTRO_ANIMATION_DURATION * 0.8))
           .setInterpolator(INTERPOLATOR)
           .setListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
+            @Override public void onAnimationEnd(Animator animation) {
               super.onAnimationEnd(animation);
               mTitleView.animate()
                   .alpha(1)
@@ -136,8 +135,7 @@ public class SplashActivity extends AppCompatActivity {
         }
       });
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
+  @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_splash);
     ButterKnife.bind(this);
@@ -152,8 +150,7 @@ public class SplashActivity extends AppCompatActivity {
     mHandler.postDelayed(mIntroAnimation, INBETWEEN_ANIMATION_DURATION);
   }
 
-  @Override
-  protected void onStop() {
+  @Override protected void onStop() {
     super.onStop();
     if (mHandler != null) {
       mHandler.removeCallbacksAndMessages(null);
@@ -167,8 +164,7 @@ public class SplashActivity extends AppCompatActivity {
     }
   }
 
-  @Override
-  public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
+  @Override public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
                                          @NonNull int[] grantResults) {
     if (requestCode == PERMISSION_REQUEST) {
       if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {

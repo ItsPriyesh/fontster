@@ -44,13 +44,12 @@ public class FontPackPickerDialog extends AlertDialog {
   private final Action1<FontPackage> mCallback;
   private volatile boolean mPathIsValid = false;
 
-  public FontPackPickerDialog(Context context, Action1<FontPackage> callback) {
+  /* package */ FontPackPickerDialog(Context context, Action1<FontPackage> callback) {
     super(context);
     mCallback = callback;
   }
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
+  @Override protected void onCreate(Bundle savedInstanceState) {
     setTitle(R.string.font_pack_picker_dialog_title);
     final View view = View.inflate(getContext(), R.layout.file_path_dialog, null);
     setView(view);

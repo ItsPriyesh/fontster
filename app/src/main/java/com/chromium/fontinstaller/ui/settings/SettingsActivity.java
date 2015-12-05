@@ -26,8 +26,7 @@ public class SettingsActivity extends BaseActivity {
 
   private SettingsFragment mSettingsFragment;
 
-  @Override
-  public void onCreate(Bundle savedInstanceState) {
+  @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_settings);
     showToolbarBackButton();
@@ -40,8 +39,7 @@ public class SettingsActivity extends BaseActivity {
         .commit();
   }
 
-  @Override
-  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+  @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     if (mSettingsFragment.getBillingHelper() == null) return;
 
     if (!mSettingsFragment.getBillingHelper().handleActivityResult(requestCode, resultCode, data)) {

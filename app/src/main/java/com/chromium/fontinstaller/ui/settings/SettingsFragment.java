@@ -68,8 +68,7 @@ public class SettingsFragment extends PreferenceFragment {
   private ProgressDialog mProgressDialog;
   private int mVersionTaps = 0;
 
-  @Override
-  public void onCreate(final Bundle savedInstanceState) {
+  @Override public void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     addPreferencesFromResource(R.xml.settings);
 
@@ -114,8 +113,7 @@ public class SettingsFragment extends PreferenceFragment {
     return findPreference(getString(key));
   }
 
-  @Override
-  public void onDestroy() {
+  @Override public void onDestroy() {
     super.onDestroy();
     if (mBillingHelper != null) mBillingHelper.dispose();
     mBillingHelper = null;
@@ -178,7 +176,7 @@ public class SettingsFragment extends PreferenceFragment {
     return true;
   }
 
-  public void onCacheCleared() {
+  private void onCacheCleared() {
     mPreferences.setBoolean(Keys.TRUEFONTS_CACHED, false);
     mProgressDialog.dismiss();
     snackbar(R.string.settings_clear_cache_success, getView());

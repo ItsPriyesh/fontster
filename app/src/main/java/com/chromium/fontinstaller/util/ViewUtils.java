@@ -98,8 +98,7 @@ public class ViewUtils {
         alphaAnimator.setDuration(
             activity.getResources().getInteger(android.R.integer.config_shortAnimTime));
         alphaAnimator.addListener(new AnimatorListenerAdapter() {
-          @Override
-          public void onAnimationEnd(Animator animation) {
+          @Override public void onAnimationEnd(Animator animation) {
             super.onAnimationEnd(animation);
             view.startAnimation(AnimationUtils.loadAnimation(activity, R.anim.abc_fade_in));
             view.setVisibility(View.VISIBLE);
@@ -110,8 +109,7 @@ public class ViewUtils {
         animatorSet.play(revealAnimator).before(alphaAnimator);
         animatorSet.setInterpolator(new AccelerateDecelerateInterpolator());
         animatorSet.addListener(new AnimatorListenerAdapter() {
-          @Override
-          public void onAnimationEnd(Animator animator) {
+          @Override public void onAnimationEnd(Animator animator) {
             groupOverlay.remove(revealView);
           }
         });

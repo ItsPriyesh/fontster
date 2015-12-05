@@ -32,20 +32,17 @@ public class FontPackageTest {
     private static final String INVALID_FONT_FOLDER_NAME = "InvalidFontPack";
     private static final String VALID_FONT_FOLDER_NAME = "ValidFontPack";
 
-    @Test
-    public void testCreateFontPack_hasAllStyles() throws Exception {
+    @Test public void testCreateFontPack_hasAllStyles() throws Exception {
         final FontPackage fontPackage = new FontPackage(FONT_NAME);
         assertEquals(Style.values().length, fontPackage.getFontList().size());
     }
 
-    @Test
-    public void testValidFontPackFolder_returnsFalseIfInvalid() throws Exception {
+    @Test public void testValidFontPackFolder_returnsFalseIfInvalid() throws Exception {
         final File invalidFontPackFolder = getFileResource(INVALID_FONT_FOLDER_NAME);
         assertFalse(FontPackage.validFontPackFolder(invalidFontPackFolder.getPath()));
     }
 
-    @Test
-    public void testValidFontPackFolder_returnsTrueIfValid() throws Exception {
+    @Test public void testValidFontPackFolder_returnsTrueIfValid() throws Exception {
         final File validFontPackFolder = getFileResource(VALID_FONT_FOLDER_NAME);
         assertTrue(FontPackage.validFontPackFolder(validFontPackFolder.getPath()));
     }

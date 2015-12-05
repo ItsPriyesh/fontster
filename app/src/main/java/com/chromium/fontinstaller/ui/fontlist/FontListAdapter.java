@@ -40,7 +40,7 @@ public final class FontListAdapter extends RecyclerView.Adapter<FontListAdapter.
   private ArrayList<String> mFontNames;
   private LruCache<String, Typeface> mFontCache;
 
-  public FontListAdapter(Context context, ArrayList<String> fontNames, boolean enableTrueFont) {
+  /* package */ FontListAdapter(Context context, ArrayList<String> fontNames, boolean enableTrueFont) {
     mFontNames = fontNames;
     mFontCache = new LruCache<>(FileUtils.getMaxCacheSize(context));
     mEnableTrueFont = enableTrueFont;
@@ -48,14 +48,12 @@ public final class FontListAdapter extends RecyclerView.Adapter<FontListAdapter.
     setHasStableIds(true);
   }
 
-  @Override
-  public FontListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+  @Override public FontListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.font_list_item, parent, false);
     return new ViewHolder(view);
   }
 
-  @Override
-  public void onBindViewHolder(ViewHolder holder, int position) {
+  @Override public void onBindViewHolder(ViewHolder holder, int position) {
     final String currentFontName = mFontNames.get(position);
 
     holder.fontName.setText(currentFontName);
@@ -70,13 +68,11 @@ public final class FontListAdapter extends RecyclerView.Adapter<FontListAdapter.
     }
   }
 
-  @Override
-  public long getItemId(int position) {
+  @Override public long getItemId(int position) {
     return mFontNames.get(position).hashCode();
   }
 
-  @Override
-  public int getItemCount() {
+  @Override public int getItemCount() {
     return mFontNames.size();
   }
 
@@ -89,8 +85,7 @@ public final class FontListAdapter extends RecyclerView.Adapter<FontListAdapter.
       fontName = (TextView) view.findViewById(R.id.font_name);
     }
 
-    @Override
-    public void onClick(View view) {
+    @Override public void onClick(View view) {
       final Context context = view.getContext();
       final String fontName = mFontNames.get(getLayoutPosition());
       final Intent intent = FontActivity.getLaunchIntent(context, fontName);

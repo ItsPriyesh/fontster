@@ -60,17 +60,23 @@ import static com.chromium.fontinstaller.util.ViewUtils.snackbar;
 
 public final class FontActivity extends BaseActivity implements TabLayout.OnTabSelectedListener {
 
-  @Bind(R.id.font_name) TextView mFontTitle;
+  @Bind(R.id.font_name)
+  TextView mFontTitle;
 
-  @Bind(R.id.install_fab) FloatingActionButton mInstallButton;
+  @Bind(R.id.install_fab)
+  FloatingActionButton mInstallButton;
 
-  @Bind(R.id.download_progress) ProgressBar mDownloadProgress;
+  @Bind(R.id.download_progress)
+  ProgressBar mDownloadProgress;
 
-  @Bind(R.id.preview_pager) ViewPager mPreviewPager;
+  @Bind(R.id.preview_pager)
+  ViewPager mPreviewPager;
 
-  @Bind(R.id.sliding_tabs) TabLayout mTabLayout;
+  @Bind(R.id.sliding_tabs)
+  TabLayout mTabLayout;
 
-  @Bind(R.id.error_container) ViewGroup mErrorContainer;
+  @Bind(R.id.error_container)
+  ViewGroup mErrorContainer;
 
   private int mCurrentPage = 0;
   private FontPackage mFontPackage;

@@ -41,8 +41,7 @@ public final class RebootDialog extends AlertDialog {
     super(context);
   }
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
+  @Override protected void onCreate(Bundle savedInstanceState) {
     setTitle(R.string.reboot_dialog_title);
 
     final View view = View.inflate(getContext(), R.layout.reboot_dialog, null);

@@ -23,8 +23,7 @@ import com.chromium.fontinstaller.ui.common.BaseActivity;
 
 public class DeveloperSettingsActivity extends BaseActivity {
 
-  @Override
-  public void onCreate(Bundle savedInstanceState) {
+  @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_settings);
     showToolbarBackButton();

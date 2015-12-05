@@ -39,15 +39,14 @@ public final class TryFontDialog extends AlertDialog {
   private final Style mStyle;
   private final Action1<String> mCallback;
 
-  protected TryFontDialog(FontPackage fontPackage, Style style, Action1<String> callback, Context context) {
+  /* package */ TryFontDialog(FontPackage fontPackage, Style style, Action1<String> callback, Context context) {
     super(context);
     mFontPackage = fontPackage;
     mStyle = style;
     mCallback = callback;
   }
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
+  @Override protected void onCreate(Bundle savedInstanceState) {
     setTitle(mFontPackage.getName());
 
     final View view = View.inflate(getContext(), R.layout.try_font_dialog, null);

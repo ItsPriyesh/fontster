@@ -47,7 +47,7 @@ public final class PreviewFragment extends Fragment {
 
   public PreviewFragment() { }
 
-  public static PreviewFragment newInstance(FontPackage fontPackage, Style style) {
+  /* package */ static PreviewFragment newInstance(FontPackage fontPackage, Style style) {
     final PreviewFragment fragment = new PreviewFragment();
     fragment.setFontPackage(fontPackage);
     fragment.setStyle(style);
@@ -55,8 +55,7 @@ public final class PreviewFragment extends Fragment {
     return fragment;
   }
 
-  @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+  @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_preview, container, false);
     ButterKnife.bind(this, view);
 
@@ -74,15 +73,10 @@ public final class PreviewFragment extends Fragment {
     return view;
   }
 
-  @Override
-  public void onSaveInstanceState(Bundle outState) {
+  @Override public void onSaveInstanceState(Bundle outState) {
     super.onSaveInstanceState(outState);
     outState.putString(FONT_NAME_KEY, mFontPackage.getName());
     outState.putInt(FONT_STYLE_KEY, FontActivity.PREVIEW_STYLES.indexOfValue(mStyle));
-  }
-
-  public void setPreviewText(String input) {
-    this.mPreviewText.setText(input);
   }
 
   private void setFontPackage(FontPackage fontPackage) {
@@ -97,7 +91,11 @@ public final class PreviewFragment extends Fragment {
     return mUpperCase ? mAlphabetUpper : mAlphabetLower;
   }
 
-  public void toggleCase() {
+  /* package */ void setPreviewText(String input) {
+    this.mPreviewText.setText(input);
+  }
+
+  /* package */ void toggleCase() {
     if (mUpperCase) {
       mPreviewText.setText(mAlphabetLower);
       mUpperCase = false;
