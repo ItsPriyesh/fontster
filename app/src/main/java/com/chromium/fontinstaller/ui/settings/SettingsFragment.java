@@ -34,7 +34,7 @@ import com.chromium.fontinstaller.core.CommandRunner;
 import com.chromium.fontinstaller.ui.main.MainActivity;
 import com.chromium.fontinstaller.ui.settings.developer.DeveloperSettingsActivity;
 import com.chromium.fontinstaller.util.Licenses;
-import com.chromium.fontinstaller.util.PreferencesManager;
+import com.chromium.fontinstaller.core.FontsterPreferences;
 import com.chromium.fontinstaller.util.billing.IabHelper;
 
 import java.io.File;
@@ -45,7 +45,7 @@ import de.psdev.licensesdialog.LicensesDialog;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-import static com.chromium.fontinstaller.util.PreferencesManager.Keys;
+import static com.chromium.fontinstaller.core.FontsterPreferences.Keys;
 import static com.chromium.fontinstaller.util.ViewUtils.snackbar;
 
 public class SettingsFragment extends PreferenceFragment {
@@ -63,7 +63,7 @@ public class SettingsFragment extends PreferenceFragment {
   }};
 
   private IabHelper mBillingHelper;
-  private PreferencesManager mPreferences;
+  private FontsterPreferences mPreferences;
   private IabHelper.OnIabPurchaseFinishedListener mPurchaseListener;
   private ProgressDialog mProgressDialog;
   private int mVersionTaps = 0;
@@ -72,7 +72,7 @@ public class SettingsFragment extends PreferenceFragment {
     super.onCreate(savedInstanceState);
     addPreferencesFromResource(R.xml.settings);
 
-    mPreferences = PreferencesManager.getInstance(getActivity());
+    mPreferences = FontsterPreferences.getInstance(getActivity());
 
     findPreferenceById(R.string.pref_key_true_font)
         .setOnPreferenceChangeListener((pref, newValue) -> handleTrueFont(newValue));

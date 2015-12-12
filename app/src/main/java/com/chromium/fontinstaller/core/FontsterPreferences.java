@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.chromium.fontinstaller.util;
+package com.chromium.fontinstaller.core;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
-public class PreferencesManager {
+public class FontsterPreferences {
 
   private static final String PREFS_NAME = "com.chromium.fontinstaller.PREFS";
 
@@ -31,17 +31,17 @@ public class PreferencesManager {
   }
 
   private static SharedPreferences sSharedPreferences = null;
-  private static PreferencesManager sPreferencesManager = null;
+  private static FontsterPreferences sFontsterPreferences = null;
 
-  private PreferencesManager(Context context) {
+  private FontsterPreferences(Context context) {
     sSharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
   }
 
-  public static synchronized PreferencesManager getInstance(Context context) {
-    if (sPreferencesManager == null) {
-      sPreferencesManager = new PreferencesManager(context);
+  public static synchronized FontsterPreferences getInstance(Context context) {
+    if (sFontsterPreferences == null) {
+      sFontsterPreferences = new FontsterPreferences(context);
     }
-    return sPreferencesManager;
+    return sFontsterPreferences;
   }
 
   public void setString(String key, String value) {

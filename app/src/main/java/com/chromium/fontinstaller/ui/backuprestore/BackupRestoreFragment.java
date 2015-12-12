@@ -30,7 +30,7 @@ import android.widget.TextView;
 import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.core.BackupManager;
 import com.chromium.fontinstaller.ui.common.BaseActivity;
-import com.chromium.fontinstaller.util.PreferencesManager;
+import com.chromium.fontinstaller.core.FontsterPreferences;
 import com.chromium.fontinstaller.util.RebootDialog;
 import com.chromium.fontinstaller.util.ViewUtils;
 
@@ -41,7 +41,7 @@ import butterknife.ButterKnife;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-import static com.chromium.fontinstaller.util.PreferencesManager.Keys;
+import static com.chromium.fontinstaller.core.FontsterPreferences.Keys;
 
 public class BackupRestoreFragment extends Fragment {
 
@@ -61,7 +61,7 @@ public class BackupRestoreFragment extends Fragment {
   FloatingActionButton mBackupFab;
 
   private BackupManager mBackupManager;
-  private PreferencesManager mPreferences;
+  private FontsterPreferences mPreferences;
 
   public BackupRestoreFragment() { }
 
@@ -72,7 +72,7 @@ public class BackupRestoreFragment extends Fragment {
     ((BaseActivity) getActivity()).setToolbarTitle(getString(R.string.drawer_item_backup_restore));
 
     mBackupManager = new BackupManager();
-    mPreferences = PreferencesManager.getInstance(getActivity());
+    mPreferences = FontsterPreferences.getInstance(getActivity());
 
     mBackupContainer.setOnClickListener(v -> onBackupContainerClicked());
     mBackupFab.setOnClickListener(v -> onBackupFabClicked());

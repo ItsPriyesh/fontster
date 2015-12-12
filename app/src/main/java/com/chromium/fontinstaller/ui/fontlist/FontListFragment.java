@@ -35,7 +35,7 @@ import com.chromium.fontinstaller.core.FontDownloader;
 import com.chromium.fontinstaller.models.FontPackage;
 import com.chromium.fontinstaller.models.Style;
 import com.chromium.fontinstaller.ui.main.MainActivity;
-import com.chromium.fontinstaller.util.PreferencesManager;
+import com.chromium.fontinstaller.core.FontsterPreferences;
 import com.chromium.fontinstaller.util.ViewUtils;
 import com.eowise.recyclerview.stickyheaders.StickyHeadersBuilder;
 import com.eowise.recyclerview.stickyheaders.StickyHeadersItemDecoration;
@@ -51,7 +51,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
-import static com.chromium.fontinstaller.util.PreferencesManager.Keys;
+import static com.chromium.fontinstaller.core.FontsterPreferences.Keys;
 
 public class FontListFragment extends Fragment {
 
@@ -71,7 +71,7 @@ public class FontListFragment extends Fragment {
   private List<String> mFontList;
   private Activity mActivity;
   private ProgressDialog mProgressDialog;
-  private PreferencesManager mPreferences;
+  private FontsterPreferences mPreferences;
 
   public FontListFragment() { }
 
@@ -82,7 +82,7 @@ public class FontListFragment extends Fragment {
     mActivity = getActivity();
     ((MainActivity) mActivity).setToolbarTitle(getString(R.string.app_name));
 
-    mPreferences = PreferencesManager.getInstance(mActivity);
+    mPreferences = FontsterPreferences.getInstance(mActivity);
 
     mFontList = Arrays.asList(getResources().getStringArray(R.array.font_list));
 
