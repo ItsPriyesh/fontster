@@ -36,28 +36,34 @@ android {
 repositories {
     maven { url 'https://maven.fabric.io/public' }
 }
-
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    // Dagger
+    compile 'com.google.dagger:dagger:2.0'
+    provided 'com.google.dagger:dagger-compiler:2.0'
 
     // Networking
     compile 'com.squareup.okhttp:okhttp:2.4.0'
 
-    // Other
-    compile 'com.jakewharton:butterknife:7.0.1'
-    compile 'com.jakewharton.timber:timber:2.5.1'
-    compile('com.crashlytics.sdk.android:crashlytics:2.5.2') { transitive = true; }
-    compile 'eu.chainfire:libsuperuser:1.0.0.+'
-    compile 'com.google.android.gms:play-services-ads:8.1.0'
+    // Rx
     compile 'io.reactivex:rxandroid:1.0.1'
+    compile 'io.reactivex:rxjava:1.1.0'
     compile 'com.jakewharton.rxbinding:rxbinding:0.2.0'
 
-    // Android Support
-    compile 'com.android.support:design:23.1.0'
-    compile 'com.android.support:appcompat-v7:23.1.0'
-    compile 'com.android.support:recyclerview-v7:23.1.0'
-    compile 'com.android.support:cardview-v7:23.1.0'
-    compile 'com.android.support:support-annotations:23.1.0'
+    // Development
+    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.jakewharton.timber:timber:2.5.1'
+    compile 'eu.chainfire:libsuperuser:1.0.0.+'
+    compile('com.crashlytics.sdk.android:crashlytics:2.5.2') { transitive = true; }
+
+    // Android Support & Play Services
+    compile 'com.android.support:design:23.1.1'
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:recyclerview-v7:23.1.1'
+    compile 'com.android.support:cardview-v7:23.1.1'
+    compile 'com.android.support:support-annotations:23.1.1'
+    compile 'com.google.android.gms:play-services-ads:8.3.0'
 
     // UI
     compile 'com.eowise:recyclerview-stickyheaders:0.5.2'
@@ -67,9 +73,10 @@ dependencies {
     // Testing
     testCompile 'junit:junit:4.12'
 
-    androidTestCompile 'com.android.support:support-annotations:23.1.0'
+    androidTestCompile 'com.android.support:support-annotations:23.1.1'
     androidTestCompile 'com.google.code.findbugs:jsr305:3.0.0'
     androidTestCompile 'com.android.support.test:runner:0.4.1'
     androidTestCompile 'com.android.support.test:rules:0.4.1'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
 }
+
