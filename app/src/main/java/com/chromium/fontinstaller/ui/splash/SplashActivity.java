@@ -62,7 +62,7 @@ public class SplashActivity extends AppCompatActivity {
   private static final long OUTRO_ANIMATION_DURATION = 500L;
   private static final long INBETWEEN_ANIMATION_DURATION = 200L;
 
-  private static final int PERMISSION_REQUEST = 0xcafe;
+  private static final int PERMISSION_REQUEST = 0xaf;
 
   private static final String[] STORAGE_PERMISSIONS = {
       Manifest.permission.WRITE_EXTERNAL_STORAGE,

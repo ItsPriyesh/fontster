@@ -40,13 +40,8 @@ repositories {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
-    // Dagger
-    compile 'com.google.dagger:dagger:2.0'
-    provided 'com.google.dagger:dagger-compiler:2.0'
-    provided 'org.glassfish:javax.annotation:10.0-b28'
-    
     // Networking
-    compile 'com.squareup.okhttp:okhttp:2.4.0'
+    compile 'com.squareup.okhttp:okhttp:2.6.0'
 
     // Rx
     compile 'io.reactivex:rxandroid:1.0.1'
