@@ -48,7 +48,7 @@ import de.psdev.licensesdialog.LicensesDialog;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-import static com.chromium.fontinstaller.core.FontsterPreferences.Keys;
+import static com.chromium.fontinstaller.core.FontsterPreferences.Key;
 import static com.chromium.fontinstaller.util.ViewUtils.snackbar;
 
 public class SettingsFragment extends PreferenceFragment {
@@ -150,7 +150,7 @@ public class SettingsFragment extends PreferenceFragment {
   }
 
   private boolean handleTrueFont(Object newValue) {
-    mPreferences.setBoolean(Keys.ENABLE_TRUEFONT, (boolean) newValue);
+    mPreferences.setBoolean(Key.ENABLE_TRUEFONT, (boolean) newValue);
     showRestartDialog();
     return true;
   }
@@ -181,7 +181,7 @@ public class SettingsFragment extends PreferenceFragment {
   }
 
   private void onCacheCleared() {
-    mPreferences.setBoolean(Keys.TRUEFONTS_CACHED, false);
+    mPreferences.setBoolean(Key.TRUEFONTS_CACHED, false);
     mProgressDialog.dismiss();
     snackbar(R.string.settings_clear_cache_success, getView());
   }

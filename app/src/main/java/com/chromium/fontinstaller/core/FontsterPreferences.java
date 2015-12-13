@@ -23,11 +23,15 @@ public class FontsterPreferences {
 
   private static final String PREFS_NAME = "com.chromium.fontinstaller.PREFS";
 
-  public static final class Keys {
-    public static final String ENABLE_TRUEFONT = "1";
-    public static final String BACKUP_NAME = "2";
-    public static final String BACKUP_DATE = "3";
-    public static final String TRUEFONTS_CACHED = "4";
+  public enum Key {
+    ENABLE_TRUEFONT("1"),
+    BACKUP_NAME("2"),
+    BACKUP_DATE("3"),
+    TRUEFONTS_CACHED("4");
+
+    private final String id;
+
+    Key(String id) { this.id = id; }
   }
 
   private final SharedPreferences mSharedPreferences;
@@ -36,19 +40,19 @@ public class FontsterPreferences {
     mSharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
   }
 
-  public void setString(String key, String value) {
-    mSharedPreferences.edit().putString(key, value).apply();
+  public void setString(Key key, String value) {
+    mSharedPreferences.edit().putString(key.id, value).apply();
   }
 
-  public String getString(String key) {
-    return mSharedPreferences.getString(key, null);
+  public String getString(Key key) {
+    return mSharedPreferences.getString(key.id, null);
   }
 
-  public void setBoolean(String key, boolean value) {
-    mSharedPreferences.edit().putBoolean(key, value).apply();
+  public void setBoolean(Key key, boolean value) {
+    mSharedPreferences.edit().putBoolean(key.id, value).apply();
   }
 
-  public boolean getBoolean(String key) {
-    return mSharedPreferences.getBoolean(key, false);
+  public boolean getBoolean(Key key) {
+    return mSharedPreferences.getBoolean(key.id, false);
   }
 }

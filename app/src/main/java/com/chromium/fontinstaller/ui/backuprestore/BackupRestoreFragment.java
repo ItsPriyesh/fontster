@@ -44,7 +44,7 @@ import butterknife.ButterKnife;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-import static com.chromium.fontinstaller.core.FontsterPreferences.Keys;
+import static com.chromium.fontinstaller.core.FontsterPreferences.Key;
 
 public class BackupRestoreFragment extends Fragment {
 
@@ -105,8 +105,8 @@ public class BackupRestoreFragment extends Fragment {
   private void setupBackupContainer() {
     slideUpAndAdd(mBackupContainer);
 
-    mBackupNameView.setText(mPreferences.getString(Keys.BACKUP_NAME));
-    mBackupDateView.setText(mPreferences.getString(Keys.BACKUP_DATE));
+    mBackupNameView.setText(mPreferences.getString(Key.BACKUP_NAME));
+    mBackupDateView.setText(mPreferences.getString(Key.BACKUP_DATE));
   }
 
   private void onBackupContainerClicked() {
@@ -145,8 +145,8 @@ public class BackupRestoreFragment extends Fragment {
   }
 
   private void onBackupComplete(String name) {
-    mPreferences.setString(Keys.BACKUP_NAME, name);
-    mPreferences.setString(Keys.BACKUP_DATE, BackupManager.DATE_FORMAT.format(new Date()));
+    mPreferences.setString(Key.BACKUP_NAME, name);
+    mPreferences.setString(Key.BACKUP_DATE, BackupManager.DATE_FORMAT.format(new Date()));
     checkForBackup();
   }
 

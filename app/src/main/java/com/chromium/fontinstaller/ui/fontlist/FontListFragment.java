@@ -54,7 +54,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
-import static com.chromium.fontinstaller.core.FontsterPreferences.Keys;
+import static com.chromium.fontinstaller.core.FontsterPreferences.Key;
 
 public class FontListFragment extends Fragment {
 
@@ -94,7 +94,7 @@ public class FontListFragment extends Fragment {
 
     mRetryButton.setOnClickListener(v -> downloadFontList());
 
-    if (mPreferences.getBoolean(Keys.ENABLE_TRUEFONT)) downloadFontList();
+    if (mPreferences.getBoolean(Key.ENABLE_TRUEFONT)) downloadFontList();
     else setupRecyclerViewAdapter(false);
 
     return view;
@@ -114,7 +114,7 @@ public class FontListFragment extends Fragment {
   }
 
   private void downloadFontList() {
-    final boolean previewsCached = mPreferences.getBoolean(Keys.TRUEFONTS_CACHED);
+    final boolean previewsCached = mPreferences.getBoolean(Key.TRUEFONTS_CACHED);
 
     if (!previewsCached) {
       mProgressDialog = new ProgressDialog(mActivity);
@@ -143,7 +143,7 @@ public class FontListFragment extends Fragment {
   }
 
   private void handleDownloadSuccess() {
-    mPreferences.setBoolean(Keys.TRUEFONTS_CACHED, true);
+    mPreferences.setBoolean(Key.TRUEFONTS_CACHED, true);
 
     dismissProgressDialog();
     ViewUtils.animSlideUp(mDownloadProgress, getActivity());
