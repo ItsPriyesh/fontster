@@ -20,7 +20,7 @@ script:
   - ./gradlew app:test
 
   # Run instrumentation tests (annotated with @LargeTest) on emulator
-  - ./gradlew app:connectedAndroidTest -Pandroid.testInstrumentationRunnerArguments.size=large
+  # - ./gradlew app:connectedAndroidTest -Pandroid.testInstrumentationRunnerArguments.size=large
 
 before_script:
   - echo no | android create avd --force -n test -t android-19 --abi armeabi-v7a
