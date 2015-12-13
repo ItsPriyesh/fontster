@@ -22,18 +22,15 @@ script:
   # Run instrumentation tests (annotated with @LargeTest) on emulator
   # - ./gradlew app:connectedAndroidTest -Pandroid.testInstrumentationRunnerArguments.size=large
 
-before_script:
-  - echo no | android create avd --force -n test -t android-19 --abi armeabi-v7a
-  - emulator -avd test -no-skin -no-audio -no-window &
-  - android-wait-for-emulator
-  - adb shell input keyevent 82 &
+# before_script:
+  # - echo no | android create avd --force -n test -t android-19 --abi armeabi-v7a
+  # - emulator -avd test -no-skin -no-audio -no-window &
+  #- android-wait-for-emulator
+  # - adb shell input keyevent 82 &
 
   # Emulator doesn't have internet, so push an already downloaded font pack directly to the cache
-  - ./travis/push_font_pack_to_cache.sh
+  # - ./travis/push_font_pack_to_cache.sh
 
-after_failure:
-  - cat /home/travis/build/ItsPriyesh/Fontster/app/build/reports/androidTests/connected/com.chromium.fontinstaller.*.html
-    
 android:
   components:
     - build-tools-23.0.1
