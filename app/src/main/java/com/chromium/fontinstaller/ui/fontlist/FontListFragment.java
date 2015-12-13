@@ -72,6 +72,7 @@ public class FontListFragment extends Fragment {
   private Activity mActivity;
   private ProgressDialog mProgressDialog;
   private FontsterPreferences mPreferences;
+  private FontDownloader mFontDownloader;
 
   public FontListFragment() { }
 
@@ -83,6 +84,8 @@ public class FontListFragment extends Fragment {
     ((MainActivity) mActivity).setToolbarTitle(getString(R.string.app_name));
 
     mPreferences = FontsterPreferences.getInstance(mActivity);
+
+    mFontDownloader = new FontDownloader(null);
 
     mFontList = Arrays.asList(getResources().getStringArray(R.array.font_list));
 
@@ -128,7 +131,7 @@ public class FontListFragment extends Fragment {
     for (String fontName : mFontList) fontPackages.add(new FontPackage(fontName));
 
     Observable.from(fontPackages)
-        .flatMap(fp -> FontDownloader.downloadStyledFonts(fp, Style.REGULAR))
+        .flatMap(fp -> mFontDownloader.setFontPackage(fp).downloadFontStyles(Style.REGULAR))
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(

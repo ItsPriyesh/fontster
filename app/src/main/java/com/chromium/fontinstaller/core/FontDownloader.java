@@ -40,7 +40,6 @@ import timber.log.Timber;
 public final class FontDownloader {
 
   private static final OkHttpClient CLIENT = new OkHttpClient();
-  private static final FontFinder ALL_FONT_FINDER = FontPackage::getFontList;
 
   private interface FontFinder {
     List<Font> findFonts(FontPackage fontPackage);
@@ -50,14 +49,26 @@ public final class FontDownloader {
     public DownloadException(Exception root) { super(root); }
   }
 
-  public static Observable<File> downloadAllFonts(FontPackage fontPackage) {
-    createCacheDirectory(fontPackage);
-    return downloadFonts(fontPackage, ALL_FONT_FINDER);
+  private FontPackage mFontPackage;
+
+  public FontDownloader(FontPackage fontPackage) {
+    mFontPackage = fontPackage;
+    // noinspection ResultOfMethodCallIgnored
+    new File(mFontPackage.getFontList().get(0).getFile()
+        .getParentFile().getAbsolutePath()).mkdirs();
   }
 
-  public static Observable<File> downloadStyledFonts(FontPackage fontPackage, Style... styles) {
-    createCacheDirectory(fontPackage);
-    return downloadFonts(fontPackage, styledFontFinder(Arrays.asList(styles)));
+  public synchronized FontDownloader setFontPackage(FontPackage fontPackage) {
+    mFontPackage = fontPackage;
+    return this;
+  }
+
+  public synchronized Observable<File> downloadAllFonts() {
+    return downloadFonts(mFontPackage, FontPackage::getFontList);
+  }
+
+  public synchronized Observable<File> downloadFontStyles(Style... styles) {
+    return downloadFonts(mFontPackage, styledFontFinder(Arrays.asList(styles)));
   }
 
   /* package */ static Observable<File> downloadFile(final String url, final String path) {
@@ -107,10 +118,4 @@ public final class FontDownloader {
       return rightFonts;
     };
   }
-
-  private static void createCacheDirectory(FontPackage fontPackage) {
-    //noinspection ResultOfMethodCallIgnored
-    new File(fontPackage.getFontList().get(0).getFile().getParentFile().getAbsolutePath()).mkdirs();
-  }
-
 }

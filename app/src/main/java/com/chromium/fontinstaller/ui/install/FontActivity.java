@@ -80,6 +80,7 @@ public final class FontActivity extends BaseActivity implements TabLayout.OnTabS
 
   private int mCurrentPage = 0;
   private FontPackage mFontPackage;
+  private FontDownloader mFontDownloader;
   private PreviewFragment[] mPreviewPages = new PreviewFragment[3];
   private boolean mFragmentsInitialized = false;
   private ProgressDialog mProgressDialog;
@@ -109,6 +110,8 @@ public final class FontActivity extends BaseActivity implements TabLayout.OnTabS
     logEvent("Viewing " + fontName);
 
     mFontPackage = new FontPackage(fontName);
+    mFontDownloader = new FontDownloader(mFontPackage);
+
     startDownload();
 
     mFontTitle.setText(fontName);
@@ -126,7 +129,7 @@ public final class FontActivity extends BaseActivity implements TabLayout.OnTabS
     if (isVisible(mErrorContainer)) hide(mErrorContainer);
     show(mDownloadProgress);
 
-    FontDownloader.downloadStyledFonts(mFontPackage, Style.REGULAR, Style.BOLD, Style.ITALIC)
+    mFontDownloader.downloadFontStyles(Style.REGULAR, Style.BOLD, Style.ITALIC)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(
@@ -189,7 +192,7 @@ public final class FontActivity extends BaseActivity implements TabLayout.OnTabS
     mProgressDialog = ProgressDialog
         .show(this, null, getString(R.string.font_activity_install_progress), true, false);
 
-    FontDownloader.downloadAllFonts(mFontPackage)
+    mFontDownloader.downloadAllFonts()
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .last()
