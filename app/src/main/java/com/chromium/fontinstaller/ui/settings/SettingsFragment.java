@@ -28,6 +28,7 @@ import android.util.SparseArray;
 import android.view.View;
 
 import com.chromium.fontinstaller.BuildConfig;
+import com.chromium.fontinstaller.FontsterApp;
 import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.SecretStuff;
 import com.chromium.fontinstaller.core.CommandRunner;
@@ -40,6 +41,8 @@ import com.chromium.fontinstaller.util.billing.IabHelper;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import de.psdev.licensesdialog.LicensesDialog;
 import rx.android.schedulers.AndroidSchedulers;
@@ -62,17 +65,17 @@ public class SettingsFragment extends PreferenceFragment {
     put(2, DONATE_SKU_LARGE);
   }};
 
+  @Inject FontsterPreferences mPreferences;
+
   private IabHelper mBillingHelper;
-  private FontsterPreferences mPreferences;
   private IabHelper.OnIabPurchaseFinishedListener mPurchaseListener;
   private ProgressDialog mProgressDialog;
   private int mVersionTaps = 0;
 
   @Override public void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    ((FontsterApp) getActivity().getApplication()).getComponent().inject(this);
     addPreferencesFromResource(R.xml.settings);
-
-    mPreferences = FontsterPreferences.getInstance(getActivity());
 
     findPreferenceById(R.string.pref_key_true_font)
         .setOnPreferenceChangeListener((pref, newValue) -> handleTrueFont(newValue));

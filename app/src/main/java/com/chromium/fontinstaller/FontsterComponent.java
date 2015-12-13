@@ -16,32 +16,14 @@
 
 package com.chromium.fontinstaller;
 
-import android.app.Application;
+import com.chromium.fontinstaller.ui.settings.SettingsFragment;
 
-import com.crashlytics.android.Crashlytics;
+import javax.inject.Singleton;
 
-import io.fabric.sdk.android.Fabric;
-import timber.log.Timber;
+import dagger.Component;
 
-public class FontsterApp extends Application {
-
-  private FontsterComponent mComponent;
-
-  @Override public void onCreate() {
-    super.onCreate();
-
- //   mComponent = DaggerFontsterComponent.builder()
-     //   .fontsterModule(new FontsterModule(this))
-       // .build();
-
-    Fabric.with(this, new Crashlytics());
-
-    if (BuildConfig.DEBUG) {
-      Timber.plant(new Timber.DebugTree());
-    }
-  }
-
-  public FontsterComponent getComponent() {
-    return mComponent;
-  }
+@Singleton
+@Component(modules = FontsterModule.class)
+public interface FontsterComponent {
+  void inject(SettingsFragment settingsFragment);
 }

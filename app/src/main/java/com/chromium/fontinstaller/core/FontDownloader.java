@@ -53,9 +53,7 @@ public final class FontDownloader {
 
   public FontDownloader(FontPackage fontPackage) {
     mFontPackage = fontPackage;
-    // noinspection ResultOfMethodCallIgnored
-    new File(mFontPackage.getFontList().get(0).getFile()
-        .getParentFile().getAbsolutePath()).mkdirs();
+    createCacheDirectory();
   }
 
   public synchronized FontDownloader setFontPackage(FontPackage fontPackage) {
@@ -69,6 +67,14 @@ public final class FontDownloader {
 
   public synchronized Observable<File> downloadFontStyles(Style... styles) {
     return downloadFonts(mFontPackage, styledFontFinder(Arrays.asList(styles)));
+  }
+
+  private void createCacheDirectory() {
+    if (mFontPackage != null) {
+      // noinspection ResultOfMethodCallIgnored
+      new File(mFontPackage.getFontList().get(0).getFile()
+          .getParentFile().getAbsolutePath()).mkdirs();
+    }
   }
 
   /* package */ static Observable<File> downloadFile(final String url, final String path) {
