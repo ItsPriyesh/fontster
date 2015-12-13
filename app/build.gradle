@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
-apply plugin: 'retrolambda'
-apply plugin: 'io.fabric'
+apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 23
@@ -41,9 +41,9 @@ dependencies {
     compile files('libs/internal_impl-23.1.0.jar')
 
     // Dagger
-    compile 'com.google.dagger:dagger:2.0.1'
     apt 'com.google.dagger:dagger-compiler:2.0.1'
-    compile 'org.glassfish:javax.annotation:10.0-b28'
+    compile 'com.google.dagger:dagger:2.0.1'
+    provided 'org.glassfish:javax.annotation:10.0-b28'
 
     // Networking
     compile 'com.squareup.okhttp:okhttp:2.6.0'

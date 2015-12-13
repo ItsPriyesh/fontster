@@ -28,14 +28,14 @@ import android.util.SparseArray;
 import android.view.View;
 
 import com.chromium.fontinstaller.BuildConfig;
-import com.chromium.fontinstaller.FontsterApp;
+import com.chromium.fontinstaller.Injector;
 import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.SecretStuff;
 import com.chromium.fontinstaller.core.CommandRunner;
+import com.chromium.fontinstaller.core.FontsterPreferences;
 import com.chromium.fontinstaller.ui.main.MainActivity;
 import com.chromium.fontinstaller.ui.settings.developer.DeveloperSettingsActivity;
 import com.chromium.fontinstaller.util.Licenses;
-import com.chromium.fontinstaller.core.FontsterPreferences;
 import com.chromium.fontinstaller.util.billing.IabHelper;
 
 import java.io.File;
@@ -74,7 +74,8 @@ public class SettingsFragment extends PreferenceFragment {
 
   @Override public void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    ((FontsterApp) getActivity().getApplication()).getComponent().inject(this);
+    Injector.get().inject(this);
+
     addPreferencesFromResource(R.xml.settings);
 
     findPreferenceById(R.string.pref_key_true_font)

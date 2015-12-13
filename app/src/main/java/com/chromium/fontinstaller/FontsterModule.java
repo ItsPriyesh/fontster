@@ -16,6 +16,7 @@
 
 package com.chromium.fontinstaller;
 
+import com.chromium.fontinstaller.core.BackupManager;
 import com.chromium.fontinstaller.core.FontsterPreferences;
 
 import javax.inject.Singleton;
@@ -32,12 +33,15 @@ public class FontsterModule {
     mApplication = application;
   }
 
-  @Provides public FontsterApp providesApplication() {
+  @Provides @Singleton public FontsterApp providesApplication() {
     return mApplication;
   }
 
-  @Singleton @Provides public FontsterPreferences providesPreferences() {
+  @Provides @Singleton public FontsterPreferences providesPreferences() {
     return FontsterPreferences.getInstance(mApplication);
   }
 
+  @Provides @Singleton public BackupManager providesBackupManager() {
+    return new BackupManager();
+  }
 }
