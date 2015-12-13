@@ -38,10 +38,11 @@ public class FontsterModule {
   }
 
   @Provides @Singleton public FontsterPreferences providesPreferences() {
-    return FontsterPreferences.getInstance(mApplication);
+    return new FontsterPreferences(mApplication.getApplicationContext());
   }
 
   @Provides @Singleton public BackupManager providesBackupManager() {
     return new BackupManager();
   }
+
 }

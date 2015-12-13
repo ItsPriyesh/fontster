@@ -27,6 +27,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.chromium.fontinstaller.Injector;
 import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.core.BackupManager;
 import com.chromium.fontinstaller.ui.common.BaseActivity;
@@ -35,6 +36,8 @@ import com.chromium.fontinstaller.util.RebootDialog;
 import com.chromium.fontinstaller.util.ViewUtils;
 
 import java.util.Date;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -45,34 +48,29 @@ import static com.chromium.fontinstaller.core.FontsterPreferences.Keys;
 
 public class BackupRestoreFragment extends Fragment {
 
-  @Bind(R.id.backup_unavailable_container)
-  ViewGroup mNoBackupContainer;
+  @Inject BackupManager mBackupManager;
 
-  @Bind(R.id.backup_available_container)
-  ViewGroup mBackupContainer;
+  @Inject FontsterPreferences mPreferences;
 
-  @Bind(R.id.backup_name)
-  TextView mBackupNameView;
+  @Bind(R.id.backup_unavailable_container) ViewGroup mNoBackupContainer;
 
-  @Bind(R.id.backup_date)
-  TextView mBackupDateView;
+  @Bind(R.id.backup_available_container) ViewGroup mBackupContainer;
 
-  @Bind(R.id.backup_fab)
-  FloatingActionButton mBackupFab;
+  @Bind(R.id.backup_name) TextView mBackupNameView;
 
-  private BackupManager mBackupManager;
-  private FontsterPreferences mPreferences;
+  @Bind(R.id.backup_date) TextView mBackupDateView;
+
+  @Bind(R.id.backup_fab) FloatingActionButton mBackupFab;
 
   public BackupRestoreFragment() { }
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    Injector.get().inject(this);
+
     View view = inflater.inflate(R.layout.fragment_backup_restore, container, false);
     ButterKnife.bind(this, view);
 
     ((BaseActivity) getActivity()).setToolbarTitle(getString(R.string.drawer_item_backup_restore));
-
-    mBackupManager = new BackupManager();
-    mPreferences = FontsterPreferences.getInstance(getActivity());
 
     mBackupContainer.setOnClickListener(v -> onBackupContainerClicked());
     mBackupFab.setOnClickListener(v -> onBackupFabClicked());

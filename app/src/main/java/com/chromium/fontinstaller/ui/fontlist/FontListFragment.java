@@ -30,6 +30,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 
+import com.chromium.fontinstaller.Injector;
 import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.core.FontDownloader;
 import com.chromium.fontinstaller.models.FontPackage;
@@ -44,6 +45,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import rx.Observable;
@@ -55,35 +58,32 @@ import static com.chromium.fontinstaller.core.FontsterPreferences.Keys;
 
 public class FontListFragment extends Fragment {
 
-  @Bind(R.id.font_list_view)
-  RecyclerView mRecyclerView;
+  @Inject FontsterPreferences mPreferences;
 
-  @Bind(R.id.download_progress)
-  ProgressBar mDownloadProgress;
+  @Bind(R.id.font_list_view) RecyclerView mRecyclerView;
 
-  @Bind(R.id.error_container)
-  ViewGroup mErrorContainer;
+  @Bind(R.id.download_progress) ProgressBar mDownloadProgress;
 
-  @Bind(R.id.retry)
-  Button mRetryButton;
+  @Bind(R.id.error_container) ViewGroup mErrorContainer;
+
+  @Bind(R.id.retry) Button mRetryButton;
 
   private FontListAdapter mListAdapter;
   private List<String> mFontList;
   private Activity mActivity;
   private ProgressDialog mProgressDialog;
-  private FontsterPreferences mPreferences;
   private FontDownloader mFontDownloader;
 
   public FontListFragment() { }
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    Injector.get().inject(this);
+
     final View view = inflater.inflate(R.layout.fragment_font_list, container, false);
     ButterKnife.bind(this, view);
 
     mActivity = getActivity();
     ((MainActivity) mActivity).setToolbarTitle(getString(R.string.app_name));
-
-    mPreferences = FontsterPreferences.getInstance(mActivity);
 
     mFontDownloader = new FontDownloader(null);
 

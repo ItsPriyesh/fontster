@@ -30,33 +30,25 @@ public class FontsterPreferences {
     public static final String TRUEFONTS_CACHED = "4";
   }
 
-  private static SharedPreferences sSharedPreferences = null;
-  private static FontsterPreferences sFontsterPreferences = null;
+  private final SharedPreferences mSharedPreferences;
 
-  private FontsterPreferences(Context context) {
-    sSharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-  }
-
-  public static synchronized FontsterPreferences getInstance(Context context) {
-    if (sFontsterPreferences == null) {
-      sFontsterPreferences = new FontsterPreferences(context);
-    }
-    return sFontsterPreferences;
+  public FontsterPreferences(Context context) {
+    mSharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
   }
 
   public void setString(String key, String value) {
-    sSharedPreferences.edit().putString(key, value).apply();
+    mSharedPreferences.edit().putString(key, value).apply();
   }
 
   public String getString(String key) {
-    return sSharedPreferences.getString(key, null);
+    return mSharedPreferences.getString(key, null);
   }
 
   public void setBoolean(String key, boolean value) {
-    sSharedPreferences.edit().putBoolean(key, value).apply();
+    mSharedPreferences.edit().putBoolean(key, value).apply();
   }
 
   public boolean getBoolean(String key) {
-    return sSharedPreferences.getBoolean(key, false);
+    return mSharedPreferences.getBoolean(key, false);
   }
 }

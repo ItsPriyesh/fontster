@@ -16,6 +16,8 @@
 
 package com.chromium.fontinstaller;
 
+import com.chromium.fontinstaller.ui.backuprestore.BackupRestoreFragment;
+import com.chromium.fontinstaller.ui.fontlist.FontListFragment;
 import com.chromium.fontinstaller.ui.settings.SettingsFragment;
 
 import javax.inject.Singleton;
@@ -26,4 +28,6 @@ import dagger.Component;
 @Component(modules = FontsterModule.class)
 public interface FontsterComponent {
   void inject(SettingsFragment settingsFragment);
+  void inject(BackupRestoreFragment backupRestoreFragment);
+  void inject(FontListFragment fontListFragment);
 }

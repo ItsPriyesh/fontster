@@ -37,8 +37,10 @@ android {
 repositories {
     maven { url 'https://maven.fabric.io/public' }
 }
+
+
 dependencies {
-    compile files('libs/internal_impl-23.1.0.jar')
+    // compile files('libs/internal_impl-23.1.0.jar')
 
     // Dagger
     apt 'com.google.dagger:dagger-compiler:2.0.1'
