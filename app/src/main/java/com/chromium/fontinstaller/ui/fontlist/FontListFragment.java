@@ -33,10 +33,10 @@ import android.widget.ProgressBar;
 import com.chromium.fontinstaller.Injector;
 import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.core.FontDownloader;
+import com.chromium.fontinstaller.core.FontsterPreferences;
 import com.chromium.fontinstaller.models.FontPackage;
 import com.chromium.fontinstaller.models.Style;
 import com.chromium.fontinstaller.ui.main.MainActivity;
-import com.chromium.fontinstaller.core.FontsterPreferences;
 import com.chromium.fontinstaller.util.ViewUtils;
 import com.eowise.recyclerview.stickyheaders.StickyHeadersBuilder;
 import com.eowise.recyclerview.stickyheaders.StickyHeadersItemDecoration;
@@ -49,7 +49,6 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
@@ -72,7 +71,6 @@ public class FontListFragment extends Fragment {
   private List<String> mFontList;
   private Activity mActivity;
   private ProgressDialog mProgressDialog;
-  private FontDownloader mFontDownloader;
 
   public FontListFragment() { }
 
@@ -84,8 +82,6 @@ public class FontListFragment extends Fragment {
 
     mActivity = getActivity();
     ((MainActivity) mActivity).setToolbarTitle(getString(R.string.app_name));
-
-    mFontDownloader = new FontDownloader(null);
 
     mFontList = Arrays.asList(getResources().getStringArray(R.array.font_list));
 
@@ -130,8 +126,7 @@ public class FontListFragment extends Fragment {
     final List<FontPackage> fontPackages = new ArrayList<>(mFontList.size());
     for (String fontName : mFontList) fontPackages.add(new FontPackage(fontName));
 
-    Observable.from(fontPackages)
-        .flatMap(fp -> mFontDownloader.setFontPackage(fp).downloadFontStyles(Style.REGULAR))
+    FontDownloader.downloadStyleFromPackages(fontPackages, Style.REGULAR)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(
@@ -155,6 +150,7 @@ public class FontListFragment extends Fragment {
 
   private void handleDownloadFailure(Throwable error) {
     dismissProgressDialog();
+    error.printStackTrace();
     Timber.e("Download failed: " + error.getMessage());
     ViewUtils.animSlideUp(mDownloadProgress, getActivity());
     new Handler().postDelayed(() -> {

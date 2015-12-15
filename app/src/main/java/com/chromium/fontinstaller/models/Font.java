@@ -30,8 +30,8 @@ public class Font {
     this.file = file;
   }
 
-  public String getName() {
-    return style.getLocalName();
+  public Style getStyle() {
+    return style;
   }
 
   public String getUrl() {

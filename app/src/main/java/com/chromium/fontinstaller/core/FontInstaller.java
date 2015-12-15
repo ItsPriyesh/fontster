@@ -45,7 +45,7 @@ public class FontInstaller {
   public static Observable<Void> install(final FontPackage fontPackage, final Activity context) {
     final List<String> copyCommands = new ArrayList<>();
     return Observable.create(subscriber -> {
-      for (Font font : fontPackage.getFontList()) {
+      for (Font font : fontPackage.getFontSet()) {
         final File file = font.getFile();
         if (!file.exists()) {
           subscriber.onError(new InstallException(new IOException("File not found!")));

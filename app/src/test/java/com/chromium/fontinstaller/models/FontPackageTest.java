@@ -34,7 +34,7 @@ public class FontPackageTest {
 
     @Test public void testCreateFontPack_hasAllStyles() throws Exception {
         final FontPackage fontPackage = new FontPackage(FONT_NAME);
-        assertEquals(Style.values().length, fontPackage.getFontList().size());
+        assertEquals(Style.values().length, fontPackage.getFontSet().size());
     }
 
     @Test public void testValidFontPackFolder_returnsFalseIfInvalid() throws Exception {

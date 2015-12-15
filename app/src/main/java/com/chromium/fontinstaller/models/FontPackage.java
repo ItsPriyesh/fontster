@@ -18,33 +18,32 @@ package com.chromium.fontinstaller.models;
 
 import android.graphics.Typeface;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import com.chromium.fontinstaller.core.SystemConstants;
 
-import static com.chromium.fontinstaller.core.SystemConstants.*;
+import java.io.File;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class FontPackage {
 
-  private final String mName;
-  private HashMap<Font, Style> mFontsToStyles = new HashMap<>();
+  protected final String mName;
+  protected final Set<Font> mFontSet;
 
   private static final String BASE_URL = "https://raw.githubusercontent.com/ItsPriyesh/FontsterFontsRepo/master/";
+
+  protected interface CacheProvider { String getCachePath(); }
 
   /**
    * Use this constructor to create font packages representing those
    * that exist in the FontsterFontsRepo. These packs are verified,
    * and can be used with FontDownloader.
    *
-   * @param name The font package mName from FontsterFontsRepo
+   * @param name The font package name from FontsterFontsRepo
    */
   public FontPackage(String name) {
     mName = name;
-    initForDownloadableFontPack();
+    mFontSet = buildFontSetForRemotePackage();
   }
 
   /**
@@ -56,7 +55,7 @@ public class FontPackage {
    */
   private FontPackage(File folder) {
     mName = folder.getName();
-    initForLocalFontPack(folder);
+    mFontSet = buildFontSetForLocalPackage(folder);
   }
 
   public static FontPackage fromFolder(File folder) {
@@ -67,40 +66,37 @@ public class FontPackage {
     return new FontPackage(folder);
   }
 
-  private void initForDownloadableFontPack() {
-    for (Style style : Style.values()) {
+  protected CacheProvider cacheProvider() { return () -> SystemConstants.CACHE_PATH; }
+
+  private Set<Font> buildFontSetForRemotePackage() {
+    final Style[] styles = Style.values();
+    final Set<Font> fonts = new HashSet<>(styles.length);
+    for (Style style : styles) {
       final String url = BASE_URL + mName.replace(" ", "") + "FontPack/" + style.getRemoteName();
-      final File file = new File(CACHE_PATH + mName.replace(" ", "") + "FontPack/" + style.getLocalName());
-      final Font font = new Font(style, url, file);
-      mFontsToStyles.put(font, style);
+      final File file = new File(cacheProvider().getCachePath() + mName.replace(" ", "") + "FontPack/" + style.getLocalName());
+      fonts.add(new Font(style, url, file));
     }
+    return fonts;
   }
 
-  private void initForLocalFontPack(File folder) {
-    final File[] files = folder.listFiles();
-    final Map<String, File> namesToFiles = new HashMap<>();
-    for (File file : files) {
-      if (Style.REMOTE_STYLE_NAMES.contains(file.getName())) {
-        namesToFiles.put(file.getName(), file);
+  private Set<Font> buildFontSetForLocalPackage(File folder) {
+    final Set<Font> fonts = new HashSet<>();
+    for (File file : folder.listFiles()) {
+      for (Style style : Style.REMOTE_STYLES) {
+        if (style.getRemoteName().equals(file.getName())) {
+          fonts.add(new Font(style, null, file));
+        }
       }
     }
-
-    for (Style style : Style.REMOTE_STYLES) {
-      final Font font = new Font(style, null, namesToFiles.get(style.getLocalName()));
-      mFontsToStyles.put(font, style);
-    }
-  }
-
-  public ArrayList<Font> getFontList() {
-    return new ArrayList<>(mFontsToStyles.keySet());
-  }
-
-  public Map<Font, Style> getFontStyleMap() {
-    return mFontsToStyles;
+    return fonts;
   }
 
   public String getName() {
     return mName;
+  }
+
+  public Set<Font> getFontSet() {
+    return mFontSet;
   }
 
   public Typeface getTypeface(Style style) {
@@ -116,10 +112,7 @@ public class FontPackage {
   }
 
   public Font getFont(Style style) {
-    for (Font font : mFontsToStyles.keySet())
-      if (mFontsToStyles.get(font).equals(style))
-        return font;
-
+    for (Font font : mFontSet) if (font.getStyle().equals(style)) return font;
     return null;
   }
 

@@ -16,8 +16,6 @@
 
 package com.chromium.fontinstaller.core;
 
-import android.util.Pair;
-
 import com.chromium.fontinstaller.models.Font;
 import com.chromium.fontinstaller.models.FontPackage;
 import com.chromium.fontinstaller.models.Style;
@@ -27,10 +25,10 @@ import com.squareup.okhttp.Response;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 import okio.BufferedSink;
 import okio.Okio;
@@ -41,10 +39,6 @@ public final class FontDownloader {
 
   private static final OkHttpClient CLIENT = new OkHttpClient();
 
-  private interface FontFinder {
-    List<Font> findFonts(FontPackage fontPackage);
-  }
-
   public static class DownloadException extends Exception {
     public DownloadException(Exception root) { super(root); }
   }
@@ -53,28 +47,23 @@ public final class FontDownloader {
 
   public FontDownloader(FontPackage fontPackage) {
     mFontPackage = fontPackage;
-    createCacheDirectory();
   }
 
-  public synchronized FontDownloader setFontPackage(FontPackage fontPackage) {
-    mFontPackage = fontPackage;
-    return this;
+  public Observable<File> downloadAllFonts() {
+    return downloadFonts(mFontPackage.getFontSet());
   }
 
-  public synchronized Observable<File> downloadAllFonts() {
-    return downloadFonts(mFontPackage, FontPackage::getFontList);
+  public Observable<File> downloadFontStyles(Style... styles) {
+    return Observable.from(styles)
+        .map(mFontPackage::getFont)
+        .filter(font -> font != null)
+        .collect(HashSet<Font>::new, HashSet::add)
+        .flatMap(FontDownloader::downloadFonts);
   }
 
-  public synchronized Observable<File> downloadFontStyles(Style... styles) {
-    return downloadFonts(mFontPackage, styledFontFinder(Arrays.asList(styles)));
-  }
-
-  private void createCacheDirectory() {
-    if (mFontPackage != null) {
-      // noinspection ResultOfMethodCallIgnored
-      new File(mFontPackage.getFontList().get(0).getFile()
-          .getParentFile().getAbsolutePath()).mkdirs();
-    }
+  public static Observable<File> downloadStyleFromPackages(List<FontPackage> packages, Style style) {
+    return Observable.from(packages).flatMap(fontPackage ->
+        downloadFonts(Collections.singleton(fontPackage.getFont(style))));
   }
 
   /* package */ static Observable<File> downloadFile(final String url, final String path) {
@@ -84,6 +73,7 @@ public final class FontDownloader {
         if (!subscriber.isUnsubscribed()) {
           final File file = new File(path);
           if (!file.exists()) {
+            file.getParentFile().mkdirs();
             Timber.i("Downloading: " + file.getName());
             final Response response = CLIENT.newCall(request).execute();
             final BufferedSink sink = Okio.buffer(Okio.sink(file));
@@ -100,28 +90,8 @@ public final class FontDownloader {
     });
   }
 
-  private static Observable<File> downloadFiles(ArrayList<Pair<String, String>> files) {
-    return Observable.from(files).flatMap(p -> downloadFile(p.first, p.second));
-  }
-
-  private static Observable<File> downloadFonts(FontPackage fontPackage, FontFinder finder) {
-    ArrayList<Pair<String, String>> urlsAndPaths = new ArrayList<>();
-    for (Font font : finder.findFonts(fontPackage)) {
-      urlsAndPaths.add(new Pair<>(font.getUrl(), font.getFile().getAbsolutePath()));
-    }
-    return downloadFiles(urlsAndPaths);
-  }
-
-  private static FontFinder styledFontFinder(List<Style> acceptedStyles) {
-    return fontPackage -> {
-      Map<Font, Style> fontStyleMap = fontPackage.getFontStyleMap();
-      ArrayList<Font> rightFonts = new ArrayList<>();
-      for (Map.Entry<Font, Style> f : fontStyleMap.entrySet()) {
-        if (acceptedStyles.contains(f.getValue())) {
-          rightFonts.add(f.getKey());
-        }
-      }
-      return rightFonts;
-    };
+  private static Observable<File> downloadFonts(Set<Font> fonts) {
+    return Observable.from(fonts).flatMap(f ->
+        FontDownloader.downloadFile(f.getUrl(), f.getFile().getAbsolutePath()));
   }
 }

@@ -119,8 +119,7 @@ public class SplashActivity extends AppCompatActivity {
   };
 
   private final Runnable mCheckForRoot = () -> Observable.defer(() ->
-      Observable.just(Shell.SU.available()))
-      .map(s -> s || BuildConfig.DEBUG)
+      Observable.just(BuildConfig.DEBUG || Shell.SU.available()))
       .subscribeOn(Schedulers.io())
       .observeOn(AndroidSchedulers.mainThread())
       .subscribe(available -> {
