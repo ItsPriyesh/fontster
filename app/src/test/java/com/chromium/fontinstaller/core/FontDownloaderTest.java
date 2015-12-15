@@ -34,6 +34,7 @@ import rx.observers.TestSubscriber;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static rx.Observable.from;
 
 public class FontDownloaderTest {
 
@@ -96,6 +97,33 @@ public class FontDownloaderTest {
     assertTrue(downloadedFontPack.exists());
     assertTrue(downloadedFontPack.isDirectory());
     assertEquals(Style.values().length, downloadedFontPack.listFiles().length);
+  }
+
+  @Test public void testDownloadFontStyles_downloadsCorrectStyles() throws Exception {
+    TestSubscriber<File> testSubscriber = new TestSubscriber<>();
+
+    FontDownloader fontDownloader = new FontDownloader(new MockFontPackage());
+    Style[] stylesToDownload = {Style.REGULAR, Style.BOLD, Style.ITALIC};
+    fontDownloader.downloadFontStyles(stylesToDownload).subscribe(testSubscriber);
+    testSubscriber.assertNoErrors();
+
+    List<String> expectedFileNames = from(stylesToDownload)
+        .map(Style::getLocalName)
+        .toSortedList()
+        .toBlocking()
+        .single();
+
+    List<String> downloadedFileNames = from(testSubscriber.getOnNextEvents())
+        .map(File::getName)
+        .toSortedList()
+        .toBlocking()
+        .single();
+
+    assertEquals(stylesToDownload.length, downloadedFileNames.size());
+
+    for (int i = 0; i < stylesToDownload.length; i++) {
+      assertEquals(expectedFileNames.get(i), downloadedFileNames.get(i));
+    }
   }
 
   private static final class MockFontPackage extends FontPackage {

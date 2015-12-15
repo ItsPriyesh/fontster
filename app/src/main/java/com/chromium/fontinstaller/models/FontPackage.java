@@ -30,7 +30,7 @@ public class FontPackage {
   protected final String mName;
   protected final Set<Font> mFontSet;
 
-  private static final String BASE_URL = "https://raw.githubusercontent.com/ItsPriyesh/FontsterFontsRepo/master/";
+  /* package */ static final String BASE_URL = "https://raw.githubusercontent.com/ItsPriyesh/FontsterFontsRepo/master/";
 
   protected interface CacheProvider { String getCachePath(); }
 
