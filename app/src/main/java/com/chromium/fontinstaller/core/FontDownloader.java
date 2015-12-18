@@ -73,6 +73,7 @@ public final class FontDownloader {
         if (!subscriber.isUnsubscribed()) {
           final File file = new File(path);
           if (!file.exists()) {
+            // noinspection ResultOfMethodCallIgnored
             file.getParentFile().mkdirs();
             Timber.i("Downloading: " + file.getName());
             final Response response = CLIENT.newCall(request).execute();

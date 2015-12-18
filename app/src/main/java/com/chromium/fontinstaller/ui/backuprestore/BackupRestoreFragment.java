@@ -48,19 +48,26 @@ import static com.chromium.fontinstaller.core.FontsterPreferences.Key;
 
 public class BackupRestoreFragment extends Fragment {
 
-  @Inject BackupManager mBackupManager;
+  @Bind(R.id.backup_unavailable_container)
+  ViewGroup mNoBackupContainer;
 
-  @Inject FontsterPreferences mPreferences;
+  @Bind(R.id.backup_available_container)
+  ViewGroup mBackupContainer;
 
-  @Bind(R.id.backup_unavailable_container) ViewGroup mNoBackupContainer;
+  @Bind(R.id.backup_name)
+  TextView mBackupNameView;
 
-  @Bind(R.id.backup_available_container) ViewGroup mBackupContainer;
+  @Bind(R.id.backup_date)
+  TextView mBackupDateView;
 
-  @Bind(R.id.backup_name) TextView mBackupNameView;
+  @Bind(R.id.backup_fab)
+  FloatingActionButton mBackupFab;
 
-  @Bind(R.id.backup_date) TextView mBackupDateView;
+  @Inject
+  BackupManager mBackupManager;
 
-  @Bind(R.id.backup_fab) FloatingActionButton mBackupFab;
+  @Inject
+  FontsterPreferences mPreferences;
 
   public BackupRestoreFragment() { }
 

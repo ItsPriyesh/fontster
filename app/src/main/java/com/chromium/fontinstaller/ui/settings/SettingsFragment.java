@@ -65,7 +65,8 @@ public class SettingsFragment extends PreferenceFragment {
     put(2, DONATE_SKU_LARGE);
   }};
 
-  @Inject FontsterPreferences mPreferences;
+  @Inject
+  FontsterPreferences mPreferences;
 
   private IabHelper mBillingHelper;
   private IabHelper.OnIabPurchaseFinishedListener mPurchaseListener;

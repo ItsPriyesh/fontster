@@ -57,19 +57,24 @@ import static com.chromium.fontinstaller.core.FontsterPreferences.Key;
 
 public class FontListFragment extends Fragment {
 
-  @Inject FontsterPreferences mPreferences;
+  @Bind(R.id.font_list_view)
+  RecyclerView mRecyclerView;
 
-  @Bind(R.id.font_list_view) RecyclerView mRecyclerView;
+  @Bind(R.id.download_progress)
+  ProgressBar mDownloadProgress;
 
-  @Bind(R.id.download_progress) ProgressBar mDownloadProgress;
+  @Bind(R.id.error_container)
+  ViewGroup mErrorContainer;
 
-  @Bind(R.id.error_container) ViewGroup mErrorContainer;
+  @Bind(R.id.retry)
+  Button mRetryButton;
 
-  @Bind(R.id.retry) Button mRetryButton;
+  @Inject
+  FontsterPreferences mPreferences;
 
-  private FontListAdapter mListAdapter;
-  private List<String> mFontList;
   private Activity mActivity;
+  private List<String> mFontList;
+  private FontListAdapter mListAdapter;
   private ProgressDialog mProgressDialog;
 
   public FontListFragment() { }
