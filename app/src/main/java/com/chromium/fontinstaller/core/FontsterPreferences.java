@@ -40,7 +40,7 @@ public class FontsterPreferences {
     mSharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
   }
 
-  public void setString(Key key, String value) {
+  public void putString(Key key, String value) {
     mSharedPreferences.edit().putString(key.id, value).apply();
   }
 
@@ -48,7 +48,7 @@ public class FontsterPreferences {
     return mSharedPreferences.getString(key.id, null);
   }
 
-  public void setBoolean(Key key, boolean value) {
+  public void putBoolean(Key key, boolean value) {
     mSharedPreferences.edit().putBoolean(key.id, value).apply();
   }
 

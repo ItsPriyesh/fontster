@@ -92,7 +92,7 @@ public class BackupRestoreFragment extends Fragment {
       if (mNoBackupContainer.getVisibility() == View.VISIBLE) {
         hide(mNoBackupContainer);
       }
-      setupBackupContainer();
+      refreshBackupContainer();
     } else {
       hide(mBackupContainer);
       show(mNoBackupContainer);
@@ -109,9 +109,8 @@ public class BackupRestoreFragment extends Fragment {
     view.setVisibility(View.VISIBLE);
   }
 
-  private void setupBackupContainer() {
+  private void refreshBackupContainer() {
     show(mBackupContainer);
-
     mBackupNameView.setText(mPreferences.getString(Key.BACKUP_NAME));
     mBackupDateView.setText(mPreferences.getString(Key.BACKUP_DATE));
   }
@@ -148,12 +147,13 @@ public class BackupRestoreFragment extends Fragment {
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .doOnCompleted(() -> onBackupComplete(backupName))
-        .subscribe()).show();
+        .subscribe())
+        .show();
   }
 
   private void onBackupComplete(String name) {
-    mPreferences.setString(Key.BACKUP_NAME, name);
-    mPreferences.setString(Key.BACKUP_DATE, BackupManager.DATE_FORMAT.format(new Date()));
+    mPreferences.putString(Key.BACKUP_NAME, name);
+    mPreferences.putString(Key.BACKUP_DATE, BackupManager.DATE_FORMAT.format(new Date()));
     checkForBackup();
   }
 

@@ -143,7 +143,7 @@ public class FontListFragment extends Fragment {
   }
 
   private void handleDownloadSuccess() {
-    mPreferences.setBoolean(Key.TRUEFONTS_CACHED, true);
+    mPreferences.putBoolean(Key.TRUEFONTS_CACHED, true);
 
     dismissProgressDialog();
     ViewUtils.animSlideUp(mDownloadProgress, getActivity());

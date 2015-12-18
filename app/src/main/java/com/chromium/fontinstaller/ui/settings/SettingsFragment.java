@@ -151,7 +151,7 @@ public class SettingsFragment extends PreferenceFragment {
   }
 
   private boolean handleTrueFont(Object newValue) {
-    mPreferences.setBoolean(Key.ENABLE_TRUEFONT, (boolean) newValue);
+    mPreferences.putBoolean(Key.ENABLE_TRUEFONT, (boolean) newValue);
     showRestartDialog();
     return true;
   }
@@ -182,7 +182,7 @@ public class SettingsFragment extends PreferenceFragment {
   }
 
   private void onCacheCleared() {
-    mPreferences.setBoolean(Key.TRUEFONTS_CACHED, false);
+    mPreferences.putBoolean(Key.TRUEFONTS_CACHED, false);
     mProgressDialog.dismiss();
     snackbar(R.string.settings_clear_cache_success, getView());
   }
