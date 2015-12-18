@@ -89,28 +89,28 @@ public class BackupRestoreFragment extends Fragment {
 
   private void checkForBackup() {
     if (mBackupManager.backupExists()) {
-      if (mNoBackupContainer.getVisibility() == View.VISIBLE)
-        slideUpAndRemove(mNoBackupContainer);
-
+      if (mNoBackupContainer.getVisibility() == View.VISIBLE) {
+        hide(mNoBackupContainer);
+      }
       setupBackupContainer();
     } else {
-      slideUpAndRemove(mBackupContainer);
-      slideUpAndAdd(mNoBackupContainer);
+      hide(mBackupContainer);
+      show(mNoBackupContainer);
     }
   }
 
-  private void slideUpAndRemove(View view) {
+  private void hide(View view) {
     ViewUtils.animSlideUp(view, getActivity());
     view.setVisibility(View.GONE);
   }
 
-  private void slideUpAndAdd(View view) {
+  private void show(View view) {
     ViewUtils.animSlideInBottom(view, getActivity());
     view.setVisibility(View.VISIBLE);
   }
 
   private void setupBackupContainer() {
-    slideUpAndAdd(mBackupContainer);
+    show(mBackupContainer);
 
     mBackupNameView.setText(mPreferences.getString(Key.BACKUP_NAME));
     mBackupDateView.setText(mPreferences.getString(Key.BACKUP_DATE));
@@ -163,7 +163,7 @@ public class BackupRestoreFragment extends Fragment {
 
   private void onRestoreComplete() {
     final Activity activity = getActivity();
-    if (activity == null || activity.isFinishing()) {
+    if (activity != null && !activity.isFinishing()) {
       new RebootDialog(activity);
     }
   }
