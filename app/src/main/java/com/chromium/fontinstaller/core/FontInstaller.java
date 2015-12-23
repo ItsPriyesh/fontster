@@ -55,7 +55,10 @@ public class FontInstaller {
         Log.d(TAG, "Adding command: " + installCommand);
         copyCommands.add(installCommand);
       }
-      copyCommands.add(generateLockscreenFixCommand(context));
+
+      String lockscreenFixCommand = generateLockscreenFixCommand(context);
+      if (lockscreenFixCommand != null) copyCommands.add(lockscreenFixCommand);
+
       if (Shell.SU.available()) {
         Shell.SU.run(MOUNT_SYSTEM_COMMAND);
         Shell.SU.run(copyCommands);
@@ -67,8 +70,10 @@ public class FontInstaller {
 
   // This font file is copied as a workaround/fix to the lockscreen colon bug
   private static String generateLockscreenFixCommand(Context context) {
-    return "cp " + FileUtils.getAssetsFile("DroidSansFallback.ttf", context)
-        .getAbsolutePath() + " " + SYSTEM_FONT_PATH;
+    File fallbackFont = FileUtils.getAssetsFile("DroidSansFallback.ttf", context);
+    return fallbackFont != null
+        ? "cp " + fallbackFont.getAbsolutePath() + " " + SYSTEM_FONT_PATH
+        : null;
   }
 
 }
