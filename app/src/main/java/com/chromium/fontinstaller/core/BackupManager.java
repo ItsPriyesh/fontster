@@ -26,7 +26,9 @@ import java.util.List;
 import eu.chainfire.libsuperuser.Shell;
 import rx.Observable;
 
-import static com.chromium.fontinstaller.core.SystemConstants.*;
+import static com.chromium.fontinstaller.core.SystemConstants.BACKUP_PATH;
+import static com.chromium.fontinstaller.core.SystemConstants.MOUNT_SYSTEM_COMMAND;
+import static com.chromium.fontinstaller.core.SystemConstants.SYSTEM_FONT_PATH;
 
 public class BackupManager {
 
@@ -47,7 +49,7 @@ public class BackupManager {
 
   public Observable<Void> backup() {
     createBackupDir();
-    return CommandRunner.runCommand("cp -R " + SYSTEM_FONT_PATH + ". " + BACKUP_PATH);
+    return CommandRunner.runCommands("cp -R " + SYSTEM_FONT_PATH + ". " + BACKUP_PATH);
   }
 
   public Observable<Void> restore() {
@@ -57,14 +59,14 @@ public class BackupManager {
       for (File file : mBackupDirectory.listFiles()) {
         restoreCommands.add("cp " + file.getAbsolutePath() + " " + SYSTEM_FONT_PATH);
       }
-      return CommandRunner.runCommands(restoreCommands);
+      return CommandRunner.runCommands(restoreCommands.toArray(new String[restoreCommands.size()]));
     } else {
       return Observable.empty();
     }
   }
 
   public Observable<Void> deleteBackup() {
-    return CommandRunner.runCommand("rm -rf " + BACKUP_PATH);
+    return CommandRunner.runCommands("rm -rf " + BACKUP_PATH);
   }
 
   public boolean backupExists() {

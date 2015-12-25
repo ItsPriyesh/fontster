@@ -16,15 +16,12 @@
 
 package com.chromium.fontinstaller.core;
 
-import java.util.Collections;
-import java.util.List;
-
 import eu.chainfire.libsuperuser.Shell;
 import rx.Observable;
 
 public class CommandRunner {
 
-  public static Observable<Void> runCommands(List<String> commands) {
+  public static Observable<Void> runCommands(String... commands) {
     return Observable.create(subscriber -> {
           if (Shell.SU.available()) {
             Shell.SU.run(commands);
@@ -32,10 +29,6 @@ public class CommandRunner {
           subscriber.onNext(null);
           subscriber.onCompleted();
         });
-  }
-
-  public static Observable<Void> runCommand(String command) {
-    return runCommands(Collections.singletonList(command));
   }
 
 }
