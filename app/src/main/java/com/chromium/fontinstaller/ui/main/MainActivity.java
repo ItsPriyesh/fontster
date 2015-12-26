@@ -89,13 +89,13 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.Sea
     mSearchView.setSuggestions(fontList);
     mSearchView.setPadding(0, ViewUtils.getStatusBarHeight(this), 0, 0);
     mSearchView.setOnItemClickListener((parent, view, position, id) -> {
-      final String fontName = getFontNameFromListItem(view);
+      final String fontName = fontNameFromListView(view);
       final Intent intent = FontActivity.getLaunchIntent(this, fontName);
       startActivity(intent);
     });
   }
 
-  private String getFontNameFromListItem(View view) {
+  private String fontNameFromListView(View view) {
     return ((TextView) view.findViewById(R.id.suggestion_text)).getText().toString();
   }
 

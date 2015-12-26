@@ -37,11 +37,7 @@ import timber.log.Timber;
 
 public final class FontDownloader {
 
-  private static final OkHttpClient CLIENT = new OkHttpClient();
-
-  public static class DownloadException extends Exception {
-    public DownloadException(Exception root) { super(root); }
-  }
+  private static final OkHttpClient sClient = new OkHttpClient();
 
   private FontPackage mFontPackage;
 
@@ -76,7 +72,7 @@ public final class FontDownloader {
             // noinspection ResultOfMethodCallIgnored
             file.getParentFile().mkdirs();
             Timber.i("Downloading: " + file.getName());
-            final Response response = CLIENT.newCall(request).execute();
+            final Response response = sClient.newCall(request).execute();
             final BufferedSink sink = Okio.buffer(Okio.sink(file));
             sink.writeAll(response.body().source());
             sink.close();
@@ -93,6 +89,10 @@ public final class FontDownloader {
 
   private static Observable<File> downloadFonts(Set<Font> fonts) {
     return Observable.from(fonts).flatMap(f ->
-        FontDownloader.downloadFile(f.getUrl(), f.getFile().getAbsolutePath()));
+        downloadFile(f.getUrl(), f.getFile().getAbsolutePath()));
+  }
+
+  public static class DownloadException extends Exception {
+    public DownloadException(Exception root) { super(root); }
   }
 }
