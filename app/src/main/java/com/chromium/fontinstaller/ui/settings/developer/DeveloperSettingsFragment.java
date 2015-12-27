@@ -63,13 +63,15 @@ public class DeveloperSettingsFragment extends PreferenceFragment {
     FontInstaller.install(fontPackage, getActivity())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribeOn(Schedulers.io())
-        .subscribe(done -> {
-          progressDialog.dismiss();
-          new RebootDialog(getActivity());
-        }, error -> {
-          Timber.i(error.getMessage());
-          progressDialog.dismiss();
-          snackbar(R.string.settings_custom_font_install_failed, getView());
-        });
+        .subscribe(
+            commandOutput -> Timber.i("Command output: " + commandOutput),
+            error -> {
+              Timber.i(error.getMessage());
+              progressDialog.dismiss();
+              snackbar(R.string.settings_custom_font_install_failed, getView());
+            }, () -> {
+              progressDialog.dismiss();
+              new RebootDialog(getActivity());
+            });
   }
 }

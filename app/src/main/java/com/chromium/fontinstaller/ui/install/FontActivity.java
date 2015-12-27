@@ -142,10 +142,8 @@ public final class FontActivity extends BaseActivity implements TabLayout.OnTabS
     Crashlytics.logException(error);
     Timber.e("Download failed: " + error.getMessage());
     animSlideUp(mDownloadProgress, this);
-
     delay(() -> {
       hideGone(mDownloadProgress);
-
       animSlideInBottom(mErrorContainer, this);
       show(mErrorContainer);
     }, 400);
@@ -153,8 +151,8 @@ public final class FontActivity extends BaseActivity implements TabLayout.OnTabS
 
   private void handleFailedInstall(Throwable error) {
     Crashlytics.logException(error);
+    Timber.e("Install failed: " + error.getMessage());
     delay(() -> {
-      Timber.e("Install failed: " + error.getMessage());
       snackbar(R.string.font_activity_install_failed, findViewById(R.id.bottom_bar));
       mProgressDialog.dismiss();
       animGrowFromCenter(mInstallButton, this);
@@ -198,7 +196,7 @@ public final class FontActivity extends BaseActivity implements TabLayout.OnTabS
         .last()
         .flatMap(v -> FontInstaller.install(mFontPackage, this))
         .subscribe(
-            next -> { },
+            commandOutput -> Timber.i("Command output: " + commandOutput),
             error -> {
               logEvent("Install of " + mFontPackage.getName() + " failed");
               if (error instanceof FontDownloader.DownloadException)
@@ -232,7 +230,6 @@ public final class FontActivity extends BaseActivity implements TabLayout.OnTabS
     mProgressDialog.dismiss();
     delay(() -> {
       mInstallButton.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_done_white));
-
       animGrowFromCenter(mInstallButton, this);
       show(mInstallButton);
 

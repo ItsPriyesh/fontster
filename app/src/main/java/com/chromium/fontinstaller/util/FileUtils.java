@@ -35,6 +35,7 @@ public class FileUtils {
   }
 
   public static File getAssetsFile(String fileName, Context context) {
+    if (context == null) return null;
     File file = new File(context.getExternalCacheDir() + File.separator + fileName);
     if (!file.exists()) {
       try {

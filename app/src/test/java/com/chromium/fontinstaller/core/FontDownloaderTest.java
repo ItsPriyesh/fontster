@@ -16,7 +16,7 @@
 
 package com.chromium.fontinstaller.core;
 
-import com.chromium.fontinstaller.models.FontPackage;
+import com.chromium.fontinstaller.MockFontPackage;
 import com.chromium.fontinstaller.models.Style;
 import com.chromium.fontinstaller.util.FileUtils;
 
@@ -38,21 +38,21 @@ import static rx.Observable.from;
 
 public class FontDownloaderTest {
 
-  private static final File TEST_FOLDER = new File("./TempTestFolder/");
+  private static final String FONT_URL = "https://raw.githubusercontent.com/ItsPriyesh/" +
+      "FontsterFontsRepo/master/AleoFontPack/Roboto-Regular.ttf";
 
-  private static final String FONT_URL = "https://raw.githubusercontent.com/ItsPriyesh/FontsterFontsRepo/master/AleoFontPack/Roboto-Regular.ttf";
-  private static final File FILE = new File(TEST_FOLDER, "Roboto-Regular.ttf");
+  private static final File FILE = new File(MockFontPackage.TEST_FOLDER, "Roboto-Regular.ttf");
   private static final long EXPECTED_FILE_SIZE = 62816;
 
   private static final String MOCK_FONT_PACK_NAME = "Aleo";
 
   @Before public void createDownloadFolder() {
     // noinspection ResultOfMethodCallIgnored
-    TEST_FOLDER.mkdirs();
+    MockFontPackage.TEST_FOLDER.mkdirs();
   }
 
   @After public void deleteDownloadFolder() {
-    FileUtils.deleteDirectory(TEST_FOLDER);
+    FileUtils.deleteDirectory(MockFontPackage.TEST_FOLDER);
   }
 
   @Test public void testDownloadFile() throws Exception {
@@ -68,7 +68,7 @@ public class FontDownloaderTest {
   @Test public void testDownloadAllFonts_downloadsAllStyles() throws Exception {
     TestSubscriber<File> testSubscriber = new TestSubscriber<>();
 
-    FontDownloader fontDownloader = new FontDownloader(new MockFontPackage());
+    FontDownloader fontDownloader = new FontDownloader(new MockFontPackage(MOCK_FONT_PACK_NAME));
     fontDownloader.downloadAllFonts().subscribe(testSubscriber);
     testSubscriber.assertNoErrors();
 
@@ -88,11 +88,11 @@ public class FontDownloaderTest {
   @Test public void testDownloadAllFonts_filesExist() throws Exception {
     TestSubscriber<File> testSubscriber = new TestSubscriber<>();
 
-    FontDownloader fontDownloader = new FontDownloader(new MockFontPackage());
+    FontDownloader fontDownloader = new FontDownloader(new MockFontPackage(MOCK_FONT_PACK_NAME));
     fontDownloader.downloadAllFonts().subscribe(testSubscriber);
     testSubscriber.assertNoErrors();
 
-    File downloadedFontPack = new File(TEST_FOLDER, MOCK_FONT_PACK_NAME + "FontPack");
+    File downloadedFontPack = new File(MockFontPackage.TEST_FOLDER, MOCK_FONT_PACK_NAME + "FontPack");
 
     assertTrue(downloadedFontPack.exists());
     assertTrue(downloadedFontPack.isDirectory());
@@ -102,7 +102,7 @@ public class FontDownloaderTest {
   @Test public void testDownloadFontStyles_downloadsCorrectStyles() throws Exception {
     TestSubscriber<File> testSubscriber = new TestSubscriber<>();
 
-    FontDownloader fontDownloader = new FontDownloader(new MockFontPackage());
+    FontDownloader fontDownloader = new FontDownloader(new MockFontPackage(MOCK_FONT_PACK_NAME));
     Style[] stylesToDownload = {Style.REGULAR, Style.BOLD, Style.ITALIC};
     fontDownloader.downloadFontStyles(stylesToDownload).subscribe(testSubscriber);
     testSubscriber.assertNoErrors();
@@ -126,11 +126,4 @@ public class FontDownloaderTest {
     }
   }
 
-  private static final class MockFontPackage extends FontPackage {
-    MockFontPackage() { super(MOCK_FONT_PACK_NAME); }
-
-    @Override protected CacheProvider cacheProvider() {
-      return () -> TEST_FOLDER.getPath() + File.separator;
-    }
-  }
 }

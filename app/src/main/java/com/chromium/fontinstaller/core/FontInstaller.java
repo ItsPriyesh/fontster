@@ -16,9 +16,7 @@
 
 package com.chromium.fontinstaller.core;
 
-import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 
 import com.chromium.fontinstaller.models.Font;
 import com.chromium.fontinstaller.models.FontPackage;
@@ -26,50 +24,47 @@ import com.chromium.fontinstaller.util.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 import eu.chainfire.libsuperuser.Shell;
 import rx.Observable;
 
-import static com.chromium.fontinstaller.core.SystemConstants.*;
+import static com.chromium.fontinstaller.core.SystemConstants.MOUNT_SYSTEM_COMMAND;
+import static com.chromium.fontinstaller.core.SystemConstants.SYSTEM_FONT_PATH;
 
 public class FontInstaller {
 
-  private static final String TAG = FontInstaller.class.toString();
+  private static final String INSTALL_FORMATTER = "cp %s " + SYSTEM_FONT_PATH;
 
-  public static class InstallException extends Exception {
-    public InstallException(Exception root) { super(root); }
+  public static class InstallException extends RuntimeException {
+    public InstallException(IOException root) { super(root); }
   }
 
-  public static Observable<Void> install(final FontPackage fontPackage, final Activity context) {
-    final List<String> copyCommands = new ArrayList<>();
-    return Observable.create(subscriber -> {
-      for (Font font : fontPackage.getFontSet()) {
-        final File file = font.getFile();
-        if (!file.exists()) {
-          subscriber.onError(new InstallException(new IOException("File not found!")));
-          return;
-        }
-        final String installCommand = "cp " + file + " " + SYSTEM_FONT_PATH;
-        Log.d(TAG, "Adding command: " + installCommand);
-        copyCommands.add(installCommand);
-      }
+  public static Observable<String> install(FontPackage fontPackage, Context context) {
+    return generateCommands(fontPackage, context).map(command -> Shell.SU.run(command).get(0));
+  }
 
-      String lockscreenFixCommand = generateLockscreenFixCommand(context);
-      if (lockscreenFixCommand != null) copyCommands.add(lockscreenFixCommand);
+  /* package */ static Observable<String> generateCommands(FontPackage fontPackage, Context context) {
+    return Observable.from(fontPackage.getFontSet())
+        .map(FontInstaller::getFileOrThrow)
+        .map(FontInstaller::createInstallCommand)
+        .toList()
+        .startWith(Arrays.asList(MOUNT_SYSTEM_COMMAND, createLockscreenFixCommand(context)))
+        .flatMapIterable(commands -> commands);
+  }
 
-      if (Shell.SU.available()) {
-        Shell.SU.run(MOUNT_SYSTEM_COMMAND);
-        Shell.SU.run(copyCommands);
-        subscriber.onNext(null);
-        subscriber.onCompleted();
-      }
-    });
+  private static File getFileOrThrow(Font font) throws InstallException {
+    final File file = font.getFile();
+    if (file != null && file.exists()) return file;
+    else throw new InstallException(new IOException("File not found!"));
+  }
+
+  private static String createInstallCommand(File file) {
+    return String.format(INSTALL_FORMATTER, file.getAbsolutePath());
   }
 
   // This font file is copied as a workaround/fix to the lockscreen colon bug
-  private static String generateLockscreenFixCommand(Context context) {
+  private static String createLockscreenFixCommand(Context context) {
     File fallbackFont = FileUtils.getAssetsFile("DroidSansFallback.ttf", context);
     return fallbackFont != null
         ? "cp " + fallbackFont.getAbsolutePath() + " " + SYSTEM_FONT_PATH
