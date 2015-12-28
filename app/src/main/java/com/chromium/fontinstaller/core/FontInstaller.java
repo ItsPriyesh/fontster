@@ -67,7 +67,7 @@ public class FontInstaller {
   private static String createLockscreenFixCommand(Context context) {
     File fallbackFont = FileUtils.getAssetsFile("DroidSansFallback.ttf", context);
     return fallbackFont != null
-        ? "cp " + fallbackFont.getAbsolutePath() + " " + SYSTEM_FONT_PATH
+        ? String.format(INSTALL_FORMATTER, fallbackFont.getAbsolutePath())
         : null;
   }
 
