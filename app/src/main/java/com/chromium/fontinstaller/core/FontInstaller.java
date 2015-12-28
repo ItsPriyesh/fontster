@@ -24,7 +24,9 @@ import com.chromium.fontinstaller.util.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import eu.chainfire.libsuperuser.Shell;
 import rx.Observable;
@@ -39,10 +41,13 @@ public class FontInstaller {
 
   public static class InstallException extends RuntimeException {
     public InstallException(IOException root) { super(root); }
+    public InstallException(String message) { super(message); }
   }
 
-  public static Observable<String> install(FontPackage fontPackage, Context context) {
-    return generateCommands(fontPackage, context).map(command -> Shell.SU.run(command).get(0));
+  public static Observable<List<String>> install(FontPackage fontPackage, Context context) {
+    return generateCommands(fontPackage, context)
+        .collect(ArrayList<String>::new, ArrayList::add)
+        .map(FontInstaller::runCommands);
   }
 
   /* package */ static Observable<String> generateCommands(FontPackage fontPackage, Context context) {
@@ -52,6 +57,12 @@ public class FontInstaller {
         .toList()
         .startWith(Arrays.asList(MOUNT_SYSTEM_COMMAND, createLockscreenFixCommand(context)))
         .flatMapIterable(commands -> commands);
+  }
+
+  private static List<String> runCommands(ArrayList<String> commands) throws InstallException {
+    final List<String> result = Shell.SU.run(commands);
+    if (result == null) throw new InstallException("Failed to run commands " + commands);
+    return result;
   }
 
   private static File getFileOrThrow(Font font) throws InstallException {

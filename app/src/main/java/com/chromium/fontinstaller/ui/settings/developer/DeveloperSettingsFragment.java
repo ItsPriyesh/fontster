@@ -64,14 +64,14 @@ public class DeveloperSettingsFragment extends PreferenceFragment {
         .observeOn(AndroidSchedulers.mainThread())
         .subscribeOn(Schedulers.io())
         .subscribe(
-            commandOutput -> Timber.i("Command output: " + commandOutput),
+            commandOutput -> {
+              progressDialog.dismiss();
+              new RebootDialog(getActivity());
+            },
             error -> {
               Timber.i(error.getMessage());
               progressDialog.dismiss();
               snackbar(R.string.settings_custom_font_install_failed, getView());
-            }, () -> {
-              progressDialog.dismiss();
-              new RebootDialog(getActivity());
             });
   }
 }

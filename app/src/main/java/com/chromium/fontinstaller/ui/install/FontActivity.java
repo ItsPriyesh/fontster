@@ -191,22 +191,20 @@ public final class FontActivity extends BaseActivity implements TabLayout.OnTabS
         .show(this, null, getString(R.string.font_activity_install_progress), true, false);
 
     mFontDownloader.downloadAllFonts()
-        .subscribeOn(Schedulers.io())
+        .doOnCompleted(() -> FontInstaller.install(mFontPackage, this))
         .observeOn(AndroidSchedulers.mainThread())
-        .last()
-        .flatMap(v -> FontInstaller.install(mFontPackage, this))
+        .subscribeOn(Schedulers.io())
         .subscribe(
-            commandOutput -> Timber.i("Command output: " + commandOutput),
+            commandOutput -> {
+              logEvent("Install of " + mFontPackage.getName() + " succeeded");
+              onInstallComplete();
+            },
             error -> {
               logEvent("Install of " + mFontPackage.getName() + " failed");
               if (error instanceof FontDownloader.DownloadException)
                 handleFailedDownload(error.getCause());
               else if (error instanceof FontInstaller.InstallException)
                 handleFailedInstall(error);
-            },
-            () -> {
-              logEvent("Install of " + mFontPackage.getName() + " succeeded");
-              onInstallComplete();
             });
   }
 
