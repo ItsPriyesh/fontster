@@ -40,8 +40,8 @@ public class FontInstaller {
   private static final String NO_OP_COMMAND = ":";
 
   public static class InstallException extends RuntimeException {
-    public InstallException(IOException root) { super(root); }
-    public InstallException(String message) { super(message); }
+    private InstallException(IOException root) { super(root); }
+    private InstallException(String message) { super(message); }
   }
 
   public static Observable<List<String>> install(FontPackage fontPackage, Context context) {
