@@ -35,6 +35,7 @@ import static com.chromium.fontinstaller.core.SystemConstants.SYSTEM_FONT_PATH;
 public class FontInstaller {
 
   private static final String INSTALL_FORMATTER = "cp %s " + SYSTEM_FONT_PATH;
+  private static final String NO_OP_COMMAND = ":";
 
   public static class InstallException extends RuntimeException {
     public InstallException(IOException root) { super(root); }
@@ -68,7 +69,7 @@ public class FontInstaller {
     File fallbackFont = FileUtils.getAssetsFile("DroidSansFallback.ttf", context);
     return fallbackFont != null
         ? String.format(INSTALL_FORMATTER, fallbackFont.getAbsolutePath())
-        : null;
+        : NO_OP_COMMAND;
   }
 
 }
