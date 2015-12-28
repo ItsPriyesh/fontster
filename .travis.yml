@@ -14,7 +14,7 @@ env:
 
 script:
   # Build
-  - ./gradlew app:assembleDebug
+  # - ./gradlew app:assembleDebug
 
   # Run unit tests on JVM
   - ./gradlew app:test
