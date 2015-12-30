@@ -22,6 +22,7 @@ import android.content.res.AssetManager;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -37,6 +38,10 @@ import rx.schedulers.Schedulers;
 
 public final class RebootDialog extends AlertDialog {
 
+  /* Immediately after a font has been installed, the system won't be able
+   * to provide fonts properly until after a reboot. As a workaround, these
+   * assets are loaded and explicitly set to the necessary View's.
+   */
   private static final String REGULAR_FONT = "Roboto-Regular.ttf";
   private static final String BOLD_FONT = "Roboto-Bold.ttf";
 
@@ -45,7 +50,7 @@ public final class RebootDialog extends AlertDialog {
   }
 
   @Override protected void onCreate(Bundle savedInstanceState) {
-    setTitle(R.string.reboot_dialog_title);
+    requestWindowFeature(Window.FEATURE_NO_TITLE);
 
     final View view = View.inflate(getContext(), R.layout.reboot_dialog, null);
     ButterKnife.bind(this, view);

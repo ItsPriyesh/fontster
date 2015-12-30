@@ -38,6 +38,8 @@ public class FontInstaller {
   private static final String INSTALL_FORMATTER = "cp %s " + SYSTEM_FONT_PATH;
   private static final String NO_OP_COMMAND = ":";
 
+  private static final String FALLBACK_FONT = "DroidSansFallback.ttf";
+
   public static class InstallException extends RuntimeException {
     private InstallException(IOException root) { super(root); }
   }
@@ -69,9 +71,10 @@ public class FontInstaller {
     return String.format(INSTALL_FORMATTER, file.getAbsolutePath());
   }
 
-  // This font file is copied as a workaround/fix to the lockscreen colon bug
+  // Copying this file fixes the lockscreen square colon bug.
+  // No clue why, but it works! ¯\_(ツ)_/¯
   private static String createLockscreenFixCommand(Context context) {
-    File fallbackFont = FileUtils.getAssetsFile("DroidSansFallback.ttf", context);
+    final File fallbackFont = FileUtils.getAssetsFile(FALLBACK_FONT, context);
     return fallbackFont != null
         ? String.format(INSTALL_FORMATTER, fallbackFont.getAbsolutePath())
         : NO_OP_COMMAND;
