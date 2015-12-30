@@ -30,21 +30,18 @@ import android.widget.TextView;
 import com.chromium.fontinstaller.Injector;
 import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.core.BackupManager;
-import com.chromium.fontinstaller.ui.common.BaseActivity;
 import com.chromium.fontinstaller.core.FontsterPreferences;
+import com.chromium.fontinstaller.ui.common.BaseActivity;
 import com.chromium.fontinstaller.util.RebootDialog;
 import com.chromium.fontinstaller.util.ViewUtils;
-
-import java.util.Date;
 
 import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 import static com.chromium.fontinstaller.core.FontsterPreferences.Key;
+import static rx.android.schedulers.AndroidSchedulers.mainThread;
 
 public class BackupRestoreFragment extends Fragment {
 
@@ -69,9 +66,15 @@ public class BackupRestoreFragment extends Fragment {
   @Inject
   FontsterPreferences mPreferences;
 
+  private static final int BACKUP_ACTION_RESTORE = 0;
+  private static final int BACKUP_ACTION_DELETE = 1;
+
+  private String[] mBackupActions;
+
   public BackupRestoreFragment() { }
 
-  @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+  @Override
+  public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     Injector.get().inject(this);
 
     View view = inflater.inflate(R.layout.fragment_backup_restore, container, false);
@@ -82,17 +85,24 @@ public class BackupRestoreFragment extends Fragment {
     mBackupContainer.setOnClickListener(v -> onBackupContainerClicked());
     mBackupFab.setOnClickListener(v -> onBackupFabClicked());
 
-    checkForBackup();
+    mBackupActions = new String[]{
+        getString(R.string.backup_restore_option_restore),
+        getString(R.string.backup_restore_option_delete)
+    };
+
+    refreshBackupContainer();
 
     return view;
   }
 
-  private void checkForBackup() {
+  private void refreshBackupContainer() {
     if (mBackupManager.backupExists()) {
       if (mNoBackupContainer.getVisibility() == View.VISIBLE) {
         hide(mNoBackupContainer);
       }
-      refreshBackupContainer();
+      show(mBackupContainer);
+      mBackupNameView.setText(mPreferences.getString(Key.BACKUP_NAME));
+      mBackupDateView.setText(mPreferences.getString(Key.BACKUP_DATE));
     } else {
       hide(mBackupContainer);
       show(mNoBackupContainer);
@@ -109,56 +119,34 @@ public class BackupRestoreFragment extends Fragment {
     view.setVisibility(View.VISIBLE);
   }
 
-  private void refreshBackupContainer() {
-    show(mBackupContainer);
-    mBackupNameView.setText(mPreferences.getString(Key.BACKUP_NAME));
-    mBackupDateView.setText(mPreferences.getString(Key.BACKUP_DATE));
-  }
-
   private void onBackupContainerClicked() {
-    final String[] options = {
-        getString(R.string.backup_restore_option_restore),
-        getString(R.string.backup_restore_option_delete)
-    };
-
     new AlertDialog.Builder(getActivity())
-        .setItems(options, (dialog, index) -> {
+        .setItems(mBackupActions, (dialog, index) -> {
           switch (index) {
-            case 0:
+            case BACKUP_ACTION_RESTORE:
               mBackupManager.restore()
-                  .subscribeOn(Schedulers.io())
-                  .observeOn(AndroidSchedulers.mainThread())
-                  .doOnCompleted(this::onRestoreComplete)
-                  .subscribe();
+                  .observeOn(mainThread())
+                  .subscribe(o -> onRestoreComplete());
               break;
-            case 1:
+            case BACKUP_ACTION_DELETE:
               mBackupManager.deleteBackup()
-                  .subscribeOn(Schedulers.io())
-                  .observeOn(AndroidSchedulers.mainThread())
-                  .doOnCompleted(this::onBackupDeleted)
-                  .subscribe();
+                  .observeOn(mainThread())
+                  .subscribe(o -> refreshBackupContainer());
               break;
           }
         }).create().show();
   }
 
   private void onBackupFabClicked() {
-    new CreateBackupDialog(getActivity(), backupName -> mBackupManager.backup()
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .doOnCompleted(() -> onBackupComplete(backupName))
-        .subscribe())
+    new CreateBackupDialog(getActivity(), backupName ->
+        mBackupManager.backup()
+            .observeOn(mainThread())
+            .subscribe(backupDate -> {
+              mPreferences.putString(Key.BACKUP_NAME, backupName);
+              mPreferences.putString(Key.BACKUP_DATE, backupDate);
+              refreshBackupContainer();
+            }))
         .show();
-  }
-
-  private void onBackupComplete(String name) {
-    mPreferences.putString(Key.BACKUP_NAME, name);
-    mPreferences.putString(Key.BACKUP_DATE, BackupManager.DATE_FORMAT.format(new Date()));
-    checkForBackup();
-  }
-
-  private void onBackupDeleted() {
-    checkForBackup();
   }
 
   private void onRestoreComplete() {

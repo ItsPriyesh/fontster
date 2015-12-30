@@ -20,11 +20,13 @@ import android.annotation.SuppressLint;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
-import eu.chainfire.libsuperuser.Shell;
 import rx.Observable;
+import rx.schedulers.Schedulers;
 
 import static com.chromium.fontinstaller.core.SystemConstants.BACKUP_PATH;
 import static com.chromium.fontinstaller.core.SystemConstants.MOUNT_SYSTEM_COMMAND;
@@ -32,44 +34,49 @@ import static com.chromium.fontinstaller.core.SystemConstants.SYSTEM_FONT_PATH;
 
 public class BackupManager {
 
-  private File mBackupDirectory;
+  private final File mBackupDirectory = new File(BACKUP_PATH);
 
   @SuppressLint("SimpleDateFormat")
   public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MMM dd, yyyy");
 
+  static final String BACKUP_COMMAND = String.format("cp -R %s. %s", SYSTEM_FONT_PATH, BACKUP_PATH);
+  static final String RESTORE_COMMAND = "cp %s " + SYSTEM_FONT_PATH;
+  static final String DELETE_BACKUP_COMMAND = "rm -rf " + BACKUP_PATH;
+  static final String VALID_EXTENSION = ".TTF";
+
   public BackupManager() {
-    createBackupDir();
-  }
-
-  private void createBackupDir() {
-    mBackupDirectory = new File(BACKUP_PATH);
-    //noinspection ResultOfMethodCallIgnored
-    mBackupDirectory.mkdirs();
-  }
-
-  public Observable<Void> backup() {
-    createBackupDir();
-    return CommandRunner.runCommands("cp -R " + SYSTEM_FONT_PATH + ". " + BACKUP_PATH);
-  }
-
-  public Observable<Void> restore() {
-    if (Shell.SU.available()) {
-      Shell.SU.run(MOUNT_SYSTEM_COMMAND);
-      List<String> restoreCommands = new ArrayList<>();
-      for (File file : mBackupDirectory.listFiles()) {
-        restoreCommands.add("cp " + file.getAbsolutePath() + " " + SYSTEM_FONT_PATH);
-      }
-      return CommandRunner.runCommands(restoreCommands.toArray(new String[restoreCommands.size()]));
-    } else {
-      return Observable.empty();
+    if (!mBackupDirectory.isDirectory()) {
+      //noinspection ResultOfMethodCallIgnored
+      mBackupDirectory.mkdirs();
     }
   }
 
-  public Observable<Void> deleteBackup() {
-    return CommandRunner.runCommands("rm -rf " + BACKUP_PATH);
+  public Observable<String> backup() {
+    return Observable.just(Arrays
+        .asList(MOUNT_SYSTEM_COMMAND, BACKUP_COMMAND))
+        .map(CommandRunner::run)
+        .map(output -> DATE_FORMAT.format(new Date()))
+        .subscribeOn(Schedulers.io());
+  }
+
+  public Observable<List<String>> restore() {
+    return Observable.from(mBackupDirectory.listFiles())
+        .filter(file -> file.getName().toUpperCase().endsWith(VALID_EXTENSION))
+        .map(file -> String.format(RESTORE_COMMAND, file.getAbsolutePath()))
+        .toList()
+        .startWith(Collections.singletonList(MOUNT_SYSTEM_COMMAND))
+        .map(CommandRunner::run)
+        .subscribeOn(Schedulers.io());
+  }
+
+  public Observable<List<String>> deleteBackup() {
+    return Observable.just(CommandRunner
+        .run(Collections.singletonList(DELETE_BACKUP_COMMAND)))
+        .subscribeOn(Schedulers.io());
   }
 
   public boolean backupExists() {
-    return mBackupDirectory.listFiles() != null && mBackupDirectory.listFiles().length != 0;
+    return mBackupDirectory.listFiles() != null
+        && mBackupDirectory.listFiles().length != 0;
   }
 }

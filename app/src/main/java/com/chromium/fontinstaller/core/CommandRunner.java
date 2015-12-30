@@ -16,19 +16,18 @@
 
 package com.chromium.fontinstaller.core;
 
+import com.chromium.fontinstaller.core.exceptions.ShellCommandException;
+
+import java.util.List;
+
 import eu.chainfire.libsuperuser.Shell;
-import rx.Observable;
 
-public class CommandRunner {
+public final class CommandRunner {
 
-  public static Observable<Void> runCommands(String... commands) {
-    return Observable.create(subscriber -> {
-          if (Shell.SU.available()) {
-            Shell.SU.run(commands);
-          }
-          subscriber.onNext(null);
-          subscriber.onCompleted();
-        });
+  public static List<String> run(List<String> commands) throws ShellCommandException {
+    final List<String> result = Shell.SU.run(commands);
+    if (result == null) throw new ShellCommandException("Failed to run commands " + commands);
+    return result;
   }
 
 }

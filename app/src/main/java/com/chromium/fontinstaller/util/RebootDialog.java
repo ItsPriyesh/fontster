@@ -58,7 +58,7 @@ public final class RebootDialog extends AlertDialog {
     final String buttonText = view.getContext().getString(R.string.reboot_dialog_button_text);
     setButton(BUTTON_POSITIVE, buttonText, (dialog, which) -> {
       dialog.dismiss();
-      CommandRunner.runCommands("reboot")
+      CommandRunner.run("reboot")
           .subscribeOn(Schedulers.io())
           .observeOn(AndroidSchedulers.mainThread())
           .subscribe();

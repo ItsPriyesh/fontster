@@ -169,7 +169,7 @@ public class SettingsFragment extends PreferenceFragment {
         if (!f.getName().equals("Backup"))
           commands.add("rm -rf " + f.getAbsolutePath());
 
-      CommandRunner.runCommands(commands.toArray(new String[commands.size()]))
+      CommandRunner.run(commands.toArray(new String[commands.size()]))
           .subscribeOn(Schedulers.io())
           .observeOn(AndroidSchedulers.mainThread())
           .doOnCompleted(this::onCacheCleared)
