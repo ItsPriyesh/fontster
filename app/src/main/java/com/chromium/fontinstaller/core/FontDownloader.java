@@ -46,11 +46,17 @@ public final class FontDownloader {
     mFontPackage = fontPackage;
   }
 
+  /**
+   * Downloads all {@link Style#values()} for {@link #mFontPackage}
+   */
   public Observable<File> downloadAllFonts() {
     Timber.i("downloadAllFonts: " + mFontPackage.getName());
     return downloadFonts(mFontPackage.getFontSet());
   }
 
+  /**
+   * Downloads the specified {@link Style}'s for {@link #mFontPackage}
+   */
   public Observable<File> downloadFontStyles(Style... styles) {
     Timber.i("downloadFontStyles: %s for %s", Arrays.toString(styles), mFontPackage.getName());
     return Observable.from(styles)
@@ -60,6 +66,9 @@ public final class FontDownloader {
         .flatMap(FontDownloader::downloadFonts);
   }
 
+  /**
+   * Downloads a single specified {@link Style} from each of the given {@link FontPackage}'s
+   */
   public static Observable<File> downloadStyleFromPackages(List<FontPackage> packages, Style style) {
     Timber.i("downloadStyleFromPackages: " + style);
     return Observable.from(packages).flatMap(fontPackage ->

@@ -24,6 +24,13 @@ import eu.chainfire.libsuperuser.Shell;
 
 public final class CommandRunner {
 
+  /**
+   * Synchronously runs the specified shell commands as root.
+   *
+   * @return a list containing the output of the executed commands. Empty if there is no output.
+   * @throws ShellCommandException in the event that command output is null. This occurs if an
+   *                               error is encountered. May indicate that root is unavailable.
+   */
   public static List<String> run(List<String> commands) throws ShellCommandException {
     final List<String> result = Shell.SU.run(commands);
     if (result == null) throw new ShellCommandException("Failed to run commands " + commands);

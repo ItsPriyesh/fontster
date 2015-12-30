@@ -44,6 +44,12 @@ public class FontInstaller {
     private InstallException(IOException root) { super(root); }
   }
 
+  /**
+   * Executes, as root, all of the necessary commands to install the {@link FontPackage}
+   *
+   * @return An {@link Observable} that emits a single {@link List<String>} containing the
+   * output of each command.
+   */
   public static Observable<List<String>> install(FontPackage fontPackage, Context context) {
     Timber.i("install: " + fontPackage.getName());
     return generateCommands(fontPackage, context)
