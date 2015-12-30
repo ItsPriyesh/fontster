@@ -152,7 +152,7 @@ public class BackupRestoreFragment extends Fragment {
   private void showRebootDialog() {
     final Activity activity = getActivity();
     if (activity != null && !activity.isFinishing()) {
-      new RebootDialog(activity);
+      new RebootDialog(activity).show();
     }
   }
 

@@ -16,6 +16,7 @@
 
 package com.chromium.fontinstaller.ui.settings.developer;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -66,7 +67,10 @@ public class DeveloperSettingsFragment extends PreferenceFragment {
         .subscribe(
             commandOutput -> {
               progressDialog.dismiss();
-              new RebootDialog(getActivity());
+              Activity activity = getActivity();
+              if (activity != null && !activity.isFinishing()) {
+                new RebootDialog(activity).show();
+              }
             },
             error -> {
               Timber.i(error.getMessage());
