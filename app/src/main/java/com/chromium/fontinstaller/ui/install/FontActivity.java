@@ -112,7 +112,7 @@ public final class FontActivity extends BaseActivity implements TabLayout.OnTabS
     mFontPackage = new FontPackage(fontName);
     mFontDownloader = new FontDownloader(mFontPackage);
 
-    startDownload();
+    downloadPreviewStyles();
 
     mFontTitle.setText(fontName);
   }
@@ -125,7 +125,7 @@ public final class FontActivity extends BaseActivity implements TabLayout.OnTabS
     mFragmentsInitialized = true;
   }
 
-  private void startDownload() {
+  private void downloadPreviewStyles() {
     if (isVisible(mErrorContainer)) hide(mErrorContainer);
     show(mDownloadProgress);
 
@@ -133,9 +133,9 @@ public final class FontActivity extends BaseActivity implements TabLayout.OnTabS
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(
-            font -> Timber.i("Got font: " + font.getName()),
+            font -> Timber.i("downloadPreviewStyles: onNext: " + font.getName()),
             this::handleFailedDownload,
-            this::setupPager);
+            this::setupViewPager);
   }
 
   private void handleFailedDownload(Throwable error) {
@@ -160,7 +160,7 @@ public final class FontActivity extends BaseActivity implements TabLayout.OnTabS
     }, 500);
   }
 
-  private void setupPager() {
+  private void setupViewPager() {
     initializeFragments();
     PreviewPagerAdapter pagerAdapter = new PreviewPagerAdapter(getSupportFragmentManager());
     mPreviewPager.setOffscreenPageLimit(2);
@@ -168,11 +168,10 @@ public final class FontActivity extends BaseActivity implements TabLayout.OnTabS
     mTabLayout.setOnTabSelectedListener(this);
     mTabLayout.setupWithViewPager(mPreviewPager);
     mTabLayout.setSelectedTabIndicatorColor(ActivityCompat.getColor(this, android.R.color.white));
-
-    animateViews();
+    animateViewsIn();
   }
 
-  private void animateViews() {
+  private void animateViewsIn() {
     animShrinkToCenter(mDownloadProgress, this);
 
     delay(() -> {
@@ -186,20 +185,24 @@ public final class FontActivity extends BaseActivity implements TabLayout.OnTabS
   }
 
   private void startInstall() {
-    logEvent("Started install of " + mFontPackage.getName());
+    Timber.i("Installing " + mFontPackage.getName());
+    logEvent("startInstall: " + mFontPackage.getName());
     mProgressDialog = ProgressDialog
         .show(this, null, getString(R.string.font_activity_install_progress), true, false);
 
     mFontDownloader.downloadAllFonts()
-        .doOnCompleted(() -> FontInstaller.install(mFontPackage, this))
-        .observeOn(AndroidSchedulers.mainThread())
+        .last()
+        .flatMap(o -> FontInstaller.install(mFontPackage, this))
         .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
         .subscribe(
             commandOutput -> {
+              Timber.i("startInstall: onNext: " + commandOutput);
               logEvent("Install of " + mFontPackage.getName() + " succeeded");
               onInstallComplete();
             },
             error -> {
+              Timber.e("startInstall: onError: " + error);
               logEvent("Install of " + mFontPackage.getName() + " failed");
               if (error instanceof FontDownloader.DownloadException)
                 handleFailedDownload(error.getCause());
@@ -221,7 +224,7 @@ public final class FontActivity extends BaseActivity implements TabLayout.OnTabS
   }
 
   public void onRetryButtonClicked(View view) {
-    startDownload();
+    downloadPreviewStyles();
   }
 
   public void onInstallComplete() {
@@ -231,9 +234,7 @@ public final class FontActivity extends BaseActivity implements TabLayout.OnTabS
       animGrowFromCenter(mInstallButton, this);
       show(mInstallButton);
 
-      delay(() -> {
-        if (!this.isFinishing()) new RebootDialog(this);
-      }, 400);
+      delay(() -> { if (!this.isFinishing()) new RebootDialog(this).show(); }, 200);
     }, 400);
   }
 

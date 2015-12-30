@@ -28,6 +28,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import rx.Observable;
+import timber.log.Timber;
 
 import static com.chromium.fontinstaller.core.SystemConstants.MOUNT_SYSTEM_COMMAND;
 import static com.chromium.fontinstaller.core.SystemConstants.SYSTEM_FONT_PATH;
@@ -42,6 +43,7 @@ public class FontInstaller {
   }
 
   public static Observable<List<String>> install(FontPackage fontPackage, Context context) {
+    Timber.i("install: " + fontPackage.getName());
     return generateCommands(fontPackage, context).toList().map(CommandRunner::run);
   }
 

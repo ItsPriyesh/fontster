@@ -126,7 +126,7 @@ public class BackupRestoreFragment extends Fragment {
             case BACKUP_ACTION_RESTORE:
               mBackupManager.restore()
                   .observeOn(mainThread())
-                  .subscribe(o -> onRestoreComplete());
+                  .subscribe(o -> showRebootDialog());
               break;
             case BACKUP_ACTION_DELETE:
               mBackupManager.deleteBackup()
@@ -149,7 +149,7 @@ public class BackupRestoreFragment extends Fragment {
         .show();
   }
 
-  private void onRestoreComplete() {
+  private void showRebootDialog() {
     final Activity activity = getActivity();
     if (activity != null && !activity.isFinishing()) {
       new RebootDialog(activity);
