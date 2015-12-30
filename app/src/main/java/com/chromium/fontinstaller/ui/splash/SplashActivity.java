@@ -21,7 +21,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -71,7 +70,7 @@ public class SplashActivity extends AppCompatActivity {
 
   private static final Interpolator INTERPOLATOR = new AccelerateDecelerateInterpolator();
 
-  private Handler mHandler = new Handler(Looper.getMainLooper());
+  private Handler mHandler;
 
   private final Runnable mIntroAnimation = () ->
       mSplashLogo.animate()
@@ -138,8 +137,11 @@ public class SplashActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_splash);
     ButterKnife.bind(this);
+  }
 
-    mTitleView.setTypeface(Typeface.createFromAsset(getAssets(), "Quicksand-Regular.ttf"));
+  @Override protected void onResume() {
+    super.onResume();
+    mHandler = new Handler(Looper.getMainLooper());
 
     mSplashLogo.setScaleX(0);
     mSplashLogo.setScaleY(0);
