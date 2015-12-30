@@ -131,7 +131,7 @@ public class BaseActivity extends AppCompatActivity {
     return view.getVisibility() == View.VISIBLE;
   }
 
-  protected void logEvent(String message) {
+  protected void sendToCrashlytics(String message) {
     Answers.getInstance().logContentView(new ContentViewEvent().putContentName(message));
   }
 }

@@ -44,7 +44,10 @@ public class FontInstaller {
 
   public static Observable<List<String>> install(FontPackage fontPackage, Context context) {
     Timber.i("install: " + fontPackage.getName());
-    return generateCommands(fontPackage, context).toList().map(CommandRunner::run);
+    return generateCommands(fontPackage, context)
+        .toList()
+        .doOnNext(commands -> Timber.i("install: Running commands " + commands))
+        .map(CommandRunner::run);
   }
 
   /* package */ static Observable<String> generateCommands(FontPackage fontPackage, Context context) {

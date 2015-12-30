@@ -107,7 +107,7 @@ public final class FontActivity extends BaseActivity implements TabLayout.OnTabS
     setToolbarTitle("");
 
     final String fontName = getIntent().getStringExtra(FONT_NAME_KEY);
-    logEvent("Viewing " + fontName);
+    sendToCrashlytics("Viewing " + fontName);
 
     mFontPackage = new FontPackage(fontName);
     mFontDownloader = new FontDownloader(mFontPackage);
@@ -185,10 +185,9 @@ public final class FontActivity extends BaseActivity implements TabLayout.OnTabS
   }
 
   private void startInstall() {
-    Timber.i("Installing " + mFontPackage.getName());
-    logEvent("startInstall: " + mFontPackage.getName());
-    mProgressDialog = ProgressDialog
-        .show(this, null, getString(R.string.font_activity_install_progress), true, false);
+    sendToCrashlytics("Starting installation of " + mFontPackage.getName());
+    mProgressDialog = ProgressDialog.show(this, null,
+        getString(R.string.font_activity_install_progress), true, false);
 
     mFontDownloader.downloadAllFonts()
         .last()
@@ -198,12 +197,12 @@ public final class FontActivity extends BaseActivity implements TabLayout.OnTabS
         .subscribe(
             commandOutput -> {
               Timber.i("startInstall: onNext: " + commandOutput);
-              logEvent("Install of " + mFontPackage.getName() + " succeeded");
+              sendToCrashlytics("Install of " + mFontPackage.getName() + " succeeded");
               onInstallComplete();
             },
             error -> {
               Timber.e("startInstall: onError: " + error);
-              logEvent("Install of " + mFontPackage.getName() + " failed");
+              sendToCrashlytics("Install of " + mFontPackage.getName() + " failed");
               if (error instanceof FontDownloader.DownloadException)
                 handleFailedDownload(error.getCause());
               else if (error instanceof FontInstaller.InstallException)

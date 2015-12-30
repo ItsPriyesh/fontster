@@ -25,6 +25,7 @@ import com.squareup.okhttp.Response;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -46,10 +47,12 @@ public final class FontDownloader {
   }
 
   public Observable<File> downloadAllFonts() {
+    Timber.i("downloadAllFonts: " + mFontPackage.getName());
     return downloadFonts(mFontPackage.getFontSet());
   }
 
   public Observable<File> downloadFontStyles(Style... styles) {
+    Timber.i("downloadFontStyles: %s for %s", Arrays.toString(styles), mFontPackage.getName());
     return Observable.from(styles)
         .map(mFontPackage::getFont)
         .filter(font -> font != null)
@@ -58,6 +61,7 @@ public final class FontDownloader {
   }
 
   public static Observable<File> downloadStyleFromPackages(List<FontPackage> packages, Style style) {
+    Timber.i("downloadStyleFromPackages: " + style);
     return Observable.from(packages).flatMap(fontPackage ->
         downloadFonts(Collections.singleton(fontPackage.getFont(style))));
   }
@@ -71,12 +75,12 @@ public final class FontDownloader {
           if (!file.exists()) {
             // noinspection ResultOfMethodCallIgnored
             file.getParentFile().mkdirs();
-            Timber.i("Downloading: " + file.getName());
+            Timber.i("downloadFile: Downloading " + file.getName());
             final Response response = sClient.newCall(request).execute();
             final BufferedSink sink = Okio.buffer(Okio.sink(file));
             sink.writeAll(response.body().source());
             sink.close();
-          } else Timber.i("From cache: " + file.getName());
+          } else Timber.i("downloadFile: Retrieved from cache " + file.getName());
 
           subscriber.onNext(file);
           subscriber.onCompleted();
