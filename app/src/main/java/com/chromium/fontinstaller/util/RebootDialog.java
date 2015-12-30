@@ -28,7 +28,10 @@ import android.widget.TextView;
 import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.core.CommandRunner;
 
+import java.util.Collections;
+
 import butterknife.ButterKnife;
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -58,7 +61,7 @@ public final class RebootDialog extends AlertDialog {
     final String buttonText = view.getContext().getString(R.string.reboot_dialog_button_text);
     setButton(BUTTON_POSITIVE, buttonText, (dialog, which) -> {
       dialog.dismiss();
-      CommandRunner.run("reboot")
+      Observable.just(CommandRunner.run(Collections.singletonList("reboot")))
           .subscribeOn(Schedulers.io())
           .observeOn(AndroidSchedulers.mainThread())
           .subscribe();

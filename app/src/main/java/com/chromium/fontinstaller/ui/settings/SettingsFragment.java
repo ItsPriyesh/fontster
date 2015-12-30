@@ -45,6 +45,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import de.psdev.licensesdialog.LicensesDialog;
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -169,11 +170,10 @@ public class SettingsFragment extends PreferenceFragment {
         if (!f.getName().equals("Backup"))
           commands.add("rm -rf " + f.getAbsolutePath());
 
-      CommandRunner.run(commands.toArray(new String[commands.size()]))
+      Observable.just(CommandRunner.run(commands))
           .subscribeOn(Schedulers.io())
           .observeOn(AndroidSchedulers.mainThread())
-          .doOnCompleted(this::onCacheCleared)
-          .subscribe();
+          .subscribe(o -> onCacheCleared());
     } else {
       snackbar(getString(R.string.settings_clear_cache_failed), getView());
     }
