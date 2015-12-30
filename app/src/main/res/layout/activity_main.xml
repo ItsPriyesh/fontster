@@ -39,30 +39,7 @@
             android:layout_above="@+id/ad_container"
             android:layout_below="@id/app_bar" />
 
-        <!-- Holds Ad stuff -->
-        <RelativeLayout
-            android:id="@+id/ad_container"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="@color/primary">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="@string/ad_space"
-                android:textAllCaps="true"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
-
-            <com.google.android.gms.ads.AdView
-                android:id="@+id/ad_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:adSize="BANNER"
-                app:adUnitId="@string/banner_ad_unit_id" />
-        </RelativeLayout>
+        <include android:id="@id/ad_container" layout="@layout/ad_container" />
 
         <com.miguelcatalan.materialsearchview.MaterialSearchView
             android:id="@+id/search_view"
