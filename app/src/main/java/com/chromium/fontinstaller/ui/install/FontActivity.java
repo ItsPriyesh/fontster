@@ -262,7 +262,7 @@ public final class FontActivity extends BaseActivity implements TabLayout.OnTabS
   }
 
   private void tryFontCallback(String input) {
-    if (input.equals("") || input.isEmpty()) return;
+    if (input.isEmpty()) return;
     for (PreviewFragment fragment : mPreviewPages) {
       fragment.setPreviewText(input);
     }
