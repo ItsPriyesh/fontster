@@ -136,6 +136,7 @@ public class FontListFragment extends Fragment {
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(
             font -> {
+              Timber.i("downloadFontList: onNext: " + font.getParentFile().getName());
               if (mProgressDialog != null) mProgressDialog.incrementProgressBy(1);
             },
             this::handleDownloadFailure,

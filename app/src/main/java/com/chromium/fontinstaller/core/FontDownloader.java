@@ -40,6 +40,8 @@ public final class FontDownloader {
 
   private static final OkHttpClient sClient = new OkHttpClient();
 
+  private static final int MAX_CONCURRENT_DOWNLOADS = 5;
+
   private FontPackage mFontPackage;
 
   public FontDownloader(FontPackage fontPackage) {
@@ -72,7 +74,8 @@ public final class FontDownloader {
   public static Observable<File> downloadStyleFromPackages(List<FontPackage> packages, Style style) {
     Timber.i("downloadStyleFromPackages: " + style);
     return Observable.from(packages).flatMap(fontPackage ->
-        downloadFonts(Collections.singleton(fontPackage.getFont(style))));
+        downloadFonts(Collections.singleton(fontPackage.getFont(style))),
+        MAX_CONCURRENT_DOWNLOADS);
   }
 
   /* package */ static Observable<File> downloadFile(final String url, final String path) {
