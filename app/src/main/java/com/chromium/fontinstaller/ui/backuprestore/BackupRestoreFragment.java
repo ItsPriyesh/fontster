@@ -39,6 +39,7 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import rx.schedulers.Schedulers;
 
 import static com.chromium.fontinstaller.core.FontsterPreferences.Key;
 import static rx.android.schedulers.AndroidSchedulers.mainThread;
@@ -125,11 +126,13 @@ public class BackupRestoreFragment extends Fragment {
           switch (index) {
             case BACKUP_ACTION_RESTORE:
               mBackupManager.restore()
+                  .subscribeOn(Schedulers.io())
                   .observeOn(mainThread())
                   .subscribe(o -> showRebootDialog());
               break;
             case BACKUP_ACTION_DELETE:
               mBackupManager.deleteBackup()
+                  .subscribeOn(Schedulers.io())
                   .observeOn(mainThread())
                   .subscribe(o -> refreshBackupContainer());
               break;
@@ -140,6 +143,7 @@ public class BackupRestoreFragment extends Fragment {
   private void onBackupFabClicked() {
     new CreateBackupDialog(getActivity(), backupName ->
         mBackupManager.backup()
+            .subscribeOn(Schedulers.io())
             .observeOn(mainThread())
             .subscribe(backupDate -> {
               mPreferences.putString(Key.BACKUP_NAME, backupName);

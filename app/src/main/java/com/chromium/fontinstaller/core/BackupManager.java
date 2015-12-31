@@ -27,6 +27,7 @@ import java.util.List;
 
 import rx.Observable;
 import rx.schedulers.Schedulers;
+import timber.log.Timber;
 
 import static com.chromium.fontinstaller.core.SystemConstants.BACKUP_PATH;
 import static com.chromium.fontinstaller.core.SystemConstants.MOUNT_SYSTEM_COMMAND;
@@ -44,19 +45,25 @@ public class BackupManager {
   static final String DELETE_BACKUP_COMMAND = "rm -rf " + BACKUP_PATH;
   static final String VALID_EXTENSION = ".TTF";
 
-  public BackupManager() {
+  public BackupManager() { }
+
+  public Observable<String> backup() {
     if (!mBackupDirectory.isDirectory()) {
       //noinspection ResultOfMethodCallIgnored
       mBackupDirectory.mkdirs();
+    } else {
+      Timber.i("backup: A backup already exists, deleting it");
+      deleteBackup().toBlocking().subscribe();
     }
-  }
 
-  public Observable<String> backup() {
+    Timber.i("backup: Creating backup");
     return Observable.just(Arrays
         .asList(MOUNT_SYSTEM_COMMAND, BACKUP_COMMAND))
+        .doOnNext(commands -> Timber.i("backup: Running commands: " + commands))
         .map(CommandRunner::run)
-        .map(output -> DATE_FORMAT.format(new Date()))
-        .subscribeOn(Schedulers.io());
+        .doOnNext(output -> Timber.i("backup: Shell output: " + output))
+        .last()
+        .map(output -> DATE_FORMAT.format(new Date()));
   }
 
   public Observable<List<String>> restore() {
@@ -65,8 +72,9 @@ public class BackupManager {
         .map(file -> String.format(RESTORE_COMMAND, file.getAbsolutePath()))
         .toList()
         .startWith(Collections.singletonList(MOUNT_SYSTEM_COMMAND))
+        .doOnNext(commands -> Timber.i("restore: Running commands: " + commands))
         .map(CommandRunner::run)
-        .subscribeOn(Schedulers.io());
+        .doOnNext(output -> Timber.i("restore: Shell output: " + output));
   }
 
   public Observable<List<String>> deleteBackup() {
