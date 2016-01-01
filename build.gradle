@@ -18,5 +18,6 @@ allprojects {
         maven { url 'https://github.com/tvbarthel/maven/raw/master/' }
         maven { url 'http://dl.bintray.com/amulyakhare/maven' }
         maven { url "https://jitpack.io" }
+        maven { url "http://dl.bintray.com/tbruyelle/tbruyelle" }
     }
 }

@@ -61,13 +61,15 @@ dependencies {
     // Rx
     compile 'io.reactivex:rxandroid:1.0.1'
     compile 'io.reactivex:rxjava:1.1.0'
-    compile 'com.jakewharton.rxbinding:rxbinding:0.2.0'
+    compile 'io.reactivex:rxjava-joins:0.22.0'
+    compile 'io.reactivex:rxjava-computation-expressions:0.21.0'
 
     // Development
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.jakewharton.timber:timber:2.5.1'
     compile 'eu.chainfire:libsuperuser:1.0.0.+'
     compile('com.crashlytics.sdk.android:crashlytics:2.5.2') { transitive = true; }
+    compile 'com.tbruyelle.rxpermissions:rxpermissions:0.5.0@aar'
 
     // Android Support & Play Services
     compile 'com.android.support:design:23.1.1'
@@ -81,6 +83,7 @@ dependencies {
     compile 'com.eowise:recyclerview-stickyheaders:0.5.2'
     compile 'de.psdev.licensesdialog:licensesdialog:1.7.0'
     compile project(':MaterialSearchView:library')
+    compile 'com.jakewharton.rxbinding:rxbinding:0.2.0'
 
     // Testing
     testCompile 'junit:junit:4.12'
