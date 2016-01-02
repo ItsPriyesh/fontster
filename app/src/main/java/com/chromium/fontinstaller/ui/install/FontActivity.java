@@ -37,14 +37,19 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.chromium.fontinstaller.Injector;
 import com.chromium.fontinstaller.R;
+import com.chromium.fontinstaller.core.BackupManager;
 import com.chromium.fontinstaller.core.FontDownloader;
 import com.chromium.fontinstaller.core.FontInstaller;
 import com.chromium.fontinstaller.models.FontPackage;
 import com.chromium.fontinstaller.models.Style;
 import com.chromium.fontinstaller.ui.common.BaseActivity;
+import com.chromium.fontinstaller.ui.main.MainActivity;
 import com.chromium.fontinstaller.util.RebootDialog;
 import com.crashlytics.android.Crashlytics;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import rx.android.schedulers.AndroidSchedulers;
@@ -78,6 +83,9 @@ public final class FontActivity extends BaseActivity implements TabLayout.OnTabS
   @Bind(R.id.error_container)
   ViewGroup mErrorContainer;
 
+  @Inject
+  BackupManager mBackupManager;
+
   private int mCurrentPage = 0;
   private FontPackage mFontPackage;
   private FontDownloader mFontDownloader;
@@ -101,6 +109,7 @@ public final class FontActivity extends BaseActivity implements TabLayout.OnTabS
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    Injector.get().inject(this);
     setContentView(R.layout.activity_font);
     disableToolbarElevation();
     showToolbarBackButton();
@@ -214,7 +223,7 @@ public final class FontActivity extends BaseActivity implements TabLayout.OnTabS
     return PREVIEW_STYLES.get(mCurrentPage);
   }
 
-  public void onInstallFabClicked(View view) {
+  private void confirmInstall() {
     new AlertDialog.Builder(this)
         .setMessage(R.string.font_activity_confirm_install)
         .setNegativeButton(R.string.no, (dialog, id) -> dialog.dismiss())
@@ -222,11 +231,26 @@ public final class FontActivity extends BaseActivity implements TabLayout.OnTabS
         .create().show();
   }
 
+  private void promptBackup() {
+    new AlertDialog.Builder(this)
+        .setMessage("Looks like you haven't made a backup yet. Would you like to create one now?")
+        .setNegativeButton(R.string.no, (dialog, id) -> confirmInstall())
+        .setPositiveButton(R.string.yes, (dialog, id) -> {
+          startActivity(new Intent(this, MainActivity.class));
+        })
+        .create().show();
+  }
+
+  public void onInstallFabClicked(View view) {
+    if (mBackupManager.backupExists()) confirmInstall();
+    else promptBackup();
+  }
+
   public void onRetryButtonClicked(View view) {
     downloadPreviewStyles();
   }
 
-  public void onInstallComplete() {
+  private void onInstallComplete() {
     mProgressDialog.dismiss();
     delay(() -> {
       mInstallButton.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_done_white));

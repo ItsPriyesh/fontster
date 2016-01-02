@@ -68,7 +68,7 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.Sea
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     setToolbarTitle(getString(R.string.app_name));
-
+    
     if (!BuildConfig.DEBUG) initializeAd(mAdView);
 
     mDrawerToggle = new ActionBarDrawerToggle(
