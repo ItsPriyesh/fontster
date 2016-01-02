@@ -45,7 +45,7 @@ public class FontPackPickerDialog extends AlertDialog {
   private volatile boolean mPathIsValid = false;
 
   /* package */ FontPackPickerDialog(Context context, Action1<FontPackage> callback) {
-    super(context);
+    super(context, R.style.DialogTheme);
     mCallback = callback;
   }
 
