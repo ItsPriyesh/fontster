@@ -16,6 +16,7 @@
 
 package com.chromium.fontinstaller.ui.main;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -42,6 +43,7 @@ import com.google.android.gms.ads.AdView;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import butterknife.Bind;
+import timber.log.Timber;
 
 public class MainActivity extends BaseActivity implements MaterialSearchView.SearchViewListener {
 
@@ -61,14 +63,24 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.Sea
   private FragmentManager mFragmentManager;
   private FontListFragment mFontListFragment;
   private BackupRestoreFragment mBackupRestoreFragment;
-
   private boolean mShouldShowSearch = true;
+
+  private static final String EXTRA_PAGE_ID = "extra_page_id";
+
+  public static final int FONT_LIST = 0xcafe;
+  public static final int BACKUP_RESTORE = 0xbac;
+
+  public static Intent getLaunchIntent(int pageId, Context context) {
+    final Intent intent = new Intent(context, MainActivity.class);
+    intent.putExtra(EXTRA_PAGE_ID, pageId);
+    return intent;
+  }
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     setToolbarTitle(getString(R.string.app_name));
-    
+
     if (!BuildConfig.DEBUG) initializeAd(mAdView);
 
     mDrawerToggle = new ActionBarDrawerToggle(
@@ -93,6 +105,26 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.Sea
       final Intent intent = FontActivity.getLaunchIntent(this, fontName);
       startActivity(intent);
     });
+  }
+
+  @Override protected void onNewIntent(Intent intent) {
+    super.onNewIntent(intent);
+    setIntent(intent);
+  }
+
+  @Override protected void onResume() {
+    super.onResume();
+    int pageId = getIntent().getIntExtra(EXTRA_PAGE_ID, -1);
+    if (pageId != -1) swapFragment(fragmentFromPageId(pageId));
+  }
+
+  private Fragment fragmentFromPageId(int pageId) {
+    Timber.i("Page id " + pageId + " pageId = backuprestore " + (pageId == BACKUP_RESTORE));
+    switch (pageId) {
+      case FONT_LIST: return mFontListFragment;
+      case BACKUP_RESTORE: return mBackupRestoreFragment;
+      default: return mFontListFragment;
+    }
   }
 
   private String fontNameFromListView(View view) {

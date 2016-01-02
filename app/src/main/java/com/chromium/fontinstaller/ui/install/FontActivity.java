@@ -236,7 +236,7 @@ public final class FontActivity extends BaseActivity implements TabLayout.OnTabS
         .setMessage("Looks like you haven't made a backup yet. Would you like to create one now?")
         .setNegativeButton(R.string.no, (dialog, id) -> confirmInstall())
         .setPositiveButton(R.string.yes, (dialog, id) -> {
-          startActivity(new Intent(this, MainActivity.class));
+          startActivity(MainActivity.getLaunchIntent(MainActivity.BACKUP_RESTORE, this));
         })
         .create().show();
   }
