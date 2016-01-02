@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -47,7 +48,7 @@ public class CreateBackupDialog extends AlertDialog {
   private final Action1<String> mCallback;
 
   /* package */ CreateBackupDialog(Context context, Action1<String> callback) {
-    super(context);
+    super(context, R.style.DialogTheme);
     mCallback = callback;
   }
 
@@ -59,6 +60,9 @@ public class CreateBackupDialog extends AlertDialog {
     setView(view);
 
     final EditText inputView = (EditText) view.findViewById(R.id.input);
+    ((InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE))
+        .showSoftInput(inputView, InputMethodManager.SHOW_FORCED);
+
     final Subscription textChanges = textChanges(inputView)
         .debounce(400, TimeUnit.MILLISECONDS)
         .map(s -> !TextUtils.isEmpty(s))

@@ -149,8 +149,7 @@ public class BackupRestoreFragment extends Fragment {
               mPreferences.putString(Key.BACKUP_NAME, backupName);
               mPreferences.putString(Key.BACKUP_DATE, backupDate);
               refreshBackupContainer();
-            }))
-        .show();
+            })).show();
   }
 
   private void showRebootDialog() {
