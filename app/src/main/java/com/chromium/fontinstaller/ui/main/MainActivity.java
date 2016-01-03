@@ -43,7 +43,6 @@ import com.google.android.gms.ads.AdView;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import butterknife.Bind;
-import timber.log.Timber;
 
 public class MainActivity extends BaseActivity implements MaterialSearchView.SearchViewListener {
 
@@ -112,14 +111,13 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.Sea
     setIntent(intent);
   }
 
-  @Override protected void onResume() {
-    super.onResume();
+  @Override protected void onPostResume() {
+    super.onPostResume();
     int pageId = getIntent().getIntExtra(EXTRA_PAGE_ID, -1);
     if (pageId != -1) swapFragment(fragmentFromPageId(pageId));
   }
 
   private Fragment fragmentFromPageId(int pageId) {
-    Timber.i("Page id " + pageId + " pageId = backuprestore " + (pageId == BACKUP_RESTORE));
     switch (pageId) {
       case FONT_LIST: return mFontListFragment;
       case BACKUP_RESTORE: return mBackupRestoreFragment;
