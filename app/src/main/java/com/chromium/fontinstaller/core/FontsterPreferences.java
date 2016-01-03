@@ -27,7 +27,8 @@ public class FontsterPreferences {
     ENABLE_TRUEFONT("1"),
     BACKUP_NAME("2"),
     BACKUP_DATE("3"),
-    TRUEFONTS_CACHED("4");
+    TRUEFONTS_CACHED("4"),
+    DISABLE_PROMPT_TO_BACKUP("5");
 
     private final String id;
 

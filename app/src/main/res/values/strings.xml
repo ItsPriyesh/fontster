@@ -76,6 +76,9 @@
     <string name="font_activity_install_progress">Installing fonts…</string>
     <string name="font_activity_confirm_install">Are you sure you want to install this font?</string>
 
+    <string name="prompt_backup_message">Looks like you haven\'t made a backup yet. Would you like to create one now?</string>
+    <string name="prompt_backup_dont_show_again">Don\'t show this again</string>
+
     <string name="font_list_download_progress">Downloading previews…</string>
     <string name="font_list_download_failed">Fontster was unable to download the fonts</string>
 

@@ -42,6 +42,7 @@ import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.core.BackupManager;
 import com.chromium.fontinstaller.core.FontDownloader;
 import com.chromium.fontinstaller.core.FontInstaller;
+import com.chromium.fontinstaller.core.FontsterPreferences;
 import com.chromium.fontinstaller.core.exceptions.ShellCommandException;
 import com.chromium.fontinstaller.models.FontPackage;
 import com.chromium.fontinstaller.models.Style;
@@ -56,6 +57,8 @@ import butterknife.Bind;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
+
+import static com.chromium.fontinstaller.core.FontsterPreferences.Key;
 
 import static com.chromium.fontinstaller.util.ViewUtils.animGrowFromCenter;
 import static com.chromium.fontinstaller.util.ViewUtils.animShrinkToCenter;
@@ -86,6 +89,9 @@ public final class FontActivity extends BaseActivity implements TabLayout.OnTabS
 
   @Inject
   BackupManager mBackupManager;
+
+  @Inject
+  FontsterPreferences mPreferences;
 
   private int mCurrentPage = 0;
   private FontPackage mFontPackage;
@@ -234,18 +240,18 @@ public final class FontActivity extends BaseActivity implements TabLayout.OnTabS
   }
 
   private void promptBackup() {
-    new AlertDialog.Builder(this)
-        .setMessage("Looks like you haven't made a backup yet. Would you like to create one now?")
-        .setNegativeButton(R.string.no, (dialog, id) -> confirmInstall())
-        .setPositiveButton(R.string.yes, (dialog, id) -> {
-          startActivity(MainActivity.getLaunchIntent(MainActivity.BACKUP_RESTORE, this));
-        })
-        .create().show();
+    new PromptBackupDialog(this, backup -> {
+      if (backup) startActivity(MainActivity.getLaunchIntent(MainActivity.BACKUP_RESTORE, this));
+      else confirmInstall();
+    }).show();
   }
 
   public void onInstallFabClicked(View view) {
-    if (mBackupManager.backupExists()) confirmInstall();
-    else promptBackup();
+    if (mPreferences.getBoolean(Key.DISABLE_PROMPT_TO_BACKUP) || mBackupManager.backupExists()) {
+      confirmInstall();
+    } else {
+      promptBackup();
+    }
   }
 
   public void onRetryButtonClicked(View view) {
