@@ -115,4 +115,6 @@
     <string name="splash_no_storage_access_title">Storage Access Unavailable</string>
     <string name="splash_no_storage_access_message">Fontster requires read and write access to your storage in order to download and handle fonts.</string>
 
+    <string name="title_activity_font_style_debug">Font Style Debug</string>
+
 </resources>

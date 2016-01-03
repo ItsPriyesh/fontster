@@ -19,6 +19,7 @@ package com.chromium.fontinstaller.ui.settings.developer;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 
@@ -41,6 +42,11 @@ public class DeveloperSettingsFragment extends PreferenceFragment {
 
     findPreference("install_custom_font").setOnPreferenceClickListener(p -> {
       confirmCustomFontInstall();
+      return true;
+    });
+
+    findPreference("debug_font_styles").setOnPreferenceClickListener(p -> {
+      startActivity(new Intent(getActivity(), FontStyleDebugActivity.class));
       return true;
     });
   }

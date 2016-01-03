@@ -19,4 +19,8 @@
         android:key="install_custom_font"
         android:summary="@string/pref_install_custom_font_summary"
         android:title="@string/pref_install_custom_font_title" />
+    <Preference
+        android:key="debug_font_styles"
+        android:title="Debug font styles"
+        android:summary="View all system typefaces" />
 </PreferenceScreen>
