@@ -45,6 +45,7 @@
     <string name="reboot_dialog_title">Installation complete</string>
     <string name="reboot_dialog_message">Please reboot your device for the changes to take effect.</string>
     <string name="reboot_dialog_button_text">Reboot</string>
+    <string name="reboot_failed">Unable to reboot device</string>
 
     <string name="backup_restore_no_backups">You do not currently have a backup</string>
     <string name="backup_restore_option_restore">Restore</string>

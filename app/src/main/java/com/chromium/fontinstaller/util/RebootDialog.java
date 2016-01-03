@@ -36,6 +36,8 @@ import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+import static com.chromium.fontinstaller.util.ViewUtils.toast;
+
 public final class RebootDialog extends AlertDialog {
 
   /* Immediately after a font has been installed, the system won't be able
@@ -66,10 +68,12 @@ public final class RebootDialog extends AlertDialog {
     final String buttonText = view.getContext().getString(R.string.reboot_dialog_button_text);
     setButton(BUTTON_POSITIVE, buttonText, (dialog, which) -> {
       dialog.dismiss();
-      Observable.just(CommandRunner.run(Collections.singletonList("reboot")))
+      Observable.just("reboot")
+          .map(Collections::singletonList)
+          .map(CommandRunner::run)
           .subscribeOn(Schedulers.io())
           .observeOn(AndroidSchedulers.mainThread())
-          .subscribe();
+          .subscribe(s -> { }, error -> toast(R.string.reboot_failed, getContext()));
     });
 
     super.onCreate(savedInstanceState);
