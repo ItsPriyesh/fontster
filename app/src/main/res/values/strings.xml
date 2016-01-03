@@ -49,6 +49,9 @@
     <string name="backup_restore_no_backups">You do not currently have a backup</string>
     <string name="backup_restore_option_restore">Restore</string>
     <string name="backup_restore_option_delete">Delete</string>
+    <string name="backup_restore_restore_failed">Restore failed. Please try again</string>
+    <string name="backup_restore_delete_failed">Failed to delete backup</string>
+    <string name="backup_restore_backup_failed">Backup failed. Please try again.</string>
 
     <string name="backup_dialog_title">Name your backup</string>
     <string name="backup_dialog_message">This will overwrite your current backup</string>

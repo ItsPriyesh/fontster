@@ -42,6 +42,7 @@ import butterknife.ButterKnife;
 import rx.schedulers.Schedulers;
 
 import static com.chromium.fontinstaller.core.FontsterPreferences.Key;
+import static com.chromium.fontinstaller.util.ViewUtils.snackbar;
 import static rx.android.schedulers.AndroidSchedulers.mainThread;
 
 public class BackupRestoreFragment extends Fragment {
@@ -128,13 +129,15 @@ public class BackupRestoreFragment extends Fragment {
               mBackupManager.restore()
                   .subscribeOn(Schedulers.io())
                   .observeOn(mainThread())
-                  .subscribe(o -> showRebootDialog());
+                  .subscribe(o -> showRebootDialog(),
+                      error -> snackbar(R.string.backup_restore_restore_failed, getView()));
               break;
             case BACKUP_ACTION_DELETE:
               mBackupManager.deleteBackup()
                   .subscribeOn(Schedulers.io())
                   .observeOn(mainThread())
-                  .subscribe(o -> refreshBackupContainer());
+                  .subscribe(o -> refreshBackupContainer(),
+                      error -> snackbar(R.string.backup_restore_delete_failed, getView()));
               break;
           }
         }).create().show();
@@ -149,7 +152,8 @@ public class BackupRestoreFragment extends Fragment {
               mPreferences.putString(Key.BACKUP_NAME, backupName);
               mPreferences.putString(Key.BACKUP_DATE, backupDate);
               refreshBackupContainer();
-            })).show();
+            }, error -> snackbar(R.string.backup_restore_backup_failed, getView()))
+    ).show();
   }
 
   private void showRebootDialog() {
