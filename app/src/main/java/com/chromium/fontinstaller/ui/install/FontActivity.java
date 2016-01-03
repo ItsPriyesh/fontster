@@ -42,6 +42,7 @@ import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.core.BackupManager;
 import com.chromium.fontinstaller.core.FontDownloader;
 import com.chromium.fontinstaller.core.FontInstaller;
+import com.chromium.fontinstaller.core.exceptions.ShellCommandException;
 import com.chromium.fontinstaller.models.FontPackage;
 import com.chromium.fontinstaller.models.Style;
 import com.chromium.fontinstaller.ui.common.BaseActivity;
@@ -214,7 +215,8 @@ public final class FontActivity extends BaseActivity implements TabLayout.OnTabS
               sendToCrashlytics("Install of " + mFontPackage.getName() + " failed");
               if (error instanceof FontDownloader.DownloadException)
                 handleFailedDownload(error.getCause());
-              else if (error instanceof FontInstaller.InstallException)
+              else if (error instanceof FontInstaller.InstallException ||
+                  error instanceof ShellCommandException)
                 handleFailedInstall(error);
             });
   }
