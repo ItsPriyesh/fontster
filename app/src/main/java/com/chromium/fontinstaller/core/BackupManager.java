@@ -78,8 +78,9 @@ public class BackupManager {
   }
 
   public Observable<List<String>> deleteBackup() {
-    return Observable.just(CommandRunner
-        .run(Collections.singletonList(DELETE_BACKUP_COMMAND)))
+    return Observable.just(DELETE_BACKUP_COMMAND)
+        .map(Collections::singletonList)
+        .map(CommandRunner::run)
         .subscribeOn(Schedulers.io());
   }
 
