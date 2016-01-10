@@ -202,8 +202,10 @@ public final class FontActivity extends BaseActivity implements TabLayout.OnTabS
       animSlideInBottom(mTabLayout, this);
       show(mTabLayout);
       reveal(this, mPreviewPager, mInstallButton, R.color.primary_accent);
-      animGrowFromCenter(mInstallButton, this);
-      show(mInstallButton);
+      delay(() -> {
+        animGrowFromCenter(mInstallButton, this);
+        show(mInstallButton);
+      }, 300);
     }, 400);
   }
 
