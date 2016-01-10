@@ -37,6 +37,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.chromium.fontinstaller.BuildConfig;
 import com.chromium.fontinstaller.Injector;
 import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.core.BackupManager;
@@ -50,6 +51,7 @@ import com.chromium.fontinstaller.ui.common.BaseActivity;
 import com.chromium.fontinstaller.ui.main.MainActivity;
 import com.chromium.fontinstaller.util.RebootDialog;
 import com.crashlytics.android.Crashlytics;
+import com.google.android.gms.ads.AdView;
 
 import javax.inject.Inject;
 
@@ -86,6 +88,9 @@ public final class FontActivity extends BaseActivity implements TabLayout.OnTabS
 
   @Bind(R.id.error_container)
   ViewGroup mErrorContainer;
+
+  @Bind(R.id.ad_view)
+  AdView mAdView;
 
   @Inject
   BackupManager mBackupManager;
@@ -131,6 +136,8 @@ public final class FontActivity extends BaseActivity implements TabLayout.OnTabS
     downloadPreviewStyles();
 
     mFontTitle.setText(fontName);
+
+    if (!BuildConfig.DEBUG) initializeAd(mAdView);
   }
 
   private void initializeFragments() {

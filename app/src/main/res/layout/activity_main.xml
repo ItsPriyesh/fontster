@@ -39,7 +39,12 @@
             android:layout_above="@+id/ad_container"
             android:layout_below="@id/app_bar" />
 
-        <include android:id="@id/ad_container" layout="@layout/ad_container" />
+        <include
+            android:id="@id/ad_container"
+            layout="@layout/ad_container"
+            android:layout_alignParentBottom="true"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"/>
 
         <com.miguelcatalan.materialsearchview.MaterialSearchView
             android:id="@+id/search_view"
