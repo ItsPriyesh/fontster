@@ -111,7 +111,10 @@ public class FontListFragment extends Fragment {
   }
 
   private void dismissProgressDialog() {
-    if (mProgressDialog != null && mProgressDialog.isShowing()) mProgressDialog.dismiss();
+    if (mProgressDialog != null && mProgressDialog.isShowing() &&
+        getActivity() != null && !getActivity().isFinishing()) {
+      mProgressDialog.dismiss();
+    }
   }
 
   private void downloadFontList() {
