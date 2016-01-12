@@ -119,7 +119,9 @@ public class FontPackage {
   public static boolean validFontPackFolder(String path) {
     final File folder = new File(path);
     if (!folder.exists() || !folder.isDirectory()) return false;
-    final Set<String> fileNameSet = new HashSet<>(Arrays.asList(folder.list()));
+    final String[] fileList = folder.list();
+    if (fileList == null) return false;
+    final Set<String> fileNameSet = new HashSet<>(Arrays.asList(fileList));
     return fileNameSet.containsAll(Style.REMOTE_STYLE_NAMES);
   }
 
