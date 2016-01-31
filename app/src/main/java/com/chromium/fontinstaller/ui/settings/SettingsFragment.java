@@ -39,8 +39,6 @@ import com.chromium.fontinstaller.util.Licenses;
 import com.chromium.fontinstaller.util.billing.IabHelper;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -162,15 +160,13 @@ public class SettingsFragment extends PreferenceFragment {
     mProgressDialog.setMessage(getString(R.string.settings_clear_cache_progress));
     mProgressDialog.show();
 
-    final List<String> commands = new ArrayList<>();
     final File cache = new File(getActivity().getExternalCacheDir() + File.separator);
-
     if (cache.listFiles() != null) {
-      for (File f : cache.listFiles())
-        if (!f.getName().equals("Backup"))
-          commands.add("rm -rf " + f.getAbsolutePath());
-
-      Observable.just(CommandRunner.run(commands))
+      Observable.from(cache.listFiles())
+          .filter(file -> !file.getName().equals("Backup"))
+          .map(file -> "rm -rf " + file.getAbsolutePath())
+          .toList()
+          .map(CommandRunner::run)
           .subscribeOn(Schedulers.io())
           .observeOn(AndroidSchedulers.mainThread())
           .subscribe(o -> onCacheCleared());
