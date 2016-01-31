@@ -11,8 +11,8 @@ android {
         applicationId "com.chromium.fontinstaller"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 30
-        versionName "3.3"
+        versionCode 31
+        versionName "3.4"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
