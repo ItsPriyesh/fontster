@@ -169,7 +169,8 @@ public class SettingsFragment extends PreferenceFragment {
           .map(CommandRunner::run)
           .subscribeOn(Schedulers.io())
           .observeOn(AndroidSchedulers.mainThread())
-          .subscribe(o -> onCacheCleared());
+          .subscribe(o -> onCacheCleared(),
+              error -> snackbar(getString(R.string.settings_clear_cache_failed), getView()));
     } else {
       snackbar(getString(R.string.settings_clear_cache_failed), getView());
     }
