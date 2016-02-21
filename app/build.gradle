@@ -17,14 +17,9 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
-        debug {
-            buildConfigField 'String', 'LICENSE_KEY', 'null'
-        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-
-            buildConfigField 'String', 'LICENSE_KEY', System.getenv('FONTSTER_LICENSE_KEY') ?: 'null'
         }
     }
     compileOptions {
