@@ -4,7 +4,8 @@ Fontster
 
 Fontster is an Android app that allows users with rooted devices to change the system wide fonts.
 
-![Screenshot](art/SS_FontActivity.png)
+<img src="https://raw.githubusercontent.com/ItsPriyesh/Fontster/master/art/screenshot_font_activity.png" width="320">
+<img src="https://raw.githubusercontent.com/ItsPriyesh/Fontster/master/art/screenshot_backup_restore.png" width="320">
 
 License
 -------
