@@ -87,7 +87,7 @@
 
     <string name="settings_title">Paramètres</string>
     <string name="settings_developer_title">Paramètres développeur</string>
-    <string name="settings_iab_setup_error">Un problème est survenu lors de la configuration de l'\achat via l\'application</string>
+    <string name="settings_iab_setup_error">Un problème est survenu lors de la configuration de l\'achat via l\'application</string>
     <string name="settings_confirm_custom_font_install_title">Êtes-vous sûr ?</string>
     <string name="settings_confirm_custom_font_install_message">L\'installation d\'un pack de police non vérifié peut potentiellement rendre votre téléphone inutilisable. Continuer uniquement si vous êtes confiant dans ce que vous faites.</string>
     <string name="settings_custom_font_install_progress">Installation…</string>
