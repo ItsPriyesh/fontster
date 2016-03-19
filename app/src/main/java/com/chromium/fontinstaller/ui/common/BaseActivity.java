@@ -23,8 +23,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.chromium.fontinstaller.BuildConfig;
 import com.chromium.fontinstaller.R;
-import com.chromium.fontinstaller.SecretStuff;
 import com.chromium.fontinstaller.ui.settings.SettingsFragment;
 import com.chromium.fontinstaller.util.ViewUtils;
 import com.chromium.fontinstaller.util.billing.IabHelper;
@@ -50,7 +50,7 @@ public class BaseActivity extends AppCompatActivity {
     super.setContentView(layoutResId);
     ButterKnife.bind(this);
 
-    mBillingHelper = new IabHelper(this, SecretStuff.LICENSE_KEY);
+    mBillingHelper = new IabHelper(this, BuildConfig.GOOGLE_PLAY_LICENSE_KEY);
 
     setSupportActionBar(mToolbar);
     final ActionBar actionBar = getSupportActionBar();

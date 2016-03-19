@@ -43,6 +43,3 @@ android:
 branches:
   only:
     - master
-
-before_install:
-  - openssl aes-256-cbc -K $encrypted_3366a34600b0_key -iv $encrypted_3366a34600b0_iv -in SecretStuff.java.enc -out app/src/main/java/com/chromium/fontinstaller/SecretStuff.java -d

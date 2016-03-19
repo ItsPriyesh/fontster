@@ -30,7 +30,6 @@ import android.view.View;
 import com.chromium.fontinstaller.BuildConfig;
 import com.chromium.fontinstaller.Injector;
 import com.chromium.fontinstaller.R;
-import com.chromium.fontinstaller.SecretStuff;
 import com.chromium.fontinstaller.core.CommandRunner;
 import com.chromium.fontinstaller.core.FontsterPreferences;
 import com.chromium.fontinstaller.ui.main.MainActivity;
@@ -103,7 +102,7 @@ public class SettingsFragment extends PreferenceFragment {
     final Preference donate = findPreferenceById(R.string.pref_key_donate);
     donate.setOnPreferenceClickListener(pref -> showDonationDialog());
 
-    mBillingHelper = new IabHelper(getActivity(), SecretStuff.LICENSE_KEY);
+    mBillingHelper = new IabHelper(getActivity(), BuildConfig.GOOGLE_PLAY_LICENSE_KEY);
     mBillingHelper.startSetup(result -> {
       if (result.isSuccess()) {
         donate.setEnabled(true);
