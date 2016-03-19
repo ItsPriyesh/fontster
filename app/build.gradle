@@ -3,6 +3,8 @@ apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'io.fabric'
 
+def getGooglePlayLicenseKey = { try { "$GooglePlayLicenseKey" } catch (all) { 'null' } }
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
@@ -17,9 +19,15 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField 'String', 'GOOGLE_PLAY_LICENSE_KEY', getGooglePlayLicenseKey()
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField 'String', 'GOOGLE_PLAY_LICENSE_KEY', getGooglePlayLicenseKey()
         }
     }
     compileOptions {
