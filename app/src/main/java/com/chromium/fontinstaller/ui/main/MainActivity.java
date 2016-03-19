@@ -26,34 +26,25 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 
 import com.chromium.fontinstaller.BuildConfig;
 import com.chromium.fontinstaller.R;
 import com.chromium.fontinstaller.ui.backuprestore.BackupRestoreFragment;
 import com.chromium.fontinstaller.ui.common.BaseActivity;
 import com.chromium.fontinstaller.ui.fontlist.FontListFragment;
-import com.chromium.fontinstaller.ui.install.FontActivity;
 import com.chromium.fontinstaller.ui.settings.SettingsActivity;
-import com.chromium.fontinstaller.util.ViewUtils;
 import com.google.android.gms.ads.AdView;
-import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import butterknife.Bind;
 
-public class MainActivity extends BaseActivity implements MaterialSearchView.SearchViewListener {
+public class MainActivity extends BaseActivity {
 
   @Bind(R.id.drawer_layout)
   DrawerLayout mDrawerLayout;
 
   @Bind(R.id.navigation_view)
   NavigationView mNavigationView;
-
-  @Bind(R.id.search_view)
-  MaterialSearchView mSearchView;
 
   @Bind(R.id.ad_view)
   AdView mAdView;
@@ -62,7 +53,6 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.Sea
   private FragmentManager mFragmentManager;
   private FontListFragment mFontListFragment;
   private BackupRestoreFragment mBackupRestoreFragment;
-  private boolean mShouldShowSearch = true;
 
   private static final String EXTRA_PAGE_ID = "extra_page_id";
 
@@ -93,17 +83,6 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.Sea
     mBackupRestoreFragment = new BackupRestoreFragment();
 
     swapFragment(mFontListFragment);
-
-    final String[] fontList = getResources().getStringArray(R.array.font_list);
-    mSearchView.setOnSearchViewListener(this);
-    mSearchView.setSuggestionIcon(null);
-    mSearchView.setSuggestions(fontList);
-    mSearchView.setPadding(0, ViewUtils.getStatusBarHeight(this), 0, 0);
-    mSearchView.setOnItemClickListener((parent, view, position, id) -> {
-      final String fontName = fontNameFromListView(view);
-      final Intent intent = FontActivity.getLaunchIntent(this, fontName);
-      startActivity(intent);
-    });
   }
 
   @Override protected void onNewIntent(Intent intent) {
@@ -125,10 +104,6 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.Sea
     }
   }
 
-  private String fontNameFromListView(View view) {
-    return ((TextView) view.findViewById(R.id.suggestion_text)).getText().toString();
-  }
-
   private void setupDrawerContent(NavigationView navigationView) {
     navigationView.setNavigationItemSelectedListener(menuItem -> {
       mDrawerLayout.closeDrawers();
@@ -139,7 +114,6 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.Sea
 
   private void selectDrawerItem(MenuItem menuItem) {
     final int selectedId = menuItem.getItemId();
-    mShouldShowSearch = (selectedId == R.id.fonts);
     switch (selectedId) {
       case R.id.fonts:
         swapFragment(mFontListFragment);
@@ -164,16 +138,6 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.Sea
     mFragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
   }
 
-  @Override public boolean onCreateOptionsMenu(Menu menu) {
-    getMenuInflater().inflate(R.menu.menu_main, menu);
-
-    final MenuItem searchItem = menu.findItem(R.id.action_search);
-    searchItem.setVisible(mShouldShowSearch);
-    mSearchView.setMenuItem(searchItem);
-
-    return true;
-  }
-
   @Override public boolean onOptionsItemSelected(MenuItem item) {
     return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
   }
@@ -189,18 +153,10 @@ public class MainActivity extends BaseActivity implements MaterialSearchView.Sea
   }
 
   @Override public void onBackPressed() {
-    if (mDrawerLayout.isDrawerOpen(GravityCompat.START) || mSearchView.isSearchOpen()) {
+    if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
       mDrawerLayout.closeDrawers();
       return;
     }
     super.onBackPressed();
   }
-
-  @Override public void onSearchViewShown() {
-    if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-      mDrawerLayout.closeDrawers();
-    }
-  }
-
-  @Override public void onSearchViewClosed() { }
 }

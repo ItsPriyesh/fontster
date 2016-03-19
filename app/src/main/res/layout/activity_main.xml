@@ -45,12 +45,6 @@
             android:layout_alignParentBottom="true"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"/>
-
-        <com.miguelcatalan.materialsearchview.MaterialSearchView
-            android:id="@+id/search_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:elevation="5dp" />
     </RelativeLayout>
 
     <android.support.design.widget.NavigationView

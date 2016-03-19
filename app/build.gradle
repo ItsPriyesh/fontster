@@ -86,7 +86,6 @@ dependencies {
     // UI
     compile 'com.eowise:recyclerview-stickyheaders:0.5.2'
     compile 'de.psdev.licensesdialog:licensesdialog:1.7.0'
-    compile project(':MaterialSearchView:library')
     compile 'com.jakewharton.rxbinding:rxbinding:0.2.0'
 
     // Testing
