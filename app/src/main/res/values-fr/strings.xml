@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2015 Priyesh Patel
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">>
+
+    <string name="app_name">Fontster</string>
+    <string name="ok">OK</string>
+    <string name="no">Non</string>
+    <string name="yes">Oui</string>
+    <string name="done">OK</string>
+    <string name="cancel">Annuler</string>
+    <string name="retry">Réessayer</string>
+    <string name="exit">Quitter</string>
+    <string name="ad_space">Espace pub</string>
+
+    <string name="alphabet_upper">ABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+    <string name="alphabet_lower">abcdefghijklmnopqrstuvwxyz</string>
+
+    <string name="banner_ad_unit_id">ca-app-pub-8798644144122718/6263923171</string>
+    <string name="nexus_5_device_id">AAADAC4EC821D354F2BEF1C833EE7EFB</string>
+
+    <string name="drawer_open">Ouvrir</string>
+    <string name="drawer_close">Fermer</string>
+    <string name="drawer_item_font_list">Polices</string>
+    <string name="drawer_item_backup_restore"><![CDATA[Sauvegarder et restaurer]]></string>
+    <string name="drawer_item_settings">Paramètres</string>
+
+    <string name="font_menu_toggle_case">Activer la case</string>
+    <string name="font_menu_try">Essayer</string>
+
+    <string name="main_menu_search">Rechercher</string>
+
+    <string name="reboot_dialog_title">Installation terminée</string>
+    <string name="reboot_dialog_message">Veuillez redémarrer votre appareil pour que les modifications prennent effet.</string>
+    <string name="reboot_dialog_button_text">Redémarrer</string>
+    <string name="reboot_failed">Impossible de redémarrer votre appareil</string>
+
+    <string name="backup_restore_no_backups">Aucune sauvegarde actuellement</string>
+    <string name="backup_restore_option_restore">Restaurer</string>
+    <string name="backup_restore_option_delete">Supprimer</string>
+    <string name="backup_restore_restore_failed">Échec de la restauration. Veuillez réessayer</string>
+    <string name="backup_restore_delete_failed">Échec de la suppression de sauvegarde</string>
+    <string name="backup_restore_backup_failed">Échec de la sauvegarde. Veuillez réessayer.</string>
+
+    <string name="backup_dialog_title">Nommer votre sauvegarde</string>
+    <string name="backup_dialog_message">Cela remplacera votre sauvegarde actuelle</string>
+    <string name="backup_dialog_hint">Nom</string>
+    <string name="backup_dialog_button_backup">Sauvegarder</string>
+    <string name="backup_dialog_invalid_name">Veuillez entrer un nom pour la sauvegarde</string>
+
+    <string name="donate_dialog_title">Montant du don</string>
+    <string name="donate_dialog_donation_small">Petit ($1)</string>
+    <string name="donate_dialog_donation_medium">Moyen ($3)</string>
+    <string name="donate_dialog_donation_large">Grand ($10)</string>
+
+    <string name="try_font_dialog_hint">Essayez-la !</string>
+    <string name="font_pack_picker_dialog_hint">Chemin du fichier</string>
+
+    <string name="font_activity_download_failed">Fontster n\'a pas pu télécharger cette police</string>
+    <string name="font_activity_tab_regular">Normal</string>
+    <string name="font_activity_tab_bold">Gras</string>
+    <string name="font_activity_tab_italic">Italique</string>
+    <string name="font_activity_install_failed">Échec de l\'installation</string>
+    <string name="font_activity_install_progress">Installation des polices…</string>
+    <string name="font_activity_confirm_install">Êtes-vous sûr de vouloir installer cette police ?</string>
+
+    <string name="prompt_backup_message">Il semble que vous n\'ayez pas encore fait de sauvegarde. Voulez-vous en créer une maintenant ?</string>
+    <string name="prompt_backup_dont_show_again">Ne plus afficher</string>
+
+    <string name="font_list_download_progress">Téléchargement des aperçus…</string>
+    <string name="font_list_download_failed">Fontster n\'a pas pu télécharger les polices</string>
+
+    <string name="font_pack_picker_dialog_title">Paquet de la police</string>
+    <string name="font_pack_picker_dialog_invalid_path">Dossier du paquet de police invalide</string>
+
+    <string name="settings_title">Paramètres</string>
+    <string name="settings_developer_title">Paramètres développeur</string>
+    <string name="settings_iab_setup_error">Un problème est survenu lors de la configuration de l\'achat via l\'application</string>
+    <string name="settings_confirm_custom_font_install_title">Êtes-vous sûr ?</string>
+    <string name="settings_confirm_custom_font_install_message">L\'installation d\'un pack de police non vérifié peut potentiellement rendre votre téléphone inutilisable. Continuer uniquement si vous êtes confiant dans ce que vous faites.</string>
+    <string name="settings_custom_font_install_progress">Installation…</string>
+    <string name="settings_custom_font_install_failed">Échec de l\'installation de la police personnalisée</string>
+    <string name="settings_donation_failed">Échec de la donation</string>
+    <string name="settings_donation_success">Donation terminée, merci :)</string>
+    <string name="settings_clear_cache_progress">Effacement du cache…</string>
+    <string name="settings_clear_cache_success">Cache effacé</string>
+    <string name="settings_clear_cache_failed">Impossible d\'effacer le cache</string>
+    <string name="settings_link_github">https://github.com/ItsPriyesh/FontInstaller</string>
+    <string name="settings_restart_dialog_message">Redémarrer votre appareil pour que la modification prenne effet.</string>
+    <string name="settings_restart_dialog_button">Redémarrer</string>
+
+    <string name="pref_install_custom_font_summary">Sélectionner et charger un pack de police</string>
+    <string name="pref_install_custom_font_title">Installer police personnalisée</string>
+    <string name="pref_category_general">Général</string>
+    <string name="pref_enable_truefont_summary">Afficher les noms de police dans leur police d\'écriture correspondante</string>
+    <string name="pref_enable_truefont_title">Affichage de la police</string>
+    <string name="pref_clear_cache_summary">Effacer les polices stockées</string>
+    <string name="pref_clear_cache_title">Effacer le cache</string>
+    <string name="pref_category_about">À propos</string>
+    <string name="pref_view_source_summary">Voir le code source de cette application</string>
+    <string name="pref_view_source_title">Source</string>
+    <string name="pref_licenses_summary">Détails des bibliothèques utilisées dans cette application</string>
+    <string name="pref_licenses_title">Licences open source</string>
+    <string name="pref_donate_summary">Cela retirera les publicités</string>
+    <string name="pref_donate_title">Donation</string>
+    <string name="pref_app_version_title">Version</string>
+
+    <string name="splash_no_root_title">Accès au root indisponible</string>
+    <string name="splash_no_root_message">Pour utiliser Fontster votre appareil doit être rooté. Si votre appareil est rooté, veuillez vous assurer que vous avez accordé l\'accès super-utilisateur à Fontster.</string>
+    <string name="splash_no_storage_access_title">Accès au stockage indisponible</string>
+    <string name="splash_no_storage_access_message">Fontster requiert l\'accès en lecture et écriture à votre stockage afin de télécharger et gérer les polices.</string>
+
+    <string name="title_activity_font_style_debug">Déboguer le style de police</string>
+
+</resources>
