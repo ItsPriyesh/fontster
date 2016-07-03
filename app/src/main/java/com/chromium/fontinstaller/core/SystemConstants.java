@@ -21,10 +21,10 @@ import android.annotation.SuppressLint;
 public final class SystemConstants {
 
   @SuppressLint("SdCardPath")
-  static final String BACKUP_PATH = "/sdcard/Android/data/com.chromium.fontinstaller/Backup/";
+  static final String BACKUP_PATH = "/storage/emulated/0/Android/data/com.chromium.fontinstaller/Backup/";
 
   @SuppressLint("SdCardPath")
-  public static final String CACHE_PATH = "/sdcard/Android/data/com.chromium.fontinstaller/cache/";
+  public static final String CACHE_PATH = "/storage/emulated/0/Android/data/com.chromium.fontinstaller/cache/";
 
   static final String SYSTEM_FONT_PATH = "/system/fonts/";
 
